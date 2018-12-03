@@ -1,0 +1,19 @@
+---- g_dwTmAddress Matches (23 in 3 files) ----
+Gsm.c (f:\maronglang\projectdir\ipmeter\数据采集器\带阀控功能\gatherproject\ipmeterproject\source):u32 g_dwTmAddress = 0x00000001;           //默认地址256
+Gsm.c (f:\maronglang\projectdir\ipmeter\数据采集器\带阀控功能\gatherproject\ipmeterproject\source):	MemcpyFunc(tyProtol130.Packet.Address, (u8 *)&g_dwTmAddress, sizeof(tyProtol130.Packet.Address));
+Gsm.c (f:\maronglang\projectdir\ipmeter\数据采集器\带阀控功能\gatherproject\ipmeterproject\source):			MemcpyFunc( (u8 *)&g_dwTmAddress, (u8 *)&tyProtol130.Packet.Buf[0], sizeof(g_dwTmAddress) ); //(u8 *)tyParameter.Address本机地址 edit by maronglang 
+Gsm.c (f:\maronglang\projectdir\ipmeter\数据采集器\带阀控功能\gatherproject\ipmeterproject\source):			MemcpyFunc(tyProtol130.Packet.Address, (u8 *)&g_dwTmAddress, sizeof(tyProtol130.Packet.Address));
+Gsm.c (f:\maronglang\projectdir\ipmeter\数据采集器\带阀控功能\gatherproject\ipmeterproject\source):			SaveParameterForType((u8*)&g_dwTmAddress, sizeof(g_dwTmAddress), TM_ADDRESS_PRAA);
+Gsm.c (f:\maronglang\projectdir\ipmeter\数据采集器\带阀控功能\gatherproject\ipmeterproject\source):			MemcpyFunc( (u8 *)&tyProtol130.Packet.Buf, (u8 *)&g_dwTmAddress, sizeof(g_dwTmAddress) );//(u8 *)tyParameter.Address本机地址 edit by maronglang20180822
+Gsm.c (f:\maronglang\projectdir\ipmeter\数据采集器\带阀控功能\gatherproject\ipmeterproject\source):			nSendLen = 12 + sizeof(g_dwTmAddress);
+Gsm.c (f:\maronglang\projectdir\ipmeter\数据采集器\带阀控功能\gatherproject\ipmeterproject\source):			stLastReportT.nMinute = ((g_dwTmAddress+TM_CalPastedSeconds(&stStar))%REPORT_RANDOM_MIN); //上报时间分钟值做随机
+Gsm.c (f:\maronglang\projectdir\ipmeter\数据采集器\带阀控功能\gatherproject\ipmeterproject\source):				MemcpyFunc((u8 *)&g_dwTmAddress, nBuf, 4);
+Gsm.c (f:\maronglang\projectdir\ipmeter\数据采集器\带阀控功能\gatherproject\ipmeterproject\source):				SaveParameterForType((u8*)&g_dwTmAddress, sizeof(g_dwTmAddress), TM_ADDRESS_PRAA);
+Gsm.c (f:\maronglang\projectdir\ipmeter\数据采集器\带阀控功能\gatherproject\ipmeterproject\source):				MemcpyFunc(tyProtol130.Packet.Address, (u8 *)&g_dwTmAddress, sizeof(tyProtol130.Packet.Address));
+Gsm.c (f:\maronglang\projectdir\ipmeter\数据采集器\带阀控功能\gatherproject\ipmeterproject\source):	MemcpyFunc(tyProtol130.Packet.Address, (u8 *)&g_dwTmAddress, sizeof(tyProtol130.Packet.Address));
+Gsm.c (f:\maronglang\projectdir\ipmeter\数据采集器\带阀控功能\gatherproject\ipmeterproject\source):	MemcpyFunc((u8*)nAddBuf, (u8*)&g_dwTmAddress, 4);
+GsmGlobal.h (f:\maronglang\projectdir\ipmeter\数据采集器\带阀控功能\gatherproject\ipmeterproject\source):extern u32 g_dwTmAddress;
+Protocol.c (f:\maronglang\projectdir\ipmeter\数据采集器\带阀控功能\gatherproject\ipmeterproject\source):	if ( (tyJasonSlave.Rx.Address == g_dwTmAddress)		//地址相同?
+Protocol.c (f:\maronglang\projectdir\ipmeter\数据采集器\带阀控功能\gatherproject\ipmeterproject\source):		tyJasonSlave.Tx.Address = g_dwTmAddress;		//读地址
+Protocol.c (f:\maronglang\projectdir\ipmeter\数据采集器\带阀控功能\gatherproject\ipmeterproject\source):	if ((FALSE == ReadParameterForType((u8*)&g_dwTmAddress, sizeof(g_dwTmAddress), TM_ADDRESS_PRAA)))
+Protocol.c (f:\maronglang\projectdir\ipmeter\数据采集器\带阀控功能\gatherproject\ipmeterproject\source):		g_dwTmAddress = INIT_ADDRESS;

@@ -1,0 +1,12 @@
+;	STMicroelectronics Workspace file
+
+[Version]
+Keyword=ST7Workspace-V0.7
+
+[Project0]
+Filename=ipmeter20151208.stp
+Dependencies=
+[Options]
+ActiveProject=ipmeter20151208
+ActiveConfig=Debug
+AddSortedElements=0
