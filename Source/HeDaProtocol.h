@@ -8,17 +8,19 @@ typedef struct
 	u8 Head[2];		    //包头2
 	u8 Addr[3];			//地址码
 	u8 Version;		    //协议版本
-} TypeProtolHead_XJ;	//和达协议数据结构体,包头
+} TypeProtolHead_HD;	//和达协议数据结构体,包头
+
+
+extern u8 g_Device_Info[15]; 	//设备信息
 
 typedef union
 {
 	struct
 	{
-		u8 Device_Info[15];		//设备信息
 		u8 CtrlB[3];		    //控制码
 		u8 Data_Len;			//数据长度
 		u8 Cmd;					//命令码
-		u8 Buf[180-22];				//数据域
+		u8 Buf[180-5];			//数据域
 	} Packet;
 	u8 Buffer[180];		//真正数据
 } TypeProtol_HD;		//和达协议数据结构体
@@ -69,6 +71,14 @@ typedef enum
 
 
 #define HeDa_Packet_Max_Len						(512)	//数据分包最大长度
+
+
+//当前连接状态
+#define UP_Upload_HD		   4			   //上报
+#define UP_Free_HD             5               //空闲
+
+/* 上线类型 */
+#define HD_ONLINE              1
 
 #endif
 

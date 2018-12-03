@@ -4013,9 +4013,12 @@ void fixTaskGsmProc(void)
 #ifdef  JASON130_PTR   //130协议
 		JASON_130TimeOutReUpLoad();
 		JASON_130ProtolProc();
-#else   //新疆协议
+#elif defined(XINJIANG_PTR)   //新疆协议
 		XJ_TimeOutReUpLoad();
 		XJ_ProtolProc();
+#elif defined(HEDA_PTR)   //和达协议	
+		HD_TimeOutReUpLoad();
+		HD_ProtolProc();
 #endif
 		break;
 	}
@@ -4081,6 +4084,25 @@ void fixTaskGsm(void)
 			fixTaskGsmProc();
 		}
 #elif defined(XINJIANG_PTR) 	 
+		LP_XJ_CalReportTime(&stNextTime);
+		dwOffset = TM_DiffSecond(&stTimeNowTm, &stNextTime);
+		
+		/* 第一次按照上报时间上报允许误差60S加120超时 特别注意最小抄表周期必须为5分钟否则会出现分钟上报问题 */
+		//if(((0 >= dwOffset)&&(-60 <= dwOffset))||((0 < dwOffset)&&(180 >= dwOffset)))
+		if(XJ_ONLINE_TO >= dwOffset)
+		{
+			m_nUploadMode = TIME_DAT_REP;
+			fixTaskGsmProc();
+		}
+		else
+		{
+			LP_SetLowPwrStartFlg(LP_GPRS_FLG_OK);
+			
+			/* 重庆前卫送检 增加上电时钟同步后关闭链接 */
+			M590_CloseConnect();
+			return ;
+		}
+#elif defined(HEDA_PTR)
 		LP_XJ_CalReportTime(&stNextTime);
 		dwOffset = TM_DiffSecond(&stTimeNowTm, &stNextTime);
 		

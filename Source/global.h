@@ -321,6 +321,51 @@ typedef struct
 	u32 Value;		//表读数
 	TypeTime Time;  //时间
 } TypeRecord;		//表记录
+
+#else ifdef HEDA_PTR	//和达协议
+
+typedef	 struct   	//时间结构体
+{
+	u8   nYear;        // 年(99)
+	u8   nMonth;       // 月(01-12)
+	u8   nDay;         // 日(01-31)
+	u8   nHour;        // 时(00-23)
+	u8   nMinute;      // 分(00-59)
+	u8   nSecond;      // 秒(00-59)
+}TIME_BIN;	//6byte
+
+typedef struct
+{
+	u8 Type;			//表类型
+	u8 Address[5];		//表序号
+	u8 FactoryCode[2];	//厂商ID
+	u32 Value;		    //表读数
+	u8 Status[4];		//表状态	
+	u8 RestoreStat[4];  //表状态恢复情况	
+} TypeParameter;		//表参数
+
+typedef struct
+{
+	u8 nGatherCycle;   //抄表间隔
+	u8 nStartDay;	    //起始日期
+	u8 nStartHour;	    //起始小时
+	u8 nStartMinute;	/* 起始分钟 */
+	u8 nIntervalType; 	/* 间隔类型 */
+	u8 cycle;			//上报周期：时，天，月
+	u8 nTailCtl; 	    /* 尾数上线控制 */
+	u8 nTaiInterval;  /* 尾数上线间隔数 */	
+	u8 nMonFreezeDay; /* 月冻结日 */	
+	u8 nReportType;   /* 上线帧类型 */	
+	TIME_BIN Time;		//时间
+} TypeReport;
+
+typedef struct
+{
+	u32 Main_IP;		//主机IP地址
+	u16 Main_Port;		//主机端口
+} TypeReportParameter;		//上报参数
+
+
 #endif
 
 typedef struct
