@@ -17,7 +17,7 @@ typedef union
 {
 	struct
 	{
-		u8 CtrlB[3];		    //控制码
+		u8 Ctrl[3];		    	//控制码
 		u8 Data_Len;			//数据长度
 		u8 Cmd;					//命令码
 		u8 Buf[180-5];			//数据域
@@ -35,6 +35,8 @@ typedef union
 #define Maker_Addr			0x01	//厂商地址 0x01和达科技（出厂设定）	0x02宁水	0x03兴源   				0x04山科 0x05拓安信        0x06康明
 
 #define Protocol_Version	0x14	//BCD码   0x14代表1.4版本
+
+#define HD_FRAME_OTHER_LEN	9
 
 
 typedef enum
@@ -64,6 +66,16 @@ typedef enum
 	
 }HeDa_Cmd;//和达科技协议命令号
 
+typedef enum
+{
+	HeDa_Burst_Event_None					=0,//无
+	HeDa_Burst_Event_Bat_Low				=0x1,//电池低电量报警
+	HeDa_Burst_Event_Pressure1_Limit_Up		=0x2,//压力1，上限报警
+	HeDa_Burst_Event_Pressure2_Limit_Up		=0x4,//压力2，上限报警
+	HeDa_Burst_Event_Pressure1_Limit_Down	=0x8,//压力1，下限报警
+	HeDa_Burst_Event_Pressure2_Limit_Down	=0x10,//压力2，下限报警
+	
+}HeDa_Burst_Event;//突发事件类型
 
 
 #define HeDa_Default_Heart_Beat_Interval 		(1*60) //心跳间隔 1min
@@ -79,6 +91,7 @@ typedef enum
 
 /* 上线类型 */
 #define HD_ONLINE              1
+
 
 #endif
 

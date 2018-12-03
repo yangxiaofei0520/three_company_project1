@@ -23,10 +23,12 @@
 
 
 /*     全局变量位置         */
-u8 g_Device_Info[15]={0}; 	//设备信息
-TypeProtol_HD stDataPtrHD;
-
-
+u8 g_Device_Info[15]={0}; 		//设备信息
+TypeProtol_HD stDataPtrHD;		//发送结构体缓存
+u8 g_HD_Ctrl=0;					//控制码 BIT7：1 → 数据加密；  0 → 数据不加密    				BIT6：1 → 有后续包；  0 → 无后续包
+u16 g_HD_Msg_Tag=0;				//消息流水号
+u16 g_HD_aralm_type=HeDa_Burst_Event_None;//突发事件类型
+u16	g_HD_device_addr=0xffff;		//设备地址
 
 
 
@@ -328,7 +330,7 @@ void HD_OnlineCtl(void)
 出  参: void
 返回值: u8
 修改人: 杨晓飞
-日  期: 2016.05.27
+日  期: 2018.12.03
 *//*********************************************/
 u8 HD_Online(u8 nLogonMode)
 {
@@ -356,46 +358,87 @@ u8 HD_Online(u8 nLogonMode)
 	}
 	else
 	{
-		pnBuf = stDataPtrXJ.Packet.Buf;
-		stDataPtrXJ.Packet.CtrlB  = 0x10;
-		stDataPtrXJ.Packet.ACtrlB = 0x02;
-		MemcpyFunc(pnBuf,tyParameter.Status, XJ_METEST_LEN);
-		nOffset += XJ_METEST_LEN;
+		ST_Time now_time;
+		u16 Bat_value=0;
+		u8 i=0;
+		
+		pnBuf = stDataPtrHD.Packet.Buf;
+		stDataPtrHD.Packet.Ctrl[0]=g_HD_Ctrl;
+		g_HD_Msg_Tag++;
+		stDataPtrHD.Packet.Ctrl[1]=(g_HD_Msg_Tag>>8)&0xff;		//帧流水号     高位在前
+		stDataPtrHD.Packet.Ctrl[2]=g_HD_Msg_Tag&0xff;
+		
+		STM8_RTC_Get(&now_time);
+		MemcpyFunc(pnBuf,&now_time, 5);							//终端时间：年-月-日-时-分 
+		nOffset += 5;
+
+		pnBuf[nOffset]=1;										//报文中的数据条数
+		nOffset++;
+
+		pnBuf[nOffset++]=0;										//报文中的数据间隔
+		
+		Bat_value=BAT_GetBatVol();
+		pnBuf[nOffset++]=(Bat_value>>8)&0xff;					//电池电压，除以100后为电池电压实际数值                   高位在前
+		pnBuf[nOffset++]=Bat_value&0xff;
+
+		pnBuf[nOffset++]=(g_HD_Msg_Tag>>8)&0xff;				//帧流水号     高位在前
+		pnBuf[nOffset++]=g_HD_Msg_Tag&0xff;
+
+		pnBuf[nOffset++]=g_nSignal;								//信号强度
+
+		pnBuf[nOffset++]=(g_HD_aralm_type>>8)&0xff;				//突发事件类型     高位在前
+		pnBuf[nOffset++]=g_HD_aralm_type&0xff;
+
+		for(i=0;i<6;i++)pnBuf[nOffset++]=0;						//保留字段
+
+		pnBuf[nOffset++]=0x01;									//通道类型 
+		pnBuf[nOffset++]=0x01;									//通道号 
+		
+		{														//昨日冻结数据
+			ST_Time stYesterDay;
+			TM_Time stTmpTime;
+			TypeRecordDay stDayFreeze;
+			TypeRecord stNowRec;
 			
-		MemcpyFunc(&pnBuf[nOffset], (u8 *)&m_wSoftVison, 2);					                       /* 版本号 */
-		JX_BL_Change(2, &pnBuf[nOffset]);
-		pnBuf[nOffset+2] = m_wSubSwVison;
-		nOffset += XJ_VISON_LEN;
-		
-		nTmpBuf[0] = '0';
-		MemcpyFunc(&nTmpBuf[1], m_nImsiBuf, 15);					                                   /* IMSI */
-		nTmpBuf[16] = 0;
-		JX_AsciiToBuf(nTmpBuf, m_nImsiBufXJ);
-		MemcpyFunc(&pnBuf[nOffset], m_nImsiBufXJ, 8);
-		nOffset += XJ_IMSI_LEN;
-
-		pnBuf[nOffset] = 2;
-		if(FALSE == GM_GetGatherMeterFlg())
-		{
-			if(TRUE == ReadRecord(0, (u8*)&tyRecord, sizeof(tyRecord)))
+			if(TRUE == ReadDayFreezeRecord(0, (u8*)&stDayFreeze, sizeof(TypeRecordDay)))
 			{
-				tyParameter.Value = tyRecord.Value;
+				STM8_RTC_Get(&now_time);
+				TM_TimeChangeAToB(&now_time, &stTmpTime);
+				TM_RTimeDecnMinute(&stTmpTime, 1440);
+				TM_TimeChangeBToA(&stTmpTime, &stYesterDay);
+				if((stDayFreeze.nYear == stYesterDay.wYear) && 
+					(stDayFreeze.nMon == stYesterDay.nMonth) && (stDayFreeze.nDay == stYesterDay.nDay))
+				{
+					pnBuf[nOffset++]=stDayFreeze.Value&0xff;
+					pnBuf[nOffset++]=(stDayFreeze.Value>>8)&0xff;
+					pnBuf[nOffset++]=(stDayFreeze.Value>>16)&0xff;
+					pnBuf[nOffset++]=(stDayFreeze.Value>>24)&0xff;
+					
+				}
+				else
+				{
+					MemsetFunc(&pnBuf[nOffset], 0x00, 4);
+					nOffset+=4;
+				}
 			}
-			else
+		}
+		{														//累计流量
+			if(FALSE == GM_GetGatherMeterFlg())
 			{
-				tyParameter.Value = INVALID_DATA;
+				if(TRUE == ReadRecord(0, (u8*)&tyRecord, sizeof(tyRecord)))
+				{
+					tyParameter.Value = tyRecord.Value;
+				}
+				else tyParameter.Value = INVALID_DATA;
 			}
-		}		
-		dwMeterVal = tyParameter.Value;
-		MemcpyFunc(&pnBuf[nOffset+1], (u8 *)&dwMeterVal, XJ_METERFLOW_LEN-1);				           /* 当前流量值 */
-		nOffset += XJ_METERFLOW_LEN;
-
-		JX_GetDayFreezeDat(&pnBuf[nOffset]);
-		nOffset +=129;
-		
-		nSendLen = XJ_FRAME_FIX_LEN+nOffset;	
+			pnBuf[nOffset++]=tyParameter.Value&0xff;
+			pnBuf[nOffset++]=(tyParameter.Value>>8)&0xff;
+			pnBuf[nOffset++]=(tyParameter.Value>>16)&0xff;
+			pnBuf[nOffset++]=(tyParameter.Value>>24)&0xff;
+		}	
+		nSendLen =nOffset;	
 	}
-	XJ_ProtolSend(nSendLen, COM_1);			//只有1组数据
+	HD_ProtolSend(nSendLen, COM_1,1);			//只有1组数据
 
 	/* 等待数据发送完成 */
 	if(FALSE == WatitDataSendOk())
@@ -405,6 +448,86 @@ u8 HD_Online(u8 nLogonMode)
 	return TRUE;
 }
 
+/**********************************************/
+/* 上行协议处理,登录到服务器后,实际发送到服务器数据,和GPRS无关
+函数名: HD_ProtolSend
+入  参: Size nComChannel
+出  参: void
+返回值: u8
+修改人: 杨晓飞
+日  期: 2018.12.03
+*//*********************************************/
+s8 HD_ProtolSend(u8 Size, u8 nComChannel,u8 device_info_flag)
+{
+	u8 *Point, nX, checksum;
+	u16 length = 0;
+	TypeProtolHead_HD tyProtolHead;
+	s8 nFailCnt = 0, nOptRelt = FALSE;
+
+	if(device_info_flag)length=Size+15+HD_FRAME_OTHER_LEN;
+	else length=Size+HD_FRAME_OTHER_LEN;
+	
+	/* GPRS增加长度数据命令发送 */
+	if(COM_1 == nComChannel)
+	{
+		/* 增加发送数据长度 */
+		while(3 > nFailCnt++)
+		{		
+			nOptRelt = GPRS_TcpSendDatLen(length); //0x0D不算入长度
+			if(-1 == nOptRelt)
+			{
+				stRepFail.wError |= (1<<DATSEND_ERROR);
+				GPRS_CloseConnect();
+				ucStatusGsm = GSM_SHAKEHAND;
+				return -1;
+			}
+			if(TRUE == nOptRelt)
+			{
+				break;
+			}
+		}
+		if(nFailCnt >= 3 )
+		{
+			return FALSE;
+		}
+	}
+	
+	length = Size;		                   
+	tyProtolHead.Head[0] = Packet_Head_0;		//数据包头
+	tyProtolHead.Head[1] = Packet_Head_1;		//数据包头
+	tyProtolHead.Addr[0] = Maker_Addr;			//厂商地址
+	tyProtolHead.Addr[1] = (g_HD_device_addr&0xFF);	//设备地址
+	tyProtolHead.Addr[2] = (g_HD_device_addr>>8)&0xFF;//设备地址
+	tyProtolHead.Version = Protocol_Version;	//协议版本号
+
+	
+	Point = aucUartTxBuffer;		//指针指向接收发送缓冲头
+
+	MemcpyFunc(Point, (u8 *)&tyProtolHead, sizeof(tyProtolHead) );	//复制数据头到缓冲中
+	Point += sizeof(tyProtolHead);									//指针向下
+	if(device_info_flag)
+	{
+		MemcpyFunc(Point, (u8 *)&g_Device_Info, sizeof(g_Device_Info) );	//复制设备信息到缓冲中
+		Point += sizeof(g_Device_Info);										//指针向下
+		length +=sizeof(g_Device_Info);
+	}
+
+	MemcpyFunc(Point, (u8 *)&stDataPtrHD, Size );
+	Point += Size;	
+	length += Size;
+	
+	checksum = 0;					//校验和是累加和
+	for (nX = 0; nX < length; nX++)
+	{
+		checksum += aucUartTxBuffer[nX];    //计算累加和
+	}
+	Point[length++] = checksum;
+	Point[length++] = Packet_End_0;
+	Point[length++] = Packet_End_1;
+
+	FrameSendFunc(length, nComChannel, Point);
+	return TRUE;
+}
 
 #endif
 
