@@ -346,7 +346,7 @@ typedef struct
 
 typedef struct
 {
-	u8 nGatherCycle;   //抄表间隔
+	u8 nGatherCycle;   	//抄表间隔
 	u8 nStartDay;	    //起始日期
 	u8 nStartHour;	    //起始小时
 	u8 nStartMinute;	/* 起始分钟 */

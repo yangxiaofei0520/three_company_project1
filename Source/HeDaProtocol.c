@@ -24,11 +24,11 @@
 
 /*     全局变量位置         */
 u8 g_Device_Info[15]={0}; 		//设备信息
-TypeProtol_HD stDataPtrHD;		//发送结构体缓存
+TypeProtol_HD stDataPtrHD;		//接受发送结构体缓存
 u8 g_HD_Ctrl=0;					//控制码 BIT7：1 → 数据加密；  0 → 数据不加密    				BIT6：1 → 有后续包；  0 → 无后续包
 u16 g_HD_Msg_Tag=0;				//消息流水号
 u16 g_HD_aralm_type=HeDa_Burst_Event_None;//突发事件类型
-u16	g_HD_device_addr=0xffff;		//设备地址
+u16	g_HD_device_addr=0;		//设备地址
 
 
 
@@ -493,12 +493,12 @@ s8 HD_ProtolSend(u8 Size, u8 nComChannel,u8 device_info_flag)
 	}
 	
 	length = Size;		                   
-	tyProtolHead.Head[0] = Packet_Head_0;		//数据包头
-	tyProtolHead.Head[1] = Packet_Head_1;		//数据包头
-	tyProtolHead.Addr[0] = Maker_Addr;			//厂商地址
-	tyProtolHead.Addr[1] = (g_HD_device_addr&0xFF);	//设备地址
-	tyProtolHead.Addr[2] = (g_HD_device_addr>>8)&0xFF;//设备地址
-	tyProtolHead.Version = Protocol_Version;	//协议版本号
+	tyProtolHead.Head[0] = Packet_Head_0;				//数据包头
+	tyProtolHead.Head[1] = Packet_Head_1;				//数据包头
+	tyProtolHead.Addr[0] = Maker_Addr;					//厂商地址
+	tyProtolHead.Addr[1] = (g_HD_device_addr&0xFF);		//设备地址
+	tyProtolHead.Addr[2] = (g_HD_device_addr>>8)&0xFF;	//设备地址
+	tyProtolHead.Version = Protocol_Version;			//协议版本号
 
 	
 	Point = aucUartTxBuffer;		//指针指向接收发送缓冲头
@@ -528,6 +528,347 @@ s8 HD_ProtolSend(u8 Size, u8 nComChannel,u8 device_info_flag)
 	FrameSendFunc(length, nComChannel, Point);
 	return TRUE;
 }
+
+
+/**********************************************/
+/*和达协议接收解析
+函数名: HD_DecodeParameter
+入  参: void
+出  参: void
+返回值: u8
+修改人: 杨晓飞
+日  期: 2018.12.04
+*//*********************************************/
+u8 HD_DecodeParameter(u8* pnRxBuf, u8 nRxLen)
+{
+	u8 *Point = NULL;
+	u16 wDataLen = 0, wLen = 0;	
+	TypeProtolHead_HD tyProtolHead;	
+	u8 nSendLen = 0;
+	
+	if(NULL == pnRxBuf)
+	{
+		return nSendLen;
+	}
+    Point = pnRxBuf;
+
+	/* 找包头 */
+	while((Packet_Head_0 != *Point)||(Packet_Head_1 != *(Point+1)))
+	{
+		Point++;
+		wLen++;
+		if(nRxLen <= wLen)
+		{
+		    if(NUMBER_UART_RX <= CheckRevDataLen())
+		    {
+			    goto __UC_Pro_Exit;
+		    }
+			return nSendLen;
+		}
+	}
+	
+	if(NUMBER_UART_RX <= CheckRevDataLen())
+	{
+		goto __UC_Pro_Exit;
+	}
+	
+	MemcpyFunc((u8 *)&tyProtolHead, Point, sizeof(tyProtolHead));		//复制字符串到缓冲中
+	Point += sizeof(tyProtolHead);
+	
+	if( (nRxLen-wLen) > (sizeof(tyProtolHead)+ 9) )//数据包的最小长度，包头结构体+3控制字+2长度+1命令+1校验+2包尾
+	{
+		u16 msg_len= (u16)*(Point+3)+sizeof(tyProtolHead)+ 8;//计算该消息的总长度 datalen+3控制字+2长度+1校验+2包尾
+		if( msg_len <= (nRxLen-wLen) )
+		{
+			wDataLen=stDataPtrHD.Packet.Data_Len+8;
+			MemcpyFunc((u8 *)&stDataPtrHD, Point, wDataLen);		//复制字符串到缓冲中
+		}
+		else//消息长度不够
+		{
+			goto __UC_Pro_Exit;
+		}
+	}
+	else 
+	{
+		goto __UC_Pro_Exit;
+	}	
+	
+	/* 帧尾校验 */
+	if( (Packet_End_0!=stDataPtrHD.Buffer[wDataLen-2]) || (Packet_End_1!=stDataPtrHD.Buffer[wDataLen-1]))
+	{
+		goto __UC_Pro_Exit;
+	}
+
+	/* CS校验    从起始位到数据域*/
+	if( stDataPtrHD.Buffer[wDataLen-3]) != JX_AddSum8Bit(pnRxBuf+wLen, sizeof(tyProtolHead)+wDataLen+3))
+	{
+		goto __UC_Pro_Exit;
+	}
+	
+	/* 地址校验 */
+	/*if(FALSE == HD_AddressComparePro(&tyProtolHead.Addr, 8))
+	{
+		goto __UC_Pro_Exit;
+	}*/
+	
+	nSendLen = HD_ProtolHandle();
+	
+__UC_Pro_Exit:
+
+	/* add by maronglang clear RxBuf */
+	ClearRxBuff();
+	return nSendLen;
+}
+
+/**********************************************/
+/* 地址判断
+函数名: HD_AddressComparePro
+入  参: void
+出  参: void
+返回值: u8
+修改人: 杨晓飞
+日  期: 2016.05.27
+*//*********************************************/
+u8 HD_AddressComparePro(u8 *pnAddr, u8 nLen)
+{		
+	u8 nAddBuf[12] = {0};
+	u8 nLoop = 0;
+	
+	if(JX_IsAllFillDat(pnAddr, 0, nLen))
+	{
+		return TRUE;
+	}
+
+	MemcpyFunc(nAddBuf, &tyParameter.Type, nLen);
+
+	/* 地址匹配 */
+	for(nLoop = 0; nLoop < nLen; nLoop++)
+	{
+		if(nAddBuf[nLoop] != pnAddr[nLoop])
+		{
+			break;
+		}
+	}
+
+	if(nLen > nLoop)
+	{
+		return FALSE;
+	}
+
+	return TRUE;	
+}
+
+
+/**********************************************/
+/* 和达协议处理
+函数名: HD_ProtolHandle
+入  参: void
+出  参: void
+返回值: u8
+修改人: 杨晓飞
+日  期: 2018.12.04
+*//*********************************************/
+u8 HD_ProtolHandle(void)
+{
+	u8 nSendLen    = 0;
+	u16 wCommCtrlB = 0;
+	u16 wCommPid   = 0;
+	u8  nParaLen   = 0;
+	ST_Time stReportTime;
+	TM_Time stStar, stEnd;
+	int32_t dwTimeOffset = 0; 
+	u8 nCmdId  = 0;
+	u8 nctrl  = 0;
+	
+	nCmdId   = stDataPtrHD.Packet.Cmd;
+	nctrl	=  stDataPtrHD.Packet.Ctrl[0];
+	g_HD_Msg_Tag = stDataPtrHD.Packet.Ctrl[1]<<8 | stDataPtrHD.Packet.Ctrl[2]+1;
+
+	if(nctrl&Flag_Data_Is_Secret) //数据是否被加密
+	{
+		return 0;
+	}
+	/*else if(nctrl&Flag_Data_Is_Finish)//数据是否有后续包
+	{
+		return 0;
+	}*/
+	
+	switch(nCmdId)
+	{
+		/*大用户远传大表常规数据平台应答（下行）、突发事件数据平台应答（下行）、心跳包数据平台应答（下行）*/
+		case HeDa_Cmd_Reply_Upload:
+			HeDa_Cmd_Reply_Upload_Handle(stDataPtrHD.Packet.Buf,nctrl);
+			nSendLen=0;
+			break;
+			
+		case HeDa_Cmd_Set_Sampling_Interval://设置采样间隔（上行、下行）
+			nSendLen=HeDa_Cmd_Set_Sampling_Interval_Handle(stDataPtrHD.Packet.Buf);
+			break;
+		
+		case HeDa_Cmd_Set_Net_Param://设置网络参数（上行、下行）
+			break;
+			
+		case HeDa_Cmd_Set_Report_Cycle://设置上报周期（上行、下行）
+			break;
+			
+		case HeDa_Cmd_Set_Pressure_Threshold://设置压力上下限阈值（上行、下行）
+			break;
+			
+		case HeDa_Cmd_Set_Secret_Key://设置秘钥（上行、下行）——预留
+			break;
+			
+		case HeDa_Cmd_Set_Addr://-------设置表地址    	和达原协议没有，自己添加
+			break;
+
+
+		
+		case HeDa_Cmd_Get_Sampling_Interval://查询采样间隔（上行、下行）
+			nSendLen=HeDa_Cmd_Get_Sampling_Interval_Handle(stDataPtrHD.Packet.Buf);
+			break;
+		
+		case HeDa_Cmd_Get_Net_Param://查询网络参数（上行、下行）
+			break;
+			
+		case HeDa_Cmd_Get_Report_Cycle://查询上报周期（上行、下行）
+			break;
+			
+		case HeDa_Cmd_Get_Pressure_Threshold://查询压力上下限阈值（上行、下行）
+			break;
+			
+		case HeDa_Cmd_Get_Secret_Key://查询秘钥（上行、下行）——预留
+			break;
+			
+		case HeDa_Cmd_Get_Addr://-------查询表地址    	和达原协议没有，自己添加
+			break;
+
+
+		case HeDa_Cmd_Get_All_Param://获取所有参数（上行、下行）
+			break;
+		case HeDa_Cmd_Get_Appoint_Data://获取指定数据（上行、下行）
+			break;
+
+		default:break;
+	}
+		
+	return nSendLen;
+}
+
+/**********************************************/
+/* 和达平台应答包处理
+函数名: HeDa_Cmd_Reply_Upload_Handle
+入  参: u8 *pData , u8 ctrl
+出  参: void
+返回值: void
+修改人: 杨晓飞
+日  期: 2018.12.04
+*//*********************************************/
+void HeDa_Cmd_Reply_Upload_Handle(u8 *pData,u8 ctrl)
+{
+	TIME_BIN time_Server;//平台时间缓存  		用于校时
+	u8 byte_manage=0;//管理字
+	TM_Time stEnd;
+
+	if((stDataPtrHD.Packet.Data_Len-1) < 9)//数据域长度不够
+	{
+		return;
+	}
+	
+	MemcpyFunc((u8 *)&time_Server, pData, sizeof(TIME_BIN));
+	byte_manage = *(pData+6);
+
+	//时间校准
+	MemcpyFunc(&stTimeNow.wYear, pData, 6);
+	TM_TimeChangeAToB(&stTimeNow, &stEnd);
+	if(FALSE == TM_IsValidTimePro(&stEnd))
+	{
+		return FALSE;
+	}
+	STM8_RTC_Set(&stTimeNow);	
+
+
+	if(ctrl&Flag_Data_Is_Finish)
+	{
+		//byte_manage  等待秒数关机
+	}
+	else
+	{
+		if(0xFF == byte_manage)//表示该字段无效
+		{
+		}
+		else if(0x00 == byte_manage)//可以结束本次通讯
+		{
+
+		}
+	}
+}
+
+/**********************************************/
+/* 和达设置采样间隔
+函数名: HeDa_Cmd_Set_Sampling_Interval_Handle
+入  参: u8 *pData 
+出  参: void
+返回值: u8
+修改人: 杨晓飞
+日  期: 2018.12.04
+*//*********************************************/
+u8 HeDa_Cmd_Set_Sampling_Interval_Handle(u8 *pData)
+{
+
+	if((stDataPtrHD.Packet.Data_Len-1) < 2)//数据域长度不够
+	{
+		*pData=0x10;	  //设置失败
+		*(pData+1)=tyReport.nGatherCycle;//终端当前采样间隔，分钟
+	}
+	else
+	{	
+		u8 hd_samling_interval=*pData;//采样间隔
+		*pData=0x01;	  //设置成功
+		*(pData+1)=hd_samling_interval;//终端当前采样间隔，分钟
+
+		//保存数据
+		tyReport.nGatherCycle = hd_samling_interval;
+		SaveParameterForType((u8 *)&tyReport, REPOERCYCLE_LEN, REPORT_PARA);
+	}
+
+	return 2;
+}
+
+
+/**********************************************/
+/* 和达查询采样间隔
+函数名: HeDa_Cmd_Get_Sampling_Interval_Handle
+入  参: u8 *pData 
+出  参: void
+返回值: u8
+修改人: 杨晓飞
+日  期: 2018.12.04
+*//*********************************************/
+u8 HeDa_Cmd_Get_Sampling_Interval_Handle(u8 *pData)
+{
+	*pData=tyReport.nGatherCycle;
+	return 1;
+}
+
+
+/**********************************************/
+/* 和达设置网络参数
+函数名: HeDa_Cmd_Set_Net_Param_Handle
+入  参: u8 *pData 
+出  参: void
+返回值: u8
+修改人: 杨晓飞
+日  期: 2018.12.04
+*//*********************************************/
+u8 HeDa_Cmd_Set_Net_Param_Handle(u8 *pData)
+{
+	if((stDataPtrHD.Packet.Data_Len-1) < 63)//数据域长度不够
+	{
+		return 0;
+	}
+	
+	
+}
+
 
 #endif
 

@@ -28,25 +28,29 @@ typedef struct
 
 //以下为宏定义
 #ifdef XINJIANG_PTR
-#define ADDRESS_PARAMETER_LEN  20           //终端参数 sizeof(TypeParameter) 16
-#define ADDRESS_IPPARA_LEN     6          //IP参数 sizeof(TypeReportParameter)
-#define ADDRESS_APN_LEN         1           //APN
-#define REPOERCYCLE_LEN        16           //16 上报周期 sizeof(TypeReport)
-#define LASTREPORTTIME_LEN     10           //上次上报时间 sizeof(TM_Time) + u16累计上报次数
-#define OPTVALVE_LEN            10           //定时阀控任务 sizeof(TypeValve
+	#define ADDRESS_PARAMETER_LEN  20           //终端参数 sizeof(TypeParameter) 16
+	#define ADDRESS_IPPARA_LEN     6          //IP参数 sizeof(TypeReportParameter)
+	#define ADDRESS_APN_LEN         1           //APN
+	#define REPOERCYCLE_LEN        16           //16 上报周期 sizeof(TypeReport)
+	#define LASTREPORTTIME_LEN     10           //上次上报时间 sizeof(TM_Time) + u16累计上报次数
+	#define OPTVALVE_LEN            10           //定时阀控任务 sizeof(TypeValve
 #else ifdef JASON130_PTR
-#define TMADDRESS_LEN           4           //TM地址长度
-#ifdef PIEZOMETER
-#define ADDRESS_PARAMETER_LEN  26           //终端参数 sizeof(TypeParameter)
-#else
-#define ADDRESS_PARAMETER_LEN  16           //终端参数 sizeof(TypeParameter)
+	#define TMADDRESS_LEN           4           //TM地址长度
+	#ifdef PIEZOMETER
+		#define ADDRESS_PARAMETER_LEN  26           //终端参数 sizeof(TypeParameter)
+	#else
+		#define ADDRESS_PARAMETER_LEN  16           //终端参数 sizeof(TypeParameter)
+	#endif
+	#define ADDRESS_IPPARA_LEN     16           //IP参数 sizeof(TypeReportParameter)
+	#define ADDRESS_APN_LEN        16           //APN
+	#define REPOERCYCLE_LEN        11           //16 上报周期 sizeof(TypeReport)
+	#define LASTREPORTTIME_LEN     10           //上次上报时间 sizeof(TM_Time) + u16累计上报次数
+	#define OPTVALVE_LEN            10           //定时阀控任务 sizeof(TypeValveOpt)
+#else ifdef HEDA_PTR
+	#define REPOERCYCLE_LEN        16           //16 上报周期 sizeof(TypeReport)
+
 #endif
-#define ADDRESS_IPPARA_LEN     16           //IP参数 sizeof(TypeReportParameter)
-#define ADDRESS_APN_LEN        16           //APN
-#define REPOERCYCLE_LEN        11           //16 上报周期 sizeof(TypeReport)
-#define LASTREPORTTIME_LEN     10           //上次上报时间 sizeof(TM_Time) + u16累计上报次数
-#define OPTVALVE_LEN            10           //定时阀控任务 sizeof(TypeValveOpt)
-#endif
+
 #define MAX_LEN                 ADDRESS_PARAMETER_LEN
 
 
