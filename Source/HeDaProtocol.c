@@ -500,7 +500,6 @@ s8 HD_ProtolSend(u8 Size, u8 nComChannel,u8 device_info_flag)
 	tyProtolHead.Addr[2] = (g_HD_device_addr>>8)&0xFF;	//设备地址
 	tyProtolHead.Version = Protocol_Version;			//协议版本号
 
-	
 	Point = aucUartTxBuffer;		//指针指向接收发送缓冲头
 
 	MemcpyFunc(Point, (u8 *)&tyProtolHead, sizeof(tyProtolHead) );	//复制数据头到缓冲中
@@ -706,18 +705,23 @@ u8 HD_ProtolHandle(void)
 			break;
 		
 		case HeDa_Cmd_Set_Net_Param://设置网络参数（上行、下行）
+			nSendLen=HeDa_Cmd_Set_Net_Param_Handle((HD_CmdSetNetParam *)&stDataPtrHD.Packet.Buf);
 			break;
 			
 		case HeDa_Cmd_Set_Report_Cycle://设置上报周期（上行、下行）
+			nSendLen==HeDa_Cmd_Set_Report_Cycle_Handle(stDataPtrHD.Packet.Buf);
 			break;
 			
 		case HeDa_Cmd_Set_Pressure_Threshold://设置压力上下限阈值（上行、下行）
+			nSendLen=HeDa_Cmd_Get_Pressure_Threshold_Handle(stDataPtrHD.Packet.Buf);
 			break;
 			
 		case HeDa_Cmd_Set_Secret_Key://设置秘钥（上行、下行）——预留
+			nSendLen=HeDa_Cmd_Set_Secret_Key_Handle(stDataPtrHD.Packet.Buf);
 			break;
 			
 		case HeDa_Cmd_Set_Addr://-------设置表地址    	和达原协议没有，自己添加
+			nSendLen=HeDa_Cmd_Get_Addr_Handle(stDataPtrHD.Packet.Buf);
 			break;
 
 
@@ -727,22 +731,28 @@ u8 HD_ProtolHandle(void)
 			break;
 		
 		case HeDa_Cmd_Get_Net_Param://查询网络参数（上行、下行）
+			nSendLen=HeDa_Cmd_Get_Net_Param_Handle(stDataPtrHD.Packet.Buf);
 			break;
 			
 		case HeDa_Cmd_Get_Report_Cycle://查询上报周期（上行、下行）
+			nSendLen=HeDa_Cmd_Get_Report_Cycle_Handle(stDataPtrHD.Packet.Buf);
 			break;
 			
 		case HeDa_Cmd_Get_Pressure_Threshold://查询压力上下限阈值（上行、下行）
+			nSendLen=HeDa_Cmd_Get_Pressure_Threshold_Handle(stDataPtrHD.Packet.Buf);
 			break;
 			
 		case HeDa_Cmd_Get_Secret_Key://查询秘钥（上行、下行）——预留
+			nSendLen=HeDa_Cmd_Get_Secret_Key_Handle(stDataPtrHD.Packet.Buf);
 			break;
 			
 		case HeDa_Cmd_Get_Addr://-------查询表地址    	和达原协议没有，自己添加
+			nSendLen=HeDa_Cmd_Get_Addr_Handle(stDataPtrHD.Packet.Buf);
 			break;
 
 
 		case HeDa_Cmd_Get_All_Param://获取所有参数（上行、下行）
+			nSendLen=HeDa_Cmd_Get_All_Param_Handle(stDataPtrHD.Packet.Buf);
 			break;
 		case HeDa_Cmd_Get_Appoint_Data://获取指定数据（上行、下行）
 			break;
@@ -859,14 +869,430 @@ u8 HeDa_Cmd_Get_Sampling_Interval_Handle(u8 *pData)
 修改人: 杨晓飞
 日  期: 2018.12.04
 *//*********************************************/
-u8 HeDa_Cmd_Set_Net_Param_Handle(u8 *pData)
+u8 HeDa_Cmd_Set_Net_Param_Handle(HD_CmdSetNetParam *pData)
 {
-	if((stDataPtrHD.Packet.Data_Len-1) < 63)//数据域长度不够
+	u8 flag_change_response=0;//修改内容结果标志位
+		
+	if((stDataPtrHD.Packet.Data_Len-1) < sizeof(HD_CmdSetNetParam))//数据域长度不够
 	{
 		return 0;
 	}
+
+	//设置时IP和域名二选一   ，优先IP
+	if(pData->flag_change & 0x01)//设置IP地址
+	{
+		flag_change_response |=0x01;
+		tyReportParameter.Main_IP=pData->ip_addr;
+		tyReportParameter.flag_Login_Mode=HD_Login_IP;
+	}
+	if(pData->flag_change & 0x04)//设置域名
+	{
+		if(pData->flag_change & 0x01)//如果设置了IP地址
+		{
+			flag_change_response |=0x40;
+		}
+		else
+		{
+			flag_change_response |=0x04;		
+			MemcpyFunc((u8 *)&tyReportParameter.Main_domain_name, pData->domain_name, 32);
+			tyReportParameter.flag_Login_Mode=HD_Login_Domain_Name;
+		}
+	}
+
+	if(pData->flag_change & 0x02)//设置端口号
+	{
+		flag_change_response |=0x02;
+		tyReportParameter.Main_Port=pData->port;
+	}
+	if(pData->flag_change & 0x08)//设置apn接入点
+	{
+		u8 apn_len=0;
+		apn_len=HeDa_Get_String_len(pData->apn_point,20);
+		if(apn_len>18 || apn_len==0)//设置apn失败
+		{	
+			flag_change_response |=0x80;
+		}
+		else						//设置apn成功
+		{
+			flag_change_response |=0x08;
+			MemsetFunc((u8 *)&g_nApnBuf[1], 0,20-1);
+			MemcpyFunc((u8 *)&g_nApnBuf[1],pData->apn_point,apn_len);
+			JX_StringCat(g_nApnBuf, "\"", 2);
+			SaveParameterForType((u8 *)&g_nApnType, APN_LEN, APN_PARA);
+		}
+	}
+	SaveParameterForType((u8 *)&tyReportParameter, ADDRESS_IPPARA_LEN, IPANDPORT_PARA);
+	
+	pData->flag_change=flag_change_response;
+	pData->ip_addr=tyReportParameter.Main_IP;
+	pData->port=tyReportParameter.Main_Port;
+	MemcpyFunc( pData->domain_name,(u8 *)&tyReportParameter.Main_domain_name, 32);
+	MemcpyFunc( pData->apn_point, g_nApnBuf,20);
+	
+	return sizeof(HD_CmdSetNetParam);
+}
+
+/**********************************************/
+/* 和达查询网络参数
+函数名: HeDa_Cmd_Get_Net_Param_Handle
+入  参: u8 *pData 
+出  参: void
+返回值: u8
+修改人: 杨晓飞
+日  期: 2018.12.05
+*//*********************************************/
+u8 HeDa_Cmd_Get_Net_Param_Handle(u8 *pData)
+{
+	HD_CmdSetNetParam temp;
+
+	temp.ip_addr=tyReportParameter.Main_IP;
+	temp.port=tyReportParameter.Main_Port;
+	MemcpyFunc((u8 *)&temp.domain_name,(u8 *)&tyReportParameter.Main_domain_name,32);
+	MemcpyFunc((u8 *)&temp.apn_point,g_nApnBuf,20);
+	
+	MemcpyFunc(pData,(u8 *)&temp.ip_addr,sizeof(HD_CmdSetNetParam)-1);
+	return sizeof(HD_CmdSetNetParam)-1;
+}
+
+/**********************************************/
+/* 和达设置上报周期
+函数名: HeDa_Cmd_Set_Report_Cycle_Handle
+入  参: u8 *pData 
+出  参: void
+返回值: u8
+修改人: 杨晓飞
+日  期: 2018.12.05
+*//*********************************************/
+u8 HeDa_Cmd_Set_Report_Cycle_Handle(u8 *pData)
+{
+	u8 hd_cycle=0;//上报周期缓存
+	
+	if((stDataPtrHD.Packet.Data_Len-1) < 1)//数据域长度不够
+	{
+		return 0;
+	}
+
+	hd_cycle=*pData;
+	if( (hd_cycle<HeDa_Report_Cycle_Min) || (hd_cycle<HeDa_Report_Cycle_Max))
+	{
+		*pData=0x10;//设置失败
+		*(pData+1)=tyReport.cycle;
+	}
+	else 
+	{
+		*pData=0x01;//设置成功
+		tyReport.cycle=hd_cycle;
+		*(pData+1)=tyReport.cycle;
+		SaveParameterForType((u8 *)&tyReport, sizeof(tyReport), REPORT_PARA);//保存到eeprom中
+	}
+	return 2;
+}
+
+/**********************************************/
+/* 和达查询上报周期
+函数名: HeDa_Cmd_Get_Report_Cycle_Handle
+入  参: u8 *pData 
+出  参: void
+返回值: u8
+修改人: 杨晓飞
+日  期: 2018.12.05
+*//*********************************************/
+u8 HeDa_Cmd_Get_Report_Cycle_Handle(u8 *pData)
+{
+	*pData=tyReport.cycle;
+	return 1;
+}
+
+/**********************************************/
+/* 和达设置压力上下限阈值
+函数名: HeDa_Cmd_Set_Pressure_Threshold_Handle
+入  参: u8 *pData 
+出  参: void
+返回值: u8
+修改人: 杨晓飞
+日  期: 2018.12.04
+*//*********************************************/
+u8 HeDa_Cmd_Set_Pressure_Threshold_Handle(u8 *pData)
+{
+	u8 flag_change=0;//修改内容标志位
+	u8 flag_change_response=0;//修改内容结果标志位
+		
+	if((stDataPtrHD.Packet.Data_Len-1) < 25)//数据域长度不够
+	{
+		return 0;
+	}
+	flag_change=*pData;
+
+	if( (flag_change & 0x01) || (flag_change & 0x02)) //压力1上下限一起改
+	{
+		if((flag_change & 0x01) && (flag_change & 0x02))//压力1上下限要一起改
+		{
+			flag_change_response |=0x01;
+			flag_change_response |=0x02;
+			tyParameter.Pressure1_LimitUp=(float *)(pData+1);
+			tyParameter.Pressure1_LimitDown=(float *)(pData+5);
+			SaveParameterForType((u8*)&tyParameter, sizeof(tyParameter), METER_PARA);
+		}
+		else if(flag_change & 0x01)
+		{
+			flag_change_response |=0x10;
+		}
+		else if(flag_change & 0x02)
+		{
+			flag_change_response |=0x20;
+		}
+		
+	}
+	if( (flag_change & 0x04) || (flag_change & 0x08)) //压力2上下限一起改
+	{
+		if((flag_change & 0x04) && (flag_change & 0x08))//压力2上下限要一起改
+		{
+			flag_change_response |=0x04;
+			flag_change_response |=0x08;		
+			tyParameter.Pressure2_LimitUp=(float *)(pData+9);
+			tyParameter.Pressure2_LimitDown=(float *)(pData+13);
+			SaveParameterForType((u8*)&tyParameter, sizeof(tyParameter), METER_PARA);
+		}
+		else if(flag_change & 0x04)
+		{
+			flag_change_response |=0x40;
+		}
+		else if(flag_change & 0x08)
+		{
+			flag_change_response |=0x80;
+		}
+	}
 	
 	
+	*pData=flag_change_response;
+	MemcpyFunc(pData+1, (u8 *)&tyParameter.Pressure1_LimitUp, 16);
+	
+	return 25;
+}
+
+/**********************************************/
+/* 和达查询压力上下限阈值
+函数名: HeDa_Cmd_Get_Pressure_Threshold_Handle
+入  参: u8 *pData 
+出  参: void
+返回值: u8
+修改人: 杨晓飞
+日  期: 2018.12.05
+*//*********************************************/
+u8 HeDa_Cmd_Get_Pressure_Threshold_Handle(u8 *pData)
+{
+	MemcpyFunc(pData, (u8 *)&tyParameter.Pressure1_LimitUp, 16);
+	MemsetFunc(pData+16, 0, 8);
+	return 24;
+}
+
+/**********************************************/
+/* 和达设置密钥
+函数名: HeDa_Cmd_Set_Secret_Key_Handle
+入  参: u8 *pData 
+出  参: void
+返回值: u8
+修改人: 杨晓飞
+日  期: 2018.12.05
+*//*********************************************/
+u8 HeDa_Cmd_Set_Secret_Key_Handle(u8 *pData)
+{
+	if((stDataPtrHD.Packet.Data_Len-1) < 16)//数据域长度不够
+	{
+		return 0;
+	}
+
+	*pData=0x01;
+	MemcpyFunc(pData+1, pData, 16);
+	return 17;
+}
+
+/**********************************************/
+/* 和达查询密钥
+函数名: HeDa_Cmd_Get_Secret_Key_Handle
+入  参: u8 *pData 
+出  参: void
+返回值: u8
+修改人: 杨晓飞
+日  期: 2018.12.05
+*//*********************************************/
+u8 HeDa_Cmd_Get_Secret_Key_Handle(u8 *pData)
+{
+	MemsetFunc(pData, 0, 16);
+	return 16;
+}
+
+/**********************************************/
+/* 和达设置表地址
+函数名: HeDa_Cmd_Set_Addr_Handle
+入  参: u8 *pData 
+出  参: void
+返回值: u8
+修改人: 杨晓飞
+日  期: 2018.12.05
+*//*********************************************/
+u8 HeDa_Cmd_Set_Addr_Handle(u8 *pData)
+{
+	u8 meter_addr[2]={0};//表地址缓存
+	
+	if((stDataPtrHD.Packet.Data_Len-1) < 2)//数据域长度不够
+	{
+		return 0;
+	}
+	meter_addr[0]=*pData;
+	meter_addr[1]=*(pData+1);
+
+	//表地址不为0和0xffff
+	if((meter_addr[0]==0 && meter_addr[1]==0) || (meter_addr[0]==0xff && meter_addr[1]==0xff))
+	{
+		*pData=0x10;//设置失败
+		*(pData+1)=tyParameter.Address[0];
+		*(pData+2)=tyParameter.Address[1];
+	}
+	else
+	{
+		*pData=0x01;//设置成功
+		tyParameter.Address[0]=meter_addr[0];
+		tyParameter.Address[1]=meter_addr[1];
+	}
+	return 3;
+}
+
+/**********************************************/
+/* 和达查询表地址
+函数名: HeDa_Cmd_Set_Addr_Handle
+入  参: u8 *pData 
+出  参: void
+返回值: u8
+修改人: 杨晓飞
+日  期: 2018.12.05
+*//*********************************************/
+u8 HeDa_Cmd_Get_Addr_Handle(u8 *pData)
+{
+	*pData=tyParameter.Address[0];
+	*(pData+1)=tyParameter.Address[1];
+	return 2;
+}
+
+/**********************************************/
+/* 和达查询所有参数
+函数名: HeDa_Cmd_Get_All_Param_Handle
+入  参: u8 *pData 
+出  参: void
+返回值: u8
+修改人: 杨晓飞
+日  期: 2018.12.05
+*//*********************************************/
+u8 HeDa_Cmd_Get_All_Param_Handle(u8 *pData)
+{
+	return 0;
+}
+
+/**********************************************/
+/* 和达获取指定数据
+函数名: HeDa_Cmd_Get_Appoint_Data_Handle
+入  参: u8 *pData 
+出  参: void
+返回值: u8
+修改人: 杨晓飞
+日  期: 2018.12.05
+*//*********************************************/
+u8 HeDa_Cmd_Get_Appoint_Data_Handle(u8 *pData)
+{
+	return 0;
+}
+
+/**********************************************/
+/*  和达协议模块初始化函数
+函数名: HD_InitializeGsm
+入  参: void
+出  参: void
+返回值: u8
+修改人: maronglang
+日  期: 2018.12.05
+*//*********************************************/
+void HD_InitializeGsm(void)
+{
+	char nIPstr[32] = {0};
+	u8 nPort[6]     = {0};
+	u16 dwPortNum = 0;
+	ST_Time stReportTime;
+	u8 nBuf[10]     = {0};
+	
+	MemsetFunc(nPort, 0, sizeof(nPort));
+	MemsetFunc(nIPstr, 0, sizeof(nIPstr));	
+	SetLogonMode(UP_LOGIN);
+	
+	/* 获取上报IP地址参数 */
+	if(TRUE == ReadParameterForType((u8 *)&tyReportParameter, sizeof(tyReportParameter), IPANDPORT_PARA))
+	{
+		if(tyReportParameter.flag_Login_Mode==HD_Login_IP)//ip地址上报
+		{	
+			JX_IpAddrToStr(nIPstr, (u8*)&tyReportParameter.Main_IP);
+		}
+		else if(tyReportParameter.flag_Login_Mode==HD_Login_Domain_Name)//域名上报
+		{
+			MemcpyFunc(nIPstr, (u8*)&tyReportParameter.Main_domain_name, 32);
+		}
+		
+		MemcpyFunc((u8*)&dwPortNum, (u8*)&tyReportParameter.Main_Port, 2);
+		JX_BL_Change(2, (u8*)&dwPortNum);
+		JX_U32ToStr(dwPortNum, nPort);
+		MemsetFunc(&aucAtPServer1[1], 0, sizeof(aucAtPServer1)-1);
+		MemsetFunc(&aucAtPPort1[1], 0, sizeof(aucAtPPort1)-1);
+		
+		MemcpyFunc((u8*)&aucAtPServer1[1], nIPstr, JX_Strlen(nIPstr));
+		JX_StringCat(aucAtPServer1,"\"", 2);
+		MemcpyFunc((u8*)&aucAtPPort1[1], nPort, JX_Strlen(nPort));
+		JX_StringCat(aucAtPPort1,"\"", 2);
+	}
+
+	/* 获取APN */
+	if(TRUE == ReadParameterForType(&g_nApnBuf[1], APN_LEN, APN_PARA))
+	{
+		JX_StringCat(g_nApnBuf, "\"", 2);
+	}
+
+	/* 获取上报周期上报时间抄表间隔 */
+	if(FALSE == ReadParameterForType((u8 *)&tyReport, sizeof(tyReport), REPORT_PARA))
+	{
+		tyReport.nIntervalType=HD_INTERVAL_HOUR;//默认上报类型按小时计算
+		tyReport.cycle 	= 24;	 				//默认24小时上报一次	
+		tyReport.wGatherCycle = 60; //默认采样间隔60分钟
+		
+		tyReport.Time.Byte.Year = 0x15;//默认上报时间
+		tyReport.Time.Byte.Month = 0x12;
+		tyReport.Time.Byte.Day = 0x28;
+		tyReport.Time.Byte.Hour = 0x00;
+		tyReport.Time.Byte.Minute= 0x00;
+		SaveParameterForType((u8 *)&tyReport, sizeof(tyReport), REPORT_PARA);		
+		UC_SleepFunc(1);
+	}
+	/*if((0 == tyReport.nMonFreezeDay)||(28 < tyReport.nMonFreezeDay))
+	{
+		tyReport.nMonFreezeDay   = 20;
+	}*/
+
+	/* 获取上次上报时间及累计上报次数 */
+	if(FALSE == ReadParameterForType(nBuf, 10, LT_REP_TIME))
+	{
+		g_wTmReportCnt = 0;
+		MemcpyFunc((u8*)&stReportTime, (u8*)&tyReport.Time, sizeof(tyReport.Time));
+		JX_BL_Change(6, (u8*)&stReportTime);
+		stReportTime.nMonth = stReportTime.nMonth&0x1F;
+		TM_TimeChangeAToB(&stReportTime,&stLastReportT);
+		MemcpyFunc(nBuf, (u8*)&stLastReportT, 8);
+		MemcpyFunc(&nBuf[8], (u8*)&g_wTmReportCnt, 2);
+		SaveParameterForType(nBuf, 10, LT_REP_TIME);
+		UC_SleepFunc(1);
+ 	}
+	else
+	{
+		MemcpyFunc((u8 *)&stLastReportT, nBuf, 8);
+		MemcpyFunc((u8 *)&g_wTmReportCnt, &nBuf[8], 2);
+	}
+
+	return ;
 }
 
 

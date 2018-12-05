@@ -582,7 +582,7 @@ volatile TypeGprs tyGprs;			//GPRS结构体
 #ifdef JASON130_PTR
 volatile TypeProtol130 tyProtol130;	//协议结构体
 #endif
-volatile TypeReportParameter tyReportParameter;		//时间结构体
+volatile TypeReportParameter tyReportParameter;		//参数结构体
 
 
 

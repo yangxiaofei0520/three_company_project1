@@ -76,8 +76,10 @@
 
 #ifdef XINJIANG_PTR
 	#define APN_LEN              1          /* APN长度 */
-#else ifdef JASON130_PTR
+#elif defined(JASON130_PTR)
 	#define APN_LEN              16          /* APN长度 */
+#elif defined(HEDA_PTR)
+	#define APN_LEN              20          /* APN长度 */
 #endif
 
 

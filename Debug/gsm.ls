@@ -8012,7 +8012,7 @@
 17767  2ab8               L3417:
 17768                     ; 3972 	switch (ucStatusGsm)			//发送数据
 17770  2ab8 c600ce        	ld	a,_ucStatusGsm
-17772                     ; 4020 		break;
+17772                     ; 4023 		break;
 17773  2abb a002          	sub	a,#2
 17774  2abd 2712          	jreq	L7117
 17775  2abf 4a            	dec	a
@@ -8075,32 +8075,32 @@
 17847  2b0f cd27b3        	call	_JASON_130TimeOutReUpLoad
 17849                     ; 4015 		JASON_130ProtolProc();
 17851  2b12 cd26d5        	call	_JASON_130ProtolProc
-17853                     ; 4020 		break;
+17853                     ; 4023 		break;
 17855  2b15               L7417:
-17856                     ; 4022 	return ;
+17856                     ; 4025 	return ;
 17859  2b15 5b05          	addw	sp,#5
 17860  2b17 81            	ret	
 17939                     	switch	.const
 17940  060e               L2322:
 17941  060e 0000003d      	dc.l	61
-17942                     ; 4034 void fixTaskGsm(void)
-17942                     ; 4035 {
+17942                     ; 4037 void fixTaskGsm(void)
+17942                     ; 4038 {
 17943                     	switch	.text
 17944  2b18               _fixTaskGsm:
 17946  2b18 5217          	subw	sp,#23
 17947       00000017      OFST:	set	23
-17950                     ; 4036 	s32 dwReport = 0, dwOffset = 0;	
+17950                     ; 4039 	s32 dwReport = 0, dwOffset = 0;	
 17952  2b1a 96            	ldw	x,sp
 17953  2b1b 5c            	incw	x
 17954  2b1c cd0000        	call	c_ltor
 17958  2b1f 96            	ldw	x,sp
 17959  2b20 1c0005        	addw	x,#OFST-18
 17960  2b23 cd0000        	call	c_ltor
-17962                     ; 4040 	STM8_RTC_Get(&stReportTime);
+17962                     ; 4043 	STM8_RTC_Get(&stReportTime);
 17964  2b26 96            	ldw	x,sp
 17965  2b27 1c0009        	addw	x,#OFST-14
 17966  2b2a cd0000        	call	_STM8_RTC_Get
-17968                     ; 4041 	TM_TimeChangeAToB(&stReportTime,&stTimeNowTm);
+17968                     ; 4044 	TM_TimeChangeAToB(&stReportTime,&stTimeNowTm);
 17970  2b2d 96            	ldw	x,sp
 17971  2b2e 1c0010        	addw	x,#OFST-7
 17972  2b31 89            	pushw	x
@@ -8109,13 +8109,13 @@
 17976  2b38 c600a5        	ld	a,_m_nWakeupReportFlg
 17977  2b3b a50f          	bcp	a,#15
 17978  2b3d 85            	popw	x
-17979                     ; 4044 	if((FALSE != (m_nWakeupReportFlg&REPORT_FLG))
-17979                     ; 4045 		||FALSE == TM_IsValidTimePro(&stLastReportT)
-17979                     ; 4046 		||(2015 >= stTimeNowTm.wYear)||(TRUE == g_OptValveRepFlg)
-17979                     ; 4047 #ifdef PURCHASE_MODE
-17979                     ; 4048 		|| (OWED_STAT_FLG == (tyParameter.nOverBuyFlg&(OWED_REP_SUCC|OWED_REP_FAIL|OWED_STAT_FLG)))
-17979                     ; 4049 #endif
-17979                     ; 4050 		||((ALARM_MASK&ALM_GetBatStatus()&&(MAX_REP_TIMES > g_nAlmRepFailCnt)&&(ALARM_REP_FLG != (ALARM_REP_FLG&g_nGuardEnFlg)))))
+17979                     ; 4047 	if((FALSE != (m_nWakeupReportFlg&REPORT_FLG))
+17979                     ; 4048 		||FALSE == TM_IsValidTimePro(&stLastReportT)
+17979                     ; 4049 		||(2015 >= stTimeNowTm.wYear)||(TRUE == g_OptValveRepFlg)
+17979                     ; 4050 #ifdef PURCHASE_MODE
+17979                     ; 4051 		|| (OWED_STAT_FLG == (tyParameter.nOverBuyFlg&(OWED_REP_SUCC|OWED_REP_FAIL|OWED_STAT_FLG)))
+17979                     ; 4052 #endif
+17979                     ; 4053 		||((ALARM_MASK&ALM_GetBatStatus()&&(MAX_REP_TIMES > g_nAlmRepFailCnt)&&(ALARM_REP_FLG != (ALARM_REP_FLG&g_nGuardEnFlg)))))
 17981  2b3e 262a          	jrne	L5127
 17983  2b40 ae000a        	ldw	x,#_stLastReportT
 17984  2b43 cd0000        	call	_TM_IsValidTimePro
@@ -8137,29 +8137,29 @@
 18006  2b63 2415          	jruge	L3127
 18008  2b65 7202000010    	btjt	_g_nGuardEnFlg,#1,L3127
 18009  2b6a               L5127:
-18010                     ; 4052 		g_nReportFlg  = TRUE;
+18010                     ; 4055 		g_nReportFlg  = TRUE;
 18012  2b6a 350100ad      	mov	_g_nReportFlg,#1
-18013                     ; 4053 	    m_nUploadMode = OTHER_REP;
+18013                     ; 4056 	    m_nUploadMode = OTHER_REP;
 18015  2b6e 725f00c3      	clr	_m_nUploadMode
-18016                     ; 4054 		fixTaskGsmProc();
+18016                     ; 4057 		fixTaskGsmProc();
 18018  2b72               LC065:
 18020  2b72 cd2a8c        	call	_fixTaskGsmProc
 18023  2b75               L5227:
-18024                     ; 4106 	ReportTimeOutPro();
+18024                     ; 4128 	ReportTimeOutPro();
 18026  2b75 cd2a16        	call	_ReportTimeOutPro
-18028                     ; 4107 	return ;
+18028                     ; 4129 	return ;
 18030  2b78 2053          	jra	L6422
 18031  2b7a               L3127:
-18032                     ; 4059 		if(FALSE == g_nReportFlg)
+18032                     ; 4062 		if(FALSE == g_nReportFlg)
 18034  2b7a c600ad        	ld	a,_g_nReportFlg
 18035  2b7d 2659          	jrne	L7227
-18036                     ; 4061 			dwReport = ClaReportTimeToSec(tyReport.cycle);
+18036                     ; 4064 			dwReport = ClaReportTimeToSec(tyReport.cycle);
 18038  2b7f c600c4        	ld	a,_tyReport+3
 18039  2b82 cd003a        	call	_ClaReportTimeToSec
 18041  2b85 96            	ldw	x,sp
 18042  2b86 5c            	incw	x
 18043  2b87 cd0000        	call	c_rtol
-18045                     ; 4062 			dwOffset = TM_DiffSecond(&stLastReportT, &stTimeNowTm);
+18045                     ; 4065 			dwOffset = TM_DiffSecond(&stLastReportT, &stTimeNowTm);
 18047  2b8a 96            	ldw	x,sp
 18048  2b8b 1c0010        	addw	x,#OFST-7
 18049  2b8e 89            	pushw	x
@@ -8169,8 +8169,8 @@
 18054  2b96 96            	ldw	x,sp
 18055  2b97 1c0005        	addw	x,#OFST-18
 18056  2b9a cd0000        	call	c_rtol
-18058                     ; 4064 			if((60 < (dwOffset%dwReport)) ||
-18058                     ; 4065 				((TRUE == ReadRecord(0, (u8*)&tyRecord, sizeof(tyRecord)))&&(FALSE == tyRecord.nRepFlg)))
+18058                     ; 4067 			if((60 < (dwOffset%dwReport)) ||
+18058                     ; 4068 				((TRUE == ReadRecord(0, (u8*)&tyRecord, sizeof(tyRecord)))&&(FALSE == tyRecord.nRepFlg)))
 18060  2b9d 96            	ldw	x,sp
 18061  2b9e 1c0005        	addw	x,#OFST-18
 18062  2ba1 cd0000        	call	c_ltor
@@ -8191,46 +8191,46 @@
 18083  2bc0 c6000f        	ld	a,_tyRecord+15
 18084  2bc3 260b          	jrne	L1327
 18085  2bc5               L3327:
-18086                     ; 4067 				LP_SetLowPwrStartFlg(LP_GPRS_FLG_OK);
+18086                     ; 4070 				LP_SetLowPwrStartFlg(LP_GPRS_FLG_OK);
 18088  2bc5 a601          	ld	a,#1
 18089  2bc7 cd0000        	call	_LP_SetLowPwrStartFlg
-18091                     ; 4070 				M590_CloseConnect();
+18091                     ; 4073 				M590_CloseConnect();
 18093  2bca cd117b        	call	_M590_CloseConnect
-18095                     ; 4071 				return ;
+18095                     ; 4074 				return ;
 18096  2bcd               L6422:
 18099  2bcd 5b17          	addw	sp,#23
 18100  2bcf 81            	ret	
 18101  2bd0               L1327:
-18102                     ; 4075 				m_nUploadMode = TIME_DAT_REP;
+18102                     ; 4078 				m_nUploadMode = TIME_DAT_REP;
 18104  2bd0 a601          	ld	a,#1
 18105  2bd2 c700c3        	ld	_m_nUploadMode,a
-18106                     ; 4076 				g_nReportFlg  = TRUE;
+18106                     ; 4079 				g_nReportFlg  = TRUE;
 18108  2bd5 c700ad        	ld	_g_nReportFlg,a
 18109  2bd8               L7227:
-18110                     ; 4079 		if(TRUE == g_nReportFlg)
+18110                     ; 4082 		if(TRUE == g_nReportFlg)
 18112  2bd8 4a            	dec	a
 18113  2bd9 269a          	jrne	L5227
-18114                     ; 4081 			fixTaskGsmProc();
+18114                     ; 4084 			fixTaskGsmProc();
 18116  2bdb 2095          	jp	LC065
-18153                     ; 4119 void InitializeGsm(void)
-18153                     ; 4120 {	
+18153                     ; 4141 void InitializeGsm(void)
+18153                     ; 4142 {	
 18154                     	switch	.text
 18155  2bdd               _InitializeGsm:
-18159                     ; 4121 	tyGSMFlag = 0xFF;
+18159                     ; 4143 	tyGSMFlag = 0xFF;
 18161  2bdd 35ff0019      	mov	_tyGSMFlag,#255
-18162                     ; 4122 	ucStatusGsm    = GSM_INIT;
+18162                     ; 4144 	ucStatusGsm    = GSM_INIT;
 18164  2be1 350100ce      	mov	_ucStatusGsm,#1
-18165                     ; 4123 	ucStepGsm      = 0;
+18165                     ; 4145 	ucStepGsm      = 0;
 18167  2be5 725f00cd      	clr	_ucStepGsm
-18168                     ; 4124 	m_nGprsStep    = INIT_PWR_ON;
+18168                     ; 4146 	m_nGprsStep    = INIT_PWR_ON;
 18170  2be9 350100a6      	mov	_m_nGprsStep,#1
-18171                     ; 4125 	stRepFail.wError = 0;
+18171                     ; 4147 	stRepFail.wError = 0;
 18173  2bed 5f            	clrw	x
 18174  2bee cf0006        	ldw	_stRepFail+6,x
-18175                     ; 4127 	m_nWakeupReportFlg = ReadReportFlag();
+18175                     ; 4149 	m_nWakeupReportFlg = ReadReportFlag();
 18177  2bf1 cd0000        	call	_ReadReportFlag
 18179  2bf4 c700a5        	ld	_m_nWakeupReportFlg,a
-18180                     ; 4128 	ReadGroup(1, ADDRESS_GUARD_EN, &g_nGuardEnFlg);
+18180                     ; 4150 	ReadGroup(1, ADDRESS_GUARD_EN, &g_nGuardEnFlg);
 18182  2bf7 ae0000        	ldw	x,#_g_nGuardEnFlg
 18183  2bfa 89            	pushw	x
 18184  2bfb ae1000        	ldw	x,#4096
@@ -8238,16 +8238,16 @@
 18186  2bff a601          	ld	a,#1
 18187  2c01 cd0000        	call	_ReadGroup
 18189  2c04 5b04          	addw	sp,#4
-18190                     ; 4129 	g_nAlmRepFailCnt = (g_nGuardEnFlg>>6);
+18190                     ; 4151 	g_nAlmRepFailCnt = (g_nGuardEnFlg>>6);
 18192  2c06 c60000        	ld	a,_g_nGuardEnFlg
 18193  2c09 4e            	swap	a
 18194  2c0a a40c          	and	a,#12
 18195  2c0c 44            	srl	a
 18196  2c0d 44            	srl	a
 18197  2c0e c70000        	ld	_g_nAlmRepFailCnt,a
-18198                     ; 4132 	JASON_130InitializeGsm();
+18198                     ; 4154 	JASON_130InitializeGsm();
 18200  2c11 cd2815        	call	_JASON_130InitializeGsm
-18202                     ; 4138 	if(FALSE == ReadParameterForType((u8 *)&stOptValve, OPTVALVE_LEN, OPT_VALVE_PRAA))
+18202                     ; 4160 	if(FALSE == ReadParameterForType((u8 *)&stOptValve, OPTVALVE_LEN, OPT_VALVE_PRAA))
 18204  2c14 4b06          	push	#6
 18205  2c16 4b0a          	push	#10
 18206  2c18 ae0000        	ldw	x,#_stOptValve
@@ -8255,40 +8255,40 @@
 18209  2c1e 4d            	tnz	a
 18210  2c1f 85            	popw	x
 18211  2c20 2618          	jrne	L1527
-18212                     ; 4140 		stOptValve.nOptFlg    = CTL_VAVLE_ENABLE;
+18212                     ; 4162 		stOptValve.nOptFlg    = CTL_VAVLE_ENABLE;
 18214  2c22 35aa0001      	mov	_stOptValve+1,#170
-18215                     ; 4141 		stOptValve.nEnableFlg = CTL_VAVLE_ENABLE;
+18215                     ; 4163 		stOptValve.nEnableFlg = CTL_VAVLE_ENABLE;
 18217  2c26 35aa0000      	mov	_stOptValve,#170
-18218                     ; 4142 		stOptValve.nStartHour = 0x02;
+18218                     ; 4164 		stOptValve.nStartHour = 0x02;
 18220  2c2a 35020005      	mov	_stOptValve+5,#2
-18221                     ; 4143 		stOptValve.nEndHour   = 0x04;
+18221                     ; 4165 		stOptValve.nEndHour   = 0x04;
 18223  2c2e 35040006      	mov	_stOptValve+6,#4
-18224                     ; 4144 		stOptValve.nVavleStat = 0;
+18224                     ; 4166 		stOptValve.nVavleStat = 0;
 18226  2c32 725f0007      	clr	_stOptValve+7
-18227                     ; 4145 		stOptValve.nVavleCycle= 0;
+18227                     ; 4167 		stOptValve.nVavleCycle= 0;
 18229  2c36 725f0009      	clr	_stOptValve+9
 18230  2c3a               L1527:
-18231                     ; 4148 	if((MAX_REP_TIMES > stOptValve.nRepFailCnt)&&(CTL_VALVE_OVER == stOptValve.nOptFlg))
+18231                     ; 4170 	if((MAX_REP_TIMES > stOptValve.nRepFailCnt)&&(CTL_VALVE_OVER == stOptValve.nOptFlg))
 18233  2c3a c60008        	ld	a,_stOptValve+8
 18234  2c3d a103          	cp	a,#3
 18235  2c3f 240c          	jruge	L3527
 18237  2c41 c60001        	ld	a,_stOptValve+1
 18238  2c44 a1ee          	cp	a,#238
 18239  2c46 2605          	jrne	L3527
-18240                     ; 4150 		g_OptValveRepFlg = TRUE;
+18240                     ; 4172 		g_OptValveRepFlg = TRUE;
 18242  2c48 350100ae      	mov	_g_OptValveRepFlg,#1
 18245  2c4c 81            	ret	
 18246  2c4d               L3527:
-18247                     ; 4152 	else if(MAX_REP_TIMES <= stOptValve.nRepFailCnt)
+18247                     ; 4174 	else if(MAX_REP_TIMES <= stOptValve.nRepFailCnt)
 18249  2c4d c60008        	ld	a,_stOptValve+8
 18250  2c50 a103          	cp	a,#3
 18251  2c52 2508          	jrult	L5527
-18252                     ; 4154 		stOptValve.nOptFlg = 0;   /* 超出上报次数后，认为上报成功不在上报 */ 
+18252                     ; 4176 		stOptValve.nOptFlg = 0;   /* 超出上报次数后，认为上报成功不在上报 */ 
 18254  2c54 725f0001      	clr	_stOptValve+1
-18255                     ; 4155 		stOptValve.nRepFailCnt = 0;
+18255                     ; 4177 		stOptValve.nRepFailCnt = 0;
 18257  2c58 725f0008      	clr	_stOptValve+8
 18258  2c5c               L5527:
-18259                     ; 4157 	return ;
+18259                     ; 4179 	return ;
 18262  2c5c 81            	ret	
 18686                     	xdef	_fixTaskGsmProc
 18687                     	xdef	_ReportTimeOutPro

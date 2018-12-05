@@ -90,6 +90,11 @@ void  JX_DWORDToBCD(uint32_t val, uint8_t* bcd, uint8_t len);
 uint32_t  JX_BcdToDWORD(uint8_t  *p, uint8_t  len);
 u32 JX_FloatToBin(float dwInDat);
 
+
+#ifdef HEDA_PTR
+u8 HeDa_Get_String_len(char *str,u8 str_buf_size);
+#endif
+
 //以下为位变量
 #endif /* __JX_MATH_H__ */
 /* (C) Copyright 2008~2015

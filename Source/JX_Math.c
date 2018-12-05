@@ -1002,6 +1002,29 @@ u32 JX_FloatToBin(float dwInDat)
 	return dwTmpDat;
 }  
 
+#ifdef HEDA_PTR
+/**********************************************/
+/* 计算ascii字符串的长度
+函数名: JX_DwordBcdToBin
+入	参:  *str	str_buf_size
+出	参: void
+返回值: u8
+修改人: yangxiaofei
+日	期: 2018.12.04
+*//*********************************************/
+u8 HeDa_Get_String_len(char *str,u8 str_buf_size)  
+{  
+	u8 i=0;
+	for(i=0;i<str_buf_size;i++)
+	{
+		if(str[i]==0)break;
+	}
+	return i;
+} 
+#endif
+
+
+
 #endif
 
 

@@ -1053,43 +1053,43 @@
 2478  0538 95            	ld	xh,a
 2479  0539 cd0000        	call	_Protol130Send
 2481  053c               L367:
-2482                     ; 1310 }
+2482                     ; 1315 }
 2485  053c 85            	popw	x
 2486  053d 81            	ret	
-2510                     ; 1322 u32 GetSysTemTick(void)
-2510                     ; 1323 {
+2510                     ; 1327 u32 GetSysTemTick(void)
+2510                     ; 1328 {
 2511                     	switch	.text
 2512  053e               _GetSysTemTick:
-2516                     ; 1324 	return g_dwSysTick;
+2516                     ; 1329 	return g_dwSysTick;
 2518  053e ae0000        	ldw	x,#_g_dwSysTick
 2522  0541 cc0000        	jp	c_ltor
 2525                     	switch	.const
 2526  007d               L577_nTmpBuf:
 2527  007d 00            	dc.b	0
 2528  007e 000000000000  	ds.b	6
-2575                     ; 1335 void InitializeProtocol(void)
-2575                     ; 1336 {
+2575                     ; 1340 void InitializeProtocol(void)
+2575                     ; 1341 {
 2576                     	switch	.text
 2577  0544               _InitializeProtocol:
 2579  0544 5208          	subw	sp,#8
 2580       00000008      OFST:	set	8
-2583                     ; 1337 	u8 nTmpBuf[7] = {0};
+2583                     ; 1342 	u8 nTmpBuf[7] = {0};
 2585  0546 96            	ldw	x,sp
 2586  0547 5c            	incw	x
 2587  0548 90ae007d      	ldw	y,#L577_nTmpBuf
 2588  054c a607          	ld	a,#7
 2589  054e cd0000        	call	c_xymvx
-2591                     ; 1338 	u8 i = 0;
+2591                     ; 1343 	u8 i = 0;
 2593  0551 0f08          	clr	(OFST+0,sp)
-2594                     ; 1340 	ucTimerProtocol = 10;
+2594                     ; 1345 	ucTimerProtocol = 10;
 2596  0553 350a002c      	mov	_ucTimerProtocol,#10
-2597                     ; 1341 	ucMasterCmd = 0;
+2597                     ; 1346 	ucMasterCmd = 0;
 2599  0557 725f002b      	clr	_ucMasterCmd
-2600                     ; 1342 	ucSlaveCmd = 0;
+2600                     ; 1347 	ucSlaveCmd = 0;
 2602  055b 725f002a      	clr	_ucSlaveCmd
-2603                     ; 1343 	ClearRxBuff();
+2603                     ; 1348 	ClearRxBuff();
 2605  055f cd0000        	call	_ClearRxBuff
-2607                     ; 1345 	if ((FALSE == ReadParameterForType((u8*)&tyParameter, sizeof(tyParameter), METER_PARA)))
+2607                     ; 1350 	if ((FALSE == ReadParameterForType((u8*)&tyParameter, sizeof(tyParameter), METER_PARA)))
 2609  0562 4b04          	push	#4
 2610  0564 4b1a          	push	#26
 2611  0566 ae0000        	ldw	x,#_tyParameter
@@ -1097,40 +1097,40 @@
 2614  056c 4d            	tnz	a
 2615  056d 85            	popw	x
 2616  056e 2639          	jrne	L7101
-2617                     ; 1348 		tyParameter.Type = COLD_WATER_METER;
+2617                     ; 1353 		tyParameter.Type = COLD_WATER_METER;
 2619  0570 35100000      	mov	_tyParameter,#16
-2620                     ; 1349 		tyParameter.Status = INIT_STATUS;
+2620                     ; 1354 		tyParameter.Status = INIT_STATUS;
 2622  0574 725f0001      	clr	_tyParameter+1
-2623                     ; 1350 		tyParameter.Password = INIT_PASSWORD;
+2623                     ; 1355 		tyParameter.Password = INIT_PASSWORD;
 2625  0578 ae8888        	ldw	x,#34952
 2626  057b cf0008        	ldw	_tyParameter+8,x
 2627  057e ae6666        	ldw	x,#26214
 2628  0581 cf0006        	ldw	_tyParameter+6,x
-2629                     ; 1351 		tyParameter.dwPurchaseVal = 0;
+2629                     ; 1356 		tyParameter.dwPurchaseVal = 0;
 2631  0584 5f            	clrw	x
 2632  0585 cf000c        	ldw	_tyParameter+12,x
 2633  0588 cf000a        	ldw	_tyParameter+10,x
-2634                     ; 1352 		tyParameter.nEmergencyVal = 5;
+2634                     ; 1357 		tyParameter.nEmergencyVal = 5;
 2636  058b 3505000e      	mov	_tyParameter+14,#5
-2637                     ; 1353 		tyParameter.nOverBuyFlg = 0;
+2637                     ; 1358 		tyParameter.nOverBuyFlg = 0;
 2639  058f 725f000f      	clr	_tyParameter+15
-2640                     ; 1355 		tyParameter.nAlmCtl[0]= 0x00; // 01
+2640                     ; 1360 		tyParameter.nAlmCtl[0]= 0x00; // 01
 2642  0593 725f0014      	clr	_tyParameter+20
-2643                     ; 1356 		tyParameter.wBasePress = 500;
+2643                     ; 1361 		tyParameter.wBasePress = 500;
 2645  0597 ae01f4        	ldw	x,#500
 2646  059a cf0012        	ldw	_tyParameter+18,x
 2647  059d 5f            	clrw	x
 2648  059e cf0010        	ldw	_tyParameter+16,x
-2649                     ; 1357 		tyParameter.nUpLmtRate = 20;
+2649                     ; 1362 		tyParameter.nUpLmtRate = 20;
 2651  05a1 35140018      	mov	_tyParameter+24,#20
-2652                     ; 1358 		tyParameter.nDownLmtRate = 20;
+2652                     ; 1363 		tyParameter.nDownLmtRate = 20;
 2654  05a5 35140019      	mov	_tyParameter+25,#20
 2655  05a9               L7101:
-2656                     ; 1369 	tyParameter.Value = INVALID_DATA;
+2656                     ; 1374 	tyParameter.Value = INVALID_DATA;
 2658  05a9 aeeeee        	ldw	x,#61166
 2659  05ac cf0004        	ldw	_tyParameter+4,x
 2660  05af cf0002        	ldw	_tyParameter+2,x
-2661                     ; 1371 	if ((FALSE == ReadParameterForType((u8*)&g_dwTmAddress, sizeof(g_dwTmAddress), TM_ADDRESS_PRAA)))
+2661                     ; 1376 	if ((FALSE == ReadParameterForType((u8*)&g_dwTmAddress, sizeof(g_dwTmAddress), TM_ADDRESS_PRAA)))
 2663  05b2 4b07          	push	#7
 2664  05b4 4b04          	push	#4
 2665  05b6 ae0000        	ldw	x,#_g_dwTmAddress
@@ -1138,13 +1138,13 @@
 2668  05bc 4d            	tnz	a
 2669  05bd 85            	popw	x
 2670  05be 260a          	jrne	L1201
-2671                     ; 1373 		g_dwTmAddress = INIT_ADDRESS;
+2671                     ; 1378 		g_dwTmAddress = INIT_ADDRESS;
 2673  05c0 ae0001        	ldw	x,#1
 2674  05c3 cf0002        	ldw	_g_dwTmAddress+2,x
 2675  05c6 5f            	clrw	x
 2676  05c7 cf0000        	ldw	_g_dwTmAddress,x
 2677  05ca               L1201:
-2678                     ; 1375 }
+2678                     ; 1380 }
 2681  05ca 5b08          	addw	sp,#8
 2682  05cc 81            	ret	
 2752                     	xdef	_VavleOperateFunExt

@@ -226,145 +226,156 @@ typedef union		//时间结构体
 
 /* 以下为130协议结构体 */
 #ifdef JASON130_PTR
-typedef struct
-{
-	u8 Type;			//表类型
-	u8 Status;			//表状态
-	//u32 Address;		//表地址  // edit by maronglang 2018030601
-	u32 Value;		    //表读数
-	u32 Password;		//密码
-	u32 dwPurchaseVal;//预购后水表读数
-	s8  nEmergencyVal;//应急用量
-	u8  nOverBuyFlg;  //超出用水标志 设置D1位为1后 可允许再用2吨 D2位为1表示上报成功， D3位为1表示上报失败
-#ifdef PIEZOMETER
-    u32 wBasePress;
-    u8  nAlmCtl[4];
-    u8  nUpLmtRate;
-    u8  nDownLmtRate;
-#endif
-} TypeParameter;		//表参数
+	typedef struct
+	{
+		u8 Type;			//表类型
+		u8 Status;			//表状态
+		//u32 Address;		//表地址  // edit by maronglang 2018030601
+		u32 Value;		    //表读数
+		u32 Password;		//密码
+		u32 dwPurchaseVal;//预购后水表读数
+		s8  nEmergencyVal;//应急用量
+		u8  nOverBuyFlg;  //超出用水标志 设置D1位为1后 可允许再用2吨 D2位为1表示上报成功， D3位为1表示上报失败
+		#ifdef PIEZOMETER
+		    u32 wBasePress;
+		    u8  nAlmCtl[4];
+		    u8  nUpLmtRate;
+		    u8  nDownLmtRate;
+		#endif
+	} TypeParameter;		//表参数
 
-typedef struct
-{
-	u16 wGatherCycle;   //抄表间隔
-	u8 enable;			//定时上报允许
-	u8 cycle;			//上报周期：时，天，月
-	TypeTime Time;		//时间
-	u8 nMonFreezeDay; /* 月冻结日 */	
-} TypeReport;
+	typedef struct
+	{
+		u16 wGatherCycle;   //抄表间隔
+		u8 enable;			//定时上报允许
+		u8 cycle;			//上报周期：时，天，月
+		TypeTime Time;		//时间
+		u8 nMonFreezeDay; /* 月冻结日 */	
+	} TypeReport;
 
-typedef struct
-{
-	u32 Main_IP;		//主机IP地址
-	u32 Sub_IP;		    //备用IP地址
-	u16 Main_Port;		//主机端口
-	u16 Sub_Port;		//备用端口
-} TypeReportParameter;		//上报参数
+	typedef struct
+	{
+		u32 Main_IP;		//主机IP地址
+		u32 Sub_IP;		    //备用IP地址
+		u16 Main_Port;		//主机端口
+		u16 Sub_Port;		//备用端口
+	} TypeReportParameter;		//上报参数
 
-typedef struct
-{
-	TypeTime Time;  //时间
-	u32 Value;		//表读数
-#ifdef PIEZOMETER
-    u32 wPressure;
-#endif
-	u8  nStatus;    //表状态
-	u8  nRepFlg;    //上报标志
-} TypeRecord;		//表记录
+	typedef struct
+	{
+		TypeTime Time;  //时间
+		u32 Value;		//表读数
+		#ifdef PIEZOMETER
+		    u32 wPressure;
+		#endif
+		u8  nStatus;    //表状态
+		u8  nRepFlg;    //上报标志
+	} TypeRecord;		//表记录
 
 
 /* 以下为新疆协议结构体 */
-#else ifdef XINJIANG_PTR
-typedef	 struct   	//时间结构体
-{
-	u8   nYear;        // 年(99)
-	u8   nMonth;       // 月(01-12)
-	u8   nDay;         // 日(01-31)
-	u8   nHour;        // 时(00-23)
-	u8   nMinute;      // 分(00-59)
-	u8   nSecond;      // 秒(00-59)
-}TIME_BIN;	//6byte
+#elif defined(XINJIANG_PTR)
+	typedef	 struct   	//时间结构体
+	{
+		u8   nYear;        // 年(99)
+		u8   nMonth;       // 月(01-12)
+		u8   nDay;         // 日(01-31)
+		u8   nHour;        // 时(00-23)
+		u8   nMinute;      // 分(00-59)
+		u8   nSecond;      // 秒(00-59)
+	}TIME_BIN;	//6byte
 
-typedef struct
-{
-	u8 Type;			//表类型
-	u8 Address[5];		//表序号
-	u8 FactoryCode[2];	//厂商ID
-	u32 Value;		    //表读数
-	u8 Status[4];		//表状态	
-	u8 RestoreStat[4];  //表状态恢复情况	
-} TypeParameter;		//表参数
+	typedef struct
+	{
+		u8 Type;			//表类型
+		u8 Address[5];		//表序号
+		u8 FactoryCode[2];	//厂商ID
+		u32 Value;		    //表读数
+		u8 Status[4];		//表状态	
+		u8 RestoreStat[4];  //表状态恢复情况	
+	} TypeParameter;		//表参数
 
-typedef struct
-{
-	u8 nGatherCycle;   //抄表间隔
-	u8 nStartDay;	    //起始日期
-	u8 nStartHour;	    //起始小时
-	u8 nStartMinute;	/* 起始分钟 */
-	u8 nIntervalType; 	/* 间隔类型 */
-	u8 cycle;			//上报周期：时，天，月
-	u8 nTailCtl; 	    /* 尾数上线控制 */
-	u8 nTaiInterval;  /* 尾数上线间隔数 */	
-	u8 nMonFreezeDay; /* 月冻结日 */	
-	u8 nReportType;   /* 上线帧类型 */	
-	TIME_BIN Time;		//时间
-} TypeReport;
+	typedef struct
+	{
+		u8 nGatherCycle;   //抄表间隔
+		u8 nStartDay;	    //起始日期
+		u8 nStartHour;	    //起始小时
+		u8 nStartMinute;	/* 起始分钟 */
+		u8 nIntervalType; 	/* 间隔类型 */
+		u8 cycle;			//上报周期：时，天，月
+		u8 nTailCtl; 	    /* 尾数上线控制 */
+		u8 nTaiInterval;  /* 尾数上线间隔数 */	
+		u8 nMonFreezeDay; /* 月冻结日 */	
+		u8 nReportType;   /* 上线帧类型 */	
+		TIME_BIN Time;		//时间
+	} TypeReport;
 
-typedef struct
-{
-	u32 Main_IP;		//主机IP地址
-	u16 Main_Port;		//主机端口
-} TypeReportParameter;		//上报参数
+	typedef struct
+	{
+		u32 Main_IP;		//主机IP地址
+		u16 Main_Port;		//主机端口
+	} TypeReportParameter;		//上报参数
 
-typedef struct
-{
-	u32 Value;		//表读数
-	TypeTime Time;  //时间
-} TypeRecord;		//表记录
+	typedef struct
+	{
+		u32 Value;		//表读数
+		TypeTime Time;  //时间
+	} TypeRecord;		//表记录
 
-#else ifdef HEDA_PTR	//和达协议
+#elif defined(HEDA_PTR)	//和达协议
 
-typedef	 struct   	//时间结构体
-{
-	u8   nYear;        // 年(99)
-	u8   nMonth;       // 月(01-12)
-	u8   nDay;         // 日(01-31)
-	u8   nHour;        // 时(00-23)
-	u8   nMinute;      // 分(00-59)
-	u8   nSecond;      // 秒(00-59)
-}TIME_BIN;	//6byte
+	typedef	 struct   	//时间结构体
+	{
+		u8   nYear;        // 年(99)
+		u8   nMonth;       // 月(01-12)
+		u8   nDay;         // 日(01-31)
+		u8   nHour;        // 时(00-23)
+		u8   nMinute;      // 分(00-59)
+		u8   nSecond;      // 秒(00-59)
+	}TIME_BIN;	//6byte
 
-typedef struct
-{
-	u8 Type;			//表类型
-	u8 Address[5];		//表序号
-	u8 FactoryCode[2];	//厂商ID
-	u32 Value;		    //表读数
-	u8 Status[4];		//表状态	
-	u8 RestoreStat[4];  //表状态恢复情况	
-} TypeParameter;		//表参数
+	typedef struct
+	{
+		u8 Type;					//表类型
+		u8 Address[5];				//表序号
+		u8 FactoryCode[2];			//厂商ID
+		u32 Value;		    		//表读数
+		u8 Status[4];				//表状态	
+		u8 RestoreStat[4];  		//表状态恢复情况	
+		float Pressure1_LimitUp;	//压力1上限
+		float Pressure1_LimitDown;	//压力1下限
+		float Pressure2_LimitUp;	//压力2上限
+		float Pressure2_LimitDown;	//压力2下限
+	} TypeParameter;		//表参数
 
-typedef struct
-{
-	u8 nGatherCycle;   	//抄表间隔
-	u8 nStartDay;	    //起始日期
-	u8 nStartHour;	    //起始小时
-	u8 nStartMinute;	/* 起始分钟 */
-	u8 nIntervalType; 	/* 间隔类型 */
-	u8 cycle;			//上报周期：时，天，月
-	u8 nTailCtl; 	    /* 尾数上线控制 */
-	u8 nTaiInterval;  /* 尾数上线间隔数 */	
-	u8 nMonFreezeDay; /* 月冻结日 */	
-	u8 nReportType;   /* 上线帧类型 */	
-	TIME_BIN Time;		//时间
-} TypeReport;
+	typedef struct
+	{
+		u8 nGatherCycle;   	//抄表间隔
+		u8 nStartDay;	    //起始日期
+		u8 nStartHour;	    //起始小时
+		u8 nStartMinute;	/* 起始分钟 */
+		u8 nIntervalType; 	/* 间隔类型 */
+		u8 cycle;			//上报周期：时，天，月
+		//u8 nTailCtl; 	    /* 尾数上线控制 */
+		//u8 nTaiInterval;  /* 尾数上线间隔数 */	
+		//u8 nMonFreezeDay; /* 月冻结日 */	
+		//u8 nReportType;   /* 上线帧类型 */	
+		TIME_BIN Time;		//时间
+	} TypeReport;
 
-typedef struct
-{
-	u32 Main_IP;		//主机IP地址
-	u16 Main_Port;		//主机端口
-} TypeReportParameter;		//上报参数
+	typedef struct
+	{
+		u32 Main_IP;		//主机IP地址
+		u16 Main_Port;		//主机端口
+		u8  Main_domain_name[32];//域名
+		u8  flag_Login_Mode;//登陆方式，默认IP地址
+	} TypeReportParameter;		//上报参数
 
+	typedef struct
+	{
+		u32 Value;		//表读数
+		TypeTime Time;  //时间
+	} TypeRecord;		//表记录
 
 #endif
 

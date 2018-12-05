@@ -25,7 +25,15 @@ typedef union
 	u8 Buffer[170];		//真正数据
 } TypeProtol_HD;		//和达协议数据结构体
 
-
+typedef struct
+{
+	u8 flag_change;			//修改内容
+	u32 ip_addr;			//ip地址
+	u16 port;				//端口号
+	char domain_name[32];	//域名   不满32字节时，结束符\0
+	char apn_point[20];		//apn接入点  	不满32字节时，结束符\0
+	u8 ignore;				//预留字段
+}HD_CmdSetNetParam;
 
 #define Packet_Head_0		0xA7	//包头0
 #define Packet_Head_1		0xA7	//包头1
@@ -79,6 +87,24 @@ typedef enum
 	
 }HeDa_Burst_Event;//突发事件类型
 
+typedef enum
+{
+	HeDa_Report_Cycle_Min					=0x37,
+	HeDa_Report_Cycle_Minute_1				=0x37,
+	HeDa_Report_Cycle_Minute_5				=0x38,
+	HeDa_Report_Cycle_Minute_10				=0x39,
+	HeDa_Report_Cycle_Minute_15				=0x40,
+	HeDa_Report_Cycle_Minute_30				=0x41,
+	HeDa_Report_Cycle_Hour_1				=0x42,
+	HeDa_Report_Cycle_Hour_2				=0x43,
+	HeDa_Report_Cycle_Hour_4				=0x44,
+	HeDa_Report_Cycle_Hour_6				=0x45,
+	HeDa_Report_Cycle_Hour_12				=0x46,
+	HeDa_Report_Cycle_Hour_24				=0x47,
+	HeDa_Report_Cycle_Max					=0x47,
+}HeDa_Report_Cycle;//和达上报周期类型
+
+
 
 #define HeDa_Default_Heart_Beat_Interval 		(1*60) //心跳间隔 1min
 #define HeDa_Heart_Beat_Interval_Max			(9*60) //最大心跳间隔
@@ -97,12 +123,44 @@ typedef enum
 /* 上线类型 */
 #define HD_ONLINE              1
 
+#define HD_INTERVAL_HOUR            1
+#define HD_INTERVAL_MIN             2
 
 
+/*登陆模式*/
+#define HD_Login_IP					1//ip地址
+#define HD_Login_Domain_Name		2//域名
 
 
-void HeDa_Cmd_Reply_Upload_Handle(u8 *pData,u8 ctrl,u8 pdata_len);
-u8 HeDa_Cmd_Set_Sampling_Interval_Handle(u8 *pData,u8 pdata_len);
+void LP_HD_CalReportConut(TM_Time* pStNextTime);
+
+void HD_TimeOutReUpLoad(void);
+void HD_ProtolProc(void);
+
+void HD_OnlineCtl(void);
+u8 HD_Online(u8 nLogonMode);
+s8 HD_ProtolSend(u8 Size, u8 nComChannel,u8 device_info_flag);
+u8 HD_DecodeParameter(u8* pnRxBuf, u8 nRxLen);
+u8 HD_AddressComparePro(u8 *pnAddr, u8 nLen);
+u8 HD_ProtolHandle(void);
+
+void HeDa_Cmd_Reply_Upload_Handle(u8 *pData,u8 ctrl);
+u8 HeDa_Cmd_Set_Sampling_Interval_Handle(u8 *pData);
+u8 HeDa_Cmd_Get_Sampling_Interval_Handle(u8 *pData);
+u8 HeDa_Cmd_Set_Net_Param_Handle(HD_CmdSetNetParam *pData);
+u8 HeDa_Cmd_Get_Net_Param_Handle(u8 *pData);
+u8 HeDa_Cmd_Set_Report_Cycle_Handle(u8 *pData);
+u8 HeDa_Cmd_Get_Report_Cycle_Handle(u8 *pData);
+u8 HeDa_Cmd_Set_Pressure_Threshold_Handle(u8 *pData);
+u8 HeDa_Cmd_Get_Pressure_Threshold_Handle(u8 *pData);
+u8 HeDa_Cmd_Set_Addr_Handle(u8 *pData);
+u8 HeDa_Cmd_Get_Addr_Handle(u8 *pData);
+
+/*该函数未实现*/
+u8 HeDa_Cmd_Set_Secret_Key_Handle(u8 *pData);
+u8 HeDa_Cmd_Get_Secret_Key_Handle(u8 *pData);
+u8 HeDa_Cmd_Get_All_Param_Handle(u8 *pData);
+u8 HeDa_Cmd_Get_Appoint_Data_Handle(u8 *pData);
 
 #endif
 

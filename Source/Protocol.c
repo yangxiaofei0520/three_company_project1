@@ -1301,10 +1301,15 @@ void fixTaskProtocolDebug(void)
 	{
 		Protol130Send(nSendLen, COM_2);
 	}
-#else                //新疆协议
+#elif defined(XINJIANG_PTR)                //新疆协议
 	if(0 < (nSendLen = XJ_DecodeParameter(GetUartRxBuf(), CheckRevDataLen())))
 	{
 		XJ_ProtolSend(nSendLen, COM_2);
+	}
+#elif defined(HEDA_PTR)
+	if(0 < (nSendLen = HD_DecodeParameter(GetUartRxBuf(), CheckRevDataLen())))
+	{
+		HD_ProtolSend(nSendLen, COM_2,0);
 	}
 #endif
 }
