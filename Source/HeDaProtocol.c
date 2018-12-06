@@ -32,6 +32,28 @@ u16	g_HD_device_addr=0;		//设备地址
 
 
 
+/**********************************************/
+/* 计算上报间隔 秒为单位
+函数名: HD_ClaReportTimeToSec
+入  参: void
+出  参: void
+返回值: u32
+修改人: 杨晓飞
+日  期: 2018.12.06
+*//*********************************************/
+s32 HD_ClaReportTimeToSec(void)
+{
+	switch(tyReport.nIntervalType)
+	{
+		case HD_INTERVAL_MIN:return tyReport.cycle*60;
+		case HD_INTERVAL_HOUR:return tyReport.cycle*3600;
+		case HD_INTERVAL_DAY:return tyReport.cycle*3600*24;
+		default:return 24*3600;
+	}
+	return 24*3600;
+}
+
+
 /**************************************************************/
 /* 和达计算定时唤醒间隔
 函数名: LP_HD_CalReportConut
@@ -39,7 +61,7 @@ u16	g_HD_device_addr=0;		//设备地址
 出  参: 无
 返回值: uint16_t
 修改人: 杨晓飞
-日  期: 2018.12.03
+日  期: 2018.12.06
 *//*************************************************************/
 void LP_HD_CalReportConut(TM_Time* pStNextTime)
 {
@@ -58,18 +80,17 @@ void LP_HD_CalReportConut(TM_Time* pStNextTime)
 	if(10 > TM_DiffSecond(&stTmpTime, &stStarRepTime))
 	{
 		MemcpyFunc(&stStarRepTime, &stTmpTime, sizeof(TM_Time));
-		if(XJ_INTERVAL_HOUR == tyReport.nIntervalType)
+		if(HD_INTERVAL_HOUR == tyReport.nIntervalType)
 		{
 			stStarRepTime.nHour= tyReport.nStartHour;
 			stStarRepTime.nMinute= tyReport.nStartMinute;
 		}
-		else if(XJ_INTERVAL_MIN == tyReport.nIntervalType)
+		else if(HD_INTERVAL_MIN == tyReport.nIntervalType)
 		{
 			stStarRepTime.nMinute= tyReport.nStartMinute;
 		}
 		else
 		{
-			stStarRepTime.nDay = tyReport.nStartDay;
 			stStarRepTime.nHour= tyReport.nStartHour;
 			stStarRepTime.nMinute= tyReport.nStartMinute;
 		}
@@ -795,6 +816,8 @@ void HeDa_Cmd_Reply_Upload_Handle(u8 *pData,u8 ctrl)
 	}
 	STM8_RTC_Set(&stTimeNow);	
 
+	//设置上报模式为空闲状态
+	m_nUploadMode = UP_Free_HD;
 
 	if(ctrl&Flag_Data_Is_Finish)
 	{
@@ -976,14 +999,15 @@ u8 HeDa_Cmd_Set_Report_Cycle_Handle(u8 *pData)
 	if( (hd_cycle<HeDa_Report_Cycle_Min) || (hd_cycle<HeDa_Report_Cycle_Max))
 	{
 		*pData=0x10;//设置失败
-		*(pData+1)=tyReport.cycle;
+		*(pData+1)=HeDa_TypeAddCycle_To_ReportCycleType(tyReport.nReportType,tyReport.cycle);
 	}
 	else 
 	{
 		*pData=0x01;//设置成功
-		tyReport.cycle=hd_cycle;
-		*(pData+1)=tyReport.cycle;
+		HeDa_ReportCycleType_To_TypeAddCycle(hd_cycle,&tyReport.nReportType,&tyReport.cycle);
+		*(pData+1)=hd_cycle;
 		SaveParameterForType((u8 *)&tyReport, sizeof(tyReport), REPORT_PARA);//保存到eeprom中
+
 	}
 	return 2;
 }
@@ -999,9 +1023,115 @@ u8 HeDa_Cmd_Set_Report_Cycle_Handle(u8 *pData)
 *//*********************************************/
 u8 HeDa_Cmd_Get_Report_Cycle_Handle(u8 *pData)
 {
-	*pData=tyReport.cycle;
+	*pData=HeDa_TypeAddCycle_To_ReportCycleType(tyReport.nReportType,tyReport.cycle);;
 	return 1;
 }
+
+/**********************************************/
+/* 和达上报周期类型          转变为 时间类型+周期数
+函数名: HeDa_ReportCycleType_To_TypeAddCycle
+入  参: u8 Report_Cycle_Type
+出  参: u8 *Report_Time_Type,u8 *cycle_num	
+返回值: void
+修改人: 杨晓飞
+日  期: 2018.12.06
+*//*********************************************/
+void HeDa_ReportCycleType_To_TypeAddCycle(u8 Report_Cycle_Type,u8 *Report_Time_Type,u8 *cycle_num)
+{
+	switch(Report_Cycle_Type)
+	{
+		case HeDa_Report_Cycle_Minute_1:
+			*Report_Time_Type=HD_INTERVAL_MIN;
+			*cycle_num=1;
+			break;
+		case HeDa_Report_Cycle_Minute_5:
+			*Report_Time_Type=HD_INTERVAL_MIN;
+			*cycle_num=5;
+			break;
+		case HeDa_Report_Cycle_Minute_10:
+			*Report_Time_Type=HD_INTERVAL_MIN;
+			*cycle_num=10;
+			break;
+		case HeDa_Report_Cycle_Minute_15:
+			*Report_Time_Type=HD_INTERVAL_MIN;
+			*cycle_num=15;
+			break;
+		case HeDa_Report_Cycle_Minute_30:
+			*Report_Time_Type=HD_INTERVAL_MIN;
+			*cycle_num=30;
+			break;
+		case HeDa_Report_Cycle_Hour_1:
+			*Report_Time_Type=HD_INTERVAL_HOUR;
+			*cycle_num=1;
+			break;
+		case HeDa_Report_Cycle_Hour_2
+			*Report_Time_Type=HD_INTERVAL_HOUR;
+			*cycle_num=2;
+			break;
+		case HeDa_Report_Cycle_Hour_4
+			*Report_Time_Type=HD_INTERVAL_HOUR;
+			*cycle_num=4;
+			break;
+		case HeDa_Report_Cycle_Hour_6
+			*Report_Time_Type=HD_INTERVAL_HOUR;
+			*cycle_num=6;
+			break;
+		case HeDa_Report_Cycle_Hour_12
+			*Report_Time_Type=HD_INTERVAL_HOUR;
+			*cycle_num=12;
+			break;
+		case HeDa_Report_Cycle_Hour_24
+			*Report_Time_Type=HD_INTERVAL_HOUR;
+			*cycle_num=24;
+			break;
+		default:
+			*Report_Time_Type=HD_INTERVAL_HOUR;
+			*cycle_num=24;
+			break;
+	}
+	return 0;
+}
+
+/**********************************************/
+/*  时间类型+周期数 转变为 和达上报周期类型 
+函数名: HeDa_ReportCycleType_To_TypeAddCycle
+入  参: u8 Report_Time_Type,u8 cycle_num
+出  参: void
+返回值: u8
+修改人: 杨晓飞
+日  期: 2018.12.06
+*//*********************************************/
+u8 HeDa_TypeAddCycle_To_ReportCycleType(u8 Report_Time_Type,u8 cycle_num)
+{
+	switch(Report_Time_Type)
+	{
+		case HD_INTERVAL_MIN:
+			{
+				switch(cycle_num)
+				{
+					case	1:	return HeDa_Report_Cycle_Minute_1;
+					case	5:	return HeDa_Report_Cycle_Minute_5;
+					case	10:	return HeDa_Report_Cycle_Minute_10;
+					case	15:	return HeDa_Report_Cycle_Minute_15;
+					case	30:	return HeDa_Report_Cycle_Minute_30;
+					default:	return HeDa_Report_Cycle_Minute_30;
+				}
+			}
+		case HD_INTERVAL_HOUR:
+			{
+				case	1:	return HeDa_Report_Cycle_Hour_1;
+				case	2:	return HeDa_Report_Cycle_Hour_2;
+				case	4:	return HeDa_Report_Cycle_Hour_4;
+				case	6:	return HeDa_Report_Cycle_Hour_6;
+				case	12:	return HeDa_Report_Cycle_Hour_12;
+				case	24:	return HeDa_Report_Cycle_Hour_24;
+				default:	return HeDa_Report_Cycle_Hour_24;
+			}
+		default:
+			return HeDa_Report_Cycle_Max;
+	}
+}
+
 
 /**********************************************/
 /* 和达设置压力上下限阈值
@@ -1258,7 +1388,7 @@ void HD_InitializeGsm(void)
 	{
 		tyReport.nIntervalType=HD_INTERVAL_HOUR;//默认上报类型按小时计算
 		tyReport.cycle 	= 24;	 				//默认24小时上报一次	
-		tyReport.wGatherCycle = 60; //默认采样间隔60分钟
+		tyReport.wGatherCycle = 60; 			//默认采样间隔60分钟,即抄表间隔
 		
 		tyReport.Time.Byte.Year = 0x15;//默认上报时间
 		tyReport.Time.Byte.Month = 0x12;

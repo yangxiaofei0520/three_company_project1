@@ -123,6 +123,8 @@ typedef enum
 /* 上线类型 */
 #define HD_ONLINE              1
 
+/*上报间隔类型*/
+#define HD_INTERVAL_DAY             0
 #define HD_INTERVAL_HOUR            1
 #define HD_INTERVAL_MIN             2
 
@@ -132,6 +134,10 @@ typedef enum
 #define HD_Login_Domain_Name		2//域名
 
 
+
+void HD_InitializeGsm(void);
+
+s32 HD_ClaReportTimeToSec(void);
 void LP_HD_CalReportConut(TM_Time* pStNextTime);
 
 void HD_TimeOutReUpLoad(void);
@@ -144,15 +150,28 @@ u8 HD_DecodeParameter(u8* pnRxBuf, u8 nRxLen);
 u8 HD_AddressComparePro(u8 *pnAddr, u8 nLen);
 u8 HD_ProtolHandle(void);
 
+
+
+
+/*
+	协议解析
+*/
 void HeDa_Cmd_Reply_Upload_Handle(u8 *pData,u8 ctrl);
+
 u8 HeDa_Cmd_Set_Sampling_Interval_Handle(u8 *pData);
 u8 HeDa_Cmd_Get_Sampling_Interval_Handle(u8 *pData);
+
 u8 HeDa_Cmd_Set_Net_Param_Handle(HD_CmdSetNetParam *pData);
 u8 HeDa_Cmd_Get_Net_Param_Handle(u8 *pData);
+
+u8 HeDa_TypeAddCycle_To_ReportCycleType(u8 Report_Time_Type,u8 cycle_num);
+void HeDa_ReportCycleType_To_TypeAddCycle(u8 Report_Cycle_Type,u8 *Report_Time_Type,u8 *cycle_num);
 u8 HeDa_Cmd_Set_Report_Cycle_Handle(u8 *pData);
 u8 HeDa_Cmd_Get_Report_Cycle_Handle(u8 *pData);
+
 u8 HeDa_Cmd_Set_Pressure_Threshold_Handle(u8 *pData);
 u8 HeDa_Cmd_Get_Pressure_Threshold_Handle(u8 *pData);
+
 u8 HeDa_Cmd_Set_Addr_Handle(u8 *pData);
 u8 HeDa_Cmd_Get_Addr_Handle(u8 *pData);
 

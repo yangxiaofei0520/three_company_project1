@@ -4103,12 +4103,12 @@ void fixTaskGsm(void)
 			return ;
 		}
 #elif defined(HEDA_PTR)
-		LP_XJ_CalReportTime(&stNextTime);
+		LP_HD_CalReportConut(&stNextTime);
 		dwOffset = TM_DiffSecond(&stTimeNowTm, &stNextTime);
 		
 		/* 第一次按照上报时间上报允许误差60S加120超时 特别注意最小抄表周期必须为5分钟否则会出现分钟上报问题 */
 		//if(((0 >= dwOffset)&&(-60 <= dwOffset))||((0 < dwOffset)&&(180 >= dwOffset)))
-		if(XJ_ONLINE_TO >= dwOffset)
+		if(HD_ClaReportTimeToSec() >= dwOffset)
 		{
 			m_nUploadMode = TIME_DAT_REP;
 			fixTaskGsmProc();
@@ -4152,8 +4152,10 @@ void InitializeGsm(void)
 
 #ifdef JASON130_PTR
 	JASON_130InitializeGsm();
-#else ifdef XINJIANG_PTR
+#elif defined(XINJIANG_PTR)
 	XJ_InitializeGsm();
+#elif defined(HEDA_PTR)
+	HD_InitializeGsm();
 #endif
 
 	/* 获取定时阀控参数 */
