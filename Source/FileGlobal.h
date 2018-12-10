@@ -49,9 +49,14 @@ typedef struct
 	#define LASTREPORTTIME_LEN     10           //上次上报时间 sizeof(TM_Time) + u16累计上报次数
 	#define OPTVALVE_LEN            10           //定时阀控任务 sizeof(TypeValveOpt)
 #elif defined(HEDA_PTR)
-	#define REPOERCYCLE_LEN        16           //16 上报周期 sizeof(TypeReport)
+	#define REPOERCYCLE_LEN        10           //10 上报周期 sizeof(TypeReport)
 	#define ADDRESS_IPPARA_LEN     39          //IP参数 sizeof(TypeReportParameter)
 	#define ADDRESS_PARAMETER_LEN  32           //终端参数 sizeof(TypeParameter) 16
+	#define OPTVALVE_LEN            10           //定时阀控任务 sizeof(TypeValveOpt)
+
+	#define LASTREPORTTIME_LEN     10           //上次上报时间 sizeof(TM_Time) + u16累计上报次数
+	#define ADDRESS_APN_LEN        20           //APN
+	#define TMADDRESS_LEN           0           //TM地址长度
 #endif
 
 #define MAX_LEN                 ADDRESS_PARAMETER_LEN

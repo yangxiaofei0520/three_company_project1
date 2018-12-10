@@ -53,6 +53,7 @@ crtsi0.sm8
 Debug\stm8l15x_gpio.o
 Debug\stm8l15x_exti.o
 Debug\stm8l15x_clk.o
+Debug\hedaprotocol.o
 Debug\xinjiangprotocol.o
 Debug\cj188.o
 Debug\stm8l15x_it.o

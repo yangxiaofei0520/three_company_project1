@@ -345,7 +345,7 @@ u8 CheckRecordNumber(void)
 	return read;
 }
 
-	#else			//EEPROM
+#else			//EEPROM
 /*以下为接口函数
 /******************************************************************************
 * 函 数 名: SaveReportFlag

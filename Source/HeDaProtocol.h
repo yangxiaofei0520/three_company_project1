@@ -1,6 +1,7 @@
 #ifndef _HeDaProtocol_H_
 #define _HeDaProtocol_H_
 
+#include "global.h"
 #ifdef HEDA_PTR
 
 typedef struct
@@ -20,10 +21,10 @@ typedef union
 		u8 Ctrl[3];		    	//控制码
 		u16 Data_Len;			//数据长度
 		u8 Cmd;					//命令码
-		u8 Buf[170-6];			//数据域
+		u8 Buf[140-6];			//数据域
 	} Packet;
-	u8 Buffer[170];		//真正数据
-} TypeProtol_HD;		//和达协议数据结构体
+	u8 Buffer[140];		//真正数据
+}TypeProtol_HD;		//和达协议数据结构体
 
 typedef struct
 {
@@ -69,10 +70,10 @@ typedef enum
 	HeDa_Cmd_Get_Report_Cycle			=0x94,//查询上报周期（上行、下行）
 	HeDa_Cmd_Get_Pressure_Threshold		=0x95,//查询压力上下限阈值（上行、下行）
 	HeDa_Cmd_Get_Secret_Key				=0x96,//查询秘钥（上行、下行）——预留
-	HeDa_Cmd_Get_Addr					=0x89,//-------查询表地址    	和达原协议没有，自己添加
+	HeDa_Cmd_Get_Addr					=0x99,//-------查询表地址    	和达原协议没有，自己添加
 
 	HeDa_Cmd_Get_All_Param				=0xA0,//获取所有参数（上行、下行）
-	HeDa_Cmd_Get_Appoint_Data			=0xA1,//获取指定数据（上行、下行）
+	HeDa_Cmd_Get_Appoint_Data			=0xA1//获取指定数据（上行、下行）
 	
 }HeDa_Cmd;//和达科技协议命令号
 
@@ -83,7 +84,7 @@ typedef enum
 	HeDa_Burst_Event_Pressure1_Limit_Up		=0x2,//压力1，上限报警
 	HeDa_Burst_Event_Pressure2_Limit_Up		=0x4,//压力2，上限报警
 	HeDa_Burst_Event_Pressure1_Limit_Down	=0x8,//压力1，下限报警
-	HeDa_Burst_Event_Pressure2_Limit_Down	=0x10,//压力2，下限报警
+	HeDa_Burst_Event_Pressure2_Limit_Down	=0x10//压力2，下限报警
 	
 }HeDa_Burst_Event;//突发事件类型
 
@@ -101,7 +102,7 @@ typedef enum
 	HeDa_Report_Cycle_Hour_6				=0x45,
 	HeDa_Report_Cycle_Hour_12				=0x46,
 	HeDa_Report_Cycle_Hour_24				=0x47,
-	HeDa_Report_Cycle_Max					=0x47,
+	HeDa_Report_Cycle_Max					=0x47
 }HeDa_Report_Cycle;//和达上报周期类型
 
 
@@ -138,10 +139,12 @@ typedef enum
 void HD_InitializeGsm(void);
 
 s32 HD_ClaReportTimeToSec(void);
-void LP_HD_CalReportConut(TM_Time* pStNextTime);
+uint32_t LP_HD_CalReportConut(void);
+
 
 void HD_TimeOutReUpLoad(void);
 void HD_ProtolProc(void);
+
 
 void HD_OnlineCtl(void);
 u8 HD_Online(u8 nLogonMode);

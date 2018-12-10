@@ -22,6 +22,7 @@
 #include "Initialize.h"
 #include"CJ188.h"
 #include "XinJiangProtocol.h"
+#include "hedaProtocol.h"
 
 /* gprs模块初始化流程 */
 #define INIT_PWR_OFF          0
@@ -160,8 +161,6 @@ u8 g_nOwedRepFlg    = FAILURE_GLOBAL;
 /* 超时累积 */
 static u8 m_nCnt = 0;   
 
-extern ST_Time g_stNextRepTime;        //下次上报时间
-extern ST_Time g_stNextGmTime;        //下次抄表时间
 
 u8 M590_CloseConnect(void);
 s8 M590_TcpSendDatLen(u8 nLen);
@@ -1154,8 +1153,10 @@ uint8_t  UC_CommAT(u8 nCmd, u8 *pnParameter, uint8_t *pnMatch1, uint8_t *pnMatch
 #ifdef  JASON130_PTR   //130协议
 		/* 增加数据解析处理 */
 		DecodeParameter(pnDat, CheckRevDataLen());
-#else  //新疆协议
+#elif defined(XINJIANG_PTR)  //新疆协议
 		XJ_DecodeParameter(pnDat, CheckRevDataLen());
+#elif defined(HEDA_PTR)
+		HD_DecodeParameter(pnDat, CheckRevDataLen());
 #endif
 
 		/* 收到结束符则进行解码 */
@@ -1298,10 +1299,12 @@ uint8_t  UC_CommATExt(u8 nCmd, u8 *pnParameter1, u8 *pnParameter2, u8 *pnParamet
 		//aucAtBuffer[dwTxRxLen++] = nData;
 
 #ifdef  JASON130_PTR   //130协议
-		/* 增加数据解析处理 */
-		DecodeParameter(pnDat, CheckRevDataLen());
-#else   //新疆协议
-		XJ_DecodeParameter(pnDat, CheckRevDataLen());
+				/* 增加数据解析处理 */
+				DecodeParameter(pnDat, CheckRevDataLen());
+#elif defined(XINJIANG_PTR)  //新疆协议
+				XJ_DecodeParameter(pnDat, CheckRevDataLen());
+#elif defined(HEDA_PTR)
+				HD_DecodeParameter(pnDat, CheckRevDataLen());
 #endif
 
 		/* 收到结束符则进行解码 */
@@ -1942,9 +1945,33 @@ u8 WatitDataSendOk(void)
 }
 #endif
 
-
+#if defined(HEDA_PTR)//增加
+/**********************************************/
+/* 回写记录上报标志
+函数名: ReWriteRepFlg
+入  参: nIndex
+出  参: void
+返回值: u8
+修改人: maronglang
+日  期: 2016.03.26
+*//*********************************************/
+void ReWriteRepFlg(void)
+{
+	u8 nLoop = 0;
+	TypeRecord stRecord;
+	
+	for(nLoop = 0; nLoop <= m_nRepIndex; nLoop++)
+	{
+		ReadRecord(nLoop, (u8*)&stRecord, sizeof(stRecord));
+		stRecord.nRepFlg = FALSE;		
+		if(FALSE == EditRecord(nLoop,(u8*)&stRecord, sizeof(stRecord)))
+		{
+			EditRecord(nLoop,(u8*)&stRecord, sizeof(stRecord));
+		}
+	}
+}
 /* 130协议处理函数 */
-#ifdef JASON130_PTR
+#elif defined(JASON130_PTR)
 #ifndef PIEZOMETER
 /**********************************************/
 /* 获取日数据接口
@@ -4103,23 +4130,29 @@ void fixTaskGsm(void)
 			return ;
 		}
 #elif defined(HEDA_PTR)
-		LP_HD_CalReportConut(&stNextTime);
-		dwOffset = TM_DiffSecond(&stTimeNowTm, &stNextTime);
-		
-		/* 第一次按照上报时间上报允许误差60S加120超时 特别注意最小抄表周期必须为5分钟否则会出现分钟上报问题 */
-		//if(((0 >= dwOffset)&&(-60 <= dwOffset))||((0 < dwOffset)&&(180 >= dwOffset)))
-		if(HD_ClaReportTimeToSec() >= dwOffset)
+		if(FALSE == g_nReportFlg)
 		{
-			m_nUploadMode = TIME_DAT_REP;
-			fixTaskGsmProc();
-		}
-		else
-		{
-			LP_SetLowPwrStartFlg(LP_GPRS_FLG_OK);
+			dwReport = HD_ClaReportTimeToSec();
+			dwOffset = TM_DiffSecond(&stLastReportT, &stTimeNowTm);
 			
-			/* 重庆前卫送检 增加上电时钟同步后关闭链接 */
-			M590_CloseConnect();
-			return ;
+			if((60 < (dwOffset%dwReport)) ||
+				((TRUE == ReadRecord(0, (u8*)&tyRecord, sizeof(tyRecord)))&&(FALSE == tyRecord.nRepFlg)))
+			{
+				LP_SetLowPwrStartFlg(LP_GPRS_FLG_OK);
+				
+				/* 重庆前卫送检 增加上电时钟同步后关闭链接 */
+				M590_CloseConnect();
+				return ;
+			}
+			else
+			{
+				m_nUploadMode = TIME_DAT_REP;
+				g_nReportFlg  = TRUE;
+			}
+		}
+		if(TRUE == g_nReportFlg)
+		{
+			fixTaskGsmProc();
 		}
 #endif
 	}

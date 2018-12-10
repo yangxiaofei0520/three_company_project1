@@ -145,7 +145,7 @@ String.100.2=STM8 Cosmic
 String.100.3=ST7 Metrowerks V1.1
 String.100.4=Raisonance
 String.101.0=STM8 Cosmic
-String.102.0=
+String.102.0=D:\Program Files (x86)\COSMIC\CXSTM8_EVAL
 String.103.0=
 String.104.0=Hstm8
 String.105.0=Lib
@@ -462,7 +462,7 @@ PathName=source\libraries\src\stm8l15x_clk.c
 [Root.Include Files]
 ElemType=Folder
 PathName=Include Files
-Child=Root.Include Files.source\xinjiangprotocol.h
+Child=Root.Include Files.source\hedaprotocol.h
 Next=Root.Source
 Config.0=Root.Include Files.Config.0
 Config.1=Root.Include Files.Config.1
@@ -532,6 +532,11 @@ String.3.0=
 String.4.0=
 String.5.0=
 String.6.0=2015,12,8,18,57,31
+
+[Root.Include Files.source\hedaprotocol.h]
+ElemType=File
+PathName=source\hedaprotocol.h
+Next=Root.Include Files.source\xinjiangprotocol.h
 
 [Root.Include Files.source\xinjiangprotocol.h]
 ElemType=File
@@ -620,7 +625,7 @@ PathName=source\driveruart.h
 [Root.Source]
 ElemType=Folder
 PathName=Source
-Child=Root.Source.source\xinjiangprotocol.c
+Child=Root.Source.source\hedaprotocol.c
 Config.0=Root.Source.Config.0
 Config.1=Root.Source.Config.1
 
@@ -689,6 +694,11 @@ String.3.0=
 String.4.0=
 String.5.0=
 String.6.0=2015,12,8,18,57,31
+
+[Root.Source.source\hedaprotocol.c]
+ElemType=File
+PathName=source\hedaprotocol.c
+Next=Root.Source.source\xinjiangprotocol.c
 
 [Root.Source.source\xinjiangprotocol.c]
 ElemType=File

@@ -4,13 +4,13 @@
 * Date First Issued : 2016/05/26
 * Description       : 新疆物联网表通讯协议
 *******************************************************************************/
-#include "HeDaProtocol.h"
 #include "Meter.h"
 #include "DriverUart.h"
 #include "GsmGlobal.h"
 #include "FileGlobal.h"
 #include "ProtocolGlobal.h"
 #include "JX_Math.h"
+#include "Pwrctr.h"
 //#include <stdio.h>
 #include "STM8_Rtc.h"
 #include "Alarm.h"
@@ -18,14 +18,14 @@
 #include "CJ188.h"
 //#include "string.h"
 #include "STM8_Rtc.h"
-
+#include "hedaProtocol.h"
 #ifdef HEDA_PTR
 
 
 /*     全局变量位置         */
-u8 g_Device_Info[15]={0}; 		//设备信息
-TypeProtol_HD stDataPtrHD;		//接受发送结构体缓存
-u8 g_HD_Ctrl=0;					//控制码 BIT7：1 → 数据加密；  0 → 数据不加密    				BIT6：1 → 有后续包；  0 → 无后续包
+//u8 g_Device_Info[15]={0};		//设备信息
+TypeProtol_HD stDataPtrHD={0};		//接受发送结构体缓存
+u8 g_HD_Ctrl=0;				//控制码 BIT7：1 → 数据加密；  0 → 数据不加密    				BIT6：1 → 有后续包；  0 → 无后续包
 u16 g_HD_Msg_Tag=0;				//消息流水号
 u16 g_HD_aralm_type=HeDa_Burst_Event_None;//突发事件类型
 u16	g_HD_device_addr=0;		//设备地址
@@ -63,186 +63,115 @@ s32 HD_ClaReportTimeToSec(void)
 修改人: 杨晓飞
 日  期: 2018.12.06
 *//*************************************************************/
-void LP_HD_CalReportConut(TM_Time* pStNextTime)
+uint32_t LP_HD_CalReportConut(void)
 {
-	TM_Time  stTmpTime, stStarRepTime; //stStarTime, stEndTime, 
-	ST_Time  stReportTime;
-	s32  dwOffset = 0, dwOffsetNow = 0;
-	u16  wTrail   = 0;
-	u8   nRepFlg  = 0;
+	uint32_t dwTmp = 0, dwCount = 0;
+	int32_t  dwOffset = 0,dwTemp = 0;
+	TM_Time  stTmpTime, stTime; //stStarTime, stEndTime, 
+	u8       nRepFlg = 0;
+	ST_Time stLastTime;
+	TM_Time stStar, stEnd;
 
+#if  1
+	/* 计算下次抄表时间 */
+	MemcpyFunc((u8*)&tyTime, (u8*)&tyReport.Time, sizeof(TypeTime));
+	JX_BL_Change((u16)sizeof(TypeTime), (u8*)&tyTime);
+	MemcpyFunc((u8*)&stLastTime, (u8*)&tyTime, sizeof(TypeTime));
 	STM8_RTC_Get(&stTimeNow);
-	TM_TimeChangeAToB(&stTimeNow, &stTmpTime);
-
-	MemcpyFunc(&stStarRepTime.nMonth, &tyReport.Time.nMonth, sizeof(TypeTime)-1);
-	stStarRepTime.wYear = (u16)2000+tyReport.Time.nYear;
+	TM_TimeChangeAToB(&stTimeNow, &stEnd);
+	TM_TimeChangeAToB(&stLastTime, &stStar);
+	dwOffset = TM_DiffSecond(&stStar, &stEnd);	
+	stEnd.nSecond = 0;	
+	MemcpyFunc((u8*)&stTmpTime,  (u8*)&stEnd, sizeof(stTmpTime));
 	
-	if(10 > TM_DiffSecond(&stTmpTime, &stStarRepTime))
+	/* 防止叠加误差时间偏移问题 */
+	if(0 < dwOffset) 
 	{
-		MemcpyFunc(&stStarRepTime, &stTmpTime, sizeof(TM_Time));
-		if(HD_INTERVAL_HOUR == tyReport.nIntervalType)
-		{
-			stStarRepTime.nHour= tyReport.nStartHour;
-			stStarRepTime.nMinute= tyReport.nStartMinute;
-		}
-		else if(HD_INTERVAL_MIN == tyReport.nIntervalType)
-		{
-			stStarRepTime.nMinute= tyReport.nStartMinute;
-		}
-		else
-		{
-			stStarRepTime.nHour= tyReport.nStartHour;
-			stStarRepTime.nMinute= tyReport.nStartMinute;
-		}
-		dwOffset    = TM_DiffSecond(&stStarRepTime, &stLastReportT);
-		dwOffsetNow = TM_DiffSecond(&stStarRepTime, &stTmpTime);
-
-		/* 空与非空指针区分上报与低功耗流程 */
-		if(((0 < dwOffset)&&(NULL != pStNextTime))||((0 < dwOffsetNow)&&(NULL == pStNextTime)))
-		{
-			MemcpyFunc(&stStarRepTime, &stLastReportT, sizeof(TM_Time));
-			switch(tyReport.nIntervalType)
-			{
-				case XJ_INTERVAL_MON:
-					if(12 == stStarRepTime.nMonth)
-					{
-						stStarRepTime.wYear++;
-						stStarRepTime.nMonth = 0x01;
-					}
-					else
-					{
-						stStarRepTime.nMonth++;
-					}				
-					break;
-					
-				case XJ_INTERVAL_DAY:			
-					TM_RTimeAddnDay(&stStarRepTime, tyReport.cycle);
-					if(stTmpTime.nMonth != stStarRepTime.nMonth)
-					{
-						stStarRepTime.nDay = tyReport.nStartDay;
-					}							
-					break;
-			
-				case XJ_INTERVAL_HOUR:
-					TM_RTimeAddnMinute(&stStarRepTime, ((u16)60)*tyReport.cycle);
-					if(stTmpTime.nDay != stStarRepTime.nDay)
-					{
-						stStarRepTime.nHour= tyReport.nStartHour;
-					}								
-					break;
-			
-				case XJ_INTERVAL_MIN:
-					TM_RTimeAddnMinute(&stStarRepTime, tyReport.cycle);
-					if(stTmpTime.nHour != stStarRepTime.nHour)
-					{
-						stStarRepTime.nMinute= tyReport.nStartMinute;
-					}								
-					break;			
-				default:
-					break;
-			}
-		}	
-		
-		/* 尾数上线处理 */
-		if((0x01 == tyReport.nTailCtl) && 
-			((XJ_INTERVAL_DAY == tyReport.nIntervalType)||(XJ_INTERVAL_MON == tyReport.nIntervalType)))
-		{
-			wTrail = JX_BcdToByte(tyParameter.Address[0]);
-			wTrail = (wTrail*(u8)tyReport.nTaiInterval);
-			stStarRepTime.nMinute = 0;
-			TM_RTimeAddnMinute(&stStarRepTime, wTrail);
-		}
+		TM_RTimeAddnMinute(&stEnd, (tyReport.wGatherCycle - (u16)((dwOffset/60)%(u32)tyReport.wGatherCycle)));
+		TM_TimeChangeBToA(&stEnd, &g_stNextGmTime); 
 	}
 	else
 	{
-		m_nDebugFlg = TRUE;  /* 调试模式上报不影响定时上报 */
+		MemcpyFunc((u8*)&g_stNextGmTime, (u8*)&stLastTime, sizeof(ST_Time));
 	}
+#endif
 	
+	/* 计算下次上报时间 */
+	dwOffset = TM_DiffSecond(&stLastReportT, &stTmpTime);
+	dwTemp   = HD_ClaReportTimeToSec();
+		
+	/* 防止叠加误差时间偏移问题 */
+	if(0 < dwOffset) 
+	{
+		TM_RTimeAddnMinute(&stTmpTime, ((dwTemp - (u32)(dwOffset%dwTemp))/60));
+		TM_TimeChangeBToA(&stTmpTime, &g_stNextRepTime);
+	}
+	else
+	{
+		TM_TimeChangeBToA(&stLastReportT, &g_stNextRepTime);
+	}
+
 	/* 上报失败补报 */
 	nRepFlg = GetReportFailFlag();
-	if((XJ_INTERVAL_MIN != tyReport.nIntervalType)&&(nRepFlg&REPORT_FAIL_FLG))
+	if(nRepFlg&REPORT_FAIL_FLG)
 	{
-		MemcpyFunc(&stStarRepTime, &stLastReportT, sizeof(TM_Time));
-		
+		STM8_RTC_Get(&stTimeNow);		
+		TM_TimeChangeAToB(&stTimeNow, &stTime);
+		MemcpyFunc((u8*)&stTmpTime, (u8*)&stTime, sizeof(TM_Time));
+
 		/* 上报失败次数表示 0x02:第一次失败 0x04:第二次失败 0x08:第三次失败 */
 		if(nRepFlg&THIRD_REP_FAIL)
 		{
-			LP_XJ_ReportTimeCla(3, &stStarRepTime);
+			if(HD_INTERVAL_MIN == tyReport.nIntervalType)
+			{
+				TM_RTimeAddnMinute(&stTmpTime, 15);
+			}
+			else
+			{
+				TM_RTimeAddnMinute(&stTmpTime, 45);
+			}
 		}
 		else if(nRepFlg&SECOND_REP_FAIL)
 		{
-			LP_XJ_ReportTimeCla(2, &stStarRepTime);
+			if(HD_INTERVAL_MIN == tyReport.nIntervalType)
+			{
+				TM_RTimeAddnMinute(&stTmpTime, 10);
+			}
+			else
+			{
+				TM_RTimeAddnMinute(&stTmpTime, 30);
+			}
 		}
 		else
 		{
-			LP_XJ_ReportTimeCla(1, &stStarRepTime);
+			if(HD_INTERVAL_MIN == tyReport.nIntervalType)
+			{
+				TM_RTimeAddnMinute(&stTmpTime, 5);
+			}
+			else
+			{
+				TM_RTimeAddnMinute(&stTmpTime, 15);
+			}
 		}
+		TM_TimeChangeBToA(&stTmpTime, &g_stNextRepTime);	
 	}
-	TM_RTimeDecnMinute(&stStarRepTime, 1);
 
-	/* 特殊处理下次上报时间小于当前时间60S以上问题 */
-	dwOffset = TM_DiffSecond(&stStarRepTime, &stTmpTime);
-	if(XJ_ONLINE_TO < dwOffset)
+	/* 计算抄表间隔 */
+	ReadParameterForType((u8 *)&tyReport, sizeof(tyReport), REPORT_PARA);
+	if(0 < tyReport.wGatherCycle)
 	{
-		switch(tyReport.nIntervalType)
-		{
-			case XJ_INTERVAL_MON:
-				do{
-					if(12 == stStarRepTime.nMonth)
-					{
-						stStarRepTime.wYear++;
-						stStarRepTime.nMonth = 0x01;
-					}
-					else
-					{
-						stStarRepTime.nMonth++;
-					}
-				}while(0 < TM_DiffSecond(&stStarRepTime, &stTmpTime));
-				break;
-				
-			case XJ_INTERVAL_DAY:
-				do{
-					TM_RTimeAddnDay(&stStarRepTime, tyReport.cycle);
-					if(stTmpTime.nMonth != stStarRepTime.nMonth)
-					{
-						stStarRepTime.nDay = tyReport.nStartDay;
-					}
-				}while(0 < TM_DiffSecond(&stStarRepTime, &stTmpTime));						
-				break;
-		
-			case XJ_INTERVAL_HOUR:
-				do{
-					TM_RTimeAddnMinute(&stStarRepTime, ((u16)60)*tyReport.cycle);
-					if(stTmpTime.nDay != stStarRepTime.nDay)
-					{
-						stStarRepTime.nHour= tyReport.nStartHour;
-					}
-				}while(0 < TM_DiffSecond(&stStarRepTime, &stTmpTime));									
-				break;
-		
-			case XJ_INTERVAL_MIN:
-				do{
-					TM_RTimeAddnMinute(&stStarRepTime, tyReport.cycle);
-					if(stTmpTime.nHour != stStarRepTime.nHour)
-					{
-						stStarRepTime.nMinute= tyReport.nStartMinute;
-					}
-				}while(0 < TM_DiffSecond(&stStarRepTime, &stTmpTime));	
-								
-				break;			
-			default:
-				break;
-		}
-
+		dwTmp = tyReport.wGatherCycle;
+		dwCount = dwTmp*60;
 	}
-	
-	TM_TimeChangeBToA(&stStarRepTime, &g_stNextRepTime); 
-	if(NULL != pStNextTime)
+	else
 	{
-		MemcpyFunc(pStNextTime, &stStarRepTime, sizeof(TM_Time));
-	}	
-	return ;
+		return LP_WAKEUP_TO;
+	}
+
+	return dwCount;
 }
+
+
 
 /**********************************************/
 /* 超时补报控制
@@ -267,17 +196,17 @@ void HD_TimeOutReUpLoad(void)
 		return ;
 	}
 	
-	if((UP_FREE_XJ == ucLogonMode)&&(REPORT_CNT_TO > g_nDatRepCnt))
+	/*if((UP_Free_HD == ucLogonMode)&&(REPORT_CNT_TO > g_nDatRepCnt))
 	{
 		if((UP_UPLOAD_A == nLogonModeBk)||(UP_UPLOAD_B == nLogonModeBk))
 		{
 			ucLogonMode = nLogonModeBk;
 		}
-	}
+	}*/
 	
 	if(REPORT_CNT_TO <= g_nDatRepCnt)
 	{
-		SetLogonMode(UP_FREE_XJ);
+		SetLogonMode(UP_Upload_HD);
 		stRepFail.wError |= (1<<REP_RESPOND_FAIL);
 		m_nRepFailFlg = TRUE;
 		tyGSMFlag = FALSE;		
@@ -299,12 +228,12 @@ void HD_ProtolProc(void)
 	u8* pnRxAdd = GetUartRxBuf();
 	u8  nRxLen  = 0, nSendLen = 0;
 
-	nSendLen = XJ_DecodeParameter(pnRxAdd, CheckRevDataLen());
+	nSendLen = HD_DecodeParameter(pnRxAdd, CheckRevDataLen());
 
 	/* 数据发送 */
 	if(0 < nSendLen)
 	{
-		XJ_ProtolSend(nSendLen, COM_1);
+		HD_ProtolSend(nSendLen, COM_1,1);
 	}
 	UC_SleepFunc(50);
 }
@@ -332,9 +261,9 @@ void HD_OnlineCtl(void)
 	/* 数据上报控制 */
 	if( (UP_Upload_HD == ucLogonMode) && (tyGSMFlag) )
 	{
-		if(TRUE == XJ_Online(ucLogonMode))
+		if(TRUE == HD_Online(ucLogonMode))
 		{
-			ucLogonMode = UP_FREE_XJ;
+			ucLogonMode = UP_Free_HD;
 			g_dwRepTick = GetSysTemTick();
 			
 			/* 上报次数累加 */
@@ -360,24 +289,24 @@ u8 HD_Online(u8 nLogonMode)
 	u8 *pnBuf = NULL;
 	u32 dwMeterVal = 0;
 	
-	if(HD_ONLINE != tyReport.nReportType)
+	/*if(HD_ONLINE != tyReport.nReportType)
 	{
 		return nSendLen;
-	}
+	}*/
 	
 	//MemcpyFunc(&stDataPtrXJ.Packet.MeterType, &tyParameter.Type, 8);
 
 	//tyParameter.Status[0]|=((g_nSignal<<3)&0xF8);
 	
 	/* 上线类型A */
-	if(HD_ONLINE == tyReport.nReportType)
+	/*if(HD_ONLINE == tyReport.nReportType)
 	{
-		/*stDataPtrXJ.Packet.CtrlB  = 0x10;
+		stDataPtrXJ.Packet.CtrlB  = 0x10;
 		stDataPtrXJ.Packet.ACtrlB = 0x00;
 		MemcpyFunc(stDataPtrXJ.Packet.Buf,tyParameter.Status, XJ_METEST_LEN);
-		nSendLen = XJ_FRAME_FIX_LEN+XJ_METEST_LEN;	*/
+		nSendLen = XJ_FRAME_FIX_LEN+XJ_METEST_LEN;	
 	}
-	else
+	else*/
 	{
 		ST_Time now_time;
 		u16 Bat_value=0;
@@ -390,7 +319,7 @@ u8 HD_Online(u8 nLogonMode)
 		stDataPtrHD.Packet.Ctrl[2]=g_HD_Msg_Tag&0xff;
 		
 		STM8_RTC_Get(&now_time);
-		MemcpyFunc(pnBuf,&now_time, 5);							//终端时间：年-月-日-时-分 
+		MemcpyFunc(pnBuf,(u8 *)&now_time, 5);							//终端时间：年-月-日-时-分 
 		nOffset += 5;
 
 		pnBuf[nOffset]=1;										//报文中的数据条数
@@ -466,6 +395,8 @@ u8 HD_Online(u8 nLogonMode)
 	{
 		return FALSE;
 	}
+
+	g_dwRepTick = GetSysTemTick();
 	return TRUE;
 }
 
@@ -494,11 +425,11 @@ s8 HD_ProtolSend(u8 Size, u8 nComChannel,u8 device_info_flag)
 		/* 增加发送数据长度 */
 		while(3 > nFailCnt++)
 		{		
-			nOptRelt = GPRS_TcpSendDatLen(length); //0x0D不算入长度
+			nOptRelt = M590_TcpSendDatLen(length); //0x0D不算入长度
 			if(-1 == nOptRelt)
 			{
 				stRepFail.wError |= (1<<DATSEND_ERROR);
-				GPRS_CloseConnect();
+				M590_CloseConnect();
 				ucStatusGsm = GSM_SHAKEHAND;
 				return -1;
 			}
@@ -527,7 +458,8 @@ s8 HD_ProtolSend(u8 Size, u8 nComChannel,u8 device_info_flag)
 	Point += sizeof(tyProtolHead);									//指针向下
 	if(device_info_flag)
 	{
-		MemcpyFunc(Point, (u8 *)&g_Device_Info, sizeof(g_Device_Info) );	//复制设备信息到缓冲中
+		//MemcpyFunc(Point, (u8 *)&g_Device_Info, sizeof(g_Device_Info) );	//复制设备信息到缓冲中
+		MemsetFunc(Point,0, 15);
 		Point += sizeof(g_Device_Info);										//指针向下
 		length +=sizeof(g_Device_Info);
 	}
@@ -620,7 +552,7 @@ u8 HD_DecodeParameter(u8* pnRxBuf, u8 nRxLen)
 	}
 
 	/* CS校验    从起始位到数据域*/
-	if( stDataPtrHD.Buffer[wDataLen-3]) != JX_AddSum8Bit(pnRxBuf+wLen, sizeof(tyProtolHead)+wDataLen+3))
+	if( stDataPtrHD.Buffer[wDataLen-3] != JX_AddSum8Bit(pnRxBuf+wLen, sizeof(tyProtolHead)+wDataLen+3))
 	{
 		goto __UC_Pro_Exit;
 	}
@@ -812,7 +744,7 @@ void HeDa_Cmd_Reply_Upload_Handle(u8 *pData,u8 ctrl)
 	TM_TimeChangeAToB(&stTimeNow, &stEnd);
 	if(FALSE == TM_IsValidTimePro(&stEnd))
 	{
-		return FALSE;
+		return;
 	}
 	STM8_RTC_Set(&stTimeNow);	
 
@@ -850,7 +782,7 @@ u8 HeDa_Cmd_Set_Sampling_Interval_Handle(u8 *pData)
 	if((stDataPtrHD.Packet.Data_Len-1) < 2)//数据域长度不够
 	{
 		*pData=0x10;	  //设置失败
-		*(pData+1)=tyReport.nGatherCycle;//终端当前采样间隔，分钟
+		*(pData+1)=tyReport.wGatherCycle;//终端当前采样间隔，分钟
 	}
 	else
 	{	
@@ -859,7 +791,7 @@ u8 HeDa_Cmd_Set_Sampling_Interval_Handle(u8 *pData)
 		*(pData+1)=hd_samling_interval;//终端当前采样间隔，分钟
 
 		//保存数据
-		tyReport.nGatherCycle = hd_samling_interval;
+		tyReport.wGatherCycle = hd_samling_interval;
 		SaveParameterForType((u8 *)&tyReport, REPOERCYCLE_LEN, REPORT_PARA);
 	}
 
@@ -878,7 +810,7 @@ u8 HeDa_Cmd_Set_Sampling_Interval_Handle(u8 *pData)
 *//*********************************************/
 u8 HeDa_Cmd_Get_Sampling_Interval_Handle(u8 *pData)
 {
-	*pData=tyReport.nGatherCycle;
+	*pData=tyReport.wGatherCycle;
 	return 1;
 }
 
@@ -999,12 +931,12 @@ u8 HeDa_Cmd_Set_Report_Cycle_Handle(u8 *pData)
 	if( (hd_cycle<HeDa_Report_Cycle_Min) || (hd_cycle<HeDa_Report_Cycle_Max))
 	{
 		*pData=0x10;//设置失败
-		*(pData+1)=HeDa_TypeAddCycle_To_ReportCycleType(tyReport.nReportType,tyReport.cycle);
+		*(pData+1)=HeDa_TypeAddCycle_To_ReportCycleType(tyReport.nIntervalType,tyReport.cycle);
 	}
 	else 
 	{
 		*pData=0x01;//设置成功
-		HeDa_ReportCycleType_To_TypeAddCycle(hd_cycle,&tyReport.nReportType,&tyReport.cycle);
+		HeDa_ReportCycleType_To_TypeAddCycle(hd_cycle,&tyReport.nIntervalType,&tyReport.cycle);
 		*(pData+1)=hd_cycle;
 		SaveParameterForType((u8 *)&tyReport, sizeof(tyReport), REPORT_PARA);//保存到eeprom中
 
@@ -1023,7 +955,7 @@ u8 HeDa_Cmd_Set_Report_Cycle_Handle(u8 *pData)
 *//*********************************************/
 u8 HeDa_Cmd_Get_Report_Cycle_Handle(u8 *pData)
 {
-	*pData=HeDa_TypeAddCycle_To_ReportCycleType(tyReport.nReportType,tyReport.cycle);;
+	*pData=HeDa_TypeAddCycle_To_ReportCycleType(tyReport.nIntervalType,tyReport.cycle);;
 	return 1;
 }
 
@@ -1064,23 +996,23 @@ void HeDa_ReportCycleType_To_TypeAddCycle(u8 Report_Cycle_Type,u8 *Report_Time_T
 			*Report_Time_Type=HD_INTERVAL_HOUR;
 			*cycle_num=1;
 			break;
-		case HeDa_Report_Cycle_Hour_2
+		case HeDa_Report_Cycle_Hour_2:
 			*Report_Time_Type=HD_INTERVAL_HOUR;
 			*cycle_num=2;
 			break;
-		case HeDa_Report_Cycle_Hour_4
+		case HeDa_Report_Cycle_Hour_4:
 			*Report_Time_Type=HD_INTERVAL_HOUR;
 			*cycle_num=4;
 			break;
-		case HeDa_Report_Cycle_Hour_6
+		case HeDa_Report_Cycle_Hour_6:
 			*Report_Time_Type=HD_INTERVAL_HOUR;
 			*cycle_num=6;
 			break;
-		case HeDa_Report_Cycle_Hour_12
+		case HeDa_Report_Cycle_Hour_12:
 			*Report_Time_Type=HD_INTERVAL_HOUR;
 			*cycle_num=12;
 			break;
-		case HeDa_Report_Cycle_Hour_24
+		case HeDa_Report_Cycle_Hour_24:
 			*Report_Time_Type=HD_INTERVAL_HOUR;
 			*cycle_num=24;
 			break;
@@ -1089,7 +1021,7 @@ void HeDa_ReportCycleType_To_TypeAddCycle(u8 Report_Cycle_Type,u8 *Report_Time_T
 			*cycle_num=24;
 			break;
 	}
-	return 0;
+	return;
 }
 
 /**********************************************/
@@ -1119,13 +1051,16 @@ u8 HeDa_TypeAddCycle_To_ReportCycleType(u8 Report_Time_Type,u8 cycle_num)
 			}
 		case HD_INTERVAL_HOUR:
 			{
-				case	1:	return HeDa_Report_Cycle_Hour_1;
-				case	2:	return HeDa_Report_Cycle_Hour_2;
-				case	4:	return HeDa_Report_Cycle_Hour_4;
-				case	6:	return HeDa_Report_Cycle_Hour_6;
-				case	12:	return HeDa_Report_Cycle_Hour_12;
-				case	24:	return HeDa_Report_Cycle_Hour_24;
-				default:	return HeDa_Report_Cycle_Hour_24;
+				switch(cycle_num)
+					{
+					case	1:	return HeDa_Report_Cycle_Hour_1;
+					case	2:	return HeDa_Report_Cycle_Hour_2;
+					case	4:	return HeDa_Report_Cycle_Hour_4;
+					case	6:	return HeDa_Report_Cycle_Hour_6;
+					case	12:	return HeDa_Report_Cycle_Hour_12;
+					case	24:	return HeDa_Report_Cycle_Hour_24;
+					default:	return HeDa_Report_Cycle_Hour_24;
+				}
 			}
 		default:
 			return HeDa_Report_Cycle_Max;
@@ -1159,8 +1094,8 @@ u8 HeDa_Cmd_Set_Pressure_Threshold_Handle(u8 *pData)
 		{
 			flag_change_response |=0x01;
 			flag_change_response |=0x02;
-			tyParameter.Pressure1_LimitUp=(float *)(pData+1);
-			tyParameter.Pressure1_LimitDown=(float *)(pData+5);
+			tyParameter.Pressure1_LimitUp=*(float *)(pData+1);
+			tyParameter.Pressure1_LimitDown=*(float *)(pData+5);
 			SaveParameterForType((u8*)&tyParameter, sizeof(tyParameter), METER_PARA);
 		}
 		else if(flag_change & 0x01)
@@ -1179,8 +1114,8 @@ u8 HeDa_Cmd_Set_Pressure_Threshold_Handle(u8 *pData)
 		{
 			flag_change_response |=0x04;
 			flag_change_response |=0x08;		
-			tyParameter.Pressure2_LimitUp=(float *)(pData+9);
-			tyParameter.Pressure2_LimitDown=(float *)(pData+13);
+			tyParameter.Pressure2_LimitUp=*(float *)(pData+9);
+			tyParameter.Pressure2_LimitDown=*(float *)(pData+13);
 			SaveParameterForType((u8*)&tyParameter, sizeof(tyParameter), METER_PARA);
 		}
 		else if(flag_change & 0x04)
@@ -1351,7 +1286,7 @@ void HD_InitializeGsm(void)
 	
 	MemsetFunc(nPort, 0, sizeof(nPort));
 	MemsetFunc(nIPstr, 0, sizeof(nIPstr));	
-	SetLogonMode(UP_LOGIN);
+	SetLogonMode(UP_Upload_HD);
 	
 	/* 获取上报IP地址参数 */
 	if(TRUE == ReadParameterForType((u8 *)&tyReportParameter, sizeof(tyReportParameter), IPANDPORT_PARA))

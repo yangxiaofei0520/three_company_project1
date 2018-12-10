@@ -395,213 +395,120 @@
  861  0222 20ed          	jra	L611
  862                     ; 327 		return BATVOL_NORMAL;
  866                     	switch	.data
- 867  0009               L722_nAlmPressChk:
+ 867  0009               L722_nBatAdcFlg:
  868  0009 01            	dc.b	1
- 902                     	switch	.const
- 903  000e               L621:
- 904  000e ffffff00      	dc.l	-256
- 905  0012               L031:
- 906  0012 00000064      	dc.l	100
- 907                     ; 340 void ALM_PressureOverLimit(void)
- 907                     ; 341 {
- 908                     	switch	.text
- 909  0224               _ALM_PressureOverLimit:
- 911  0224 5204          	subw	sp,#4
- 912       00000004      OFST:	set	4
- 915                     ; 344 	if((FALSE == nAlmPressChk)||(0 == tyParameter.nAlmCtl[0]&0x01)||(0xFFFFFF00 <= tyRecord.wPressure))
- 917  0226 725d0009      	tnz	L722_nAlmPressChk
- 918  022a 275f          	jreq	L631
- 920  022c 725d0014      	tnz	_tyParameter+20
- 921  0230 2605          	jrne	L221
- 922  0232 ae0001        	ldw	x,#1
- 923  0235 2001          	jra	L421
- 924  0237               L221:
- 925  0237 5f            	clrw	x
- 926  0238               L421:
- 927  0238 01            	rrwa	x,a
- 928  0239 a501          	bcp	a,#1
- 929  023b 264e          	jrne	L631
- 931  023d ae000a        	ldw	x,#_tyRecord+10
- 932  0240 cd0000        	call	c_ltor
- 934  0243 ae000e        	ldw	x,#L621
- 935  0246 cd0000        	call	c_lcmp
- 937                     ; 346 		return ;
- 939  0249 2440          	jruge	L631
- 940                     ; 349 	if(tyParameter.wBasePress-(tyParameter.wBasePress*(u32)tyParameter.nDownLmtRate/100) >= tyRecord.wPressure)
- 942  024b ad41          	call	LC004
- 944  024d 96            	ldw	x,sp
- 945  024e 5c            	incw	x
- 946  024f cd0000        	call	c_rtol
- 948  0252 ae0010        	ldw	x,#_tyParameter+16
- 949  0255 cd0000        	call	c_ltor
- 951  0258 96            	ldw	x,sp
- 952  0259 5c            	incw	x
- 953  025a cd0000        	call	c_lsub
- 955  025d ae000a        	ldw	x,#_tyRecord+10
- 956  0260 cd0000        	call	c_lcmp
- 958  0263 2504          	jrult	L352
- 959                     ; 351 		ALM_SetAlmStatus(PRESS_DOWNLIMIT);
- 961  0265 a640          	ld	a,#64
- 964  0267 201c          	jp	LC003
- 965  0269               L352:
- 966                     ; 353 	else if(tyParameter.wBasePress <= tyRecord.wPressure-(tyParameter.wBasePress*(u32)tyParameter.nDownLmtRate/100))/* 越上限 */
- 968  0269 ad23          	call	LC004
- 970  026b 96            	ldw	x,sp
- 971  026c 5c            	incw	x
- 972  026d cd0000        	call	c_rtol
- 974  0270 ae000a        	ldw	x,#_tyRecord+10
- 975  0273 cd0000        	call	c_ltor
- 977  0276 96            	ldw	x,sp
- 978  0277 5c            	incw	x
- 979  0278 cd0000        	call	c_lsub
- 981  027b ae0010        	ldw	x,#_tyParameter+16
- 982  027e cd0000        	call	c_lcmp
- 984  0281 2504          	jrult	L552
- 985                     ; 355 		ALM_SetAlmStatus(PRESS_UPLIMIT);
- 987  0283 a620          	ld	a,#32
- 988  0285               LC003:
- 989  0285 ad5e          	call	_ALM_SetAlmStatus
- 991  0287               L552:
- 992                     ; 358 	nAlmPressChk = FALSE;
- 994  0287 725f0009      	clr	L722_nAlmPressChk
- 995                     ; 359 	return ;
- 996  028b               L631:
- 999  028b 5b04          	addw	sp,#4
-1000  028d 81            	ret	
-1002  028e               LC004:
-1003  028e 5500190003    	mov	c_lreg+3,_tyParameter+25
-1004  0293 3f02          	clr	c_lreg+2
-1005  0295 3f01          	clr	c_lreg+1
-1006  0297 3f00          	clr	c_lreg
-1007  0299 ae0010        	ldw	x,#_tyParameter+16
-1008  029c cd0000        	call	c_lmul
-1010  029f ae0012        	ldw	x,#L031
-1011  02a2 cc0000        	jp	c_ludv
-1013                     	switch	.data
-1014  000a               L162_nBatAdcFlg:
-1015  000a 01            	dc.b	1
-1066                     ; 372 void ALM_TaskFunc(void)
-1066                     ; 373 {
-1067                     	switch	.text
-1068  02a5               _ALM_TaskFunc:
-1070  02a5 89            	pushw	x
-1071       00000002      OFST:	set	2
-1074                     ; 374 	u8 nWakeUpFlg = 0;
-1076  02a6 0f01          	clr	(OFST-1,sp)
-1077                     ; 375 	u8 nGuardKeyStat = 0;
-1079  02a8 0f02          	clr	(OFST+0,sp)
-1080                     ; 381 	if(nBatAdcFlg)                      /* 修改2017081401 */
-1082  02aa c6000a        	ld	a,L162_nBatAdcFlg
-1083  02ad 270d          	jreq	L303
-1084                     ; 383 		g_nAlmStat |= BAT_ManageFunc();
-1086  02af cd01c5        	call	_BAT_ManageFunc
-1088  02b2 ca0000        	or	a,_g_nAlmStat
-1089  02b5 c70000        	ld	_g_nAlmStat,a
-1090                     ; 384 		nBatAdcFlg = FALSE;
-1092  02b8 725f000a      	clr	L162_nBatAdcFlg
-1093  02bc               L303:
-1094                     ; 429 		ALM_PressureOverLimit();
-1096  02bc cd0224        	call	_ALM_PressureOverLimit
-1098                     ; 433 	if((NO_ALARM == (g_nAlmStat & ALARM_MASK))&&(FALSE == g_nGmFlg))
-1100  02bf c60000        	ld	a,_g_nAlmStat
-1101  02c2 5f            	clrw	x
-1102  02c3 97            	ld	xl,a
-1103  02c4 5d            	tnzw	x
-1104  02c5 2618          	jrne	L503
-1106  02c7 c60000        	ld	a,_g_nGmFlg
-1107  02ca 2613          	jrne	L503
-1108                     ; 435 		g_nAlmRepFailCnt = 0;
-1110  02cc c70008        	ld	_g_nAlmRepFailCnt,a
-1111                     ; 436 		g_nGuardEnFlg &= ((~ALARM_REP_FLG)&0x3F);
-1113  02cf c60007        	ld	a,_g_nGuardEnFlg
-1114  02d2 a43d          	and	a,#61
-1115  02d4 c70007        	ld	_g_nGuardEnFlg,a
-1116                     ; 437 		SaveByte(ADDRESS_GUARD_EN, g_nGuardEnFlg);
-1118  02d7 88            	push	a
-1119  02d8 ae1000        	ldw	x,#4096
-1120  02db cd0000        	call	_SaveByte
-1122  02de 84            	pop	a
-1123  02df               L503:
-1124                     ; 439 }
-1127  02df 85            	popw	x
-1128  02e0 81            	ret	
-1152                     ; 450 u8 ALM_GetBatStatus(void)
-1152                     ; 451 {
-1153                     	switch	.text
-1154  02e1               _ALM_GetBatStatus:
-1158                     ; 452 	return g_nAlmStat;
-1160  02e1 c60000        	ld	a,_g_nAlmStat
-1163  02e4 81            	ret	
-1197                     ; 464 u8 ALM_SetAlmStatus(u8 nNewAlmStat)
-1197                     ; 465 {
-1198                     	switch	.text
-1199  02e5               _ALM_SetAlmStatus:
-1201  02e5 88            	push	a
-1202       00000000      OFST:	set	0
-1205                     ; 466 	LP_ClrLowPwrStartFlg(LP_GPRS_FLG_OK);
-1207  02e6 a601          	ld	a,#1
-1208  02e8 cd0000        	call	_LP_ClrLowPwrStartFlg
-1210                     ; 467 	g_nAlmStat|= nNewAlmStat;
-1212  02eb c60000        	ld	a,_g_nAlmStat
-1213  02ee 1a01          	or	a,(OFST+1,sp)
-1214  02f0 c70000        	ld	_g_nAlmStat,a
-1215                     ; 477 }
-1218  02f3 84            	pop	a
-1219  02f4 81            	ret	
-1252                     ; 488 u8 ALM_ClrAlmStatus(u8 nNewAlmStat)
-1252                     ; 489 {
-1253                     	switch	.text
-1254  02f5               _ALM_ClrAlmStatus:
-1258                     ; 490 	g_nAlmStat &= (~nNewAlmStat);	
-1260  02f5 43            	cpl	a
-1261  02f6 c40000        	and	a,_g_nAlmStat
-1262  02f9 c70000        	ld	_g_nAlmStat,a
-1263                     ; 501 }
-1266  02fc 81            	ret	
-1323                     	xdef	_ALM_PressureOverLimit
-1324                     	xdef	_BAT_ManageFunc
-1325                     	xdef	_BAT_GetBatVolExt
-1326                     	xdef	_ADC_ClaAvrVol
-1327                     	xdef	_ADC_GetAdcVol
-1328                     	xdef	_ADC_OffToOnChange
-1329                     	xref	_g_nGmFlg
-1330                     	xdef	_g_nAlmStat
-1331                     	xref	_STM8_RTC_Get
-1332                     	xref	_stRepFail
-1333                     	xref	_tyParameter
-1334                     	xref	_tyRecord
-1335                     	xref	_AddAlmRecord
-1336                     	xref	_SaveByte
-1337                     	xref	_LP_ClrLowPwrStartFlg
-1338                     	xref	_UC_SleepFunc
-1339                     	xref	_GetReportFlag
-1340                     	xref	_stTimeNow
-1341                     	xdef	_ADC_GetVavleCtlVol
-1342                     	xdef	_ALM_ClrAlmStatus
-1343                     	xdef	_ALM_SetAlmStatus
-1344                     	xdef	_BAT_GetBatVol
-1345                     	xdef	_ALM_GetBatStatus
-1346                     	xdef	_ALM_TaskFunc
-1347                     	xdef	_g_nAlmRepFailCnt
-1348                     	xdef	_g_nGuardEnFlg
-1349                     	xdef	_g_dwBatNoLoadVol
-1350                     	xdef	_g_dwInnerVol
-1351                     	xdef	_g_dwBatVol
-1352                     	xref	_GetTmDebugModeStat
-1353                     	xref	_MemcpyFunc
-1354                     	xref	_delay_us
-1355                     	xref	_GPIO_WriteBit
-1356                     	xref	_ADC_ChannelCmd
-1357                     	xref.b	c_lreg
-1376                     	xref	c_lsub
-1377                     	xref	c_lmul
-1378                     	xref	c_lcmp
-1379                     	xref	c_smul
-1380                     	xref	c_lgadd
-1381                     	xref	c_xymvx
-1382                     	xref	c_ludv
-1383                     	xref	c_rtol
-1384                     	xref	c_uitolx
-1385                     	xref	c_umul
-1386                     	xref	c_ltor
-1387                     	end
+ 918                     ; 372 void ALM_TaskFunc(void)
+ 918                     ; 373 {
+ 919                     	switch	.text
+ 920  0224               _ALM_TaskFunc:
+ 922  0224 89            	pushw	x
+ 923       00000002      OFST:	set	2
+ 926                     ; 374 	u8 nWakeUpFlg = 0;
+ 928  0225 0f01          	clr	(OFST-1,sp)
+ 929                     ; 375 	u8 nGuardKeyStat = 0;
+ 931  0227 0f02          	clr	(OFST+0,sp)
+ 932                     ; 381 	if(nBatAdcFlg)                      /* 修改2017081401 */
+ 934  0229 c60009        	ld	a,L722_nBatAdcFlg
+ 935  022c 270c          	jreq	L152
+ 936                     ; 383 		g_nAlmStat |= BAT_ManageFunc();
+ 938  022e ad95          	call	_BAT_ManageFunc
+ 940  0230 ca0000        	or	a,_g_nAlmStat
+ 941  0233 c70000        	ld	_g_nAlmStat,a
+ 942                     ; 384 		nBatAdcFlg = FALSE;
+ 944  0236 725f0009      	clr	L722_nBatAdcFlg
+ 945  023a               L152:
+ 946                     ; 433 	if((NO_ALARM == (g_nAlmStat & ALARM_MASK))&&(FALSE == g_nGmFlg))
+ 948  023a c60000        	ld	a,_g_nAlmStat
+ 949  023d a50f          	bcp	a,#15
+ 950  023f 2618          	jrne	L352
+ 952  0241 c60000        	ld	a,_g_nGmFlg
+ 953  0244 2613          	jrne	L352
+ 954                     ; 435 		g_nAlmRepFailCnt = 0;
+ 956  0246 c70008        	ld	_g_nAlmRepFailCnt,a
+ 957                     ; 436 		g_nGuardEnFlg &= ((~ALARM_REP_FLG)&0x3F);
+ 959  0249 c60007        	ld	a,_g_nGuardEnFlg
+ 960  024c a43d          	and	a,#61
+ 961  024e c70007        	ld	_g_nGuardEnFlg,a
+ 962                     ; 437 		SaveByte(ADDRESS_GUARD_EN, g_nGuardEnFlg);
+ 964  0251 88            	push	a
+ 965  0252 ae1000        	ldw	x,#4096
+ 966  0255 cd0000        	call	_SaveByte
+ 968  0258 84            	pop	a
+ 969  0259               L352:
+ 970                     ; 439 }
+ 973  0259 85            	popw	x
+ 974  025a 81            	ret	
+ 998                     ; 450 u8 ALM_GetBatStatus(void)
+ 998                     ; 451 {
+ 999                     	switch	.text
+1000  025b               _ALM_GetBatStatus:
+1004                     ; 452 	return g_nAlmStat;
+1006  025b c60000        	ld	a,_g_nAlmStat
+1009  025e 81            	ret	
+1043                     ; 464 u8 ALM_SetAlmStatus(u8 nNewAlmStat)
+1043                     ; 465 {
+1044                     	switch	.text
+1045  025f               _ALM_SetAlmStatus:
+1047  025f 88            	push	a
+1048       00000000      OFST:	set	0
+1051                     ; 466 	LP_ClrLowPwrStartFlg(LP_GPRS_FLG_OK);
+1053  0260 a601          	ld	a,#1
+1054  0262 cd0000        	call	_LP_ClrLowPwrStartFlg
+1056                     ; 467 	g_nAlmStat|= nNewAlmStat;
+1058  0265 c60000        	ld	a,_g_nAlmStat
+1059  0268 1a01          	or	a,(OFST+1,sp)
+1060  026a c70000        	ld	_g_nAlmStat,a
+1061                     ; 477 }
+1064  026d 84            	pop	a
+1065  026e 81            	ret	
+1098                     ; 488 u8 ALM_ClrAlmStatus(u8 nNewAlmStat)
+1098                     ; 489 {
+1099                     	switch	.text
+1100  026f               _ALM_ClrAlmStatus:
+1104                     ; 490 	g_nAlmStat &= (~nNewAlmStat);	
+1106  026f 43            	cpl	a
+1107  0270 c40000        	and	a,_g_nAlmStat
+1108  0273 c70000        	ld	_g_nAlmStat,a
+1109                     ; 501 }
+1112  0276 81            	ret	
+1169                     	xdef	_BAT_ManageFunc
+1170                     	xdef	_BAT_GetBatVolExt
+1171                     	xdef	_ADC_ClaAvrVol
+1172                     	xdef	_ADC_GetAdcVol
+1173                     	xdef	_ADC_OffToOnChange
+1174                     	xref	_g_nGmFlg
+1175                     	xdef	_g_nAlmStat
+1176                     	xref	_STM8_RTC_Get
+1177                     	xref	_stRepFail
+1178                     	xref	_AddAlmRecord
+1179                     	xref	_SaveByte
+1180                     	xref	_LP_ClrLowPwrStartFlg
+1181                     	xref	_UC_SleepFunc
+1182                     	xref	_GetReportFlag
+1183                     	xref	_stTimeNow
+1184                     	xdef	_ADC_GetVavleCtlVol
+1185                     	xdef	_ALM_ClrAlmStatus
+1186                     	xdef	_ALM_SetAlmStatus
+1187                     	xdef	_BAT_GetBatVol
+1188                     	xdef	_ALM_GetBatStatus
+1189                     	xdef	_ALM_TaskFunc
+1190                     	xdef	_g_nAlmRepFailCnt
+1191                     	xdef	_g_nGuardEnFlg
+1192                     	xdef	_g_dwBatNoLoadVol
+1193                     	xdef	_g_dwInnerVol
+1194                     	xdef	_g_dwBatVol
+1195                     	xref	_GetTmDebugModeStat
+1196                     	xref	_MemcpyFunc
+1197                     	xref	_delay_us
+1198                     	xref	_GPIO_WriteBit
+1199                     	xref	_ADC_ChannelCmd
+1218                     	xref	c_lcmp
+1219                     	xref	c_smul
+1220                     	xref	c_lgadd
+1221                     	xref	c_xymvx
+1222                     	xref	c_ludv
+1223                     	xref	c_rtol
+1224                     	xref	c_uitolx
+1225                     	xref	c_umul
+1226                     	xref	c_ltor
+1227                     	end

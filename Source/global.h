@@ -32,8 +32,8 @@
 
 /* 上行协议类型 */
 //#define XINJIANG_PTR            //新疆协议
-//#define HEDA_PTR				//和达协议
-#define JASON130_PTR            //捷先130协议
+#define HEDA_PTR				//和达协议
+//#define JASON130_PTR            //捷先130协议
 
 /* 预付费模式 */
 //#define PURCHASE_MODE     
@@ -44,7 +44,7 @@
 //#define VAVLE_INNER             // 表端内置阀门 针对DN25表内置阀门
 #endif
 
-#define PIEZOMETER              // 压力计 piezometer
+//#define PIEZOMETER              // 压力计 piezometer
 
 #define PHOTOELECTRIC_METER    //光电表  只接压力计则不需要此项
 
@@ -340,7 +340,7 @@ typedef union		//时间结构体
 		u8 Address[5];				//表序号
 		u8 FactoryCode[2];			//厂商ID
 		u32 Value;		    		//表读数
-		u8 Status[4];				//表状态	
+		u8 Status;				//表状态	
 		u8 RestoreStat[4];  		//表状态恢复情况	
 		float Pressure1_LimitUp;	//压力1上限
 		float Pressure1_LimitDown;	//压力1下限
@@ -350,17 +350,11 @@ typedef union		//时间结构体
 
 	typedef struct
 	{
-		u8 nGatherCycle;   	//抄表间隔
-		u8 nStartDay;	    //起始日期
-		u8 nStartHour;	    //起始小时
-		u8 nStartMinute;	/* 起始分钟 */
+		u8 wGatherCycle;   	//抄表间隔
 		u8 nIntervalType; 	/* 间隔类型 */
 		u8 cycle;			//上报周期：时，天，月
-		//u8 nTailCtl; 	    /* 尾数上线控制 */
-		//u8 nTaiInterval;  /* 尾数上线间隔数 */	
-		//u8 nMonFreezeDay; /* 月冻结日 */	
-		//u8 nReportType;   /* 上线帧类型 */	
-		TIME_BIN Time;		//时间
+		u8 nMonFreezeDay; /* 月冻结日 */
+		TypeTime Time;		//时间	
 	} TypeReport;
 
 	typedef struct
@@ -375,6 +369,10 @@ typedef union		//时间结构体
 	{
 		u32 Value;		//表读数
 		TypeTime Time;  //时间
+
+		
+		u8  nStatus;    //表状态
+		u8  nRepFlg;    //上报标志
 	} TypeRecord;		//表记录
 
 #endif
@@ -385,6 +383,7 @@ typedef struct
 	u8 nYear;       //年
 	u8 nMon;        //月
 	u8 nDay;       //日
+
 } TypeRecordDay;		//表记录
 
 typedef struct

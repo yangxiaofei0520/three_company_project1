@@ -19,6 +19,7 @@
 #include "XinJiangProtocol.h"
 #include "Meter.h"
 #include "Alarm.h"
+#include "hedaProtocol.h"
 
 
 /* Private defines   ----------------------------------------------------------*/
@@ -644,8 +645,10 @@ void LP_LowPowerManage(void)
 	/* ªÒ»°ªΩ–—≥¨ ± */
 #ifdef XINJIANG_PTR
 	dwCntTimeOut = LP_XJ_CalReportConut();
-#else ifdef JASON130_PTR
+#elif defined(JASON130_PTR)
 	dwCntTimeOut = LP_130_CalReportConut();
+#elif defined(HEDA_PTR)
+	dwCntTimeOut = LP_HD_CalReportConut();
 #endif
 
 	LP_DelayMs(10);

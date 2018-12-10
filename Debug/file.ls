@@ -1,1416 +1,1526 @@
    1                     ; C Compiler for STM8 (COSMIC Software)
    2                     ; Generator V4.2.4 - 19 Dec 2007
    3                     ; Optimizer V4.2.4 - 18 Dec 2007
- 480                     ; 30 void ReadGroup(u8 Length, u16 Address, u8 *Data)		//从EEPROM指定地址读取N个字节
- 480                     ; 31 {
- 482                     	switch	.text
- 483  0000               _ReadGroup:
- 485  0000 88            	push	a
- 486  0001 5209          	subw	sp,#9
- 487       00000009      OFST:	set	9
- 490                     ; 32 	uint32_t add, startadd, stopadd = 0;
- 492  0003 96            	ldw	x,sp
- 493  0004 1c0002        	addw	x,#OFST-7
- 494  0007 cd0000        	call	c_ltor
- 496                     ; 33 	uint8_t i = 0;
- 498  000a 0f01          	clr	(OFST-8,sp)
- 499                     ; 35 	startadd = Address + ((uint16_t)BLOCK_OPERATION * (uint16_t)FLASH_BLOCK_SIZE);
- 501  000c 1e0d          	ldw	x,(OFST+4,sp)
- 502  000e cd0000        	call	c_uitolx
- 504  0011 96            	ldw	x,sp
- 505  0012 1c0006        	addw	x,#OFST-3
- 506  0015 cd0000        	call	c_rtol
- 508                     ; 36 	stopadd = startadd + Length;
- 510  0018 96            	ldw	x,sp
- 511  0019 1c0006        	addw	x,#OFST-3
- 512  001c cd0000        	call	c_ltor
- 514  001f 7b0a          	ld	a,(OFST+1,sp)
- 515  0021 cd0000        	call	c_ladc
- 517  0024 96            	ldw	x,sp
- 518  0025 1c0002        	addw	x,#OFST-7
- 519  0028 cd0000        	call	c_rtol
- 521                     ; 37 	for (add = startadd; add < stopadd; add++)
- 524  002b 2017          	jra	L162
- 525  002d               L552:
- 526                     ; 39 		Data[i++] = (*(PointerAttr uint8_t *) (MemoryAddressCast)add); //FLASH_ReadByte(add);
- 528  002d 7b01          	ld	a,(OFST-8,sp)
- 529  002f 0c01          	inc	(OFST-8,sp)
- 530  0031 5f            	clrw	x
- 531  0032 97            	ld	xl,a
- 532  0033 72fb0f        	addw	x,(OFST+6,sp)
- 533  0036 1608          	ldw	y,(OFST-1,sp)
- 534  0038 90f6          	ld	a,(y)
- 535  003a f7            	ld	(x),a
- 536                     ; 37 	for (add = startadd; add < stopadd; add++)
- 538  003b 96            	ldw	x,sp
- 539  003c 1c0006        	addw	x,#OFST-3
- 540  003f a601          	ld	a,#1
- 541  0041 cd0000        	call	c_lgadc
- 543  0044               L162:
- 546  0044 96            	ldw	x,sp
- 547  0045 1c0006        	addw	x,#OFST-3
- 548  0048 cd0000        	call	c_ltor
- 550  004b 96            	ldw	x,sp
- 551  004c 1c0002        	addw	x,#OFST-7
- 552  004f cd0000        	call	c_lcmp
- 554  0052 25d9          	jrult	L552
- 555                     ; 41 }
- 558  0054 5b0a          	addw	sp,#10
- 559  0056 81            	ret	
- 599                     ; 51 void SaveByte(u16 Address, u8 Data)
- 599                     ; 52 {
- 600                     	switch	.text
- 601  0057               _SaveByte:
- 603  0057 89            	pushw	x
- 604       00000000      OFST:	set	0
- 607                     ; 59     FLASH->DUKR = FLASH_RASS_KEY2; /* Warning: keys are reversed on data memory !!! */
- 609  0058 35ae5053      	mov	20563,#174
- 610                     ; 60     FLASH->DUKR = FLASH_RASS_KEY1;
- 612  005c 35565053      	mov	20563,#86
- 614  0060               L703:
- 615                     ; 63 	while ((FLASH->IAPSR  & (uint8_t)FLASH_FLAG_DUL) == RESET)  //FLASH_GetFlagStatus(FLASH_FLAG_DUL)
- 617  0060 72075054fb    	btjf	20564,#3,L703
- 618                     ; 67 	*(PointerAttr uint8_t*) (MemoryAddressCast)Address = Data;
- 620  0065 7b05          	ld	a,(OFST+5,sp)
- 621  0067 1e01          	ldw	x,(OFST+1,sp)
- 622  0069 f7            	ld	(x),a
- 623                     ; 68 	delay_us(150);
- 625  006a ae0096        	ldw	x,#150
- 626  006d cd0000        	call	_delay_us
- 629  0070               L513:
- 630                     ; 71 	while ((FLASH->IAPSR  & (uint8_t)FLASH_FLAG_HVOFF) == RESET)  //FLASH_GetFlagStatus(FLASH_FLAG_HVOFF)
- 632  0070 720d5054fb    	btjf	20564,#6,L513
- 633                     ; 73 }
- 636  0075 85            	popw	x
- 637  0076 81            	ret	
- 694                     ; 84 void SaveGroup(u8 Length, u16 Address, u8 *Data)		//写n个字节到指定EEPROM的指定地址
- 694                     ; 85 {
- 695                     	switch	.text
- 696  0077               _SaveGroup:
- 698  0077 88            	push	a
- 699  0078 89            	pushw	x
- 700       00000002      OFST:	set	2
- 703                     ; 86 	u16 wLoop = 0;
- 705  0079 5f            	clrw	x
- 706  007a 1f01          	ldw	(OFST-1,sp),x
- 707                     ; 98     FLASH->DUKR = FLASH_RASS_KEY2; /* Warning: keys are reversed on data memory !!! */
- 709  007c 35ae5053      	mov	20563,#174
- 710                     ; 99     FLASH->DUKR = FLASH_RASS_KEY1;
- 712  0080 35565053      	mov	20563,#86
- 714  0084               L153:
- 715                     ; 102 	while ((FLASH->IAPSR  & (uint8_t)FLASH_FLAG_DUL) == RESET)
- 717  0084 72075054fb    	btjf	20564,#3,L153
- 718                     ; 105 	for(wLoop = 0; wLoop < Length; wLoop++)
- 720  0089 5f            	clrw	x
- 722  008a 2015          	jra	L163
- 723  008c               L553:
- 724                     ; 108 		*(PointerAttr uint8_t*) (MemoryAddressCast)(wLoop+Address) = Data[wLoop];
- 726  008c 1e08          	ldw	x,(OFST+6,sp)
- 727  008e 72fb01        	addw	x,(OFST-1,sp)
- 728  0091 f6            	ld	a,(x)
- 729  0092 1e01          	ldw	x,(OFST-1,sp)
- 730  0094 72fb06        	addw	x,(OFST+4,sp)
- 731  0097 f7            	ld	(x),a
- 732                     ; 109 		delay_us(150);
- 734  0098 ae0096        	ldw	x,#150
- 735  009b cd0000        	call	_delay_us
- 737                     ; 105 	for(wLoop = 0; wLoop < Length; wLoop++)
- 739  009e 1e01          	ldw	x,(OFST-1,sp)
- 740  00a0 5c            	incw	x
- 741  00a1               L163:
- 742  00a1 1f01          	ldw	(OFST-1,sp),x
- 745  00a3 7b03          	ld	a,(OFST+1,sp)
- 746  00a5 5f            	clrw	x
- 747  00a6 97            	ld	xl,a
- 748  00a7 bf00          	ldw	c_x,x
- 749  00a9 1e01          	ldw	x,(OFST-1,sp)
- 750  00ab b300          	cpw	x,c_x
- 751  00ad 25dd          	jrult	L553
- 753  00af               L763:
- 754                     ; 113 	while ((FLASH->IAPSR  & (uint8_t)FLASH_FLAG_HVOFF) == RESET)  
- 756  00af 720d5054fb    	btjf	20564,#6,L763
- 757                     ; 115 }
- 760  00b4 5b03          	addw	sp,#3
- 761  00b6 81            	ret	
-1520                     ; 358 void SaveReportFlag(u8 nReportFlg)
-1520                     ; 359 {
-1521                     	switch	.text
-1522  00b7               _SaveReportFlag:
-1524  00b7 88            	push	a
-1525  00b8 5208          	subw	sp,#8
-1526       00000008      OFST:	set	8
-1529                     ; 360 	u16 nX = 0, address = 0;
-1531  00ba 5f            	clrw	x
-1532  00bb 1f01          	ldw	(OFST-7,sp),x
-1535                     ; 364 	address = ADDRESS_REPORTFLG;
-1537  00bd ae1001        	ldw	x,#4097
-1538  00c0 1f03          	ldw	(OFST-5,sp),x
-1539                     ; 366 	ReadGroup(sizeof(index), address, (u8 *)&index);		//读指针,下面做平衡算法
-1541  00c2 96            	ldw	x,sp
-1542  00c3 1c0005        	addw	x,#OFST-3
-1543  00c6 89            	pushw	x
-1544  00c7 ae1001        	ldw	x,#4097
-1545  00ca 89            	pushw	x
-1546  00cb a604          	ld	a,#4
-1547  00cd cd0000        	call	_ReadGroup
-1549  00d0 5b04          	addw	sp,#4
-1550                     ; 367 	if (index.Bytes.B0 == 0xff)		//第一次?
-1552  00d2 7b05          	ld	a,(OFST-3,sp)
-1553  00d4 4c            	inc	a
-1554  00d5 2608          	jrne	L1501
-1555                     ; 369 		SaveByte(ADDRESS_REPORTFLG, nReportFlg);		//保存指针
-1557  00d7 7b09          	ld	a,(OFST+1,sp)
-1558  00d9 88            	push	a
-1559  00da ae1001        	ldw	x,#4097
-1562  00dd 2045          	jra	L3501
-1563  00df               L1501:
-1564                     ; 371 	else if (index.Bytes.B1 == 0xff)
-1566  00df 7b06          	ld	a,(OFST-2,sp)
-1567  00e1 4c            	inc	a
-1568  00e2 2608          	jrne	L5501
-1569                     ; 373 		SaveByte(ADDRESS_REPORTFLG + 1, nReportFlg);	//保存指针
-1571  00e4 7b09          	ld	a,(OFST+1,sp)
-1572  00e6 88            	push	a
-1573  00e7 ae1002        	ldw	x,#4098
-1576  00ea 2038          	jra	L3501
-1577  00ec               L5501:
-1578                     ; 375 	else if (index.Bytes.B2 == 0xff)
-1580  00ec 7b07          	ld	a,(OFST-1,sp)
-1581  00ee 4c            	inc	a
-1582  00ef 2608          	jrne	L1601
-1583                     ; 377 		SaveByte(ADDRESS_REPORTFLG + 2, nReportFlg);	//保存指针
-1585  00f1 7b09          	ld	a,(OFST+1,sp)
-1586  00f3 88            	push	a
-1587  00f4 ae1003        	ldw	x,#4099
-1590  00f7 202b          	jra	L3501
-1591  00f9               L1601:
-1592                     ; 379 	else if (index.Bytes.B3 == 0xff)
-1594  00f9 7b08          	ld	a,(OFST+0,sp)
-1595  00fb 4c            	inc	a
-1596  00fc 2605          	jrne	L5601
-1597                     ; 381 		SaveByte(ADDRESS_REPORTFLG + 3, nReportFlg);	//保存指针
-1599  00fe 7b09          	ld	a,(OFST+1,sp)
-1600  0100 88            	push	a
-1603  0101 201e          	jp	LC001
-1604  0103               L5601:
-1605                     ; 385 		SaveByte(ADDRESS_REPORTFLG, nReportFlg);		//保存指针
-1607  0103 7b09          	ld	a,(OFST+1,sp)
-1608  0105 88            	push	a
-1609  0106 ae1001        	ldw	x,#4097
-1610  0109 cd0057        	call	_SaveByte
-1612  010c 84            	pop	a
-1613                     ; 386 		SaveByte(ADDRESS_REPORTFLG + 1, 0xff);		//清除
-1615  010d 4bff          	push	#255
-1616  010f ae1002        	ldw	x,#4098
-1617  0112 cd0057        	call	_SaveByte
-1619  0115 84            	pop	a
-1620                     ; 387 		SaveByte(ADDRESS_REPORTFLG + 2, 0xff);		//清除
-1622  0116 4bff          	push	#255
-1623  0118 ae1003        	ldw	x,#4099
-1624  011b cd0057        	call	_SaveByte
-1626  011e 84            	pop	a
-1627                     ; 388 		SaveByte(ADDRESS_REPORTFLG + 3, 0xff);		//清除
-1629  011f 4bff          	push	#255
-1630  0121               LC001:
-1631  0121 ae1004        	ldw	x,#4100
-1633  0124               L3501:
-1634  0124 cd0057        	call	_SaveByte
-1635  0127 84            	pop	a
-1636                     ; 390 }
-1639  0128 5b09          	addw	sp,#9
-1640  012a 81            	ret	
-1676                     ; 399 u8 ReadReportFlag(void)
-1676                     ; 400 {
-1677                     	switch	.text
-1678  012b               _ReadReportFlag:
-1680  012b 5204          	subw	sp,#4
-1681       00000004      OFST:	set	4
-1684                     ; 403 	ReadGroup(sizeof(index), ADDRESS_REPORTFLG, (u8 *)&index);		//读指针,根据平衡算法,找到指针的真正位置
-1686  012d 96            	ldw	x,sp
-1687  012e 5c            	incw	x
-1688  012f 89            	pushw	x
-1689  0130 ae1001        	ldw	x,#4097
-1690  0133 89            	pushw	x
-1691  0134 a604          	ld	a,#4
-1692  0136 cd0000        	call	_ReadGroup
-1694  0139 5b04          	addw	sp,#4
-1695                     ; 404 	if (index.Bytes.B3 < 0xff)		//有数据?
-1697  013b 7b04          	ld	a,(OFST+0,sp)
-1698  013d a1ff          	cp	a,#255
-1699                     ; 406 		return index.Bytes.B3;
-1702  013f 2506          	jrult	L64
-1703                     ; 408 	else if (index.Bytes.B2 < 0xff)
-1705  0141 7b03          	ld	a,(OFST-1,sp)
-1706  0143 a1ff          	cp	a,#255
-1707  0145 2403          	jruge	L3111
-1708                     ; 410 		return index.Bytes.B2;
-1711  0147               L64:
-1713  0147 5b04          	addw	sp,#4
-1714  0149 81            	ret	
-1715  014a               L3111:
-1716                     ; 412 	else if (index.Bytes.B1 < 0xff)
-1718  014a 7b02          	ld	a,(OFST-2,sp)
-1719  014c a1ff          	cp	a,#255
-1720                     ; 414 		return index.Bytes.B1;
-1723  014e 25f7          	jrult	L64
-1724                     ; 416 	else if (index.Bytes.B0 < 0xff)
-1726  0150 7b01          	ld	a,(OFST-3,sp)
-1727  0152 a1ff          	cp	a,#255
-1728                     ; 418 		return index.Bytes.B0;
-1731  0154 25f1          	jrult	L64
-1732                     ; 422 		return 0;
-1734  0156 4f            	clr	a
-1736  0157 20ee          	jra	L64
-1786                     ; 433 u8 ReadIndex(u16 wAddr)
-1786                     ; 434 {
-1787                     	switch	.text
-1788  0159               _ReadIndex:
-1790  0159 89            	pushw	x
-1791  015a 5205          	subw	sp,#5
-1792       00000005      OFST:	set	5
-1795                     ; 435 	u8 nIndexDat = 0;
-1797  015c 0f01          	clr	(OFST-4,sp)
-1798                     ; 438 	ReadGroup(sizeof(index), wAddr, (u8 *)&index);		//读指针,根据平衡算法,找到指针的真正位置
-1800  015e 96            	ldw	x,sp
-1801  015f 1c0002        	addw	x,#OFST-3
-1802  0162 89            	pushw	x
-1803  0163 1e08          	ldw	x,(OFST+3,sp)
-1804  0165 89            	pushw	x
-1805  0166 a604          	ld	a,#4
-1806  0168 cd0000        	call	_ReadGroup
-1808  016b 5b04          	addw	sp,#4
-1809                     ; 439 	if (index.Bytes.B3 < 0xff)		//有数据?
-1811  016d 7b05          	ld	a,(OFST+0,sp)
-1812  016f a1ff          	cp	a,#255
-1813                     ; 441 		nIndexDat = index.Bytes.B3;
-1815  0171 2513          	jrult	L3511
-1816                     ; 443 	else if (index.Bytes.B2 < 0xff)
-1818  0173 7b04          	ld	a,(OFST-1,sp)
-1819  0175 a1ff          	cp	a,#255
-1820                     ; 445 		nIndexDat = index.Bytes.B2;
-1822  0177 250d          	jrult	L3511
-1823                     ; 447 	else if (index.Bytes.B1 < 0xff)
-1825  0179 7b03          	ld	a,(OFST-2,sp)
-1826  017b a1ff          	cp	a,#255
-1827                     ; 449 		nIndexDat = index.Bytes.B1;
-1829  017d 2507          	jrult	L3511
-1830                     ; 451 	else if (index.Bytes.B0 < 0xff)
-1832  017f 7b02          	ld	a,(OFST-3,sp)
-1833  0181 a1ff          	cp	a,#255
-1834                     ; 453 		nIndexDat = index.Bytes.B0;
-1840  0183 2501          	jrult	L3511
-1841                     ; 457 		nIndexDat = 0;
-1843  0185 4f            	clr	a
-1844  0186               L3511:
-1845                     ; 459 	return nIndexDat;
-1849  0186 5b07          	addw	sp,#7
-1850  0188 81            	ret	
-1876                     ; 469 void InitializeFile(void)
-1876                     ; 470 {	
-1877                     	switch	.text
-1878  0189               _InitializeFile:
-1882                     ; 472 	FLASH->CR1 &= (uint8_t)(~FLASH_CR1_FIX);
-1884  0189 72115050      	bres	20560,#0
-1885                     ; 473 	FLASH->CR1 |= (uint8_t)FLASH_ProgramTime_Standard;
-1887  018d c65050        	ld	a,20560
-1888                     ; 475     FLASH->DUKR = FLASH_RASS_KEY2; /* edit by maronglang Warning: keys are reversed on data memory !!! */
-1890  0190 35ae5053      	mov	20563,#174
-1891                     ; 476     FLASH->DUKR = FLASH_RASS_KEY1;
-1893  0194 35565053      	mov	20563,#86
-1895  0198               L5021:
-1896                     ; 479 	while ((FLASH->IAPSR  & (uint8_t)FLASH_FLAG_DUL) == RESET) // edit by maronglang20160217
-1898  0198 72075054fb    	btjf	20564,#3,L5021
-1899                     ; 483 	ucRecordIndex = ReadIndex(ADDRESS_INDEX);
-1901  019d ae10ef        	ldw	x,#4335
-1902  01a0 adb7          	call	_ReadIndex
-1904  01a2 c70002        	ld	_ucRecordIndex,a
-1905                     ; 486 	g_nRecAlmIndex = ReadIndex(ADDRESS_INDEX_ALM);
-1907  01a5 ae10cd        	ldw	x,#4301
-1908  01a8 adaf          	call	_ReadIndex
-1910  01aa c70003        	ld	_g_nRecAlmIndex,a
-1911                     ; 494 }
-1914  01ad 81            	ret	
-1917                     .const:	section	.text
-1918  0000               L1121_nBuf:
-1919  0000 00            	dc.b	0
-1920  0001 000000000000  	ds.b	26
-1983                     ; 501 void SaveParameterForType(u8* pnDat, u8 nLen, u8 nTpye)
-1983                     ; 502 {
-1984                     	switch	.text
-1985  01ae               _SaveParameterForType:
-1987  01ae 89            	pushw	x
-1988  01af 521b          	subw	sp,#27
-1989       0000001b      OFST:	set	27
-1992                     ; 503   u8 nBuf[MAX_LEN+1] = {0};
-1994  01b1 96            	ldw	x,sp
-1995  01b2 5c            	incw	x
-1996  01b3 90ae0000      	ldw	y,#L1121_nBuf
-1997  01b7 a61b          	ld	a,#27
-1998  01b9 cd0000        	call	c_xymvx
-2000                     ; 505   nBuf[nLen] = JX_AddSum8Bit(pnDat, nLen);
-2002  01bc 96            	ldw	x,sp
-2003  01bd 5c            	incw	x
-2004  01be 9f            	ld	a,xl
-2005  01bf 5e            	swapw	x
-2006  01c0 1b20          	add	a,(OFST+5,sp)
-2007  01c2 2401          	jrnc	L46
-2008  01c4 5c            	incw	x
-2009  01c5               L46:
-2010  01c5 02            	rlwa	x,a
-2011  01c6 89            	pushw	x
-2012  01c7 7b22          	ld	a,(OFST+7,sp)
-2013  01c9 5f            	clrw	x
-2014  01ca 97            	ld	xl,a
-2015  01cb 89            	pushw	x
-2016  01cc 1e20          	ldw	x,(OFST+5,sp)
-2017  01ce cd0000        	call	_JX_AddSum8Bit
-2019  01d1 85            	popw	x
-2020  01d2 85            	popw	x
-2021  01d3 f7            	ld	(x),a
-2022                     ; 506 	MemcpyFunc(nBuf, pnDat, nLen);
-2024  01d4 7b20          	ld	a,(OFST+5,sp)
-2025  01d6 88            	push	a
-2026  01d7 1e1d          	ldw	x,(OFST+2,sp)
-2027  01d9 89            	pushw	x
-2028  01da 96            	ldw	x,sp
-2029  01db 1c0004        	addw	x,#OFST-23
-2030  01de cd0000        	call	_MemcpyFunc
-2032  01e1 5b03          	addw	sp,#3
-2033                     ; 507 	nLen = nLen + 1;
-2035  01e3 0c20          	inc	(OFST+5,sp)
-2036                     ; 509 	if(IPANDPORT_PARA == nTpye)
-2038  01e5 7b21          	ld	a,(OFST+6,sp)
-2039  01e7 a101          	cp	a,#1
-2040  01e9 2637          	jrne	L1421
-2041                     ; 511 		SaveGroup(nLen, ADDRESS_IPPARA, nBuf);
-2043  01eb 96            	ldw	x,sp
-2044  01ec 5c            	incw	x
-2045  01ed 89            	pushw	x
-2046  01ee ae1025        	ldw	x,#4133
-2047  01f1 89            	pushw	x
-2048  01f2 7b24          	ld	a,(OFST+9,sp)
-2049  01f4 cd0077        	call	_SaveGroup
-2051  01f7 5b04          	addw	sp,#4
-2052                     ; 512 		SaveGroup(nLen, ADDRESS_IPPARA_BK, nBuf);
-2054  01f9 96            	ldw	x,sp
-2055  01fa 5c            	incw	x
-2056  01fb 89            	pushw	x
-2057  01fc ae1089        	ldw	x,#4233
-2058  01ff 89            	pushw	x
-2059  0200 7b24          	ld	a,(OFST+9,sp)
-2060  0202 cd0077        	call	_SaveGroup
-2062  0205 5b04          	addw	sp,#4
-2063                     ; 514 		MemsetFunc(nBuf, 0, sizeof(nBuf));
-2065  0207 4b1b          	push	#27
-2066  0209 4b00          	push	#0
-2067  020b 96            	ldw	x,sp
-2068  020c 1c0003        	addw	x,#OFST-24
-2069  020f cd0000        	call	_MemsetFunc
-2071  0212 85            	popw	x
-2072                     ; 515 		ReadGroup(nLen, ADDRESS_IPPARA, nBuf);
-2074  0213 96            	ldw	x,sp
-2075  0214 5c            	incw	x
-2076  0215 89            	pushw	x
-2077  0216 ae1025        	ldw	x,#4133
-2078  0219 89            	pushw	x
-2079  021a 7b24          	ld	a,(OFST+9,sp)
-2080  021c cd0000        	call	_ReadGroup
-2083  021f cc02c3        	jp	LC003
-2084  0222               L1421:
-2085                     ; 517 	else if(APN_PARA == nTpye)
-2087  0222 a102          	cp	a,#2
-2088  0224 2617          	jrne	L5421
-2089                     ; 519 		SaveGroup(nLen, ADDRESS_APN, nBuf);
-2091  0226 96            	ldw	x,sp
-2092  0227 5c            	incw	x
-2093  0228 89            	pushw	x
-2094  0229 ae1036        	ldw	x,#4150
-2095  022c 89            	pushw	x
-2096  022d 7b24          	ld	a,(OFST+9,sp)
-2097  022f cd0077        	call	_SaveGroup
-2099  0232 5b04          	addw	sp,#4
-2100                     ; 520 		SaveGroup(nLen, ADDRESS_APN_BK, nBuf);
-2102  0234 96            	ldw	x,sp
-2103  0235 5c            	incw	x
-2104  0236 89            	pushw	x
-2105  0237 ae109a        	ldw	x,#4250
-2108  023a cc02bd        	jp	LC004
-2109  023d               L5421:
-2110                     ; 522 	else if(REPORT_PARA == nTpye)
-2112  023d a103          	cp	a,#3
-2113  023f 2616          	jrne	L1521
-2114                     ; 524 		SaveGroup(nLen, ADDRESS_REPOERCYCLE, nBuf);
-2116  0241 96            	ldw	x,sp
-2117  0242 5c            	incw	x
-2118  0243 89            	pushw	x
-2119  0244 ae1047        	ldw	x,#4167
-2120  0247 89            	pushw	x
-2121  0248 7b24          	ld	a,(OFST+9,sp)
-2122  024a cd0077        	call	_SaveGroup
-2124  024d 5b04          	addw	sp,#4
-2125                     ; 525 		SaveGroup(nLen, ADDRESS_REPOERCYCLE_BK, nBuf);		
-2127  024f 96            	ldw	x,sp
-2128  0250 5c            	incw	x
-2129  0251 89            	pushw	x
-2130  0252 ae10ab        	ldw	x,#4267
-2133  0255 2066          	jp	LC004
-2134  0257               L1521:
-2135                     ; 527 	else if(METER_PARA == nTpye)
-2137  0257 a104          	cp	a,#4
-2138  0259 2616          	jrne	L5521
-2139                     ; 529 		SaveGroup(nLen, ADDRESS_PARAMETER, nBuf);
-2141  025b 96            	ldw	x,sp
-2142  025c 5c            	incw	x
-2143  025d 89            	pushw	x
-2144  025e ae100a        	ldw	x,#4106
-2145  0261 89            	pushw	x
-2146  0262 7b24          	ld	a,(OFST+9,sp)
-2147  0264 cd0077        	call	_SaveGroup
-2149  0267 5b04          	addw	sp,#4
-2150                     ; 530 		SaveGroup(nLen, ADDRESS_PARAMETER_BK, nBuf);		
-2152  0269 96            	ldw	x,sp
-2153  026a 5c            	incw	x
-2154  026b 89            	pushw	x
-2155  026c ae106e        	ldw	x,#4206
-2158  026f 204c          	jp	LC004
-2159  0271               L5521:
-2160                     ; 532 	else if(LT_REP_TIME == nTpye)
-2162  0271 a105          	cp	a,#5
-2163  0273 2616          	jrne	L1621
-2164                     ; 534 		SaveGroup(nLen, ADDRESS_REPORTTIME, nBuf);
-2166  0275 96            	ldw	x,sp
-2167  0276 5c            	incw	x
-2168  0277 89            	pushw	x
-2169  0278 ae1053        	ldw	x,#4179
-2170  027b 89            	pushw	x
-2171  027c 7b24          	ld	a,(OFST+9,sp)
-2172  027e cd0077        	call	_SaveGroup
-2174  0281 5b04          	addw	sp,#4
-2175                     ; 535 		SaveGroup(nLen, ADDRESS_REPORTTIME_BK, nBuf);		
-2177  0283 96            	ldw	x,sp
-2178  0284 5c            	incw	x
-2179  0285 89            	pushw	x
-2180  0286 ae10b7        	ldw	x,#4279
-2183  0289 2032          	jp	LC004
-2184  028b               L1621:
-2185                     ; 537 	else if(OPT_VALVE_PRAA == nTpye)
-2187  028b a106          	cp	a,#6
-2188  028d 2616          	jrne	L5621
-2189                     ; 539 		SaveGroup(nLen, ADDRESS_OPTVALVE, nBuf);
-2191  028f 96            	ldw	x,sp
-2192  0290 5c            	incw	x
-2193  0291 89            	pushw	x
-2194  0292 ae105e        	ldw	x,#4190
-2195  0295 89            	pushw	x
-2196  0296 7b24          	ld	a,(OFST+9,sp)
-2197  0298 cd0077        	call	_SaveGroup
-2199  029b 5b04          	addw	sp,#4
-2200                     ; 540 		SaveGroup(nLen, ADDRESS_OPTVALVE_BK, nBuf);		
-2202  029d 96            	ldw	x,sp
-2203  029e 5c            	incw	x
-2204  029f 89            	pushw	x
-2205  02a0 ae10c2        	ldw	x,#4290
-2208  02a3 2018          	jp	LC004
-2209  02a5               L5621:
-2210                     ; 542 	else if(TM_ADDRESS_PRAA == nTpye)
-2212  02a5 a107          	cp	a,#7
-2213  02a7 261c          	jrne	L3421
-2214                     ; 544 		SaveGroup(nLen, ADDRESS_TMADDRESS, nBuf);
-2216  02a9 96            	ldw	x,sp
-2217  02aa 5c            	incw	x
-2218  02ab 89            	pushw	x
-2219  02ac ae1005        	ldw	x,#4101
-2220  02af 89            	pushw	x
-2221  02b0 7b24          	ld	a,(OFST+9,sp)
-2222  02b2 cd0077        	call	_SaveGroup
-2224  02b5 5b04          	addw	sp,#4
-2225                     ; 545 		SaveGroup(nLen, ADDRESS_TMADDRESS_BK, nBuf);		
-2227  02b7 96            	ldw	x,sp
-2228  02b8 5c            	incw	x
-2229  02b9 89            	pushw	x
-2230  02ba ae1069        	ldw	x,#4201
-2231  02bd               LC004:
-2232  02bd 89            	pushw	x
-2233  02be 7b24          	ld	a,(OFST+9,sp)
-2234  02c0 cd0077        	call	_SaveGroup
-2236  02c3               LC003:
-2237  02c3 5b04          	addw	sp,#4
-2238  02c5               L3421:
-2239                     ; 547 }
-2242  02c5 5b1d          	addw	sp,#29
-2243  02c7 81            	ret	
-2246                     	switch	.const
-2247  001b               L3721_nBuf:
-2248  001b 00            	dc.b	0
-2249  001c 000000000000  	ds.b	26
-2325                     ; 554 u8 ReadParameterForType(u8* pnDat, u8 nLen, u8 nTpye)
-2325                     ; 555 {
-2326                     	switch	.text
-2327  02c8               _ReadParameterForType:
-2329  02c8 89            	pushw	x
-2330  02c9 5220          	subw	sp,#32
-2331       00000020      OFST:	set	32
-2334                     ; 556 	u16 Address = 0, AddressBk = 0;
-2336  02cb 5f            	clrw	x
-2337  02cc 1f02          	ldw	(OFST-30,sp),x
-2340  02ce 1f04          	ldw	(OFST-28,sp),x
-2341                     ; 557 	u8 nBuf[MAX_LEN+1] = {0};
-2343  02d0 96            	ldw	x,sp
-2344  02d1 1c0006        	addw	x,#OFST-26
-2345  02d4 90ae001b      	ldw	y,#L3721_nBuf
-2346  02d8 a61b          	ld	a,#27
-2347  02da cd0000        	call	c_xymvx
-2349                     ; 559 	if(IPANDPORT_PARA == nTpye)
-2351  02dd 7b26          	ld	a,(OFST+6,sp)
-2352  02df a101          	cp	a,#1
-2353  02e1 260a          	jrne	L7231
-2354                     ; 561 		Address   = ADDRESS_IPPARA;
-2356  02e3 ae1025        	ldw	x,#4133
-2357  02e6 1f02          	ldw	(OFST-30,sp),x
-2358                     ; 562 		AddressBk = ADDRESS_IPPARA_BK;
-2360  02e8 ae1089        	ldw	x,#4233
-2362  02eb 2052          	jp	LC005
-2363  02ed               L7231:
-2364                     ; 564 	else if(APN_PARA == nTpye)
-2366  02ed a102          	cp	a,#2
-2367  02ef 260a          	jrne	L3331
-2368                     ; 566 		Address   = ADDRESS_APN;
-2370  02f1 ae1036        	ldw	x,#4150
-2371  02f4 1f02          	ldw	(OFST-30,sp),x
-2372                     ; 567 		AddressBk = ADDRESS_APN_BK;
-2374  02f6 ae109a        	ldw	x,#4250
-2376  02f9 2044          	jp	LC005
-2377  02fb               L3331:
-2378                     ; 569 	else if(REPORT_PARA == nTpye)
-2380  02fb a103          	cp	a,#3
-2381  02fd 260a          	jrne	L7331
-2382                     ; 571 		Address   = ADDRESS_REPOERCYCLE;
-2384  02ff ae1047        	ldw	x,#4167
-2385  0302 1f02          	ldw	(OFST-30,sp),x
-2386                     ; 572 		AddressBk = ADDRESS_REPOERCYCLE_BK;
-2388  0304 ae10ab        	ldw	x,#4267
-2390  0307 2036          	jp	LC005
-2391  0309               L7331:
-2392                     ; 574 	else if(METER_PARA == nTpye)
-2394  0309 a104          	cp	a,#4
-2395  030b 260a          	jrne	L3431
-2396                     ; 576 		Address   = ADDRESS_PARAMETER;
-2398  030d ae100a        	ldw	x,#4106
-2399  0310 1f02          	ldw	(OFST-30,sp),x
-2400                     ; 577 		AddressBk = ADDRESS_PARAMETER_BK;
-2402  0312 ae106e        	ldw	x,#4206
-2404  0315 2028          	jp	LC005
-2405  0317               L3431:
-2406                     ; 579 	else if(LT_REP_TIME == nTpye)
-2408  0317 a105          	cp	a,#5
-2409  0319 260a          	jrne	L7431
-2410                     ; 581 		Address   = ADDRESS_REPORTTIME;
-2412  031b ae1053        	ldw	x,#4179
-2413  031e 1f02          	ldw	(OFST-30,sp),x
-2414                     ; 582 		AddressBk = ADDRESS_REPORTTIME_BK;
-2416  0320 ae10b7        	ldw	x,#4279
-2418  0323 201a          	jp	LC005
-2419  0325               L7431:
-2420                     ; 584 	else if(OPT_VALVE_PRAA == nTpye)
-2422  0325 a106          	cp	a,#6
-2423  0327 260a          	jrne	L3531
-2424                     ; 586 		Address   = ADDRESS_OPTVALVE;
-2426  0329 ae105e        	ldw	x,#4190
-2427  032c 1f02          	ldw	(OFST-30,sp),x
-2428                     ; 587 		AddressBk = ADDRESS_OPTVALVE_BK;
-2430  032e ae10c2        	ldw	x,#4290
-2432  0331 200c          	jp	LC005
-2433  0333               L3531:
-2434                     ; 589 	else if(TM_ADDRESS_PRAA == nTpye)
-2436  0333 a107          	cp	a,#7
-2437  0335 260a          	jrne	L1331
-2438                     ; 591 		Address   = ADDRESS_TMADDRESS;
-2440  0337 ae1005        	ldw	x,#4101
-2441  033a 1f02          	ldw	(OFST-30,sp),x
-2442                     ; 592 		AddressBk = ADDRESS_TMADDRESS_BK;	
-2444  033c ae1069        	ldw	x,#4201
-2445  033f               LC005:
-2446  033f 1f04          	ldw	(OFST-28,sp),x
-2447  0341               L1331:
-2448                     ; 595 	ReadGroup(nLen+1, Address, nBuf);	
-2450  0341 96            	ldw	x,sp
-2451  0342 1c0006        	addw	x,#OFST-26
-2452  0345 89            	pushw	x
-2453  0346 1e04          	ldw	x,(OFST-28,sp)
-2454  0348 89            	pushw	x
-2455  0349 7b29          	ld	a,(OFST+9,sp)
-2456  034b 4c            	inc	a
-2457  034c cd0000        	call	_ReadGroup
-2459  034f 5b04          	addw	sp,#4
-2460                     ; 596 	if(nBuf[nLen] == JX_AddSum8Bit(nBuf, nLen))
-2462  0351 7b25          	ld	a,(OFST+5,sp)
-2463  0353 5f            	clrw	x
-2464  0354 97            	ld	xl,a
-2465  0355 89            	pushw	x
-2466  0356 96            	ldw	x,sp
-2467  0357 1c0008        	addw	x,#OFST-24
-2468  035a cd0000        	call	_JX_AddSum8Bit
-2470  035d 85            	popw	x
-2471  035e 6b01          	ld	(OFST-31,sp),a
-2472  0360 96            	ldw	x,sp
-2473  0361 1c0006        	addw	x,#OFST-26
-2474  0364 9f            	ld	a,xl
-2475  0365 5e            	swapw	x
-2476  0366 1b25          	add	a,(OFST+5,sp)
-2477  0368 2401          	jrnc	L041
-2478  036a 5c            	incw	x
-2479  036b               L041:
-2480  036b 02            	rlwa	x,a
-2481  036c f6            	ld	a,(x)
-2482  036d 1101          	cp	a,(OFST-31,sp)
-2483  036f 2618          	jrne	L1631
-2484                     ; 598 		if(!JX_IsAllFillDat(nBuf, 0, nLen))
-2486  0371 7b25          	ld	a,(OFST+5,sp)
-2487  0373 b703          	ld	c_lreg+3,a
-2488  0375 3f02          	clr	c_lreg+2
-2489  0377 3f01          	clr	c_lreg+1
-2490  0379 3f00          	clr	c_lreg
-2491  037b be02          	ldw	x,c_lreg+2
-2492  037d 89            	pushw	x
-2493  037e be00          	ldw	x,c_lreg
-2494  0380 89            	pushw	x
-2495  0381 4b00          	push	#0
-2496  0383 96            	ldw	x,sp
-2497  0384 1c000b        	addw	x,#OFST-21
-2499                     ; 600 			MemcpyFunc(pnDat, nBuf, nLen);
-2501                     ; 601 			return TRUE;
-2503  0387 2044          	jp	LC006
-2504  0389               L1631:
-2505                     ; 606 		ReadGroup(nLen+1, AddressBk, nBuf);	
-2507  0389 96            	ldw	x,sp
-2508  038a 1c0006        	addw	x,#OFST-26
-2509  038d 89            	pushw	x
-2510  038e 1e06          	ldw	x,(OFST-26,sp)
-2511  0390 89            	pushw	x
-2512  0391 7b29          	ld	a,(OFST+9,sp)
-2513  0393 4c            	inc	a
-2514  0394 cd0000        	call	_ReadGroup
-2516  0397 5b04          	addw	sp,#4
-2517                     ; 607 		if(nBuf[nLen] == JX_AddSum8Bit(nBuf, nLen))
-2519  0399 7b25          	ld	a,(OFST+5,sp)
-2520  039b 5f            	clrw	x
-2521  039c 97            	ld	xl,a
-2522  039d 89            	pushw	x
-2523  039e 96            	ldw	x,sp
-2524  039f 1c0008        	addw	x,#OFST-24
-2525  03a2 cd0000        	call	_JX_AddSum8Bit
-2527  03a5 85            	popw	x
-2528  03a6 6b01          	ld	(OFST-31,sp),a
-2529  03a8 96            	ldw	x,sp
-2530  03a9 1c0006        	addw	x,#OFST-26
-2531  03ac 9f            	ld	a,xl
-2532  03ad 5e            	swapw	x
-2533  03ae 1b25          	add	a,(OFST+5,sp)
-2534  03b0 2401          	jrnc	L251
-2535  03b2 5c            	incw	x
-2536  03b3               L251:
-2537  03b3 02            	rlwa	x,a
-2538  03b4 f6            	ld	a,(x)
-2539  03b5 1101          	cp	a,(OFST-31,sp)
-2540  03b7 2630          	jrne	L5631
-2541                     ; 609 			if(!JX_IsAllFillDat(pnDat, 0, nLen))
-2543  03b9 7b25          	ld	a,(OFST+5,sp)
-2544  03bb b703          	ld	c_lreg+3,a
-2545  03bd 3f02          	clr	c_lreg+2
-2546  03bf 3f01          	clr	c_lreg+1
-2547  03c1 3f00          	clr	c_lreg
-2548  03c3 be02          	ldw	x,c_lreg+2
-2549  03c5 89            	pushw	x
-2550  03c6 be00          	ldw	x,c_lreg
-2551  03c8 89            	pushw	x
-2552  03c9 4b00          	push	#0
-2553  03cb 1e26          	ldw	x,(OFST+6,sp)
-2555                     ; 611 				MemcpyFunc(pnDat, nBuf, nLen);
-2558                     ; 612 				return TRUE;
-2560  03cd               LC006:
-2561  03cd cd0000        	call	_JX_IsAllFillDat
-2562  03d0 5b05          	addw	sp,#5
-2563  03d2 4d            	tnz	a
-2564  03d3 2614          	jrne	L5631
-2566  03d5 7b25          	ld	a,(OFST+5,sp)
-2567  03d7 88            	push	a
-2568  03d8 96            	ldw	x,sp
-2569  03d9 1c0007        	addw	x,#OFST-25
-2570  03dc 89            	pushw	x
-2571  03dd 1e24          	ldw	x,(OFST+4,sp)
-2572  03df cd0000        	call	_MemcpyFunc
-2573  03e2 5b03          	addw	sp,#3
-2575  03e4 a601          	ld	a,#1
-2577  03e6               L061:
-2579  03e6 5b22          	addw	sp,#34
-2580  03e8 81            	ret	
-2581  03e9               L5631:
-2582                     ; 617 	return FALSE;
-2584  03e9 4f            	clr	a
-2586  03ea 20fa          	jra	L061
-2589                     	switch	.const
-2590  0036               L3731_nBuf:
-2591  0036 00            	dc.b	0
-2592  0037 000000000000  	ds.b	16
-2593  0047               L5731_nTmpBuf:
-2594  0047 ff            	dc.b	255
-2595  0048 ff            	dc.b	255
-2596  0049 ff            	dc.b	255
-2597  004a ff            	dc.b	255
-2598  004b ff            	dc.b	255
-2599  004c ff            	dc.b	255
-2600  004d 000000000000  	ds.b	11
-2748                     ; 632 void AddRecordFun(u8 *Record, u8 nLen, u8 *pnRecIndex, u8 nMaxNum, 
-2748                     ; 633 	u32 dwIndexAdd, u32 dwRecordAdd, u8 nRecordLen)
-2748                     ; 634 {
-2749                     	switch	.text
-2750  03ec               _AddRecordFun:
-2752  03ec 89            	pushw	x
-2753  03ed 522e          	subw	sp,#46
-2754       0000002e      OFST:	set	46
-2757                     ; 635 	u16 nX = 0, address = 0, nInDexAdd = 0, nLoop = 0 ,wCurrIndex = 0;
-2767                     ; 637 	u8 nBuf[RECORD_LEN+1]    = {0};
-2769  03ef 96            	ldw	x,sp
-2770  03f0 5c            	incw	x
-2771  03f1 90ae0036      	ldw	y,#L3731_nBuf
-2772  03f5 a611          	ld	a,#17
-2773  03f7 cd0000        	call	c_xymvx
-2775                     ; 638 	u8 nTmpBuf[RECORD_LEN+1] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
-2777  03fa 96            	ldw	x,sp
-2778  03fb 1c0012        	addw	x,#OFST-28
-2779  03fe 90ae0047      	ldw	y,#L5731_nTmpBuf
-2780  0402 a611          	ld	a,#17
-2781  0404 cd0000        	call	c_xymvx
-2783                     ; 640 	nBuf[nLen] = JX_AddSum8Bit(Record, nLen);
-2785  0407 96            	ldw	x,sp
-2786  0408 5c            	incw	x
-2787  0409 9f            	ld	a,xl
-2788  040a 5e            	swapw	x
-2789  040b 1b33          	add	a,(OFST+5,sp)
-2790  040d 2401          	jrnc	L461
-2791  040f 5c            	incw	x
-2792  0410               L461:
-2793  0410 02            	rlwa	x,a
-2794  0411 89            	pushw	x
-2795  0412 7b35          	ld	a,(OFST+7,sp)
-2796  0414 5f            	clrw	x
-2797  0415 97            	ld	xl,a
-2798  0416 89            	pushw	x
-2799  0417 1e33          	ldw	x,(OFST+5,sp)
-2800  0419 cd0000        	call	_JX_AddSum8Bit
-2802  041c 85            	popw	x
-2803  041d 85            	popw	x
-2804  041e f7            	ld	(x),a
-2805                     ; 641 	MemcpyFunc(nBuf, Record, nLen);	
-2807  041f 7b33          	ld	a,(OFST+5,sp)
-2808  0421 88            	push	a
-2809  0422 1e30          	ldw	x,(OFST+2,sp)
-2810  0424 89            	pushw	x
-2811  0425 96            	ldw	x,sp
-2812  0426 1c0004        	addw	x,#OFST-42
-2813  0429 cd0000        	call	_MemcpyFunc
-2815  042c 5b03          	addw	sp,#3
-2816                     ; 642 	nX = nLen+1; //加1字节校验
-2818  042e 4f            	clr	a
-2819  042f 97            	ld	xl,a
-2820  0430 4c            	inc	a
-2821  0431 1b33          	add	a,(OFST+5,sp)
-2822  0433 2401          	jrnc	L271
-2823  0435 5c            	incw	x
-2824  0436               L271:
-2825  0436 02            	rlwa	x,a
-2826  0437 1f29          	ldw	(OFST-5,sp),x
-2827                     ; 644 	(*pnRecIndex) = (*pnRecIndex)+1;
-2829  0439 1e34          	ldw	x,(OFST+6,sp)
-2830  043b 7c            	inc	(x)
-2831                     ; 645 	if ((*pnRecIndex) >= nMaxNum)
-2833  043c f6            	ld	a,(x)
-2834  043d 1136          	cp	a,(OFST+8,sp)
-2835  043f 2502          	jrult	L1641
-2836                     ; 647 		(*pnRecIndex) = 0;
-2838  0441 4f            	clr	a
-2839  0442 f7            	ld	(x),a
-2840  0443               L1641:
-2841                     ; 649 	wCurrIndex = (*pnRecIndex);
-2843  0443 5f            	clrw	x
-2844  0444 97            	ld	xl,a
-2845  0445 1f27          	ldw	(OFST-7,sp),x
-2846                     ; 652 	nInDexAdd = dwIndexAdd;
-2848  0447 1e39          	ldw	x,(OFST+11,sp)
-2849  0449 1f2d          	ldw	(OFST-1,sp),x
-2850                     ; 654 	ReadGroup(sizeof(index), nInDexAdd, (u8 *)&index);		//读指针,下面做平衡算法
-2852  044b 96            	ldw	x,sp
-2853  044c 1c0023        	addw	x,#OFST-11
-2854  044f 89            	pushw	x
-2855  0450 1e2f          	ldw	x,(OFST+1,sp)
-2856  0452 89            	pushw	x
-2857  0453 a604          	ld	a,#4
-2858  0455 cd0000        	call	_ReadGroup
-2860  0458 5b04          	addw	sp,#4
-2861                     ; 655 	if (index.Bytes.B0 == 0xff)		//第一次?
-2863  045a 7b23          	ld	a,(OFST-11,sp)
-2864  045c 4c            	inc	a
-2865  045d 263c          	jrne	L3641
-2866                     ; 657 		SaveByte(nInDexAdd, wCurrIndex);		//保存指针
-2868  045f 7b28          	ld	a,(OFST-6,sp)
-2869  0461 88            	push	a
-2870  0462 1e2e          	ldw	x,(OFST+0,sp)
-2871  0464 cd0057        	call	_SaveByte
-2873  0467 84            	pop	a
-2874                     ; 658 		address = dwRecordAdd;
-2876  0468 1e3d          	ldw	x,(OFST+15,sp)
-2877  046a 1f2b          	ldw	(OFST-3,sp),x
-2878                     ; 659 		for(nLoop = 0; nLoop < nMaxNum; nLoop++)
-2880  046c 5f            	clrw	x
-2882  046d 201c          	jra	L1741
-2883  046f               L5641:
-2884                     ; 661 			address +=(nLoop*nX);
-2886  046f 1629          	ldw	y,(OFST-5,sp)
-2887  0471 cd0000        	call	c_imul
-2889  0474 72fb2b        	addw	x,(OFST-3,sp)
-2890  0477 1f2b          	ldw	(OFST-3,sp),x
-2891                     ; 662 			SaveGroup(nX, address, nTmpBuf);
-2893  0479 96            	ldw	x,sp
-2894  047a 1c0012        	addw	x,#OFST-28
-2895  047d 89            	pushw	x
-2896  047e 1e2d          	ldw	x,(OFST-1,sp)
-2897  0480 89            	pushw	x
-2898  0481 7b2e          	ld	a,(OFST+0,sp)
-2899  0483 cd0077        	call	_SaveGroup
-2901  0486 5b04          	addw	sp,#4
-2902                     ; 659 		for(nLoop = 0; nLoop < nMaxNum; nLoop++)
-2904  0488 1e2d          	ldw	x,(OFST-1,sp)
-2905  048a 5c            	incw	x
-2906  048b               L1741:
-2907  048b 1f2d          	ldw	(OFST-1,sp),x
-2910  048d 7b36          	ld	a,(OFST+8,sp)
-2911  048f 5f            	clrw	x
-2912  0490 97            	ld	xl,a
-2913  0491 bf00          	ldw	c_x,x
-2914  0493 1e2d          	ldw	x,(OFST-1,sp)
-2915  0495 b300          	cpw	x,c_x
-2916  0497 25d6          	jrult	L5641
-2918  0499 204e          	jra	L5741
-2919  049b               L3641:
-2920                     ; 665 	else if (index.Bytes.B1 == 0xff)
-2922  049b 7b24          	ld	a,(OFST-10,sp)
-2923  049d 4c            	inc	a
-2924  049e 2608          	jrne	L7741
-2925                     ; 667 		SaveByte(nInDexAdd + 1, wCurrIndex);	//保存指针
-2927  04a0 7b28          	ld	a,(OFST-6,sp)
-2928  04a2 88            	push	a
-2929  04a3 1e2e          	ldw	x,(OFST+0,sp)
-2930  04a5 5c            	incw	x
-2933  04a6 203d          	jp	LC007
-2934  04a8               L7741:
-2935                     ; 669 	else if (index.Bytes.B2 == 0xff)
-2937  04a8 7b25          	ld	a,(OFST-9,sp)
-2938  04aa 4c            	inc	a
-2939  04ab 260a          	jrne	L3051
-2940                     ; 671 		SaveByte(nInDexAdd + 2, wCurrIndex);	//保存指针
-2942  04ad 7b28          	ld	a,(OFST-6,sp)
-2943  04af 88            	push	a
-2944  04b0 1e2e          	ldw	x,(OFST+0,sp)
-2945  04b2 1c0002        	addw	x,#2
-2948  04b5 202e          	jp	LC007
-2949  04b7               L3051:
-2950                     ; 673 	else if (index.Bytes.B3 == 0xff)
-2952  04b7 7b26          	ld	a,(OFST-8,sp)
-2953  04b9 4c            	inc	a
-2954  04ba 2605          	jrne	L7051
-2955                     ; 675 		SaveByte(nInDexAdd + 3, wCurrIndex);	//保存指针
-2957  04bc 7b28          	ld	a,(OFST-6,sp)
-2958  04be 88            	push	a
-2961  04bf 201f          	jp	LC008
-2962  04c1               L7051:
-2963                     ; 679 		SaveByte(nInDexAdd, wCurrIndex);		//保存指针
-2965  04c1 7b28          	ld	a,(OFST-6,sp)
-2966  04c3 88            	push	a
-2967  04c4 1e2e          	ldw	x,(OFST+0,sp)
-2968  04c6 cd0057        	call	_SaveByte
-2970  04c9 84            	pop	a
-2971                     ; 680 		SaveByte(nInDexAdd + 1, 0xff);		//清除
-2973  04ca 4bff          	push	#255
-2974  04cc 1e2e          	ldw	x,(OFST+0,sp)
-2975  04ce 5c            	incw	x
-2976  04cf cd0057        	call	_SaveByte
-2978  04d2 84            	pop	a
-2979                     ; 681 		SaveByte(nInDexAdd + 2, 0xff);		//清除
-2981  04d3 4bff          	push	#255
-2982  04d5 1e2e          	ldw	x,(OFST+0,sp)
-2983  04d7 1c0002        	addw	x,#2
-2984  04da cd0057        	call	_SaveByte
-2986  04dd 84            	pop	a
-2987                     ; 682 		SaveByte(nInDexAdd + 3, 0xff);		//清除
-2989  04de 4bff          	push	#255
-2990  04e0               LC008:
-2991  04e0 1e2e          	ldw	x,(OFST+0,sp)
-2992  04e2 1c0003        	addw	x,#3
-2994  04e5               LC007:
-2995  04e5 cd0057        	call	_SaveByte
-2996  04e8 84            	pop	a
-2997  04e9               L5741:
-2998                     ; 685 	address = dwRecordAdd;		            //EEPROM开始地址
-3000  04e9 1e3d          	ldw	x,(OFST+15,sp)
-3001  04eb 1f2b          	ldw	(OFST-3,sp),x
-3002                     ; 686 	address += wCurrIndex * (nRecordLen+1);		//+记录偏移 	
-3004  04ed 7b3f          	ld	a,(OFST+17,sp)
-3005  04ef 5f            	clrw	x
-3006  04f0 97            	ld	xl,a
-3007  04f1 5c            	incw	x
-3008  04f2 1627          	ldw	y,(OFST-7,sp)
-3009  04f4 cd0000        	call	c_imul
-3011  04f7 72fb2b        	addw	x,(OFST-3,sp)
-3012  04fa 1f2b          	ldw	(OFST-3,sp),x
-3013                     ; 687 	SaveGroup(nX, address, nBuf);
-3015  04fc 96            	ldw	x,sp
-3016  04fd 5c            	incw	x
-3017  04fe 89            	pushw	x
-3018  04ff 1e2d          	ldw	x,(OFST-1,sp)
-3019  0501 89            	pushw	x
-3020  0502 7b2e          	ld	a,(OFST+0,sp)
-3021  0504 cd0077        	call	_SaveGroup
-3023  0507 5b34          	addw	sp,#52
-3024                     ; 688 }
-3027  0509 81            	ret	
-3030                     	switch	.const
-3031  0058               L3151_nBuf:
-3032  0058 00            	dc.b	0
-3033  0059 000000000000  	ds.b	16
-3136                     ; 697 u8 ReadRecordFun(u8 nIndex, u8 *Record, u8 nOutLen, u8 nRecIndex, u8 nMaxNum, u32 dwRecordAdd)
-3136                     ; 698 {
-3137                     	switch	.text
-3138  050a               _ReadRecordFun:
-3140  050a 88            	push	a
-3141  050b 5218          	subw	sp,#24
-3142       00000018      OFST:	set	24
-3145                     ; 699 	u16 nX = 0, address = 0;
-3149                     ; 700 	u16 nReadIndex = 0;
-3151                     ; 701 	u8 nBuf[RECORD_LEN+1] = {0};
-3153  050d 96            	ldw	x,sp
-3154  050e 1c0006        	addw	x,#OFST-18
-3155  0511 90ae0058      	ldw	y,#L3151_nBuf
-3156  0515 a611          	ld	a,#17
-3157  0517 cd0000        	call	c_xymvx
-3159                     ; 703 	if(NULL == Record || nOutLen > sizeof(TypeRecord) || (nMaxNum <= nIndex))
-3161  051a 1e1c          	ldw	x,(OFST+4,sp)
-3162  051c 2603cc05c4    	jreq	L1751
-3164  0521 7b1e          	ld	a,(OFST+6,sp)
-3165  0523 a111          	cp	a,#17
-3166  0525 24f7          	jruge	L1751
-3168  0527 7b20          	ld	a,(OFST+8,sp)
-3169  0529 1119          	cp	a,(OFST+1,sp)
-3170                     ; 705 		return FALSE;
-3172  052b 23f1          	jrule	L1751
-3173                     ; 708 	nX = nOutLen+1;
-3175  052d 4f            	clr	a
-3176  052e 97            	ld	xl,a
-3177  052f 4c            	inc	a
-3178  0530 1b1e          	add	a,(OFST+6,sp)
-3179  0532 2401          	jrnc	L422
-3180  0534 5c            	incw	x
-3181  0535               L422:
-3182  0535 02            	rlwa	x,a
-3183  0536 1f17          	ldw	(OFST-1,sp),x
-3184                     ; 711 	if(nRecIndex < nIndex)
-3186  0538 7b1f          	ld	a,(OFST+7,sp)
-3187  053a 1119          	cp	a,(OFST+1,sp)
-3188  053c 2414          	jruge	L5651
-3189                     ; 713 		nReadIndex = (u8)nMaxNum - (nIndex - nRecIndex);
-3191  053e 7b19          	ld	a,(OFST+1,sp)
-3192  0540 5f            	clrw	x
-3193  0541 101f          	sub	a,(OFST+7,sp)
-3194  0543 2401          	jrnc	L622
-3195  0545 5a            	decw	x
-3196  0546               L622:
-3197  0546 02            	rlwa	x,a
-3198  0547 1f02          	ldw	(OFST-22,sp),x
-3199  0549 7b20          	ld	a,(OFST+8,sp)
-3200  054b 5f            	clrw	x
-3201  054c 97            	ld	xl,a
-3202  054d 72f002        	subw	x,(OFST-22,sp)
-3204  0550 200c          	jra	L7651
-3205  0552               L5651:
-3206                     ; 717 		nReadIndex = nRecIndex - nIndex;
-3208  0552 5f            	clrw	x
-3209  0553 1019          	sub	a,(OFST+1,sp)
-3210  0555 2401          	jrnc	L032
-3211  0557 5a            	decw	x
-3212  0558               L032:
-3213  0558 02            	rlwa	x,a
-3214  0559 1f04          	ldw	(OFST-20,sp),x
-3215  055b 01            	rrwa	x,a
-3216  055c 1e04          	ldw	x,(OFST-20,sp)
-3217  055e               L7651:
-3218                     ; 720 	address = nReadIndex*nX + dwRecordAdd;	
-3220  055e 1617          	ldw	y,(OFST-1,sp)
-3221  0560 cd0000        	call	c_imul
-3223  0563 72fb23        	addw	x,(OFST+11,sp)
-3224  0566 1f04          	ldw	(OFST-20,sp),x
-3225                     ; 721 	ReadGroup(nX, address, nBuf);	
-3227  0568 96            	ldw	x,sp
-3228  0569 1c0006        	addw	x,#OFST-18
-3229  056c 89            	pushw	x
-3230  056d 1e06          	ldw	x,(OFST-18,sp)
-3231  056f 89            	pushw	x
-3232  0570 7b1c          	ld	a,(OFST+4,sp)
-3233  0572 cd0000        	call	_ReadGroup
-3235  0575 5b04          	addw	sp,#4
-3236                     ; 722 	if(nBuf[nX-1] == JX_AddSum8Bit(nBuf, nX-1))
-3238  0577 1e17          	ldw	x,(OFST-1,sp)
-3239  0579 5a            	decw	x
-3240  057a 89            	pushw	x
-3241  057b 96            	ldw	x,sp
-3242  057c 1c0008        	addw	x,#OFST-16
-3243  057f cd0000        	call	_JX_AddSum8Bit
-3245  0582 85            	popw	x
-3246  0583 6b03          	ld	(OFST-21,sp),a
-3247  0585 96            	ldw	x,sp
-3248  0586 1c0006        	addw	x,#OFST-18
-3249  0589 1f01          	ldw	(OFST-23,sp),x
-3250  058b 1e17          	ldw	x,(OFST-1,sp)
-3251  058d 5a            	decw	x
-3252  058e 72fb01        	addw	x,(OFST-23,sp)
-3253  0591 f6            	ld	a,(x)
-3254  0592 1103          	cp	a,(OFST-21,sp)
-3255  0594 262e          	jrne	L1751
-3256                     ; 724 		if(!JX_IsAllFillDat(nBuf, 0, nX-1))
-3258  0596 1e17          	ldw	x,(OFST-1,sp)
-3259  0598 5a            	decw	x
-3260  0599 cd0000        	call	c_uitolx
-3262  059c be02          	ldw	x,c_lreg+2
-3263  059e 89            	pushw	x
-3264  059f be00          	ldw	x,c_lreg
-3265  05a1 89            	pushw	x
-3266  05a2 4b00          	push	#0
-3267  05a4 96            	ldw	x,sp
-3268  05a5 1c000b        	addw	x,#OFST-13
-3269  05a8 cd0000        	call	_JX_IsAllFillDat
-3271  05ab 5b05          	addw	sp,#5
-3272  05ad 4d            	tnz	a
-3273  05ae 2614          	jrne	L1751
-3274                     ; 726 			MemcpyFunc(Record, nBuf, nOutLen); 
-3276  05b0 7b1e          	ld	a,(OFST+6,sp)
-3277  05b2 88            	push	a
-3278  05b3 96            	ldw	x,sp
-3279  05b4 1c0007        	addw	x,#OFST-17
-3280  05b7 89            	pushw	x
-3281  05b8 1e1f          	ldw	x,(OFST+7,sp)
-3282  05ba cd0000        	call	_MemcpyFunc
-3284  05bd 5b03          	addw	sp,#3
-3285                     ; 727 			return TRUE;
-3287  05bf a601          	ld	a,#1
-3289  05c1               L242:
-3291  05c1 5b19          	addw	sp,#25
-3292  05c3 81            	ret	
-3293  05c4               L1751:
-3294                     ; 731 	return FALSE;
-3297  05c4 4f            	clr	a
-3299  05c5 20fa          	jra	L242
-3302                     	switch	.const
-3303  0069               L5751_nBuf:
-3304  0069 00            	dc.b	0
-3305  006a 000000000000  	ds.b	15
-3390                     ; 741 u8 EditRecord(u8 nIndex, u8 *Record, u8 nInLen)
-3390                     ; 742 {
-3391                     	switch	.text
-3392  05c7               _EditRecord:
-3394  05c7 88            	push	a
-3395  05c8 5217          	subw	sp,#23
-3396       00000017      OFST:	set	23
-3399                     ; 743 	u16 nX = 0, address = 0;
-3403                     ; 744 	u16 nReadIndex = 0;
-3405                     ; 745 	u8 nBuf[16] = {0};
-3407  05ca 96            	ldw	x,sp
-3408  05cb 1c0008        	addw	x,#OFST-15
-3409  05ce 90ae0069      	ldw	y,#L5751_nBuf
-3410  05d2 a610          	ld	a,#16
-3411  05d4 cd0000        	call	c_xymvx
-3413                     ; 747 	if(NULL == Record || nInLen < sizeof(TypeRecord) || (NUMBER_RECORD < nIndex))
-3415  05d7 1e1b          	ldw	x,(OFST+4,sp)
-3416  05d9 2603cc06ae    	jreq	L5461
-3418  05de 7b1d          	ld	a,(OFST+6,sp)
-3419  05e0 a110          	cp	a,#16
-3420  05e2 25f7          	jrult	L5461
-3422  05e4 7b18          	ld	a,(OFST+1,sp)
-3423  05e6 a11d          	cp	a,#29
-3424                     ; 749 		return FALSE;
-3426  05e8 24f1          	jruge	L5461
-3427                     ; 752 	nX = sizeof(TypeRecord)+1;
-3429  05ea ae0011        	ldw	x,#17
-3430  05ed 1f06          	ldw	(OFST-17,sp),x
-3431                     ; 755 	if(ucRecordIndex < nIndex)
-3433  05ef c60002        	ld	a,_ucRecordIndex
-3434  05f2 1118          	cp	a,(OFST+1,sp)
-3435  05f4 2414          	jruge	L1461
-3436                     ; 757 		nReadIndex = (u8)NUMBER_RECORD - (nIndex - ucRecordIndex);
-3438  05f6 7b18          	ld	a,(OFST+1,sp)
-3439  05f8 5f            	clrw	x
-3440  05f9 c00002        	sub	a,_ucRecordIndex
-3441  05fc 2401          	jrnc	L642
-3442  05fe 5a            	decw	x
-3443  05ff               L642:
-3444  05ff 02            	rlwa	x,a
-3445  0600 1f02          	ldw	(OFST-21,sp),x
-3446  0602 ae001c        	ldw	x,#28
-3447  0605 72f002        	subw	x,(OFST-21,sp)
-3449  0608 2007          	jra	L3461
-3450  060a               L1461:
-3451                     ; 761 		nReadIndex = ucRecordIndex - nIndex;
-3453  060a 5f            	clrw	x
-3454  060b 1018          	sub	a,(OFST+1,sp)
-3455  060d 2401          	jrnc	L052
-3456  060f 5a            	decw	x
-3457  0610               L052:
-3458  0610 02            	rlwa	x,a
-3459  0611               L3461:
-3460  0611 1f04          	ldw	(OFST-19,sp),x
-3461                     ; 764 	MemcpyFunc(nBuf, Record, nInLen);
-3463  0613 7b1d          	ld	a,(OFST+6,sp)
-3464  0615 88            	push	a
-3465  0616 1e1c          	ldw	x,(OFST+5,sp)
-3466  0618 89            	pushw	x
-3467  0619 96            	ldw	x,sp
-3468  061a 1c000b        	addw	x,#OFST-12
-3469  061d cd0000        	call	_MemcpyFunc
-3471  0620 5b03          	addw	sp,#3
-3472                     ; 765 	address = nReadIndex*nX + ADDRESS_RECORD;	
-3474  0622 1e04          	ldw	x,(OFST-19,sp)
-3475  0624 1606          	ldw	y,(OFST-17,sp)
-3476  0626 cd0000        	call	c_imul
-3478  0629 1c10f3        	addw	x,#4339
-3479  062c 1f04          	ldw	(OFST-19,sp),x
-3480                     ; 766 	nBuf[nX-1] = JX_AddSum8Bit(nBuf, nX-1);
-3482  062e 1e06          	ldw	x,(OFST-17,sp)
-3483  0630 5a            	decw	x
-3484  0631 89            	pushw	x
-3485  0632 96            	ldw	x,sp
-3486  0633 1c000a        	addw	x,#OFST-13
-3487  0636 cd0000        	call	_JX_AddSum8Bit
-3489  0639 85            	popw	x
-3490  063a 96            	ldw	x,sp
-3491  063b 1c0008        	addw	x,#OFST-15
-3492  063e 1f02          	ldw	(OFST-21,sp),x
-3493  0640 1e06          	ldw	x,(OFST-17,sp)
-3494  0642 5a            	decw	x
-3495  0643 72fb02        	addw	x,(OFST-21,sp)
-3496  0646 f7            	ld	(x),a
-3497                     ; 767 	SaveGroup(nX, address, nBuf);
-3499  0647 96            	ldw	x,sp
-3500  0648 1c0008        	addw	x,#OFST-15
-3501  064b 89            	pushw	x
-3502  064c 1e06          	ldw	x,(OFST-17,sp)
-3503  064e 89            	pushw	x
-3504  064f 7b0b          	ld	a,(OFST-12,sp)
-3505  0651 cd0077        	call	_SaveGroup
-3507  0654 5b04          	addw	sp,#4
-3508                     ; 769 	MemsetFunc(nBuf, 0, sizeof(nBuf));
-3510  0656 4b10          	push	#16
-3511  0658 4b00          	push	#0
-3512  065a 96            	ldw	x,sp
-3513  065b 1c000a        	addw	x,#OFST-13
-3514  065e cd0000        	call	_MemsetFunc
-3516  0661 85            	popw	x
-3517                     ; 770 	ReadGroup(nX, address, nBuf);
-3519  0662 96            	ldw	x,sp
-3520  0663 1c0008        	addw	x,#OFST-15
-3521  0666 89            	pushw	x
-3522  0667 1e06          	ldw	x,(OFST-17,sp)
-3523  0669 89            	pushw	x
-3524  066a 7b0b          	ld	a,(OFST-12,sp)
-3525  066c cd0000        	call	_ReadGroup
-3527  066f 5b04          	addw	sp,#4
-3528                     ; 771 	if(nBuf[nX-1] == JX_AddSum8Bit(nBuf, nX-1))
-3530  0671 1e06          	ldw	x,(OFST-17,sp)
-3531  0673 5a            	decw	x
-3532  0674 89            	pushw	x
-3533  0675 96            	ldw	x,sp
-3534  0676 1c000a        	addw	x,#OFST-13
-3535  0679 cd0000        	call	_JX_AddSum8Bit
-3537  067c 85            	popw	x
-3538  067d 6b03          	ld	(OFST-20,sp),a
-3539  067f 96            	ldw	x,sp
-3540  0680 1c0008        	addw	x,#OFST-15
-3541  0683 1f01          	ldw	(OFST-22,sp),x
-3542  0685 1e06          	ldw	x,(OFST-17,sp)
-3543  0687 5a            	decw	x
-3544  0688 72fb01        	addw	x,(OFST-22,sp)
-3545  068b f6            	ld	a,(x)
-3546  068c 1103          	cp	a,(OFST-20,sp)
-3547  068e 261e          	jrne	L5461
-3548                     ; 773 		if(!JX_IsAllFillDat(nBuf, 0, nX-1))
-3550  0690 1e06          	ldw	x,(OFST-17,sp)
-3551  0692 5a            	decw	x
-3552  0693 cd0000        	call	c_uitolx
-3554  0696 be02          	ldw	x,c_lreg+2
-3555  0698 89            	pushw	x
-3556  0699 be00          	ldw	x,c_lreg
-3557  069b 89            	pushw	x
-3558  069c 4b00          	push	#0
-3559  069e 96            	ldw	x,sp
-3560  069f 1c000d        	addw	x,#OFST-10
-3561  06a2 cd0000        	call	_JX_IsAllFillDat
-3563  06a5 5b05          	addw	sp,#5
-3564  06a7 4d            	tnz	a
-3565  06a8 2604          	jrne	L5461
-3566                     ; 775 			return TRUE;
-3568  06aa 4c            	inc	a
-3570  06ab               L072:
-3572  06ab 5b18          	addw	sp,#24
-3573  06ad 81            	ret	
-3574  06ae               L5461:
-3575                     ; 779 	return FALSE;
-3578  06ae 4f            	clr	a
-3580  06af 20fa          	jra	L072
-3624                     ; 790 void AddAlmRecord(u8 *Record, u8 nLen)
-3624                     ; 791 {
-3625                     	switch	.text
-3626  06b1               _AddAlmRecord:
-3628  06b1 89            	pushw	x
-3629       00000000      OFST:	set	0
-3632                     ; 792 	AddRecordFun(Record, nLen, &g_nRecAlmIndex, NUMBER_RECORD_ALM, 
-3632                     ; 793 		ADDRESS_INDEX_ALM, ADDRESS_RECORD_ALM, RECORD_LEN_ALM);
-3634  06b2 4b09          	push	#9
-3635  06b4 ae10d1        	ldw	x,#4305
-3636  06b7 89            	pushw	x
-3637  06b8 5f            	clrw	x
-3638  06b9 89            	pushw	x
-3639  06ba ae10cd        	ldw	x,#4301
-3640  06bd 89            	pushw	x
-3641  06be 5f            	clrw	x
-3642  06bf 89            	pushw	x
-3643  06c0 4b03          	push	#3
-3644  06c2 ae0003        	ldw	x,#_g_nRecAlmIndex
-3645  06c5 89            	pushw	x
-3646  06c6 7b11          	ld	a,(OFST+17,sp)
-3647  06c8 88            	push	a
-3648  06c9 1e0e          	ldw	x,(OFST+14,sp)
-3649  06cb cd03ec        	call	_AddRecordFun
-3651  06ce 5b0d          	addw	sp,#13
-3652                     ; 794 }
-3655  06d0 85            	popw	x
-3656  06d1 81            	ret	
-3707                     ; 804 u8 ReadAlmRecord(u8 nIndex, u8 *Record, u8 nOutLen)
-3707                     ; 805 {
-3708                     	switch	.text
-3709  06d2               _ReadAlmRecord:
-3711  06d2 88            	push	a
-3712       00000000      OFST:	set	0
-3715                     ; 806 	return (ReadRecordFun(nIndex, Record, nOutLen, g_nRecAlmIndex, NUMBER_RECORD_ALM, ADDRESS_RECORD_ALM));
-3717  06d3 ae10d1        	ldw	x,#4305
-3718  06d6 89            	pushw	x
-3719  06d7 5f            	clrw	x
-3720  06d8 89            	pushw	x
-3721  06d9 4b03          	push	#3
-3722  06db 3b0003        	push	_g_nRecAlmIndex
-3723  06de 7b0c          	ld	a,(OFST+12,sp)
-3724  06e0 88            	push	a
-3725  06e1 1e0b          	ldw	x,(OFST+11,sp)
-3726  06e3 89            	pushw	x
-3727  06e4 7b0a          	ld	a,(OFST+10,sp)
-3728  06e6 cd050a        	call	_ReadRecordFun
-3730  06e9 5b0a          	addw	sp,#10
-3733  06eb 81            	ret	
-3777                     ; 817 void AddRecord(u8 *Record, u8 nLen)
-3777                     ; 818 {
-3778                     	switch	.text
-3779  06ec               _AddRecord:
-3781  06ec 89            	pushw	x
-3782       00000000      OFST:	set	0
-3785                     ; 819 	AddRecordFun(Record, nLen, &ucRecordIndex, NUMBER_RECORD, 
-3785                     ; 820 		ADDRESS_INDEX, ADDRESS_RECORD, RECORD_LEN);
-3787  06ed 4b10          	push	#16
-3788  06ef ae10f3        	ldw	x,#4339
-3789  06f2 89            	pushw	x
-3790  06f3 5f            	clrw	x
-3791  06f4 89            	pushw	x
-3792  06f5 ae10ef        	ldw	x,#4335
-3793  06f8 89            	pushw	x
-3794  06f9 5f            	clrw	x
-3795  06fa 89            	pushw	x
-3796  06fb 4b1c          	push	#28
-3797  06fd ae0002        	ldw	x,#_ucRecordIndex
-3798  0700 89            	pushw	x
-3799  0701 7b11          	ld	a,(OFST+17,sp)
-3800  0703 88            	push	a
-3801  0704 1e0e          	ldw	x,(OFST+14,sp)
-3802  0706 cd03ec        	call	_AddRecordFun
-3804  0709 5b0d          	addw	sp,#13
-3805                     ; 821 }
-3808  070b 85            	popw	x
-3809  070c 81            	ret	
-3860                     ; 830 u8 ReadRecord(u8 nIndex, u8 *Record, u8 nOutLen)
-3860                     ; 831 {
-3861                     	switch	.text
-3862  070d               _ReadRecord:
-3864  070d 88            	push	a
-3865       00000000      OFST:	set	0
-3868                     ; 832 	return (ReadRecordFun(nIndex, Record, nOutLen, ucRecordIndex, NUMBER_RECORD, ADDRESS_RECORD));
-3870  070e ae10f3        	ldw	x,#4339
-3871  0711 89            	pushw	x
-3872  0712 5f            	clrw	x
-3873  0713 89            	pushw	x
-3874  0714 4b1c          	push	#28
-3875  0716 3b0002        	push	_ucRecordIndex
-3876  0719 7b0c          	ld	a,(OFST+12,sp)
-3877  071b 88            	push	a
-3878  071c 1e0b          	ldw	x,(OFST+11,sp)
-3879  071e 89            	pushw	x
-3880  071f 7b0a          	ld	a,(OFST+10,sp)
-3881  0721 cd050a        	call	_ReadRecordFun
-3883  0724 5b0a          	addw	sp,#10
-3886  0726 81            	ret	
-3899                     	xdef	_ReadRecordFun
-3900                     	xdef	_AddRecordFun
-3901                     	xdef	_ReadIndex
-3902                     	xdef	_SaveGroup
-3903                     	switch	.bss
-3904  0000               _g_nMonRecIndex:
-3905  0000 00            	ds.b	1
-3906                     	xdef	_g_nMonRecIndex
-3907  0001               _g_nDayRecIndex:
-3908  0001 00            	ds.b	1
-3909                     	xdef	_g_nDayRecIndex
-3910  0002               _ucRecordIndex:
-3911  0002 00            	ds.b	1
-3912                     	xdef	_ucRecordIndex
-3913  0003               _g_nRecAlmIndex:
-3914  0003 00            	ds.b	1
-3915                     	xdef	_g_nRecAlmIndex
-3916  0004               _stRepFail:
-3917  0004 000000000000  	ds.b	9
-3918                     	xdef	_stRepFail
-3919  000d               _tyParameter:
-3920  000d 000000000000  	ds.b	26
-3921                     	xdef	_tyParameter
-3922  0027               _tyRecord:
-3923  0027 000000000000  	ds.b	16
-3924                     	xdef	_tyRecord
-3925                     	xdef	_ReadAlmRecord
-3926                     	xdef	_AddAlmRecord
-3927                     	xdef	_EditRecord
-3928                     	xdef	_SaveByte
-3929                     	xdef	_ReadGroup
-3930                     	xdef	_ReadReportFlag
-3931                     	xdef	_SaveReportFlag
-3932                     	xdef	_SaveParameterForType
-3933                     	xdef	_ReadParameterForType
-3934                     	xdef	_ReadRecord
-3935                     	xdef	_InitializeFile
-3936                     	xdef	_AddRecord
-3937                     	xref	_JX_IsAllFillDat
-3938                     	xref	_JX_AddSum8Bit
-3939                     	xref	_MemcpyFunc
-3940                     	xref	_MemsetFunc
-3941                     	xref	_delay_us
-3942                     	xref.b	c_lreg
-3943                     	xref.b	c_x
-3963                     	xref	c_imul
-3964                     	xref	c_xymvx
-3965                     	xref	c_lcmp
-3966                     	xref	c_lgadc
-3967                     	xref	c_ladc
-3968                     	xref	c_rtol
-3969                     	xref	c_uitolx
-3970                     	xref	c_ltor
-3971                     	end
+ 474                     ; 30 void ReadGroup(u8 Length, u16 Address, u8 *Data)		//从EEPROM指定地址读取N个字节
+ 474                     ; 31 {
+ 476                     	switch	.text
+ 477  0000               _ReadGroup:
+ 479  0000 88            	push	a
+ 480  0001 5209          	subw	sp,#9
+ 481       00000009      OFST:	set	9
+ 484                     ; 32 	uint32_t add, startadd, stopadd = 0;
+ 486  0003 96            	ldw	x,sp
+ 487  0004 1c0002        	addw	x,#OFST-7
+ 488  0007 cd0000        	call	c_ltor
+ 490                     ; 33 	uint8_t i = 0;
+ 492  000a 0f01          	clr	(OFST-8,sp)
+ 493                     ; 35 	startadd = Address + ((uint16_t)BLOCK_OPERATION * (uint16_t)FLASH_BLOCK_SIZE);
+ 495  000c 1e0d          	ldw	x,(OFST+4,sp)
+ 496  000e cd0000        	call	c_uitolx
+ 498  0011 96            	ldw	x,sp
+ 499  0012 1c0006        	addw	x,#OFST-3
+ 500  0015 cd0000        	call	c_rtol
+ 502                     ; 36 	stopadd = startadd + Length;
+ 504  0018 96            	ldw	x,sp
+ 505  0019 1c0006        	addw	x,#OFST-3
+ 506  001c cd0000        	call	c_ltor
+ 508  001f 7b0a          	ld	a,(OFST+1,sp)
+ 509  0021 cd0000        	call	c_ladc
+ 511  0024 96            	ldw	x,sp
+ 512  0025 1c0002        	addw	x,#OFST-7
+ 513  0028 cd0000        	call	c_rtol
+ 515                     ; 37 	for (add = startadd; add < stopadd; add++)
+ 518  002b 2017          	jra	L162
+ 519  002d               L552:
+ 520                     ; 39 		Data[i++] = (*(PointerAttr uint8_t *) (MemoryAddressCast)add); //FLASH_ReadByte(add);
+ 522  002d 7b01          	ld	a,(OFST-8,sp)
+ 523  002f 0c01          	inc	(OFST-8,sp)
+ 524  0031 5f            	clrw	x
+ 525  0032 97            	ld	xl,a
+ 526  0033 72fb0f        	addw	x,(OFST+6,sp)
+ 527  0036 1608          	ldw	y,(OFST-1,sp)
+ 528  0038 90f6          	ld	a,(y)
+ 529  003a f7            	ld	(x),a
+ 530                     ; 37 	for (add = startadd; add < stopadd; add++)
+ 532  003b 96            	ldw	x,sp
+ 533  003c 1c0006        	addw	x,#OFST-3
+ 534  003f a601          	ld	a,#1
+ 535  0041 cd0000        	call	c_lgadc
+ 537  0044               L162:
+ 540  0044 96            	ldw	x,sp
+ 541  0045 1c0006        	addw	x,#OFST-3
+ 542  0048 cd0000        	call	c_ltor
+ 544  004b 96            	ldw	x,sp
+ 545  004c 1c0002        	addw	x,#OFST-7
+ 546  004f cd0000        	call	c_lcmp
+ 548  0052 25d9          	jrult	L552
+ 549                     ; 41 }
+ 552  0054 5b0a          	addw	sp,#10
+ 553  0056 81            	ret	
+ 593                     ; 51 void SaveByte(u16 Address, u8 Data)
+ 593                     ; 52 {
+ 594                     	switch	.text
+ 595  0057               _SaveByte:
+ 597  0057 89            	pushw	x
+ 598       00000000      OFST:	set	0
+ 601                     ; 59     FLASH->DUKR = FLASH_RASS_KEY2; /* Warning: keys are reversed on data memory !!! */
+ 603  0058 35ae5053      	mov	20563,#174
+ 604                     ; 60     FLASH->DUKR = FLASH_RASS_KEY1;
+ 606  005c 35565053      	mov	20563,#86
+ 608  0060               L703:
+ 609                     ; 63 	while ((FLASH->IAPSR  & (uint8_t)FLASH_FLAG_DUL) == RESET)  //FLASH_GetFlagStatus(FLASH_FLAG_DUL)
+ 611  0060 72075054fb    	btjf	20564,#3,L703
+ 612                     ; 67 	*(PointerAttr uint8_t*) (MemoryAddressCast)Address = Data;
+ 614  0065 7b05          	ld	a,(OFST+5,sp)
+ 615  0067 1e01          	ldw	x,(OFST+1,sp)
+ 616  0069 f7            	ld	(x),a
+ 617                     ; 68 	delay_us(150);
+ 619  006a ae0096        	ldw	x,#150
+ 620  006d cd0000        	call	_delay_us
+ 623  0070               L513:
+ 624                     ; 71 	while ((FLASH->IAPSR  & (uint8_t)FLASH_FLAG_HVOFF) == RESET)  //FLASH_GetFlagStatus(FLASH_FLAG_HVOFF)
+ 626  0070 720d5054fb    	btjf	20564,#6,L513
+ 627                     ; 73 }
+ 630  0075 85            	popw	x
+ 631  0076 81            	ret	
+ 688                     ; 84 void SaveGroup(u8 Length, u16 Address, u8 *Data)		//写n个字节到指定EEPROM的指定地址
+ 688                     ; 85 {
+ 689                     	switch	.text
+ 690  0077               _SaveGroup:
+ 692  0077 88            	push	a
+ 693  0078 89            	pushw	x
+ 694       00000002      OFST:	set	2
+ 697                     ; 86 	u16 wLoop = 0;
+ 699  0079 5f            	clrw	x
+ 700  007a 1f01          	ldw	(OFST-1,sp),x
+ 701                     ; 98     FLASH->DUKR = FLASH_RASS_KEY2; /* Warning: keys are reversed on data memory !!! */
+ 703  007c 35ae5053      	mov	20563,#174
+ 704                     ; 99     FLASH->DUKR = FLASH_RASS_KEY1;
+ 706  0080 35565053      	mov	20563,#86
+ 708  0084               L153:
+ 709                     ; 102 	while ((FLASH->IAPSR  & (uint8_t)FLASH_FLAG_DUL) == RESET)
+ 711  0084 72075054fb    	btjf	20564,#3,L153
+ 712                     ; 105 	for(wLoop = 0; wLoop < Length; wLoop++)
+ 714  0089 5f            	clrw	x
+ 716  008a 2015          	jra	L163
+ 717  008c               L553:
+ 718                     ; 108 		*(PointerAttr uint8_t*) (MemoryAddressCast)(wLoop+Address) = Data[wLoop];
+ 720  008c 1e08          	ldw	x,(OFST+6,sp)
+ 721  008e 72fb01        	addw	x,(OFST-1,sp)
+ 722  0091 f6            	ld	a,(x)
+ 723  0092 1e01          	ldw	x,(OFST-1,sp)
+ 724  0094 72fb06        	addw	x,(OFST+4,sp)
+ 725  0097 f7            	ld	(x),a
+ 726                     ; 109 		delay_us(150);
+ 728  0098 ae0096        	ldw	x,#150
+ 729  009b cd0000        	call	_delay_us
+ 731                     ; 105 	for(wLoop = 0; wLoop < Length; wLoop++)
+ 733  009e 1e01          	ldw	x,(OFST-1,sp)
+ 734  00a0 5c            	incw	x
+ 735  00a1               L163:
+ 736  00a1 1f01          	ldw	(OFST-1,sp),x
+ 739  00a3 7b03          	ld	a,(OFST+1,sp)
+ 740  00a5 5f            	clrw	x
+ 741  00a6 97            	ld	xl,a
+ 742  00a7 bf00          	ldw	c_x,x
+ 743  00a9 1e01          	ldw	x,(OFST-1,sp)
+ 744  00ab b300          	cpw	x,c_x
+ 745  00ad 25dd          	jrult	L553
+ 747  00af               L763:
+ 748                     ; 113 	while ((FLASH->IAPSR  & (uint8_t)FLASH_FLAG_HVOFF) == RESET)  
+ 750  00af 720d5054fb    	btjf	20564,#6,L763
+ 751                     ; 115 }
+ 754  00b4 5b03          	addw	sp,#3
+ 755  00b6 81            	ret	
+1514                     ; 358 void SaveReportFlag(u8 nReportFlg)
+1514                     ; 359 {
+1515                     	switch	.text
+1516  00b7               _SaveReportFlag:
+1518  00b7 88            	push	a
+1519  00b8 5208          	subw	sp,#8
+1520       00000008      OFST:	set	8
+1523                     ; 360 	u16 nX = 0, address = 0;
+1525  00ba 5f            	clrw	x
+1526  00bb 1f01          	ldw	(OFST-7,sp),x
+1529                     ; 364 	address = ADDRESS_REPORTFLG;
+1531  00bd ae1001        	ldw	x,#4097
+1532  00c0 1f03          	ldw	(OFST-5,sp),x
+1533                     ; 366 	ReadGroup(sizeof(index), address, (u8 *)&index);		//读指针,下面做平衡算法
+1535  00c2 96            	ldw	x,sp
+1536  00c3 1c0005        	addw	x,#OFST-3
+1537  00c6 89            	pushw	x
+1538  00c7 ae1001        	ldw	x,#4097
+1539  00ca 89            	pushw	x
+1540  00cb a604          	ld	a,#4
+1541  00cd cd0000        	call	_ReadGroup
+1543  00d0 5b04          	addw	sp,#4
+1544                     ; 367 	if (index.Bytes.B0 == 0xff)		//第一次?
+1546  00d2 7b05          	ld	a,(OFST-3,sp)
+1547  00d4 4c            	inc	a
+1548  00d5 2608          	jrne	L1501
+1549                     ; 369 		SaveByte(ADDRESS_REPORTFLG, nReportFlg);		//保存指针
+1551  00d7 7b09          	ld	a,(OFST+1,sp)
+1552  00d9 88            	push	a
+1553  00da ae1001        	ldw	x,#4097
+1556  00dd 2045          	jra	L3501
+1557  00df               L1501:
+1558                     ; 371 	else if (index.Bytes.B1 == 0xff)
+1560  00df 7b06          	ld	a,(OFST-2,sp)
+1561  00e1 4c            	inc	a
+1562  00e2 2608          	jrne	L5501
+1563                     ; 373 		SaveByte(ADDRESS_REPORTFLG + 1, nReportFlg);	//保存指针
+1565  00e4 7b09          	ld	a,(OFST+1,sp)
+1566  00e6 88            	push	a
+1567  00e7 ae1002        	ldw	x,#4098
+1570  00ea 2038          	jra	L3501
+1571  00ec               L5501:
+1572                     ; 375 	else if (index.Bytes.B2 == 0xff)
+1574  00ec 7b07          	ld	a,(OFST-1,sp)
+1575  00ee 4c            	inc	a
+1576  00ef 2608          	jrne	L1601
+1577                     ; 377 		SaveByte(ADDRESS_REPORTFLG + 2, nReportFlg);	//保存指针
+1579  00f1 7b09          	ld	a,(OFST+1,sp)
+1580  00f3 88            	push	a
+1581  00f4 ae1003        	ldw	x,#4099
+1584  00f7 202b          	jra	L3501
+1585  00f9               L1601:
+1586                     ; 379 	else if (index.Bytes.B3 == 0xff)
+1588  00f9 7b08          	ld	a,(OFST+0,sp)
+1589  00fb 4c            	inc	a
+1590  00fc 2605          	jrne	L5601
+1591                     ; 381 		SaveByte(ADDRESS_REPORTFLG + 3, nReportFlg);	//保存指针
+1593  00fe 7b09          	ld	a,(OFST+1,sp)
+1594  0100 88            	push	a
+1597  0101 201e          	jp	LC001
+1598  0103               L5601:
+1599                     ; 385 		SaveByte(ADDRESS_REPORTFLG, nReportFlg);		//保存指针
+1601  0103 7b09          	ld	a,(OFST+1,sp)
+1602  0105 88            	push	a
+1603  0106 ae1001        	ldw	x,#4097
+1604  0109 cd0057        	call	_SaveByte
+1606  010c 84            	pop	a
+1607                     ; 386 		SaveByte(ADDRESS_REPORTFLG + 1, 0xff);		//清除
+1609  010d 4bff          	push	#255
+1610  010f ae1002        	ldw	x,#4098
+1611  0112 cd0057        	call	_SaveByte
+1613  0115 84            	pop	a
+1614                     ; 387 		SaveByte(ADDRESS_REPORTFLG + 2, 0xff);		//清除
+1616  0116 4bff          	push	#255
+1617  0118 ae1003        	ldw	x,#4099
+1618  011b cd0057        	call	_SaveByte
+1620  011e 84            	pop	a
+1621                     ; 388 		SaveByte(ADDRESS_REPORTFLG + 3, 0xff);		//清除
+1623  011f 4bff          	push	#255
+1624  0121               LC001:
+1625  0121 ae1004        	ldw	x,#4100
+1627  0124               L3501:
+1628  0124 cd0057        	call	_SaveByte
+1629  0127 84            	pop	a
+1630                     ; 390 }
+1633  0128 5b09          	addw	sp,#9
+1634  012a 81            	ret	
+1670                     ; 399 u8 ReadReportFlag(void)
+1670                     ; 400 {
+1671                     	switch	.text
+1672  012b               _ReadReportFlag:
+1674  012b 5204          	subw	sp,#4
+1675       00000004      OFST:	set	4
+1678                     ; 403 	ReadGroup(sizeof(index), ADDRESS_REPORTFLG, (u8 *)&index);		//读指针,根据平衡算法,找到指针的真正位置
+1680  012d 96            	ldw	x,sp
+1681  012e 5c            	incw	x
+1682  012f 89            	pushw	x
+1683  0130 ae1001        	ldw	x,#4097
+1684  0133 89            	pushw	x
+1685  0134 a604          	ld	a,#4
+1686  0136 cd0000        	call	_ReadGroup
+1688  0139 5b04          	addw	sp,#4
+1689                     ; 404 	if (index.Bytes.B3 < 0xff)		//有数据?
+1691  013b 7b04          	ld	a,(OFST+0,sp)
+1692  013d a1ff          	cp	a,#255
+1693                     ; 406 		return index.Bytes.B3;
+1696  013f 2506          	jrult	L64
+1697                     ; 408 	else if (index.Bytes.B2 < 0xff)
+1699  0141 7b03          	ld	a,(OFST-1,sp)
+1700  0143 a1ff          	cp	a,#255
+1701  0145 2403          	jruge	L3111
+1702                     ; 410 		return index.Bytes.B2;
+1705  0147               L64:
+1707  0147 5b04          	addw	sp,#4
+1708  0149 81            	ret	
+1709  014a               L3111:
+1710                     ; 412 	else if (index.Bytes.B1 < 0xff)
+1712  014a 7b02          	ld	a,(OFST-2,sp)
+1713  014c a1ff          	cp	a,#255
+1714                     ; 414 		return index.Bytes.B1;
+1717  014e 25f7          	jrult	L64
+1718                     ; 416 	else if (index.Bytes.B0 < 0xff)
+1720  0150 7b01          	ld	a,(OFST-3,sp)
+1721  0152 a1ff          	cp	a,#255
+1722                     ; 418 		return index.Bytes.B0;
+1725  0154 25f1          	jrult	L64
+1726                     ; 422 		return 0;
+1728  0156 4f            	clr	a
+1730  0157 20ee          	jra	L64
+1780                     ; 433 u8 ReadIndex(u16 wAddr)
+1780                     ; 434 {
+1781                     	switch	.text
+1782  0159               _ReadIndex:
+1784  0159 89            	pushw	x
+1785  015a 5205          	subw	sp,#5
+1786       00000005      OFST:	set	5
+1789                     ; 435 	u8 nIndexDat = 0;
+1791  015c 0f01          	clr	(OFST-4,sp)
+1792                     ; 438 	ReadGroup(sizeof(index), wAddr, (u8 *)&index);		//读指针,根据平衡算法,找到指针的真正位置
+1794  015e 96            	ldw	x,sp
+1795  015f 1c0002        	addw	x,#OFST-3
+1796  0162 89            	pushw	x
+1797  0163 1e08          	ldw	x,(OFST+3,sp)
+1798  0165 89            	pushw	x
+1799  0166 a604          	ld	a,#4
+1800  0168 cd0000        	call	_ReadGroup
+1802  016b 5b04          	addw	sp,#4
+1803                     ; 439 	if (index.Bytes.B3 < 0xff)		//有数据?
+1805  016d 7b05          	ld	a,(OFST+0,sp)
+1806  016f a1ff          	cp	a,#255
+1807                     ; 441 		nIndexDat = index.Bytes.B3;
+1809  0171 2513          	jrult	L3511
+1810                     ; 443 	else if (index.Bytes.B2 < 0xff)
+1812  0173 7b04          	ld	a,(OFST-1,sp)
+1813  0175 a1ff          	cp	a,#255
+1814                     ; 445 		nIndexDat = index.Bytes.B2;
+1816  0177 250d          	jrult	L3511
+1817                     ; 447 	else if (index.Bytes.B1 < 0xff)
+1819  0179 7b03          	ld	a,(OFST-2,sp)
+1820  017b a1ff          	cp	a,#255
+1821                     ; 449 		nIndexDat = index.Bytes.B1;
+1823  017d 2507          	jrult	L3511
+1824                     ; 451 	else if (index.Bytes.B0 < 0xff)
+1826  017f 7b02          	ld	a,(OFST-3,sp)
+1827  0181 a1ff          	cp	a,#255
+1828                     ; 453 		nIndexDat = index.Bytes.B0;
+1834  0183 2501          	jrult	L3511
+1835                     ; 457 		nIndexDat = 0;
+1837  0185 4f            	clr	a
+1838  0186               L3511:
+1839                     ; 459 	return nIndexDat;
+1843  0186 5b07          	addw	sp,#7
+1844  0188 81            	ret	
+1872                     ; 469 void InitializeFile(void)
+1872                     ; 470 {	
+1873                     	switch	.text
+1874  0189               _InitializeFile:
+1878                     ; 472 	FLASH->CR1 &= (uint8_t)(~FLASH_CR1_FIX);
+1880  0189 72115050      	bres	20560,#0
+1881                     ; 473 	FLASH->CR1 |= (uint8_t)FLASH_ProgramTime_Standard;
+1883  018d c65050        	ld	a,20560
+1884                     ; 475     FLASH->DUKR = FLASH_RASS_KEY2; /* edit by maronglang Warning: keys are reversed on data memory !!! */
+1886  0190 35ae5053      	mov	20563,#174
+1887                     ; 476     FLASH->DUKR = FLASH_RASS_KEY1;
+1889  0194 35565053      	mov	20563,#86
+1891  0198               L5021:
+1892                     ; 479 	while ((FLASH->IAPSR  & (uint8_t)FLASH_FLAG_DUL) == RESET) // edit by maronglang20160217
+1894  0198 72075054fb    	btjf	20564,#3,L5021
+1895                     ; 483 	ucRecordIndex = ReadIndex(ADDRESS_INDEX);
+1897  019d ae11d3        	ldw	x,#4563
+1898  01a0 adb7          	call	_ReadIndex
+1900  01a2 c70002        	ld	_ucRecordIndex,a
+1901                     ; 486 	g_nRecAlmIndex = ReadIndex(ADDRESS_INDEX_ALM);
+1903  01a5 ae1105        	ldw	x,#4357
+1904  01a8 adaf          	call	_ReadIndex
+1906  01aa c70003        	ld	_g_nRecAlmIndex,a
+1907                     ; 489 	g_nDayRecIndex = ReadIndex(ADDRESS_INDEX_DAY);
+1909  01ad ae1343        	ldw	x,#4931
+1910  01b0 ada7          	call	_ReadIndex
+1912  01b2 c70001        	ld	_g_nDayRecIndex,a
+1913                     ; 492 	g_nMonRecIndex = ReadIndex(ADDRESS_INDEX_MON);
+1915  01b5 ae1127        	ldw	x,#4391
+1916  01b8 ad9f          	call	_ReadIndex
+1918  01ba c70000        	ld	_g_nMonRecIndex,a
+1919                     ; 494 }
+1922  01bd 81            	ret	
+1925                     .const:	section	.text
+1926  0000               L1121_nBuf:
+1927  0000 00            	dc.b	0
+1928  0001 000000000000  	ds.b	32
+1991                     ; 501 void SaveParameterForType(u8* pnDat, u8 nLen, u8 nTpye)
+1991                     ; 502 {
+1992                     	switch	.text
+1993  01be               _SaveParameterForType:
+1995  01be 89            	pushw	x
+1996  01bf 5221          	subw	sp,#33
+1997       00000021      OFST:	set	33
+2000                     ; 503   u8 nBuf[MAX_LEN+1] = {0};
+2002  01c1 96            	ldw	x,sp
+2003  01c2 5c            	incw	x
+2004  01c3 90ae0000      	ldw	y,#L1121_nBuf
+2005  01c7 a621          	ld	a,#33
+2006  01c9 cd0000        	call	c_xymvx
+2008                     ; 505   nBuf[nLen] = JX_AddSum8Bit(pnDat, nLen);
+2010  01cc 96            	ldw	x,sp
+2011  01cd 5c            	incw	x
+2012  01ce 9f            	ld	a,xl
+2013  01cf 5e            	swapw	x
+2014  01d0 1b26          	add	a,(OFST+5,sp)
+2015  01d2 2401          	jrnc	L07
+2016  01d4 5c            	incw	x
+2017  01d5               L07:
+2018  01d5 02            	rlwa	x,a
+2019  01d6 89            	pushw	x
+2020  01d7 7b28          	ld	a,(OFST+7,sp)
+2021  01d9 5f            	clrw	x
+2022  01da 97            	ld	xl,a
+2023  01db 89            	pushw	x
+2024  01dc 1e26          	ldw	x,(OFST+5,sp)
+2025  01de cd0000        	call	_JX_AddSum8Bit
+2027  01e1 85            	popw	x
+2028  01e2 85            	popw	x
+2029  01e3 f7            	ld	(x),a
+2030                     ; 506 	MemcpyFunc(nBuf, pnDat, nLen);
+2032  01e4 7b26          	ld	a,(OFST+5,sp)
+2033  01e6 88            	push	a
+2034  01e7 1e23          	ldw	x,(OFST+2,sp)
+2035  01e9 89            	pushw	x
+2036  01ea 96            	ldw	x,sp
+2037  01eb 1c0004        	addw	x,#OFST-29
+2038  01ee cd0000        	call	_MemcpyFunc
+2040  01f1 5b03          	addw	sp,#3
+2041                     ; 507 	nLen = nLen + 1;
+2043  01f3 0c26          	inc	(OFST+5,sp)
+2044                     ; 509 	if(IPANDPORT_PARA == nTpye)
+2046  01f5 7b27          	ld	a,(OFST+6,sp)
+2047  01f7 a101          	cp	a,#1
+2048  01f9 2637          	jrne	L1421
+2049                     ; 511 		SaveGroup(nLen, ADDRESS_IPPARA, nBuf);
+2051  01fb 96            	ldw	x,sp
+2052  01fc 5c            	incw	x
+2053  01fd 89            	pushw	x
+2054  01fe ae1027        	ldw	x,#4135
+2055  0201 89            	pushw	x
+2056  0202 7b2a          	ld	a,(OFST+9,sp)
+2057  0204 cd0077        	call	_SaveGroup
+2059  0207 5b04          	addw	sp,#4
+2060                     ; 512 		SaveGroup(nLen, ADDRESS_IPPARA_BK, nBuf);
+2062  0209 96            	ldw	x,sp
+2063  020a 5c            	incw	x
+2064  020b 89            	pushw	x
+2065  020c ae10a7        	ldw	x,#4263
+2066  020f 89            	pushw	x
+2067  0210 7b2a          	ld	a,(OFST+9,sp)
+2068  0212 cd0077        	call	_SaveGroup
+2070  0215 5b04          	addw	sp,#4
+2071                     ; 514 		MemsetFunc(nBuf, 0, sizeof(nBuf));
+2073  0217 4b21          	push	#33
+2074  0219 4b00          	push	#0
+2075  021b 96            	ldw	x,sp
+2076  021c 1c0003        	addw	x,#OFST-30
+2077  021f cd0000        	call	_MemsetFunc
+2079  0222 85            	popw	x
+2080                     ; 515 		ReadGroup(nLen, ADDRESS_IPPARA, nBuf);
+2082  0223 96            	ldw	x,sp
+2083  0224 5c            	incw	x
+2084  0225 89            	pushw	x
+2085  0226 ae1027        	ldw	x,#4135
+2086  0229 89            	pushw	x
+2087  022a 7b2a          	ld	a,(OFST+9,sp)
+2088  022c cd0000        	call	_ReadGroup
+2091  022f cc02d3        	jp	LC003
+2092  0232               L1421:
+2093                     ; 517 	else if(APN_PARA == nTpye)
+2095  0232 a102          	cp	a,#2
+2096  0234 2617          	jrne	L5421
+2097                     ; 519 		SaveGroup(nLen, ADDRESS_APN, nBuf);
+2099  0236 96            	ldw	x,sp
+2100  0237 5c            	incw	x
+2101  0238 89            	pushw	x
+2102  0239 ae104f        	ldw	x,#4175
+2103  023c 89            	pushw	x
+2104  023d 7b2a          	ld	a,(OFST+9,sp)
+2105  023f cd0077        	call	_SaveGroup
+2107  0242 5b04          	addw	sp,#4
+2108                     ; 520 		SaveGroup(nLen, ADDRESS_APN_BK, nBuf);
+2110  0244 96            	ldw	x,sp
+2111  0245 5c            	incw	x
+2112  0246 89            	pushw	x
+2113  0247 ae10cf        	ldw	x,#4303
+2116  024a cc02cd        	jp	LC004
+2117  024d               L5421:
+2118                     ; 522 	else if(REPORT_PARA == nTpye)
+2120  024d a103          	cp	a,#3
+2121  024f 2616          	jrne	L1521
+2122                     ; 524 		SaveGroup(nLen, ADDRESS_REPOERCYCLE, nBuf);
+2124  0251 96            	ldw	x,sp
+2125  0252 5c            	incw	x
+2126  0253 89            	pushw	x
+2127  0254 ae1064        	ldw	x,#4196
+2128  0257 89            	pushw	x
+2129  0258 7b2a          	ld	a,(OFST+9,sp)
+2130  025a cd0077        	call	_SaveGroup
+2132  025d 5b04          	addw	sp,#4
+2133                     ; 525 		SaveGroup(nLen, ADDRESS_REPOERCYCLE_BK, nBuf);		
+2135  025f 96            	ldw	x,sp
+2136  0260 5c            	incw	x
+2137  0261 89            	pushw	x
+2138  0262 ae10e4        	ldw	x,#4324
+2141  0265 2066          	jp	LC004
+2142  0267               L1521:
+2143                     ; 527 	else if(METER_PARA == nTpye)
+2145  0267 a104          	cp	a,#4
+2146  0269 2616          	jrne	L5521
+2147                     ; 529 		SaveGroup(nLen, ADDRESS_PARAMETER, nBuf);
+2149  026b 96            	ldw	x,sp
+2150  026c 5c            	incw	x
+2151  026d 89            	pushw	x
+2152  026e ae1006        	ldw	x,#4102
+2153  0271 89            	pushw	x
+2154  0272 7b2a          	ld	a,(OFST+9,sp)
+2155  0274 cd0077        	call	_SaveGroup
+2157  0277 5b04          	addw	sp,#4
+2158                     ; 530 		SaveGroup(nLen, ADDRESS_PARAMETER_BK, nBuf);		
+2160  0279 96            	ldw	x,sp
+2161  027a 5c            	incw	x
+2162  027b 89            	pushw	x
+2163  027c ae1086        	ldw	x,#4230
+2166  027f 204c          	jp	LC004
+2167  0281               L5521:
+2168                     ; 532 	else if(LT_REP_TIME == nTpye)
+2170  0281 a105          	cp	a,#5
+2171  0283 2616          	jrne	L1621
+2172                     ; 534 		SaveGroup(nLen, ADDRESS_REPORTTIME, nBuf);
+2174  0285 96            	ldw	x,sp
+2175  0286 5c            	incw	x
+2176  0287 89            	pushw	x
+2177  0288 ae106f        	ldw	x,#4207
+2178  028b 89            	pushw	x
+2179  028c 7b2a          	ld	a,(OFST+9,sp)
+2180  028e cd0077        	call	_SaveGroup
+2182  0291 5b04          	addw	sp,#4
+2183                     ; 535 		SaveGroup(nLen, ADDRESS_REPORTTIME_BK, nBuf);		
+2185  0293 96            	ldw	x,sp
+2186  0294 5c            	incw	x
+2187  0295 89            	pushw	x
+2188  0296 ae10ef        	ldw	x,#4335
+2191  0299 2032          	jp	LC004
+2192  029b               L1621:
+2193                     ; 537 	else if(OPT_VALVE_PRAA == nTpye)
+2195  029b a106          	cp	a,#6
+2196  029d 2616          	jrne	L5621
+2197                     ; 539 		SaveGroup(nLen, ADDRESS_OPTVALVE, nBuf);
+2199  029f 96            	ldw	x,sp
+2200  02a0 5c            	incw	x
+2201  02a1 89            	pushw	x
+2202  02a2 ae107a        	ldw	x,#4218
+2203  02a5 89            	pushw	x
+2204  02a6 7b2a          	ld	a,(OFST+9,sp)
+2205  02a8 cd0077        	call	_SaveGroup
+2207  02ab 5b04          	addw	sp,#4
+2208                     ; 540 		SaveGroup(nLen, ADDRESS_OPTVALVE_BK, nBuf);		
+2210  02ad 96            	ldw	x,sp
+2211  02ae 5c            	incw	x
+2212  02af 89            	pushw	x
+2213  02b0 ae10fa        	ldw	x,#4346
+2216  02b3 2018          	jp	LC004
+2217  02b5               L5621:
+2218                     ; 542 	else if(TM_ADDRESS_PRAA == nTpye)
+2220  02b5 a107          	cp	a,#7
+2221  02b7 261c          	jrne	L3421
+2222                     ; 544 		SaveGroup(nLen, ADDRESS_TMADDRESS, nBuf);
+2224  02b9 96            	ldw	x,sp
+2225  02ba 5c            	incw	x
+2226  02bb 89            	pushw	x
+2227  02bc ae1005        	ldw	x,#4101
+2228  02bf 89            	pushw	x
+2229  02c0 7b2a          	ld	a,(OFST+9,sp)
+2230  02c2 cd0077        	call	_SaveGroup
+2232  02c5 5b04          	addw	sp,#4
+2233                     ; 545 		SaveGroup(nLen, ADDRESS_TMADDRESS_BK, nBuf);		
+2235  02c7 96            	ldw	x,sp
+2236  02c8 5c            	incw	x
+2237  02c9 89            	pushw	x
+2238  02ca ae1085        	ldw	x,#4229
+2239  02cd               LC004:
+2240  02cd 89            	pushw	x
+2241  02ce 7b2a          	ld	a,(OFST+9,sp)
+2242  02d0 cd0077        	call	_SaveGroup
+2244  02d3               LC003:
+2245  02d3 5b04          	addw	sp,#4
+2246  02d5               L3421:
+2247                     ; 547 }
+2250  02d5 5b23          	addw	sp,#35
+2251  02d7 81            	ret	
+2254                     	switch	.const
+2255  0021               L3721_nBuf:
+2256  0021 00            	dc.b	0
+2257  0022 000000000000  	ds.b	32
+2333                     ; 554 u8 ReadParameterForType(u8* pnDat, u8 nLen, u8 nTpye)
+2333                     ; 555 {
+2334                     	switch	.text
+2335  02d8               _ReadParameterForType:
+2337  02d8 89            	pushw	x
+2338  02d9 5226          	subw	sp,#38
+2339       00000026      OFST:	set	38
+2342                     ; 556 	u16 Address = 0, AddressBk = 0;
+2344  02db 5f            	clrw	x
+2345  02dc 1f02          	ldw	(OFST-36,sp),x
+2348  02de 1f04          	ldw	(OFST-34,sp),x
+2349                     ; 557 	u8 nBuf[MAX_LEN+1] = {0};
+2351  02e0 96            	ldw	x,sp
+2352  02e1 1c0006        	addw	x,#OFST-32
+2353  02e4 90ae0021      	ldw	y,#L3721_nBuf
+2354  02e8 a621          	ld	a,#33
+2355  02ea cd0000        	call	c_xymvx
+2357                     ; 559 	if(IPANDPORT_PARA == nTpye)
+2359  02ed 7b2c          	ld	a,(OFST+6,sp)
+2360  02ef a101          	cp	a,#1
+2361  02f1 260a          	jrne	L7231
+2362                     ; 561 		Address   = ADDRESS_IPPARA;
+2364  02f3 ae1027        	ldw	x,#4135
+2365  02f6 1f02          	ldw	(OFST-36,sp),x
+2366                     ; 562 		AddressBk = ADDRESS_IPPARA_BK;
+2368  02f8 ae10a7        	ldw	x,#4263
+2370  02fb 2052          	jp	LC005
+2371  02fd               L7231:
+2372                     ; 564 	else if(APN_PARA == nTpye)
+2374  02fd a102          	cp	a,#2
+2375  02ff 260a          	jrne	L3331
+2376                     ; 566 		Address   = ADDRESS_APN;
+2378  0301 ae104f        	ldw	x,#4175
+2379  0304 1f02          	ldw	(OFST-36,sp),x
+2380                     ; 567 		AddressBk = ADDRESS_APN_BK;
+2382  0306 ae10cf        	ldw	x,#4303
+2384  0309 2044          	jp	LC005
+2385  030b               L3331:
+2386                     ; 569 	else if(REPORT_PARA == nTpye)
+2388  030b a103          	cp	a,#3
+2389  030d 260a          	jrne	L7331
+2390                     ; 571 		Address   = ADDRESS_REPOERCYCLE;
+2392  030f ae1064        	ldw	x,#4196
+2393  0312 1f02          	ldw	(OFST-36,sp),x
+2394                     ; 572 		AddressBk = ADDRESS_REPOERCYCLE_BK;
+2396  0314 ae10e4        	ldw	x,#4324
+2398  0317 2036          	jp	LC005
+2399  0319               L7331:
+2400                     ; 574 	else if(METER_PARA == nTpye)
+2402  0319 a104          	cp	a,#4
+2403  031b 260a          	jrne	L3431
+2404                     ; 576 		Address   = ADDRESS_PARAMETER;
+2406  031d ae1006        	ldw	x,#4102
+2407  0320 1f02          	ldw	(OFST-36,sp),x
+2408                     ; 577 		AddressBk = ADDRESS_PARAMETER_BK;
+2410  0322 ae1086        	ldw	x,#4230
+2412  0325 2028          	jp	LC005
+2413  0327               L3431:
+2414                     ; 579 	else if(LT_REP_TIME == nTpye)
+2416  0327 a105          	cp	a,#5
+2417  0329 260a          	jrne	L7431
+2418                     ; 581 		Address   = ADDRESS_REPORTTIME;
+2420  032b ae106f        	ldw	x,#4207
+2421  032e 1f02          	ldw	(OFST-36,sp),x
+2422                     ; 582 		AddressBk = ADDRESS_REPORTTIME_BK;
+2424  0330 ae10ef        	ldw	x,#4335
+2426  0333 201a          	jp	LC005
+2427  0335               L7431:
+2428                     ; 584 	else if(OPT_VALVE_PRAA == nTpye)
+2430  0335 a106          	cp	a,#6
+2431  0337 260a          	jrne	L3531
+2432                     ; 586 		Address   = ADDRESS_OPTVALVE;
+2434  0339 ae107a        	ldw	x,#4218
+2435  033c 1f02          	ldw	(OFST-36,sp),x
+2436                     ; 587 		AddressBk = ADDRESS_OPTVALVE_BK;
+2438  033e ae10fa        	ldw	x,#4346
+2440  0341 200c          	jp	LC005
+2441  0343               L3531:
+2442                     ; 589 	else if(TM_ADDRESS_PRAA == nTpye)
+2444  0343 a107          	cp	a,#7
+2445  0345 260a          	jrne	L1331
+2446                     ; 591 		Address   = ADDRESS_TMADDRESS;
+2448  0347 ae1005        	ldw	x,#4101
+2449  034a 1f02          	ldw	(OFST-36,sp),x
+2450                     ; 592 		AddressBk = ADDRESS_TMADDRESS_BK;	
+2452  034c ae1085        	ldw	x,#4229
+2453  034f               LC005:
+2454  034f 1f04          	ldw	(OFST-34,sp),x
+2455  0351               L1331:
+2456                     ; 595 	ReadGroup(nLen+1, Address, nBuf);	
+2458  0351 96            	ldw	x,sp
+2459  0352 1c0006        	addw	x,#OFST-32
+2460  0355 89            	pushw	x
+2461  0356 1e04          	ldw	x,(OFST-34,sp)
+2462  0358 89            	pushw	x
+2463  0359 7b2f          	ld	a,(OFST+9,sp)
+2464  035b 4c            	inc	a
+2465  035c cd0000        	call	_ReadGroup
+2467  035f 5b04          	addw	sp,#4
+2468                     ; 596 	if(nBuf[nLen] == JX_AddSum8Bit(nBuf, nLen))
+2470  0361 7b2b          	ld	a,(OFST+5,sp)
+2471  0363 5f            	clrw	x
+2472  0364 97            	ld	xl,a
+2473  0365 89            	pushw	x
+2474  0366 96            	ldw	x,sp
+2475  0367 1c0008        	addw	x,#OFST-30
+2476  036a cd0000        	call	_JX_AddSum8Bit
+2478  036d 85            	popw	x
+2479  036e 6b01          	ld	(OFST-37,sp),a
+2480  0370 96            	ldw	x,sp
+2481  0371 1c0006        	addw	x,#OFST-32
+2482  0374 9f            	ld	a,xl
+2483  0375 5e            	swapw	x
+2484  0376 1b2b          	add	a,(OFST+5,sp)
+2485  0378 2401          	jrnc	L441
+2486  037a 5c            	incw	x
+2487  037b               L441:
+2488  037b 02            	rlwa	x,a
+2489  037c f6            	ld	a,(x)
+2490  037d 1101          	cp	a,(OFST-37,sp)
+2491  037f 2618          	jrne	L1631
+2492                     ; 598 		if(!JX_IsAllFillDat(nBuf, 0, nLen))
+2494  0381 7b2b          	ld	a,(OFST+5,sp)
+2495  0383 b703          	ld	c_lreg+3,a
+2496  0385 3f02          	clr	c_lreg+2
+2497  0387 3f01          	clr	c_lreg+1
+2498  0389 3f00          	clr	c_lreg
+2499  038b be02          	ldw	x,c_lreg+2
+2500  038d 89            	pushw	x
+2501  038e be00          	ldw	x,c_lreg
+2502  0390 89            	pushw	x
+2503  0391 4b00          	push	#0
+2504  0393 96            	ldw	x,sp
+2505  0394 1c000b        	addw	x,#OFST-27
+2507                     ; 600 			MemcpyFunc(pnDat, nBuf, nLen);
+2509                     ; 601 			return TRUE;
+2511  0397 2044          	jp	LC006
+2512  0399               L1631:
+2513                     ; 606 		ReadGroup(nLen+1, AddressBk, nBuf);	
+2515  0399 96            	ldw	x,sp
+2516  039a 1c0006        	addw	x,#OFST-32
+2517  039d 89            	pushw	x
+2518  039e 1e06          	ldw	x,(OFST-32,sp)
+2519  03a0 89            	pushw	x
+2520  03a1 7b2f          	ld	a,(OFST+9,sp)
+2521  03a3 4c            	inc	a
+2522  03a4 cd0000        	call	_ReadGroup
+2524  03a7 5b04          	addw	sp,#4
+2525                     ; 607 		if(nBuf[nLen] == JX_AddSum8Bit(nBuf, nLen))
+2527  03a9 7b2b          	ld	a,(OFST+5,sp)
+2528  03ab 5f            	clrw	x
+2529  03ac 97            	ld	xl,a
+2530  03ad 89            	pushw	x
+2531  03ae 96            	ldw	x,sp
+2532  03af 1c0008        	addw	x,#OFST-30
+2533  03b2 cd0000        	call	_JX_AddSum8Bit
+2535  03b5 85            	popw	x
+2536  03b6 6b01          	ld	(OFST-37,sp),a
+2537  03b8 96            	ldw	x,sp
+2538  03b9 1c0006        	addw	x,#OFST-32
+2539  03bc 9f            	ld	a,xl
+2540  03bd 5e            	swapw	x
+2541  03be 1b2b          	add	a,(OFST+5,sp)
+2542  03c0 2401          	jrnc	L651
+2543  03c2 5c            	incw	x
+2544  03c3               L651:
+2545  03c3 02            	rlwa	x,a
+2546  03c4 f6            	ld	a,(x)
+2547  03c5 1101          	cp	a,(OFST-37,sp)
+2548  03c7 2630          	jrne	L5631
+2549                     ; 609 			if(!JX_IsAllFillDat(pnDat, 0, nLen))
+2551  03c9 7b2b          	ld	a,(OFST+5,sp)
+2552  03cb b703          	ld	c_lreg+3,a
+2553  03cd 3f02          	clr	c_lreg+2
+2554  03cf 3f01          	clr	c_lreg+1
+2555  03d1 3f00          	clr	c_lreg
+2556  03d3 be02          	ldw	x,c_lreg+2
+2557  03d5 89            	pushw	x
+2558  03d6 be00          	ldw	x,c_lreg
+2559  03d8 89            	pushw	x
+2560  03d9 4b00          	push	#0
+2561  03db 1e2c          	ldw	x,(OFST+6,sp)
+2563                     ; 611 				MemcpyFunc(pnDat, nBuf, nLen);
+2566                     ; 612 				return TRUE;
+2568  03dd               LC006:
+2569  03dd cd0000        	call	_JX_IsAllFillDat
+2570  03e0 5b05          	addw	sp,#5
+2571  03e2 4d            	tnz	a
+2572  03e3 2614          	jrne	L5631
+2574  03e5 7b2b          	ld	a,(OFST+5,sp)
+2575  03e7 88            	push	a
+2576  03e8 96            	ldw	x,sp
+2577  03e9 1c0007        	addw	x,#OFST-31
+2578  03ec 89            	pushw	x
+2579  03ed 1e2a          	ldw	x,(OFST+4,sp)
+2580  03ef cd0000        	call	_MemcpyFunc
+2581  03f2 5b03          	addw	sp,#3
+2583  03f4 a601          	ld	a,#1
+2585  03f6               L461:
+2587  03f6 5b28          	addw	sp,#40
+2588  03f8 81            	ret	
+2589  03f9               L5631:
+2590                     ; 617 	return FALSE;
+2592  03f9 4f            	clr	a
+2594  03fa 20fa          	jra	L461
+2597                     	switch	.const
+2598  0042               L3731_nBuf:
+2599  0042 00            	dc.b	0
+2600  0043 000000000000  	ds.b	12
+2601  004f               L5731_nTmpBuf:
+2602  004f ff            	dc.b	255
+2603  0050 ff            	dc.b	255
+2604  0051 ff            	dc.b	255
+2605  0052 ff            	dc.b	255
+2606  0053 ff            	dc.b	255
+2607  0054 ff            	dc.b	255
+2608  0055 000000000000  	ds.b	7
+2756                     ; 632 void AddRecordFun(u8 *Record, u8 nLen, u8 *pnRecIndex, u8 nMaxNum, 
+2756                     ; 633 	u32 dwIndexAdd, u32 dwRecordAdd, u8 nRecordLen)
+2756                     ; 634 {
+2757                     	switch	.text
+2758  03fc               _AddRecordFun:
+2760  03fc 89            	pushw	x
+2761  03fd 5226          	subw	sp,#38
+2762       00000026      OFST:	set	38
+2765                     ; 635 	u16 nX = 0, address = 0, nInDexAdd = 0, nLoop = 0 ,wCurrIndex = 0;
+2775                     ; 637 	u8 nBuf[RECORD_LEN+1]    = {0};
+2777  03ff 96            	ldw	x,sp
+2778  0400 5c            	incw	x
+2779  0401 90ae0042      	ldw	y,#L3731_nBuf
+2780  0405 a60d          	ld	a,#13
+2781  0407 cd0000        	call	c_xymvx
+2783                     ; 638 	u8 nTmpBuf[RECORD_LEN+1] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+2785  040a 96            	ldw	x,sp
+2786  040b 1c000e        	addw	x,#OFST-24
+2787  040e 90ae004f      	ldw	y,#L5731_nTmpBuf
+2788  0412 a60d          	ld	a,#13
+2789  0414 cd0000        	call	c_xymvx
+2791                     ; 640 	nBuf[nLen] = JX_AddSum8Bit(Record, nLen);
+2793  0417 96            	ldw	x,sp
+2794  0418 5c            	incw	x
+2795  0419 9f            	ld	a,xl
+2796  041a 5e            	swapw	x
+2797  041b 1b2b          	add	a,(OFST+5,sp)
+2798  041d 2401          	jrnc	L071
+2799  041f 5c            	incw	x
+2800  0420               L071:
+2801  0420 02            	rlwa	x,a
+2802  0421 89            	pushw	x
+2803  0422 7b2d          	ld	a,(OFST+7,sp)
+2804  0424 5f            	clrw	x
+2805  0425 97            	ld	xl,a
+2806  0426 89            	pushw	x
+2807  0427 1e2b          	ldw	x,(OFST+5,sp)
+2808  0429 cd0000        	call	_JX_AddSum8Bit
+2810  042c 85            	popw	x
+2811  042d 85            	popw	x
+2812  042e f7            	ld	(x),a
+2813                     ; 641 	MemcpyFunc(nBuf, Record, nLen);	
+2815  042f 7b2b          	ld	a,(OFST+5,sp)
+2816  0431 88            	push	a
+2817  0432 1e28          	ldw	x,(OFST+2,sp)
+2818  0434 89            	pushw	x
+2819  0435 96            	ldw	x,sp
+2820  0436 1c0004        	addw	x,#OFST-34
+2821  0439 cd0000        	call	_MemcpyFunc
+2823  043c 5b03          	addw	sp,#3
+2824                     ; 642 	nX = nLen+1; //加1字节校验
+2826  043e 4f            	clr	a
+2827  043f 97            	ld	xl,a
+2828  0440 4c            	inc	a
+2829  0441 1b2b          	add	a,(OFST+5,sp)
+2830  0443 2401          	jrnc	L671
+2831  0445 5c            	incw	x
+2832  0446               L671:
+2833  0446 02            	rlwa	x,a
+2834  0447 1f21          	ldw	(OFST-5,sp),x
+2835                     ; 644 	(*pnRecIndex) = (*pnRecIndex)+1;
+2837  0449 1e2c          	ldw	x,(OFST+6,sp)
+2838  044b 7c            	inc	(x)
+2839                     ; 645 	if ((*pnRecIndex) >= nMaxNum)
+2841  044c f6            	ld	a,(x)
+2842  044d 112e          	cp	a,(OFST+8,sp)
+2843  044f 2502          	jrult	L1641
+2844                     ; 647 		(*pnRecIndex) = 0;
+2846  0451 4f            	clr	a
+2847  0452 f7            	ld	(x),a
+2848  0453               L1641:
+2849                     ; 649 	wCurrIndex = (*pnRecIndex);
+2851  0453 5f            	clrw	x
+2852  0454 97            	ld	xl,a
+2853  0455 1f1f          	ldw	(OFST-7,sp),x
+2854                     ; 652 	nInDexAdd = dwIndexAdd;
+2856  0457 1e31          	ldw	x,(OFST+11,sp)
+2857  0459 1f25          	ldw	(OFST-1,sp),x
+2858                     ; 654 	ReadGroup(sizeof(index), nInDexAdd, (u8 *)&index);		//读指针,下面做平衡算法
+2860  045b 96            	ldw	x,sp
+2861  045c 1c001b        	addw	x,#OFST-11
+2862  045f 89            	pushw	x
+2863  0460 1e27          	ldw	x,(OFST+1,sp)
+2864  0462 89            	pushw	x
+2865  0463 a604          	ld	a,#4
+2866  0465 cd0000        	call	_ReadGroup
+2868  0468 5b04          	addw	sp,#4
+2869                     ; 655 	if (index.Bytes.B0 == 0xff)		//第一次?
+2871  046a 7b1b          	ld	a,(OFST-11,sp)
+2872  046c 4c            	inc	a
+2873  046d 263c          	jrne	L3641
+2874                     ; 657 		SaveByte(nInDexAdd, wCurrIndex);		//保存指针
+2876  046f 7b20          	ld	a,(OFST-6,sp)
+2877  0471 88            	push	a
+2878  0472 1e26          	ldw	x,(OFST+0,sp)
+2879  0474 cd0057        	call	_SaveByte
+2881  0477 84            	pop	a
+2882                     ; 658 		address = dwRecordAdd;
+2884  0478 1e35          	ldw	x,(OFST+15,sp)
+2885  047a 1f23          	ldw	(OFST-3,sp),x
+2886                     ; 659 		for(nLoop = 0; nLoop < nMaxNum; nLoop++)
+2888  047c 5f            	clrw	x
+2890  047d 201c          	jra	L1741
+2891  047f               L5641:
+2892                     ; 661 			address +=(nLoop*nX);
+2894  047f 1621          	ldw	y,(OFST-5,sp)
+2895  0481 cd0000        	call	c_imul
+2897  0484 72fb23        	addw	x,(OFST-3,sp)
+2898  0487 1f23          	ldw	(OFST-3,sp),x
+2899                     ; 662 			SaveGroup(nX, address, nTmpBuf);
+2901  0489 96            	ldw	x,sp
+2902  048a 1c000e        	addw	x,#OFST-24
+2903  048d 89            	pushw	x
+2904  048e 1e25          	ldw	x,(OFST-1,sp)
+2905  0490 89            	pushw	x
+2906  0491 7b26          	ld	a,(OFST+0,sp)
+2907  0493 cd0077        	call	_SaveGroup
+2909  0496 5b04          	addw	sp,#4
+2910                     ; 659 		for(nLoop = 0; nLoop < nMaxNum; nLoop++)
+2912  0498 1e25          	ldw	x,(OFST-1,sp)
+2913  049a 5c            	incw	x
+2914  049b               L1741:
+2915  049b 1f25          	ldw	(OFST-1,sp),x
+2918  049d 7b2e          	ld	a,(OFST+8,sp)
+2919  049f 5f            	clrw	x
+2920  04a0 97            	ld	xl,a
+2921  04a1 bf00          	ldw	c_x,x
+2922  04a3 1e25          	ldw	x,(OFST-1,sp)
+2923  04a5 b300          	cpw	x,c_x
+2924  04a7 25d6          	jrult	L5641
+2926  04a9 204e          	jra	L5741
+2927  04ab               L3641:
+2928                     ; 665 	else if (index.Bytes.B1 == 0xff)
+2930  04ab 7b1c          	ld	a,(OFST-10,sp)
+2931  04ad 4c            	inc	a
+2932  04ae 2608          	jrne	L7741
+2933                     ; 667 		SaveByte(nInDexAdd + 1, wCurrIndex);	//保存指针
+2935  04b0 7b20          	ld	a,(OFST-6,sp)
+2936  04b2 88            	push	a
+2937  04b3 1e26          	ldw	x,(OFST+0,sp)
+2938  04b5 5c            	incw	x
+2941  04b6 203d          	jp	LC007
+2942  04b8               L7741:
+2943                     ; 669 	else if (index.Bytes.B2 == 0xff)
+2945  04b8 7b1d          	ld	a,(OFST-9,sp)
+2946  04ba 4c            	inc	a
+2947  04bb 260a          	jrne	L3051
+2948                     ; 671 		SaveByte(nInDexAdd + 2, wCurrIndex);	//保存指针
+2950  04bd 7b20          	ld	a,(OFST-6,sp)
+2951  04bf 88            	push	a
+2952  04c0 1e26          	ldw	x,(OFST+0,sp)
+2953  04c2 1c0002        	addw	x,#2
+2956  04c5 202e          	jp	LC007
+2957  04c7               L3051:
+2958                     ; 673 	else if (index.Bytes.B3 == 0xff)
+2960  04c7 7b1e          	ld	a,(OFST-8,sp)
+2961  04c9 4c            	inc	a
+2962  04ca 2605          	jrne	L7051
+2963                     ; 675 		SaveByte(nInDexAdd + 3, wCurrIndex);	//保存指针
+2965  04cc 7b20          	ld	a,(OFST-6,sp)
+2966  04ce 88            	push	a
+2969  04cf 201f          	jp	LC008
+2970  04d1               L7051:
+2971                     ; 679 		SaveByte(nInDexAdd, wCurrIndex);		//保存指针
+2973  04d1 7b20          	ld	a,(OFST-6,sp)
+2974  04d3 88            	push	a
+2975  04d4 1e26          	ldw	x,(OFST+0,sp)
+2976  04d6 cd0057        	call	_SaveByte
+2978  04d9 84            	pop	a
+2979                     ; 680 		SaveByte(nInDexAdd + 1, 0xff);		//清除
+2981  04da 4bff          	push	#255
+2982  04dc 1e26          	ldw	x,(OFST+0,sp)
+2983  04de 5c            	incw	x
+2984  04df cd0057        	call	_SaveByte
+2986  04e2 84            	pop	a
+2987                     ; 681 		SaveByte(nInDexAdd + 2, 0xff);		//清除
+2989  04e3 4bff          	push	#255
+2990  04e5 1e26          	ldw	x,(OFST+0,sp)
+2991  04e7 1c0002        	addw	x,#2
+2992  04ea cd0057        	call	_SaveByte
+2994  04ed 84            	pop	a
+2995                     ; 682 		SaveByte(nInDexAdd + 3, 0xff);		//清除
+2997  04ee 4bff          	push	#255
+2998  04f0               LC008:
+2999  04f0 1e26          	ldw	x,(OFST+0,sp)
+3000  04f2 1c0003        	addw	x,#3
+3002  04f5               LC007:
+3003  04f5 cd0057        	call	_SaveByte
+3004  04f8 84            	pop	a
+3005  04f9               L5741:
+3006                     ; 685 	address = dwRecordAdd;		            //EEPROM开始地址
+3008  04f9 1e35          	ldw	x,(OFST+15,sp)
+3009  04fb 1f23          	ldw	(OFST-3,sp),x
+3010                     ; 686 	address += wCurrIndex * (nRecordLen+1);		//+记录偏移 	
+3012  04fd 7b37          	ld	a,(OFST+17,sp)
+3013  04ff 5f            	clrw	x
+3014  0500 97            	ld	xl,a
+3015  0501 5c            	incw	x
+3016  0502 161f          	ldw	y,(OFST-7,sp)
+3017  0504 cd0000        	call	c_imul
+3019  0507 72fb23        	addw	x,(OFST-3,sp)
+3020  050a 1f23          	ldw	(OFST-3,sp),x
+3021                     ; 687 	SaveGroup(nX, address, nBuf);
+3023  050c 96            	ldw	x,sp
+3024  050d 5c            	incw	x
+3025  050e 89            	pushw	x
+3026  050f 1e25          	ldw	x,(OFST-1,sp)
+3027  0511 89            	pushw	x
+3028  0512 7b26          	ld	a,(OFST+0,sp)
+3029  0514 cd0077        	call	_SaveGroup
+3031  0517 5b2c          	addw	sp,#44
+3032                     ; 688 }
+3035  0519 81            	ret	
+3038                     	switch	.const
+3039  005c               L3151_nBuf:
+3040  005c 00            	dc.b	0
+3041  005d 000000000000  	ds.b	12
+3144                     ; 697 u8 ReadRecordFun(u8 nIndex, u8 *Record, u8 nOutLen, u8 nRecIndex, u8 nMaxNum, u32 dwRecordAdd)
+3144                     ; 698 {
+3145                     	switch	.text
+3146  051a               _ReadRecordFun:
+3148  051a 88            	push	a
+3149  051b 5214          	subw	sp,#20
+3150       00000014      OFST:	set	20
+3153                     ; 699 	u16 nX = 0, address = 0;
+3157                     ; 700 	u16 nReadIndex = 0;
+3159                     ; 701 	u8 nBuf[RECORD_LEN+1] = {0};
+3161  051d 96            	ldw	x,sp
+3162  051e 1c0006        	addw	x,#OFST-14
+3163  0521 90ae005c      	ldw	y,#L3151_nBuf
+3164  0525 a60d          	ld	a,#13
+3165  0527 cd0000        	call	c_xymvx
+3167                     ; 703 	if(NULL == Record || nOutLen > sizeof(TypeRecord) || (nMaxNum <= nIndex))
+3169  052a 1e18          	ldw	x,(OFST+4,sp)
+3170  052c 2603cc05d4    	jreq	L1751
+3172  0531 7b1a          	ld	a,(OFST+6,sp)
+3173  0533 a10d          	cp	a,#13
+3174  0535 24f7          	jruge	L1751
+3176  0537 7b1c          	ld	a,(OFST+8,sp)
+3177  0539 1115          	cp	a,(OFST+1,sp)
+3178                     ; 705 		return FALSE;
+3180  053b 23f1          	jrule	L1751
+3181                     ; 708 	nX = nOutLen+1;
+3183  053d 4f            	clr	a
+3184  053e 97            	ld	xl,a
+3185  053f 4c            	inc	a
+3186  0540 1b1a          	add	a,(OFST+6,sp)
+3187  0542 2401          	jrnc	L032
+3188  0544 5c            	incw	x
+3189  0545               L032:
+3190  0545 02            	rlwa	x,a
+3191  0546 1f13          	ldw	(OFST-1,sp),x
+3192                     ; 711 	if(nRecIndex < nIndex)
+3194  0548 7b1b          	ld	a,(OFST+7,sp)
+3195  054a 1115          	cp	a,(OFST+1,sp)
+3196  054c 2414          	jruge	L5651
+3197                     ; 713 		nReadIndex = (u8)nMaxNum - (nIndex - nRecIndex);
+3199  054e 7b15          	ld	a,(OFST+1,sp)
+3200  0550 5f            	clrw	x
+3201  0551 101b          	sub	a,(OFST+7,sp)
+3202  0553 2401          	jrnc	L232
+3203  0555 5a            	decw	x
+3204  0556               L232:
+3205  0556 02            	rlwa	x,a
+3206  0557 1f02          	ldw	(OFST-18,sp),x
+3207  0559 7b1c          	ld	a,(OFST+8,sp)
+3208  055b 5f            	clrw	x
+3209  055c 97            	ld	xl,a
+3210  055d 72f002        	subw	x,(OFST-18,sp)
+3212  0560 200c          	jra	L7651
+3213  0562               L5651:
+3214                     ; 717 		nReadIndex = nRecIndex - nIndex;
+3216  0562 5f            	clrw	x
+3217  0563 1015          	sub	a,(OFST+1,sp)
+3218  0565 2401          	jrnc	L432
+3219  0567 5a            	decw	x
+3220  0568               L432:
+3221  0568 02            	rlwa	x,a
+3222  0569 1f04          	ldw	(OFST-16,sp),x
+3223  056b 01            	rrwa	x,a
+3224  056c 1e04          	ldw	x,(OFST-16,sp)
+3225  056e               L7651:
+3226                     ; 720 	address = nReadIndex*nX + dwRecordAdd;	
+3228  056e 1613          	ldw	y,(OFST-1,sp)
+3229  0570 cd0000        	call	c_imul
+3231  0573 72fb1f        	addw	x,(OFST+11,sp)
+3232  0576 1f04          	ldw	(OFST-16,sp),x
+3233                     ; 721 	ReadGroup(nX, address, nBuf);	
+3235  0578 96            	ldw	x,sp
+3236  0579 1c0006        	addw	x,#OFST-14
+3237  057c 89            	pushw	x
+3238  057d 1e06          	ldw	x,(OFST-14,sp)
+3239  057f 89            	pushw	x
+3240  0580 7b18          	ld	a,(OFST+4,sp)
+3241  0582 cd0000        	call	_ReadGroup
+3243  0585 5b04          	addw	sp,#4
+3244                     ; 722 	if(nBuf[nX-1] == JX_AddSum8Bit(nBuf, nX-1))
+3246  0587 1e13          	ldw	x,(OFST-1,sp)
+3247  0589 5a            	decw	x
+3248  058a 89            	pushw	x
+3249  058b 96            	ldw	x,sp
+3250  058c 1c0008        	addw	x,#OFST-12
+3251  058f cd0000        	call	_JX_AddSum8Bit
+3253  0592 85            	popw	x
+3254  0593 6b03          	ld	(OFST-17,sp),a
+3255  0595 96            	ldw	x,sp
+3256  0596 1c0006        	addw	x,#OFST-14
+3257  0599 1f01          	ldw	(OFST-19,sp),x
+3258  059b 1e13          	ldw	x,(OFST-1,sp)
+3259  059d 5a            	decw	x
+3260  059e 72fb01        	addw	x,(OFST-19,sp)
+3261  05a1 f6            	ld	a,(x)
+3262  05a2 1103          	cp	a,(OFST-17,sp)
+3263  05a4 262e          	jrne	L1751
+3264                     ; 724 		if(!JX_IsAllFillDat(nBuf, 0, nX-1))
+3266  05a6 1e13          	ldw	x,(OFST-1,sp)
+3267  05a8 5a            	decw	x
+3268  05a9 cd0000        	call	c_uitolx
+3270  05ac be02          	ldw	x,c_lreg+2
+3271  05ae 89            	pushw	x
+3272  05af be00          	ldw	x,c_lreg
+3273  05b1 89            	pushw	x
+3274  05b2 4b00          	push	#0
+3275  05b4 96            	ldw	x,sp
+3276  05b5 1c000b        	addw	x,#OFST-9
+3277  05b8 cd0000        	call	_JX_IsAllFillDat
+3279  05bb 5b05          	addw	sp,#5
+3280  05bd 4d            	tnz	a
+3281  05be 2614          	jrne	L1751
+3282                     ; 726 			MemcpyFunc(Record, nBuf, nOutLen); 
+3284  05c0 7b1a          	ld	a,(OFST+6,sp)
+3285  05c2 88            	push	a
+3286  05c3 96            	ldw	x,sp
+3287  05c4 1c0007        	addw	x,#OFST-13
+3288  05c7 89            	pushw	x
+3289  05c8 1e1b          	ldw	x,(OFST+7,sp)
+3290  05ca cd0000        	call	_MemcpyFunc
+3292  05cd 5b03          	addw	sp,#3
+3293                     ; 727 			return TRUE;
+3295  05cf a601          	ld	a,#1
+3297  05d1               L642:
+3299  05d1 5b15          	addw	sp,#21
+3300  05d3 81            	ret	
+3301  05d4               L1751:
+3302                     ; 731 	return FALSE;
+3305  05d4 4f            	clr	a
+3307  05d5 20fa          	jra	L642
+3310                     	switch	.const
+3311  0069               L5751_nBuf:
+3312  0069 00            	dc.b	0
+3313  006a 000000000000  	ds.b	15
+3398                     ; 741 u8 EditRecord(u8 nIndex, u8 *Record, u8 nInLen)
+3398                     ; 742 {
+3399                     	switch	.text
+3400  05d7               _EditRecord:
+3402  05d7 88            	push	a
+3403  05d8 5217          	subw	sp,#23
+3404       00000017      OFST:	set	23
+3407                     ; 743 	u16 nX = 0, address = 0;
+3411                     ; 744 	u16 nReadIndex = 0;
+3413                     ; 745 	u8 nBuf[16] = {0};
+3415  05da 96            	ldw	x,sp
+3416  05db 1c0008        	addw	x,#OFST-15
+3417  05de 90ae0069      	ldw	y,#L5751_nBuf
+3418  05e2 a610          	ld	a,#16
+3419  05e4 cd0000        	call	c_xymvx
+3421                     ; 747 	if(NULL == Record || nInLen < sizeof(TypeRecord) || (NUMBER_RECORD < nIndex))
+3423  05e7 1e1b          	ldw	x,(OFST+4,sp)
+3424  05e9 2603cc06be    	jreq	L5461
+3426  05ee 7b1d          	ld	a,(OFST+6,sp)
+3427  05f0 a10c          	cp	a,#12
+3428  05f2 25f7          	jrult	L5461
+3430  05f4 7b18          	ld	a,(OFST+1,sp)
+3431  05f6 a11d          	cp	a,#29
+3432                     ; 749 		return FALSE;
+3434  05f8 24f1          	jruge	L5461
+3435                     ; 752 	nX = sizeof(TypeRecord)+1;
+3437  05fa ae000d        	ldw	x,#13
+3438  05fd 1f06          	ldw	(OFST-17,sp),x
+3439                     ; 755 	if(ucRecordIndex < nIndex)
+3441  05ff c60002        	ld	a,_ucRecordIndex
+3442  0602 1118          	cp	a,(OFST+1,sp)
+3443  0604 2414          	jruge	L1461
+3444                     ; 757 		nReadIndex = (u8)NUMBER_RECORD - (nIndex - ucRecordIndex);
+3446  0606 7b18          	ld	a,(OFST+1,sp)
+3447  0608 5f            	clrw	x
+3448  0609 c00002        	sub	a,_ucRecordIndex
+3449  060c 2401          	jrnc	L252
+3450  060e 5a            	decw	x
+3451  060f               L252:
+3452  060f 02            	rlwa	x,a
+3453  0610 1f02          	ldw	(OFST-21,sp),x
+3454  0612 ae001c        	ldw	x,#28
+3455  0615 72f002        	subw	x,(OFST-21,sp)
+3457  0618 2007          	jra	L3461
+3458  061a               L1461:
+3459                     ; 761 		nReadIndex = ucRecordIndex - nIndex;
+3461  061a 5f            	clrw	x
+3462  061b 1018          	sub	a,(OFST+1,sp)
+3463  061d 2401          	jrnc	L452
+3464  061f 5a            	decw	x
+3465  0620               L452:
+3466  0620 02            	rlwa	x,a
+3467  0621               L3461:
+3468  0621 1f04          	ldw	(OFST-19,sp),x
+3469                     ; 764 	MemcpyFunc(nBuf, Record, nInLen);
+3471  0623 7b1d          	ld	a,(OFST+6,sp)
+3472  0625 88            	push	a
+3473  0626 1e1c          	ldw	x,(OFST+5,sp)
+3474  0628 89            	pushw	x
+3475  0629 96            	ldw	x,sp
+3476  062a 1c000b        	addw	x,#OFST-12
+3477  062d cd0000        	call	_MemcpyFunc
+3479  0630 5b03          	addw	sp,#3
+3480                     ; 765 	address = nReadIndex*nX + ADDRESS_RECORD;	
+3482  0632 1e04          	ldw	x,(OFST-19,sp)
+3483  0634 1606          	ldw	y,(OFST-17,sp)
+3484  0636 cd0000        	call	c_imul
+3486  0639 1c11d7        	addw	x,#4567
+3487  063c 1f04          	ldw	(OFST-19,sp),x
+3488                     ; 766 	nBuf[nX-1] = JX_AddSum8Bit(nBuf, nX-1);
+3490  063e 1e06          	ldw	x,(OFST-17,sp)
+3491  0640 5a            	decw	x
+3492  0641 89            	pushw	x
+3493  0642 96            	ldw	x,sp
+3494  0643 1c000a        	addw	x,#OFST-13
+3495  0646 cd0000        	call	_JX_AddSum8Bit
+3497  0649 85            	popw	x
+3498  064a 96            	ldw	x,sp
+3499  064b 1c0008        	addw	x,#OFST-15
+3500  064e 1f02          	ldw	(OFST-21,sp),x
+3501  0650 1e06          	ldw	x,(OFST-17,sp)
+3502  0652 5a            	decw	x
+3503  0653 72fb02        	addw	x,(OFST-21,sp)
+3504  0656 f7            	ld	(x),a
+3505                     ; 767 	SaveGroup(nX, address, nBuf);
+3507  0657 96            	ldw	x,sp
+3508  0658 1c0008        	addw	x,#OFST-15
+3509  065b 89            	pushw	x
+3510  065c 1e06          	ldw	x,(OFST-17,sp)
+3511  065e 89            	pushw	x
+3512  065f 7b0b          	ld	a,(OFST-12,sp)
+3513  0661 cd0077        	call	_SaveGroup
+3515  0664 5b04          	addw	sp,#4
+3516                     ; 769 	MemsetFunc(nBuf, 0, sizeof(nBuf));
+3518  0666 4b10          	push	#16
+3519  0668 4b00          	push	#0
+3520  066a 96            	ldw	x,sp
+3521  066b 1c000a        	addw	x,#OFST-13
+3522  066e cd0000        	call	_MemsetFunc
+3524  0671 85            	popw	x
+3525                     ; 770 	ReadGroup(nX, address, nBuf);
+3527  0672 96            	ldw	x,sp
+3528  0673 1c0008        	addw	x,#OFST-15
+3529  0676 89            	pushw	x
+3530  0677 1e06          	ldw	x,(OFST-17,sp)
+3531  0679 89            	pushw	x
+3532  067a 7b0b          	ld	a,(OFST-12,sp)
+3533  067c cd0000        	call	_ReadGroup
+3535  067f 5b04          	addw	sp,#4
+3536                     ; 771 	if(nBuf[nX-1] == JX_AddSum8Bit(nBuf, nX-1))
+3538  0681 1e06          	ldw	x,(OFST-17,sp)
+3539  0683 5a            	decw	x
+3540  0684 89            	pushw	x
+3541  0685 96            	ldw	x,sp
+3542  0686 1c000a        	addw	x,#OFST-13
+3543  0689 cd0000        	call	_JX_AddSum8Bit
+3545  068c 85            	popw	x
+3546  068d 6b03          	ld	(OFST-20,sp),a
+3547  068f 96            	ldw	x,sp
+3548  0690 1c0008        	addw	x,#OFST-15
+3549  0693 1f01          	ldw	(OFST-22,sp),x
+3550  0695 1e06          	ldw	x,(OFST-17,sp)
+3551  0697 5a            	decw	x
+3552  0698 72fb01        	addw	x,(OFST-22,sp)
+3553  069b f6            	ld	a,(x)
+3554  069c 1103          	cp	a,(OFST-20,sp)
+3555  069e 261e          	jrne	L5461
+3556                     ; 773 		if(!JX_IsAllFillDat(nBuf, 0, nX-1))
+3558  06a0 1e06          	ldw	x,(OFST-17,sp)
+3559  06a2 5a            	decw	x
+3560  06a3 cd0000        	call	c_uitolx
+3562  06a6 be02          	ldw	x,c_lreg+2
+3563  06a8 89            	pushw	x
+3564  06a9 be00          	ldw	x,c_lreg
+3565  06ab 89            	pushw	x
+3566  06ac 4b00          	push	#0
+3567  06ae 96            	ldw	x,sp
+3568  06af 1c000d        	addw	x,#OFST-10
+3569  06b2 cd0000        	call	_JX_IsAllFillDat
+3571  06b5 5b05          	addw	sp,#5
+3572  06b7 4d            	tnz	a
+3573  06b8 2604          	jrne	L5461
+3574                     ; 775 			return TRUE;
+3576  06ba 4c            	inc	a
+3578  06bb               L472:
+3580  06bb 5b18          	addw	sp,#24
+3581  06bd 81            	ret	
+3582  06be               L5461:
+3583                     ; 779 	return FALSE;
+3586  06be 4f            	clr	a
+3588  06bf 20fa          	jra	L472
+3632                     ; 790 void AddAlmRecord(u8 *Record, u8 nLen)
+3632                     ; 791 {
+3633                     	switch	.text
+3634  06c1               _AddAlmRecord:
+3636  06c1 89            	pushw	x
+3637       00000000      OFST:	set	0
+3640                     ; 792 	AddRecordFun(Record, nLen, &g_nRecAlmIndex, NUMBER_RECORD_ALM, 
+3640                     ; 793 		ADDRESS_INDEX_ALM, ADDRESS_RECORD_ALM, RECORD_LEN_ALM);
+3642  06c2 4b09          	push	#9
+3643  06c4 ae1109        	ldw	x,#4361
+3644  06c7 89            	pushw	x
+3645  06c8 5f            	clrw	x
+3646  06c9 89            	pushw	x
+3647  06ca ae1105        	ldw	x,#4357
+3648  06cd 89            	pushw	x
+3649  06ce 5f            	clrw	x
+3650  06cf 89            	pushw	x
+3651  06d0 4b03          	push	#3
+3652  06d2 ae0003        	ldw	x,#_g_nRecAlmIndex
+3653  06d5 89            	pushw	x
+3654  06d6 7b11          	ld	a,(OFST+17,sp)
+3655  06d8 88            	push	a
+3656  06d9 1e0e          	ldw	x,(OFST+14,sp)
+3657  06db cd03fc        	call	_AddRecordFun
+3659  06de 5b0d          	addw	sp,#13
+3660                     ; 794 }
+3663  06e0 85            	popw	x
+3664  06e1 81            	ret	
+3715                     ; 804 u8 ReadAlmRecord(u8 nIndex, u8 *Record, u8 nOutLen)
+3715                     ; 805 {
+3716                     	switch	.text
+3717  06e2               _ReadAlmRecord:
+3719  06e2 88            	push	a
+3720       00000000      OFST:	set	0
+3723                     ; 806 	return (ReadRecordFun(nIndex, Record, nOutLen, g_nRecAlmIndex, NUMBER_RECORD_ALM, ADDRESS_RECORD_ALM));
+3725  06e3 ae1109        	ldw	x,#4361
+3726  06e6 89            	pushw	x
+3727  06e7 5f            	clrw	x
+3728  06e8 89            	pushw	x
+3729  06e9 4b03          	push	#3
+3730  06eb 3b0003        	push	_g_nRecAlmIndex
+3731  06ee 7b0c          	ld	a,(OFST+12,sp)
+3732  06f0 88            	push	a
+3733  06f1 1e0b          	ldw	x,(OFST+11,sp)
+3734  06f3 89            	pushw	x
+3735  06f4 7b0a          	ld	a,(OFST+10,sp)
+3736  06f6 cd051a        	call	_ReadRecordFun
+3738  06f9 5b0a          	addw	sp,#10
+3741  06fb 81            	ret	
+3785                     ; 817 void AddRecord(u8 *Record, u8 nLen)
+3785                     ; 818 {
+3786                     	switch	.text
+3787  06fc               _AddRecord:
+3789  06fc 89            	pushw	x
+3790       00000000      OFST:	set	0
+3793                     ; 819 	AddRecordFun(Record, nLen, &ucRecordIndex, NUMBER_RECORD, 
+3793                     ; 820 		ADDRESS_INDEX, ADDRESS_RECORD, RECORD_LEN);
+3795  06fd 4b0c          	push	#12
+3796  06ff ae11d7        	ldw	x,#4567
+3797  0702 89            	pushw	x
+3798  0703 5f            	clrw	x
+3799  0704 89            	pushw	x
+3800  0705 ae11d3        	ldw	x,#4563
+3801  0708 89            	pushw	x
+3802  0709 5f            	clrw	x
+3803  070a 89            	pushw	x
+3804  070b 4b1c          	push	#28
+3805  070d ae0002        	ldw	x,#_ucRecordIndex
+3806  0710 89            	pushw	x
+3807  0711 7b11          	ld	a,(OFST+17,sp)
+3808  0713 88            	push	a
+3809  0714 1e0e          	ldw	x,(OFST+14,sp)
+3810  0716 cd03fc        	call	_AddRecordFun
+3812  0719 5b0d          	addw	sp,#13
+3813                     ; 821 }
+3816  071b 85            	popw	x
+3817  071c 81            	ret	
+3868                     ; 830 u8 ReadRecord(u8 nIndex, u8 *Record, u8 nOutLen)
+3868                     ; 831 {
+3869                     	switch	.text
+3870  071d               _ReadRecord:
+3872  071d 88            	push	a
+3873       00000000      OFST:	set	0
+3876                     ; 832 	return (ReadRecordFun(nIndex, Record, nOutLen, ucRecordIndex, NUMBER_RECORD, ADDRESS_RECORD));
+3878  071e ae11d7        	ldw	x,#4567
+3879  0721 89            	pushw	x
+3880  0722 5f            	clrw	x
+3881  0723 89            	pushw	x
+3882  0724 4b1c          	push	#28
+3883  0726 3b0002        	push	_ucRecordIndex
+3884  0729 7b0c          	ld	a,(OFST+12,sp)
+3885  072b 88            	push	a
+3886  072c 1e0b          	ldw	x,(OFST+11,sp)
+3887  072e 89            	pushw	x
+3888  072f 7b0a          	ld	a,(OFST+10,sp)
+3889  0731 cd051a        	call	_ReadRecordFun
+3891  0734 5b0a          	addw	sp,#10
+3894  0736 81            	ret	
+3938                     ; 844 void AddDayFreezeRecord(u8 *Record, u8 nLen)
+3938                     ; 845 {
+3939                     	switch	.text
+3940  0737               _AddDayFreezeRecord:
+3942  0737 89            	pushw	x
+3943       00000000      OFST:	set	0
+3946                     ; 846 	AddRecordFun(Record, nLen, &g_nDayRecIndex, NUMBER_RECORD_DAY, 
+3946                     ; 847 		ADDRESS_INDEX_DAY, ADDRESS_RECORD_DAY, RECORD_LEN_DAY);
+3948  0738 4b07          	push	#7
+3949  073a ae1347        	ldw	x,#4935
+3950  073d 89            	pushw	x
+3951  073e 5f            	clrw	x
+3952  073f 89            	pushw	x
+3953  0740 ae1343        	ldw	x,#4931
+3954  0743 89            	pushw	x
+3955  0744 5f            	clrw	x
+3956  0745 89            	pushw	x
+3957  0746 4b1f          	push	#31
+3958  0748 ae0001        	ldw	x,#_g_nDayRecIndex
+3959  074b 89            	pushw	x
+3960  074c 7b11          	ld	a,(OFST+17,sp)
+3961  074e 88            	push	a
+3962  074f 1e0e          	ldw	x,(OFST+14,sp)
+3963  0751 cd03fc        	call	_AddRecordFun
+3965  0754 5b0d          	addw	sp,#13
+3966                     ; 848 }
+3969  0756 85            	popw	x
+3970  0757 81            	ret	
+4022                     ; 857 u8 ReadDayFreezeRecord(u8 nIndex, u8 *Record, u8 nOutLen)
+4022                     ; 858 {
+4023                     	switch	.text
+4024  0758               _ReadDayFreezeRecord:
+4026  0758 88            	push	a
+4027       00000000      OFST:	set	0
+4030                     ; 859 	return (ReadRecordFun(nIndex, Record, nOutLen, g_nDayRecIndex, NUMBER_RECORD_DAY, ADDRESS_RECORD_DAY));
+4032  0759 ae1347        	ldw	x,#4935
+4033  075c 89            	pushw	x
+4034  075d 5f            	clrw	x
+4035  075e 89            	pushw	x
+4036  075f 4b1f          	push	#31
+4037  0761 3b0001        	push	_g_nDayRecIndex
+4038  0764 7b0c          	ld	a,(OFST+12,sp)
+4039  0766 88            	push	a
+4040  0767 1e0b          	ldw	x,(OFST+11,sp)
+4041  0769 89            	pushw	x
+4042  076a 7b0a          	ld	a,(OFST+10,sp)
+4043  076c cd051a        	call	_ReadRecordFun
+4045  076f 5b0a          	addw	sp,#10
+4048  0771 81            	ret	
+4092                     ; 869 void AddMonFreezeRecord(u8 *Record, u8 nLen)
+4092                     ; 870 {
+4093                     	switch	.text
+4094  0772               _AddMonFreezeRecord:
+4096  0772 89            	pushw	x
+4097       00000000      OFST:	set	0
+4100                     ; 871 	AddRecordFun(Record, nLen, &g_nMonRecIndex, NUMBER_RECORD_MON, 
+4100                     ; 872 		ADDRESS_INDEX_MON, ADDRESS_RECORD_MON, RECORD_LEN_MON);
+4102  0773 4b06          	push	#6
+4103  0775 ae112b        	ldw	x,#4395
+4104  0778 89            	pushw	x
+4105  0779 5f            	clrw	x
+4106  077a 89            	pushw	x
+4107  077b ae1127        	ldw	x,#4391
+4108  077e 89            	pushw	x
+4109  077f 5f            	clrw	x
+4110  0780 89            	pushw	x
+4111  0781 4b18          	push	#24
+4112  0783 ae0000        	ldw	x,#_g_nMonRecIndex
+4113  0786 89            	pushw	x
+4114  0787 7b11          	ld	a,(OFST+17,sp)
+4115  0789 88            	push	a
+4116  078a 1e0e          	ldw	x,(OFST+14,sp)
+4117  078c cd03fc        	call	_AddRecordFun
+4119  078f 5b0d          	addw	sp,#13
+4120                     ; 873 }
+4123  0791 85            	popw	x
+4124  0792 81            	ret	
+4176                     ; 882 u8 ReadMonFreezeRecord(u8 nIndex, u8 *Record, u8 nOutLen)
+4176                     ; 883 {
+4177                     	switch	.text
+4178  0793               _ReadMonFreezeRecord:
+4180  0793 88            	push	a
+4181       00000000      OFST:	set	0
+4184                     ; 884 	return (ReadRecordFun(nIndex, Record, nOutLen, g_nMonRecIndex, NUMBER_RECORD_MON, ADDRESS_RECORD_MON));
+4186  0794 ae112b        	ldw	x,#4395
+4187  0797 89            	pushw	x
+4188  0798 5f            	clrw	x
+4189  0799 89            	pushw	x
+4190  079a 4b18          	push	#24
+4191  079c 3b0000        	push	_g_nMonRecIndex
+4192  079f 7b0c          	ld	a,(OFST+12,sp)
+4193  07a1 88            	push	a
+4194  07a2 1e0b          	ldw	x,(OFST+11,sp)
+4195  07a4 89            	pushw	x
+4196  07a5 7b0a          	ld	a,(OFST+10,sp)
+4197  07a7 cd051a        	call	_ReadRecordFun
+4199  07aa 5b0a          	addw	sp,#10
+4202  07ac 81            	ret	
+4215                     	xdef	_ReadRecordFun
+4216                     	xdef	_AddRecordFun
+4217                     	xdef	_ReadIndex
+4218                     	xdef	_SaveGroup
+4219                     	switch	.bss
+4220  0000               _g_nMonRecIndex:
+4221  0000 00            	ds.b	1
+4222                     	xdef	_g_nMonRecIndex
+4223  0001               _g_nDayRecIndex:
+4224  0001 00            	ds.b	1
+4225                     	xdef	_g_nDayRecIndex
+4226  0002               _ucRecordIndex:
+4227  0002 00            	ds.b	1
+4228                     	xdef	_ucRecordIndex
+4229  0003               _g_nRecAlmIndex:
+4230  0003 00            	ds.b	1
+4231                     	xdef	_g_nRecAlmIndex
+4232  0004               _stRepFail:
+4233  0004 000000000000  	ds.b	9
+4234                     	xdef	_stRepFail
+4235  000d               _tyParameter:
+4236  000d 000000000000  	ds.b	33
+4237                     	xdef	_tyParameter
+4238  002e               _tyRecord:
+4239  002e 000000000000  	ds.b	12
+4240                     	xdef	_tyRecord
+4241                     	xdef	_ReadMonFreezeRecord
+4242                     	xdef	_AddMonFreezeRecord
+4243                     	xdef	_ReadDayFreezeRecord
+4244                     	xdef	_AddDayFreezeRecord
+4245                     	xdef	_ReadAlmRecord
+4246                     	xdef	_AddAlmRecord
+4247                     	xdef	_EditRecord
+4248                     	xdef	_SaveByte
+4249                     	xdef	_ReadGroup
+4250                     	xdef	_ReadReportFlag
+4251                     	xdef	_SaveReportFlag
+4252                     	xdef	_SaveParameterForType
+4253                     	xdef	_ReadParameterForType
+4254                     	xdef	_ReadRecord
+4255                     	xdef	_InitializeFile
+4256                     	xdef	_AddRecord
+4257                     	xref	_JX_IsAllFillDat
+4258                     	xref	_JX_AddSum8Bit
+4259                     	xref	_MemcpyFunc
+4260                     	xref	_MemsetFunc
+4261                     	xref	_delay_us
+4262                     	xref.b	c_lreg
+4263                     	xref.b	c_x
+4283                     	xref	c_imul
+4284                     	xref	c_xymvx
+4285                     	xref	c_lcmp
+4286                     	xref	c_lgadc
+4287                     	xref	c_ladc
+4288                     	xref	c_rtol
+4289                     	xref	c_uitolx
+4290                     	xref	c_ltor
+4291                     	end

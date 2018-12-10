@@ -584,6 +584,11 @@ volatile TypeProtol130 tyProtol130;	//协议结构体
 #endif
 volatile TypeReportParameter tyReportParameter;		//参数结构体
 
+extern ST_Time g_stNextRepTime;        //下次上报时间
+extern ST_Time g_stNextGmTime;        //下次抄表时间
+extern u8  m_nUploadMode;//
+
+
 
 
 //u8 aucAtBuffer[NUMBER_AT];		//AT缓冲区
@@ -602,6 +607,12 @@ u8 tyGSMFlag;
 
 uint8_t  SIMGL868_UpdateSignal(void);
 uint8_t  SIMGK7M_GetCIMI(u8 *pnOutBuf, u8 nLen);
+
+
+
+u8  JX_Strlen(char* pbSrc);
+void  JX_StringCat(char* pbSrc,char * pnStr, u8 nLen);
+
 
 /* (C) Copyright 2008~2015
 南山区中山园路1001号 TCL国际E城E4栋2D

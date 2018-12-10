@@ -15,6 +15,7 @@ source\libraries\inc\stm8l15x.h
 source\libraries\src\stm8l15x_gpio.c
 source\libraries\src\stm8l15x_exti.c
 source\libraries\src\stm8l15x_clk.c
+source\hedaprotocol.h
 source\xinjiangprotocol.h
 source\cj188.h
 source\pwrctr.h
@@ -32,6 +33,7 @@ source\initialize.h
 source\jx_libtype.h
 source\global.h
 source\driveruart.h
+source\hedaprotocol.c
 source\xinjiangprotocol.c
 source\cj188.c
 source\stm8l15x_it.c

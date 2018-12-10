@@ -262,7 +262,7 @@ void JASON_GmPiezometer(u8 nRepFlg)
 }
 #endif
 
-#ifdef JASON130_PTR
+#if	defined(JASON130_PTR)||defined(HEDA_PTR)
 /******************************************************************************
 * 函 数 名: JASON_130PurchasePro(void)
 * 函数功能: 捷先预付费处理
@@ -1106,16 +1106,16 @@ void fixTaskMeter(void)
 	/* 月冻结 */
 //	MonFreezeDatProc();
 	
-#ifdef  JASON130_PTR
+#if defined(JASON130_PTR)||defined(HEDA_PTR)
 	JASON_130TaskMeter();
 #else
-#ifndef SAVE_TEST
-	/* 上电如果需要上报数据则延迟6秒进行抄表 */
-	if((GetReportFlag())&&g_dwSysTick<6000)
-	{
-		return ;
-	}
-#endif
+	#ifndef SAVE_TEST
+		/* 上电如果需要上报数据则延迟6秒进行抄表 */
+		if((GetReportFlag())&&g_dwSysTick<6000)
+		{
+			return ;
+		}
+	#endif
 	/* 定时抄表 */
 	TimeGatherMeterProc();
 #endif

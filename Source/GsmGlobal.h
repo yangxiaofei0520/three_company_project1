@@ -127,6 +127,7 @@ extern u16 g_wTmReportCnt;
 extern u8 g_nSignal;
 extern u8 g_OptValveRepFlg;
 extern u32 g_dwTmAddress;
+extern u8  m_nUploadMode;//
 
 
 u8 GetReportFlag(void);
@@ -156,6 +157,11 @@ u8 GetOnLineStatus(void);
 u8 GetGprsConntStat(void);
 void GetIsmiCcidDat(void);
 u8 RepPizeometerMakeFrame(u8* pnOutBuf, u8* pnLen);
+
+
+u8  JX_Strlen(char* pbSrc);
+void  JX_StringCat(char* pbSrc,char * pnStr, u8 nLen);
+
 
 //以下为位变量
 

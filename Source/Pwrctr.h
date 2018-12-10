@@ -44,6 +44,11 @@
 #endif
 
 
+extern ST_Time g_stNextRepTime;        //下次上报时间
+extern ST_Time g_stNextGmTime;        //下次抄表时间
+
+
+
 void LP_LowPowerManage(void);
 void  LP_BSP_DeInit(void);
 void LP_SetKeyWuFlg(uint8_t nFlg);

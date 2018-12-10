@@ -2544,73 +2544,110 @@
 5500  0db3 cd0000        	call	c_ltor
 5504  0db6 5b04          	addw	sp,#4
 5505  0db8 81            	ret	
-5531                     	xdef	_TM_SecondsToTime
-5532                     	xdef	_JX_FloatToBin
-5533                     	xdef	_JX_BcdToDWORD
-5534                     	xdef	_JX_DWORDToBCD
-5535                     	xdef	_JX_AsciiToBuf
-5536                     	xdef	_JX_DwordBcdToBin
-5537                     	xdef	_JX_BcdStrTo16BitBcd
-5538                     	xdef	_JX_BcdStrTo16BitBin
-5539                     	xdef	_JX_HexToASCII
-5540                     	xdef	_JX_U32ToStr
-5541                     	xdef	_JX_ByteToBcd
-5542                     	xdef	_JX_BcdToByte
-5543                     	xdef	_JX_IpAddrToStr
-5544                     	xdef	_TM_CalPastedSeconds
-5545                     	xdef	_TM_RTimeDecnMinute
-5546                     	xdef	_TM_RTimeAddnMinute
-5547                     	xdef	_TM_RTimeAddnDay
-5548                     	xdef	_TM_DiffSecond
-5549                     	xdef	_TM_IsValidDate
-5550                     	xdef	_TM_CalPastedDays
-5551                     	xdef	_TM_TimeChangeBToA
-5552                     	xdef	_TM_TimeChangeAToB
-5553                     	xdef	_TM_IsValidTimePro
-5554                     	xdef	_TM_DayOfWeek
-5555                     	xdef	_JX_IsAllFillDat
-5556                     	xdef	_JX_AddSum8Bit
-5557                     	xdef	_JX_ByteToBcdStr
-5558                     	xdef	_JX_BcdStrToByte
-5559                     	xdef	_JX_BL_DwordChange
-5560                     	xdef	_JX_BL_Change
-5561                     	xdef	_MemcpyFunc
-5562                     	xdef	_MemsetFunc
-5563                     	xdef	_delay_us
-5564                     	xdef	_delay_ms
-5565                     	switch	.const
-5566  0099               L1422:
-5567  0099 447a0000      	dc.w	17530,0
-5568  009d               L1322:
-5569  009d 00000000      	dc.w	0,0
-5570                     	xref.b	c_lreg
-5571                     	xref.b	c_x
-5591                     	xref	c_ftol
-5592                     	xref	c_fgmul
-5593                     	xref	c_lursh
-5594                     	xref	c_lgmul
-5595                     	xref	c_imul
-5596                     	xref	c_sdivx
-5597                     	xref	c_smul
-5598                     	xref	c_ludv
-5599                     	xref	c_lzmp
-5600                     	xref	c_lgsub
-5601                     	xref	c_lcmp
-5602                     	xref	c_lrzmp
-5603                     	xref	c_lmod
-5604                     	xref	c_smodx
-5605                     	xref	c_lumd
-5606                     	xref	c_lsub
-5607                     	xref	c_ladc
-5608                     	xref	c_ladd
-5609                     	xref	c_cmulx
-5610                     	xref	c_umul
-5611                     	xref	c_rtol
-5612                     	xref	c_lmul
-5613                     	xref	c_ltor
-5614                     	xref	c_itolx
-5615                     	xref	c_lgadc
-5616                     	xref	c_lgadd
-5617                     	xref	c_uitolx
-5618                     	xref	c_xymvx
-5619                     	end
+5555                     ; 1015 u8 HeDa_Get_String_len(char *str,u8 str_buf_size)  
+5555                     ; 1016 {  
+5556                     	switch	.text
+5557  0db9               _HeDa_Get_String_len:
+5559  0db9 89            	pushw	x
+5560  0dba 88            	push	a
+5561       00000001      OFST:	set	1
+5564                     ; 1017 	u8 i=0;
+5566                     ; 1018 	for(i=0;i<str_buf_size;i++)
+5568  0dbb 0f01          	clr	(OFST+0,sp)
+5570  0dbd 2015          	jra	L3722
+5571  0dbf               L7622:
+5572                     ; 1020 		if(str[i]==0)break;
+5574  0dbf 7b02          	ld	a,(OFST+1,sp)
+5575  0dc1 97            	ld	xl,a
+5576  0dc2 7b03          	ld	a,(OFST+2,sp)
+5577  0dc4 1b01          	add	a,(OFST+0,sp)
+5578  0dc6 2401          	jrnc	L423
+5579  0dc8 5c            	incw	x
+5580  0dc9               L423:
+5581  0dc9 02            	rlwa	x,a
+5582  0dca f6            	ld	a,(x)
+5583  0dcb 2605          	jrne	L7722
+5585  0dcd 7b01          	ld	a,(OFST+0,sp)
+5586  0dcf               L5722:
+5587                     ; 1022 	return i;
+5591  0dcf 5b03          	addw	sp,#3
+5592  0dd1 81            	ret	
+5593  0dd2               L7722:
+5594                     ; 1018 	for(i=0;i<str_buf_size;i++)
+5596  0dd2 0c01          	inc	(OFST+0,sp)
+5597  0dd4               L3722:
+5600  0dd4 7b01          	ld	a,(OFST+0,sp)
+5601  0dd6 1106          	cp	a,(OFST+5,sp)
+5602  0dd8 25e5          	jrult	L7622
+5603  0dda 20f3          	jra	L5722
+5629                     	xdef	_TM_SecondsToTime
+5630                     	xdef	_HeDa_Get_String_len
+5631                     	xdef	_JX_FloatToBin
+5632                     	xdef	_JX_BcdToDWORD
+5633                     	xdef	_JX_DWORDToBCD
+5634                     	xdef	_JX_AsciiToBuf
+5635                     	xdef	_JX_DwordBcdToBin
+5636                     	xdef	_JX_BcdStrTo16BitBcd
+5637                     	xdef	_JX_BcdStrTo16BitBin
+5638                     	xdef	_JX_HexToASCII
+5639                     	xdef	_JX_U32ToStr
+5640                     	xdef	_JX_ByteToBcd
+5641                     	xdef	_JX_BcdToByte
+5642                     	xdef	_JX_IpAddrToStr
+5643                     	xdef	_TM_CalPastedSeconds
+5644                     	xdef	_TM_RTimeDecnMinute
+5645                     	xdef	_TM_RTimeAddnMinute
+5646                     	xdef	_TM_RTimeAddnDay
+5647                     	xdef	_TM_DiffSecond
+5648                     	xdef	_TM_IsValidDate
+5649                     	xdef	_TM_CalPastedDays
+5650                     	xdef	_TM_TimeChangeBToA
+5651                     	xdef	_TM_TimeChangeAToB
+5652                     	xdef	_TM_IsValidTimePro
+5653                     	xdef	_TM_DayOfWeek
+5654                     	xdef	_JX_IsAllFillDat
+5655                     	xdef	_JX_AddSum8Bit
+5656                     	xdef	_JX_ByteToBcdStr
+5657                     	xdef	_JX_BcdStrToByte
+5658                     	xdef	_JX_BL_DwordChange
+5659                     	xdef	_JX_BL_Change
+5660                     	xdef	_MemcpyFunc
+5661                     	xdef	_MemsetFunc
+5662                     	xdef	_delay_us
+5663                     	xdef	_delay_ms
+5664                     	switch	.const
+5665  0099               L1422:
+5666  0099 447a0000      	dc.w	17530,0
+5667  009d               L1322:
+5668  009d 00000000      	dc.w	0,0
+5669                     	xref.b	c_lreg
+5670                     	xref.b	c_x
+5690                     	xref	c_ftol
+5691                     	xref	c_fgmul
+5692                     	xref	c_lursh
+5693                     	xref	c_lgmul
+5694                     	xref	c_imul
+5695                     	xref	c_sdivx
+5696                     	xref	c_smul
+5697                     	xref	c_ludv
+5698                     	xref	c_lzmp
+5699                     	xref	c_lgsub
+5700                     	xref	c_lcmp
+5701                     	xref	c_lrzmp
+5702                     	xref	c_lmod
+5703                     	xref	c_smodx
+5704                     	xref	c_lumd
+5705                     	xref	c_lsub
+5706                     	xref	c_ladc
+5707                     	xref	c_ladd
+5708                     	xref	c_cmulx
+5709                     	xref	c_umul
+5710                     	xref	c_rtol
+5711                     	xref	c_lmul
+5712                     	xref	c_ltor
+5713                     	xref	c_itolx
+5714                     	xref	c_lgadc
+5715                     	xref	c_lgadd
+5716                     	xref	c_uitolx
+5717                     	xref	c_xymvx
+5718                     	end

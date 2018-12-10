@@ -18,6 +18,7 @@ MCU:	msp430g2403
 #include"CJ188.h"
 #include "XinJiangProtocol.h"
 #include "Alarm.h"
+#include "hedaProtocol.h"
 
 #define  _ACR_CMD_OFFSET		1
 #define  _ACR_LEN_OFFSET		2
@@ -1356,19 +1357,22 @@ void InitializeProtocol(void)
 		tyParameter.dwPurchaseVal = 0;
 		tyParameter.nEmergencyVal = 5;
 		tyParameter.nOverBuyFlg = 0;
-#ifdef PIEZOMETER
+	#ifdef PIEZOMETER
 		tyParameter.nAlmCtl[0]= 0x00; // 01
 		tyParameter.wBasePress = 500;
 		tyParameter.nUpLmtRate = 20;
 		tyParameter.nDownLmtRate = 20;
-#endif
-#else   //新疆协议 
+	#endif
+#elif defined(XINJIANG_PTR)  //新疆协议 
 		tyParameter.Type = COLD_WATER_METER;
 		MemsetFunc(tyParameter.Status, INIT_STATUS, 4);
 		MemsetFunc(tyParameter.Address, 0x11, sizeof(tyParameter.Address));
 		tyParameter.FactoryCode[0] = 0x16;
 		tyParameter.FactoryCode[1] = 0x88;
 		MemsetFunc(tyParameter.RestoreStat, 0xFF, 4);
+#elif defined(HEDA_PTR)  //新疆协议 
+
+		
 #endif
 	}
 	tyParameter.Value = INVALID_DATA;
