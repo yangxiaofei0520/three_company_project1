@@ -38,7 +38,7 @@
 /* 预付费模式 */
 //#define PURCHASE_MODE     
 
-#define VAVLE_METER             //是否带阀控
+//#define VAVLE_METER             //是否带阀控
 
 #ifdef VAVLE_METER
 //#define VAVLE_INNER             // 表端内置阀门 针对DN25表内置阀门

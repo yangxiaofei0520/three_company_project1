@@ -597,624 +597,591 @@
 1564  0343 cd0000        	call	c_ltor
 1566  0346 ae0000        	ldw	x,#L401
 1567  0349 cc0000        	jp	c_lcmp
-1605                     ; 530 u8 LP_ClaReportTime(void)
-1605                     ; 531 { 
-1606                     	switch	.text
-1607  034c               _LP_ClaReportTime:
-1609  034c 5207          	subw	sp,#7
-1610       00000007      OFST:	set	7
-1613                     ; 535 	STM8_RTC_Get(&stTime);
-1615  034e 96            	ldw	x,sp
-1616  034f 5c            	incw	x
-1617  0350 cd0000        	call	_STM8_RTC_Get
-1619                     ; 538 	if((g_stNextRepTime.nDay == stTime.nDay)&&(g_stNextRepTime.nHour == stTime.nHour)
-1619                     ; 539 		&&(g_stNextRepTime.nMinute == stTime.nMinute))
-1621  0353 c60018        	ld	a,_g_stNextRepTime+2
-1622  0356 1103          	cp	a,(OFST-4,sp)
-1623  0358 260e          	jrne	L174
-1625  035a c60019        	ld	a,_g_stNextRepTime+3
-1626  035d 1104          	cp	a,(OFST-3,sp)
-1627  035f 2607          	jrne	L174
-1629  0361 c6001a        	ld	a,_g_stNextRepTime+4
-1630  0364 1105          	cp	a,(OFST-2,sp)
-1631                     ; 541 		return TRUE;
-1633  0366 2715          	jreq	LC003
-1634  0368               L174:
-1635                     ; 545 	if((g_stNextGmTime.nDay == stTime.nDay)
-1635                     ; 546 		&&(g_stNextGmTime.nHour == stTime.nHour)&&(g_stNextGmTime.nMinute == stTime.nMinute))
-1637  0368 c60011        	ld	a,_g_stNextGmTime+2
-1638  036b 1103          	cp	a,(OFST-4,sp)
-1639  036d 2613          	jrne	L374
-1641  036f c60012        	ld	a,_g_stNextGmTime+3
-1642  0372 1104          	cp	a,(OFST-3,sp)
-1643  0374 260c          	jrne	L374
-1645  0376 c60013        	ld	a,_g_stNextGmTime+4
-1646  0379 1105          	cp	a,(OFST-2,sp)
-1647  037b 2605          	jrne	L374
-1648                     ; 548 		return TRUE;
-1650  037d               LC003:
-1653  037d a601          	ld	a,#1
-1655  037f               L651:
-1657  037f 5b07          	addw	sp,#7
-1658  0381 81            	ret	
-1659  0382               L374:
-1660                     ; 553 	if((CTL_VAVLE_ENABLE == stOptValve.nOptFlg)
-1660                     ; 554 		&&(((0 != stOptValve.nVavleCycle)&&(stOptValve.nDay == stTime.nDay)&&(stOptValve.nMonth == stTime.nMonth))
-1660                     ; 555 		||((0 == stOptValve.nVavleCycle)&&((0x01 == stTime.nDay)||(0x15 == stTime.nDay))))
-1660                     ; 556 		&&(stOptValve.nStartHour <= stTime.nHour)&&(stOptValve.nEndHour >= stTime.nHour))
-1662  0382 c60001        	ld	a,_stOptValve+1
-1663  0385 a1aa          	cp	a,#170
-1664  0387 2630          	jrne	L574
-1666  0389 c60009        	ld	a,_stOptValve+9
-1667  038c 270e          	jreq	L105
-1669  038e c60004        	ld	a,_stOptValve+4
-1670  0391 1103          	cp	a,(OFST-4,sp)
-1671  0393 2607          	jrne	L105
-1673  0395 c60003        	ld	a,_stOptValve+3
-1674  0398 1102          	cp	a,(OFST-5,sp)
-1675  039a 270f          	jreq	L774
-1676  039c               L105:
-1678  039c c60009        	ld	a,_stOptValve+9
-1679  039f 2618          	jrne	L574
-1681  03a1 7b03          	ld	a,(OFST-4,sp)
-1682  03a3 a101          	cp	a,#1
-1683  03a5 2704          	jreq	L774
-1685  03a7 a115          	cp	a,#21
-1686  03a9 260e          	jrne	L574
-1687  03ab               L774:
-1689  03ab c60005        	ld	a,_stOptValve+5
-1690  03ae 1104          	cp	a,(OFST-3,sp)
-1691  03b0 2207          	jrugt	L574
-1693  03b2 c60006        	ld	a,_stOptValve+6
-1694  03b5 1104          	cp	a,(OFST-3,sp)
-1695                     ; 558 		return TRUE;
-1697  03b7 24c4          	jruge	LC003
-1698  03b9               L574:
-1699                     ; 561 	return FALSE;	
-1701  03b9 4f            	clr	a
-1703  03ba 20c3          	jra	L651
-1742                     ; 573 void LP_WakeUpTerm(void)
-1742                     ; 574 {
-1743                     	switch	.text
-1744  03bc               _LP_WakeUpTerm:
-1746  03bc 88            	push	a
-1747       00000001      OFST:	set	1
-1750                     ; 575 	u8 nRepFlg = 0;
-1752  03bd 0f01          	clr	(OFST+0,sp)
-1753                     ; 577 	InitializeBase();
-1755  03bf cd0000        	call	_InitializeBase
-1757                     ; 578 	InitializeFile();
-1759  03c2 cd0000        	call	_InitializeFile
-1761                     ; 579 	nRepFlg = ReadReportFlag();
-1763  03c5 cd0000        	call	_ReadReportFlag
-1765  03c8 6b01          	ld	(OFST+0,sp),a
-1766                     ; 580 	SaveReportFlag((nRepFlg|KEY_WUAKEUP_FLG));		
-1768  03ca aa01          	or	a,#1
-1769  03cc cd0000        	call	_SaveReportFlag
-1771                     ; 581 	SetIO_LEDOn();
-1773  03cf 4b01          	push	#1
-1774  03d1 4b04          	push	#4
-1775  03d3 ae5005        	ldw	x,#20485
-1776  03d6 cd0000        	call	_GPIO_WriteBit
-1778  03d9 85            	popw	x
-1779                     ; 582 	LP_DelayMs(100);	
-1781  03da ae0064        	ldw	x,#100
-1782  03dd 89            	pushw	x
-1783  03de 5f            	clrw	x
-1784  03df 89            	pushw	x
-1785  03e0 cd003d        	call	_LP_DelayMs
-1787  03e3 5b04          	addw	sp,#4
-1788                     ; 583 	LP_TermReset();
-1790  03e5 cd00cc        	call	_LP_TermReset
-1792                     ; 584 	return ;
-1795  03e8 84            	pop	a
-1796  03e9 81            	ret	
-1820                     ; 596 u8 LP_CheckGuardKeyStat(void)
-1820                     ; 597 { 	
-1821                     	switch	.text
-1822  03ea               _LP_CheckGuardKeyStat:
-1826                     ; 620 	return FALSE;		
-1828  03ea 4f            	clr	a
-1831  03eb 81            	ret	
-1918                     ; 632 void LP_LowPowerManage(void)
-1918                     ; 633 {
-1919                     	switch	.text
-1920  03ec               _LP_LowPowerManage:
-1922  03ec 5215          	subw	sp,#21
-1923       00000015      OFST:	set	21
-1926                     ; 634 	uint32_t dwCount = 0, dwCntTimeOut = LP_WAKEUP_TO;
-1928  03ee 5f            	clrw	x
-1929  03ef 1f08          	ldw	(OFST-13,sp),x
-1930  03f1 1f06          	ldw	(OFST-15,sp),x
-1933  03f3 96            	ldw	x,sp
-1934  03f4 1c0002        	addw	x,#OFST-19
-1935  03f7 cd0000        	call	c_ltor
-1937                     ; 635 	int32_t  dwTickOffset = 0;
-1939  03fa 96            	ldw	x,sp
-1940  03fb 1c0012        	addw	x,#OFST-3
-1941  03fe cd0000        	call	c_ltor
-1943                     ; 636 	u8 nRepFlg = 0;	
-1945  0401 0f01          	clr	(OFST-20,sp)
-1946                     ; 640 	if(LP_START_FLG_OK != m_nPowrDown)
-1948  0403 c60001        	ld	a,L5_m_nPowrDown
-1949  0406 a103          	cp	a,#3
-1950  0408 2666          	jrne	L232
-1951                     ; 642 		return ;
-1953                     ; 651 	dwCntTimeOut = LP_HD_CalReportConut();
-1955  040a cd0000        	call	_LP_HD_CalReportConut
-1957  040d 96            	ldw	x,sp
-1958  040e 1c0002        	addw	x,#OFST-19
-1959  0411 cd0000        	call	c_rtol
-1961                     ; 654 	LP_DelayMs(10);
-1963  0414 ae000a        	ldw	x,#10
-1964  0417 89            	pushw	x
-1965  0418 5f            	clrw	x
-1966  0419 89            	pushw	x
-1967  041a cd003d        	call	_LP_DelayMs
-1969  041d 5b04          	addw	sp,#4
-1970                     ; 657 	IWDG->KR = IWDG_KEY_REFRESH;
-1972  041f 35aa50e0      	mov	20704,#170
-1973                     ; 659 	LP_BSP_DeInit();
-1975  0423 cd01f5        	call	_LP_BSP_DeInit
-1977                     ; 662 	LP_EXTI_Configuration();
-1979  0426 cd00b9        	call	_LP_EXTI_Configuration
-1981                     ; 665 	LP_RTC_Config(); //edit by maronglang 20150609
-1983  0429 cd0262        	call	_LP_RTC_Config
-1985  042c               L365:
-1986                     ; 670 		IWDG->KR = IWDG_KEY_REFRESH;
-1988  042c 35aa50e0      	mov	20704,#170
-1989                     ; 673 		RTC_WakeUpCmd(ENABLE); 	//edit by maronglang
-1991  0430 a601          	ld	a,#1
-1992  0432 cd0000        	call	_RTC_WakeUpCmd
-1994                     ; 676 		PWR->CSR2 = 0x2;
-1996  0435 350250b3      	mov	20659,#2
-1997                     ; 679 		halt();
-2000  0439 8e            	halt	
-2002                     ; 680 		nop();
-2006  043a 9d            	nop	
-2008                     ; 681 		nop();
-2012  043b 9d            	nop	
-2014                     ; 682 		nop();
-2018  043c 9d            	nop	
-2020                     ; 683 		nop();
-2024  043d 9d            	nop	
-2026                     ; 684 		nop();
-2030  043e 9d            	nop	
-2032                     ; 686 		RTC_WakeUpCmd(DISABLE); 		
-2035  043f 4f            	clr	a
-2036  0440 cd0000        	call	_RTC_WakeUpCmd
-2038                     ; 688 		if(WU_MODE_KEY == m_nKeyWuFlg)
-2040  0443 c60000        	ld	a,L3_m_nKeyWuFlg
-2041  0446 4a            	dec	a
-2042  0447 2605          	jrne	L765
-2043                     ; 690 			LP_ExitWakeUpProc();
-2045  0449 cd02d1        	call	_LP_ExitWakeUpProc
-2048  044c 2025          	jra	L175
-2049  044e               L765:
-2050                     ; 704 			dwCount++;
-2052  044e 96            	ldw	x,sp
-2053  044f 1c0006        	addw	x,#OFST-15
-2054  0452 a601          	ld	a,#1
-2055  0454 cd0000        	call	c_lgadc
-2057                     ; 707 			if((dwCount >= dwCntTimeOut)||(LP_ClaReportTime()))
-2059  0457 96            	ldw	x,sp
-2060  0458 1c0006        	addw	x,#OFST-15
-2061  045b cd0000        	call	c_ltor
-2063  045e 96            	ldw	x,sp
-2064  045f 1c0002        	addw	x,#OFST-19
-2065  0462 cd0000        	call	c_lcmp
-2067  0465 2406          	jruge	L575
-2069  0467 cd034c        	call	_LP_ClaReportTime
-2071  046a 4d            	tnz	a
-2072  046b 2706          	jreq	L175
-2073  046d               L575:
-2074                     ; 709 				LP_TermReset();
-2076  046d cd00cc        	call	_LP_TermReset
-2078                     ; 710 				return ;
-2079  0470               L232:
-2082  0470 5b15          	addw	sp,#21
-2083  0472 81            	ret	
-2084  0473               L175:
-2085                     ; 715 		if(3 <= m_nWakeUpCnt)
-2087  0473 c60002        	ld	a,L7_m_nWakeUpCnt
-2088  0476 a103          	cp	a,#3
-2089  0478 25b2          	jrult	L365
-2090                     ; 718 			LP_WakeUpTerm();
-2092  047a cd03bc        	call	_LP_WakeUpTerm
-2094                     ; 719 			return ;
-2096  047d 20f1          	jra	L232
-2223                     	switch	.const
-2224  0004               L062:
-2225  0004 0000003c      	dc.l	60
-2226                     ; 1034 uint32_t LP_130_CalReportConut(void)
-2226                     ; 1035 {
-2227                     	switch	.text
-2228  047f               _LP_130_CalReportConut:
-2230  047f 5236          	subw	sp,#54
-2231       00000036      OFST:	set	54
-2234                     ; 1036 	uint32_t dwTmp = 0, dwCount = 0;
-2236  0481 96            	ldw	x,sp
-2237  0482 1c002b        	addw	x,#OFST-11
-2238  0485 cd0000        	call	c_ltor
-2242  0488 96            	ldw	x,sp
-2243  0489 1c002b        	addw	x,#OFST-11
-2244  048c cd0000        	call	c_ltor
-2246                     ; 1037 	int32_t  dwOffset = 0,dwTemp = 0;
-2248  048f 96            	ldw	x,sp
-2249  0490 1c001f        	addw	x,#OFST-23
-2250  0493 cd0000        	call	c_ltor
-2254  0496 96            	ldw	x,sp
-2255  0497 1c002b        	addw	x,#OFST-11
-2256  049a cd0000        	call	c_ltor
-2258                     ; 1039 	u8       nRepFlg = 0;
-2260                     ; 1045 	MemcpyFunc((u8*)&tyTime, (u8*)&tyReport.Time, sizeof(TypeTime));
-2262  049d 4b06          	push	#6
-2263  049f ae0004        	ldw	x,#_tyReport+4
-2264  04a2 89            	pushw	x
-2265  04a3 ae0000        	ldw	x,#_tyTime
-2266  04a6 cd0000        	call	_MemcpyFunc
-2268  04a9 5b03          	addw	sp,#3
-2269                     ; 1046 	JX_BL_Change((u16)sizeof(TypeTime), (u8*)&tyTime);
-2271  04ab ae0000        	ldw	x,#_tyTime
-2272  04ae 89            	pushw	x
-2273  04af ae0006        	ldw	x,#6
-2274  04b2 cd0000        	call	_JX_BL_Change
-2276  04b5 85            	popw	x
-2277                     ; 1047 	MemcpyFunc((u8*)&stLastTime, (u8*)&tyTime, sizeof(TypeTime));
-2279  04b6 4b06          	push	#6
-2280  04b8 ae0000        	ldw	x,#_tyTime
-2281  04bb 89            	pushw	x
-2282  04bc 96            	ldw	x,sp
-2283  04bd 1c001a        	addw	x,#OFST-28
-2284  04c0 cd0000        	call	_MemcpyFunc
-2286  04c3 5b03          	addw	sp,#3
-2287                     ; 1048 	STM8_RTC_Get(&stTimeNow);
-2289  04c5 ae0000        	ldw	x,#_stTimeNow
-2290  04c8 cd0000        	call	_STM8_RTC_Get
-2292                     ; 1049 	TM_TimeChangeAToB(&stTimeNow, &stEnd);
-2294  04cb 96            	ldw	x,sp
-2295  04cc 1c0023        	addw	x,#OFST-19
-2296  04cf 89            	pushw	x
-2297  04d0 ae0000        	ldw	x,#_stTimeNow
-2298  04d3 cd0000        	call	_TM_TimeChangeAToB
-2300  04d6 85            	popw	x
-2301                     ; 1050 	TM_TimeChangeAToB(&stLastTime, &stStar);
-2303  04d7 96            	ldw	x,sp
-2304  04d8 1c000f        	addw	x,#OFST-39
-2305  04db 89            	pushw	x
-2306  04dc 1c0008        	addw	x,#8
-2307  04df cd0000        	call	_TM_TimeChangeAToB
-2309  04e2 85            	popw	x
-2310                     ; 1051 	dwOffset = TM_DiffSecond(&stStar, &stEnd);	
-2312  04e3 96            	ldw	x,sp
-2313  04e4 1c0023        	addw	x,#OFST-19
-2314  04e7 89            	pushw	x
-2315  04e8 1d0014        	subw	x,#20
-2316  04eb cd0000        	call	_TM_DiffSecond
-2318  04ee 85            	popw	x
-2319  04ef 96            	ldw	x,sp
-2320  04f0 1c001f        	addw	x,#OFST-23
-2321  04f3 cd0000        	call	c_rtol
-2323                     ; 1052 	stEnd.nSecond = 0;	
-2325  04f6 0f29          	clr	(OFST-13,sp)
-2326                     ; 1053 	MemcpyFunc((u8*)&stTmpTime,  (u8*)&stEnd, sizeof(stTmpTime));
-2328  04f8 4b08          	push	#8
-2329  04fa 96            	ldw	x,sp
-2330  04fb 1c0024        	addw	x,#OFST-18
-2331  04fe 89            	pushw	x
-2332  04ff 1c000c        	addw	x,#12
-2333  0502 cd0000        	call	_MemcpyFunc
-2335  0505 5b03          	addw	sp,#3
-2336                     ; 1056 	if(0 < dwOffset) 
-2338  0507 96            	ldw	x,sp
-2339  0508 1c001f        	addw	x,#OFST-23
-2340  050b cd0000        	call	c_lzmp
-2342  050e 2d52          	jrsle	L156
-2343                     ; 1058 		TM_RTimeAddnMinute(&stEnd, (tyReport.wGatherCycle - (u16)((dwOffset/60)%(u32)tyReport.wGatherCycle)));
-2345  0510 5500000003    	mov	c_lreg+3,_tyReport
-2346  0515 3f02          	clr	c_lreg+2
-2347  0517 3f01          	clr	c_lreg+1
-2348  0519 3f00          	clr	c_lreg
-2349  051b 96            	ldw	x,sp
-2350  051c 1c0003        	addw	x,#OFST-51
-2351  051f cd0000        	call	c_rtol
-2353  0522 96            	ldw	x,sp
-2354  0523 1c001f        	addw	x,#OFST-23
-2355  0526 cd0000        	call	c_ltor
-2357  0529 ae0004        	ldw	x,#L062
-2358  052c cd0000        	call	c_ldiv
-2360  052f 96            	ldw	x,sp
-2361  0530 1c0003        	addw	x,#OFST-51
-2362  0533 cd0000        	call	c_lmod
-2364  0536 be02          	ldw	x,c_lreg+2
-2365  0538 1f01          	ldw	(OFST-53,sp),x
-2366  053a c60000        	ld	a,_tyReport
-2367  053d 5f            	clrw	x
-2368  053e 97            	ld	xl,a
-2369  053f 72f001        	subw	x,(OFST-53,sp)
-2370  0542 cd0000        	call	c_uitolx
-2372  0545 be02          	ldw	x,c_lreg+2
-2373  0547 89            	pushw	x
-2374  0548 be00          	ldw	x,c_lreg
-2375  054a 89            	pushw	x
-2376  054b 96            	ldw	x,sp
-2377  054c 1c0027        	addw	x,#OFST-15
-2378  054f cd0000        	call	_TM_RTimeAddnMinute
-2380  0552 5b04          	addw	sp,#4
-2381                     ; 1059 		TM_TimeChangeBToA(&stEnd, &g_stNextGmTime); 
-2383  0554 ae000f        	ldw	x,#_g_stNextGmTime
-2384  0557 89            	pushw	x
-2385  0558 96            	ldw	x,sp
-2386  0559 1c0025        	addw	x,#OFST-17
-2387  055c cd0000        	call	_TM_TimeChangeBToA
-2389  055f 85            	popw	x
-2391  0560 200f          	jra	L356
-2392  0562               L156:
-2393                     ; 1063 		MemcpyFunc((u8*)&g_stNextGmTime, (u8*)&stLastTime, sizeof(ST_Time));
-2395  0562 4b07          	push	#7
-2396  0564 96            	ldw	x,sp
-2397  0565 1c0018        	addw	x,#OFST-30
-2398  0568 89            	pushw	x
-2399  0569 ae000f        	ldw	x,#_g_stNextGmTime
-2400  056c cd0000        	call	_MemcpyFunc
-2402  056f 5b03          	addw	sp,#3
-2403  0571               L356:
-2404                     ; 1068 	dwOffset = TM_DiffSecond(&stLastReportT, &stTmpTime);
-2406  0571 96            	ldw	x,sp
-2407  0572 1c002f        	addw	x,#OFST-7
-2408  0575 89            	pushw	x
-2409  0576 ae0000        	ldw	x,#_stLastReportT
-2410  0579 cd0000        	call	_TM_DiffSecond
-2412  057c 85            	popw	x
-2413  057d 96            	ldw	x,sp
-2414  057e 1c001f        	addw	x,#OFST-23
-2415  0581 cd0000        	call	c_rtol
-2417                     ; 1069 	dwTemp   = ClaReportTimeToSec(tyReport.cycle);
-2419  0584 c60002        	ld	a,_tyReport+2
-2420  0587 cd0000        	call	_ClaReportTimeToSec
-2422  058a 96            	ldw	x,sp
-2423  058b 1c002b        	addw	x,#OFST-11
-2424  058e cd0000        	call	c_rtol
-2426                     ; 1072 	if(0 < dwOffset) 
-2428  0591 96            	ldw	x,sp
-2429  0592 1c001f        	addw	x,#OFST-23
-2430  0595 cd0000        	call	c_lzmp
-2432  0598 2d42          	jrsle	L556
-2433                     ; 1074 		TM_RTimeAddnMinute(&stTmpTime, ((dwTemp - (u32)(dwOffset%dwTemp))/60));
-2435  059a 96            	ldw	x,sp
-2436  059b 1c001f        	addw	x,#OFST-23
-2437  059e cd0000        	call	c_ltor
-2439  05a1 96            	ldw	x,sp
-2440  05a2 1c002b        	addw	x,#OFST-11
-2441  05a5 cd0000        	call	c_lumd
-2443  05a8 96            	ldw	x,sp
-2444  05a9 1c0003        	addw	x,#OFST-51
-2445  05ac cd0000        	call	c_rtol
-2447  05af 96            	ldw	x,sp
-2448  05b0 1c002b        	addw	x,#OFST-11
-2449  05b3 cd0000        	call	c_ltor
-2451  05b6 96            	ldw	x,sp
-2452  05b7 1c0003        	addw	x,#OFST-51
-2453  05ba cd0000        	call	c_lsub
-2455  05bd ae0004        	ldw	x,#L062
-2456  05c0 cd0000        	call	c_ludv
-2458  05c3 be02          	ldw	x,c_lreg+2
-2459  05c5 89            	pushw	x
-2460  05c6 be00          	ldw	x,c_lreg
-2461  05c8 89            	pushw	x
-2462  05c9 96            	ldw	x,sp
-2463  05ca 1c0033        	addw	x,#OFST-3
-2464  05cd cd0000        	call	_TM_RTimeAddnMinute
-2466  05d0 5b04          	addw	sp,#4
-2467                     ; 1075 		TM_TimeChangeBToA(&stTmpTime, &g_stNextRepTime);
-2469  05d2 ae0016        	ldw	x,#_g_stNextRepTime
-2470  05d5 89            	pushw	x
-2471  05d6 96            	ldw	x,sp
-2472  05d7 1c0031        	addw	x,#OFST-5
-2475  05da 2007          	jra	L756
-2476  05dc               L556:
-2477                     ; 1079 		TM_TimeChangeBToA(&stLastReportT, &g_stNextRepTime);
-2479  05dc ae0016        	ldw	x,#_g_stNextRepTime
-2480  05df 89            	pushw	x
-2481  05e0 ae0000        	ldw	x,#_stLastReportT
-2483  05e3               L756:
-2484  05e3 cd0000        	call	_TM_TimeChangeBToA
-2485  05e6 85            	popw	x
-2486                     ; 1083 	nRepFlg = GetReportFailFlag();
-2488  05e7 cd0000        	call	_GetReportFailFlag
-2490  05ea 6b1e          	ld	(OFST-24,sp),a
-2491                     ; 1084 	if(nRepFlg&REPORT_FAIL_FLG)
-2493  05ec a50e          	bcp	a,#14
-2494  05ee 2774          	jreq	L166
-2495                     ; 1086 		STM8_RTC_Get(&stTimeNow);		
-2497  05f0 ae0000        	ldw	x,#_stTimeNow
-2498  05f3 cd0000        	call	_STM8_RTC_Get
-2500                     ; 1087 		TM_TimeChangeAToB(&stTimeNow, &stTime);
-2502  05f6 96            	ldw	x,sp
-2503  05f7 1c0007        	addw	x,#OFST-47
-2504  05fa 89            	pushw	x
-2505  05fb ae0000        	ldw	x,#_stTimeNow
-2506  05fe cd0000        	call	_TM_TimeChangeAToB
-2508  0601 85            	popw	x
-2509                     ; 1088 		MemcpyFunc((u8*)&stTmpTime, (u8*)&stTime, sizeof(TM_Time));
-2511  0602 4b08          	push	#8
-2512  0604 96            	ldw	x,sp
-2513  0605 1c0008        	addw	x,#OFST-46
-2514  0608 89            	pushw	x
-2515  0609 1c0028        	addw	x,#40
-2516  060c cd0000        	call	_MemcpyFunc
-2518  060f 5b03          	addw	sp,#3
-2519                     ; 1091 		if(nRepFlg&THIRD_REP_FAIL)
-2521  0611 7b1e          	ld	a,(OFST-24,sp)
-2522  0613 a508          	bcp	a,#8
-2523  0615 2711          	jreq	L366
-2524                     ; 1096 			if(0x41 == tyReport.cycle)
-2526  0617 c60002        	ld	a,_tyReport+2
-2527  061a a141          	cp	a,#65
-2528  061c 2605          	jrne	L566
-2529                     ; 1098 				TM_RTimeAddnMinute(&stTmpTime, 15);
-2531  061e ae000f        	ldw	x,#15
-2534  0621 2029          	jra	L176
-2535  0623               L566:
-2536                     ; 1102 				TM_RTimeAddnMinute(&stTmpTime, 540);
-2538  0623 ae021c        	ldw	x,#540
-2540  0626 2024          	jra	L176
-2541  0628               L366:
-2542                     ; 1106 		else if(nRepFlg&SECOND_REP_FAIL)
-2544  0628 a504          	bcp	a,#4
-2545  062a 2711          	jreq	L376
-2546                     ; 1111 			if(0x41 == tyReport.cycle)
-2548  062c c60002        	ld	a,_tyReport+2
-2549  062f a141          	cp	a,#65
-2550  0631 2605          	jrne	L576
-2551                     ; 1113 				TM_RTimeAddnMinute(&stTmpTime, 10);
-2553  0633 ae000a        	ldw	x,#10
-2556  0636 2014          	jra	L176
-2557  0638               L576:
-2558                     ; 1117 				TM_RTimeAddnMinute(&stTmpTime, 360);
-2560  0638 ae0168        	ldw	x,#360
-2562  063b 200f          	jra	L176
-2563  063d               L376:
-2564                     ; 1126 			if(0x41 == tyReport.cycle)
-2566  063d c60002        	ld	a,_tyReport+2
-2567  0640 a141          	cp	a,#65
-2568  0642 2605          	jrne	L307
-2569                     ; 1128 				TM_RTimeAddnMinute(&stTmpTime, 5);
-2571  0644 ae0005        	ldw	x,#5
-2574  0647 2003          	jra	L176
-2575  0649               L307:
-2576                     ; 1132 				TM_RTimeAddnMinute(&stTmpTime, 180);
-2578  0649 ae00b4        	ldw	x,#180
-2580  064c               L176:
-2581  064c 89            	pushw	x
-2582  064d 5f            	clrw	x
-2583  064e 89            	pushw	x
-2584  064f 96            	ldw	x,sp
-2585  0650 1c0033        	addw	x,#OFST-3
-2586  0653 cd0000        	call	_TM_RTimeAddnMinute
-2587  0656 5b04          	addw	sp,#4
-2588                     ; 1136 		TM_TimeChangeBToA(&stTmpTime, &g_stNextRepTime);	
-2590  0658 ae0016        	ldw	x,#_g_stNextRepTime
-2591  065b 89            	pushw	x
-2592  065c 96            	ldw	x,sp
-2593  065d 1c0031        	addw	x,#OFST-5
-2594  0660 cd0000        	call	_TM_TimeChangeBToA
-2596  0663 85            	popw	x
-2597  0664               L166:
-2598                     ; 1140 	ReadParameterForType((u8 *)&tyReport, sizeof(tyReport), REPORT_PARA);
-2600  0664 4b03          	push	#3
-2601  0666 4b0a          	push	#10
-2602  0668 ae0000        	ldw	x,#_tyReport
-2603  066b cd0000        	call	_ReadParameterForType
-2605  066e c60000        	ld	a,_tyReport
-2606  0671 85            	popw	x
-2607                     ; 1141 	if(0 < tyReport.wGatherCycle)
-2609  0672 2725          	jreq	L707
-2610                     ; 1143 		dwTmp = tyReport.wGatherCycle;
-2612  0674 6b2e          	ld	(OFST-8,sp),a
-2613  0676 4f            	clr	a
-2614  0677 6b2d          	ld	(OFST-9,sp),a
-2615  0679 6b2c          	ld	(OFST-10,sp),a
-2616  067b 6b2b          	ld	(OFST-11,sp),a
-2617                     ; 1144 		dwCount = dwTmp*60;
-2619  067d 96            	ldw	x,sp
-2620  067e 1c002b        	addw	x,#OFST-11
-2621  0681 cd0000        	call	c_ltor
-2623  0684 a63c          	ld	a,#60
-2624  0686 cd0000        	call	c_smul
-2626  0689 96            	ldw	x,sp
-2627  068a 1c002b        	addw	x,#OFST-11
-2628  068d cd0000        	call	c_rtol
-2631                     ; 1151 	return dwCount;
-2633  0690 96            	ldw	x,sp
-2634  0691 1c002b        	addw	x,#OFST-11
-2635  0694 cd0000        	call	c_ltor
-2638  0697 200a          	jra	L033
-2639  0699               L707:
-2640                     ; 1148 		return LP_WAKEUP_TO;
-2642  0699 ae8c00        	ldw	x,#35840
-2643  069c bf02          	ldw	c_lreg+2,x
-2644  069e ae000a        	ldw	x,#10
-2645  06a1 bf00          	ldw	c_lreg,x
-2647  06a3               L033:
-2649  06a3 5b36          	addw	sp,#54
-2650  06a5 81            	ret	
-2733                     	xdef	_LP_CheckGuardKeyStat
-2734                     	xdef	_LP_WakeUpTerm
-2735                     	xdef	_LP_ClaReportTime
-2736                     	xdef	_LP_ExitWakeUpProc
-2737                     	xdef	_LP_RTC_Config
-2738                     	xdef	_LP_CalReportGatherTime
-2739                     	xdef	_LP_ADC_DeInit
-2740                     	xdef	_LP_UART_DeInit
-2741                     	xdef	_LP_TimeDeInit
-2742                     	xdef	_LP_EXTI_Configuration
-2743                     	xdef	_LP_GPIO_DefaultConfig
-2744                     	xdef	_LP_130_CalReportConut
-2745                     	switch	.bss
-2746  0000               _g_stPowrOnTime:
-2747  0000 000000000000  	ds.b	7
-2748                     	xdef	_g_stPowrOnTime
-2749  0007               _m_stStartTime:
-2750  0007 000000000000  	ds.b	8
-2751                     	xdef	_m_stStartTime
-2752                     	xdef	_m_nDebugFlg
-2753                     	xref	_LP_HD_CalReportConut
-2754                     	xref	_tyTime
-2755                     	xref	_TurnBusUartOff
-2756                     	xdef	_LP_DelayMs
-2757                     	xdef	_LP_TermReset
-2758                     	xdef	_LP_GetKeyWuFlg
-2759                     	xdef	_LP_ClrLowPwrStartFlg
-2760                     	xdef	_LP_SetLowPwrStartFlg
-2761                     	xdef	_LP_SetKeyWuFlg
-2762                     	xdef	_LP_BSP_DeInit
-2763                     	xdef	_LP_LowPowerManage
-2764  000f               _g_stNextGmTime:
-2765  000f 000000000000  	ds.b	7
-2766                     	xdef	_g_stNextGmTime
-2767  0016               _g_stNextRepTime:
-2768  0016 000000000000  	ds.b	7
-2769                     	xdef	_g_stNextRepTime
-2770                     	xref	_STM8_RTC_Get
-2771                     	xref	_ReadReportFlag
-2772                     	xref	_SaveReportFlag
-2773                     	xref	_ReadParameterForType
-2774                     	xref	_InitializeFile
-2775                     	xref	_ClaReportTimeToSec
-2776                     	xref	_GetReportFailFlag
-2777                     	xref	_stOptValve
-2778                     	xref	_stLastReportT
-2779                     	xref	_stTimeNow
-2780                     	xref	_tyReport
-2781                     	xref	_InitializeBase
-2782                     	xref	_TM_RTimeAddnMinute
-2783                     	xref	_TM_DiffSecond
-2784                     	xref	_TM_TimeChangeBToA
-2785                     	xref	_TM_TimeChangeAToB
-2786                     	xref	_JX_BL_Change
-2787                     	xref	_MemcpyFunc
-2788                     	xdef	_RTC_WakeUpCmd
-2789                     	xref	_RTC_WaitForSynchro
-2790                     	xref	_GPIO_WriteBit
-2791                     	xref	_GPIO_Init
-2792                     	xref	_EXTI_ClearITPendingBit
-2793                     	xref	_EXTI_SelectPort
-2794                     	xref	_EXTI_SetPinSensitivity
-2795                     	xref	_CLK_PeripheralClockConfig
-2796                     	xref.b	c_lreg
-2816                     	xref	c_smul
-2817                     	xref	c_ludv
-2818                     	xref	c_lsub
-2819                     	xref	c_lumd
-2820                     	xref	c_uitolx
-2821                     	xref	c_lmod
-2822                     	xref	c_ldiv
-2823                     	xref	c_lgadc
-2824                     	xref	c_lcmp
-2825                     	xref	c_rtol
-2826                     	xref	c_lrzmp
-2827                     	xref	c_ltor
-2828                     	xref	c_lzmp
-2829                     	xref	c_lgsbc
-2830                     	end
+1604                     ; 530 u8 LP_ClaReportTime(void)
+1604                     ; 531 { 
+1605                     	switch	.text
+1606  034c               _LP_ClaReportTime:
+1608  034c 5207          	subw	sp,#7
+1609       00000007      OFST:	set	7
+1612                     ; 535 	STM8_RTC_Get(&stTime);
+1614  034e 96            	ldw	x,sp
+1615  034f 5c            	incw	x
+1616  0350 cd0000        	call	_STM8_RTC_Get
+1618                     ; 538 	if((g_stNextRepTime.nDay == stTime.nDay)&&(g_stNextRepTime.nHour == stTime.nHour)
+1618                     ; 539 		&&(g_stNextRepTime.nMinute == stTime.nMinute))
+1620  0353 c60018        	ld	a,_g_stNextRepTime+2
+1621  0356 1103          	cp	a,(OFST-4,sp)
+1622  0358 260e          	jrne	L174
+1624  035a c60019        	ld	a,_g_stNextRepTime+3
+1625  035d 1104          	cp	a,(OFST-3,sp)
+1626  035f 2607          	jrne	L174
+1628  0361 c6001a        	ld	a,_g_stNextRepTime+4
+1629  0364 1105          	cp	a,(OFST-2,sp)
+1630                     ; 541 		return TRUE;
+1632  0366 2715          	jreq	LC003
+1633  0368               L174:
+1634                     ; 545 	if((g_stNextGmTime.nDay == stTime.nDay)
+1634                     ; 546 		&&(g_stNextGmTime.nHour == stTime.nHour)&&(g_stNextGmTime.nMinute == stTime.nMinute))
+1636  0368 c60011        	ld	a,_g_stNextGmTime+2
+1637  036b 1103          	cp	a,(OFST-4,sp)
+1638  036d 2613          	jrne	L374
+1640  036f c60012        	ld	a,_g_stNextGmTime+3
+1641  0372 1104          	cp	a,(OFST-3,sp)
+1642  0374 260c          	jrne	L374
+1644  0376 c60013        	ld	a,_g_stNextGmTime+4
+1645  0379 1105          	cp	a,(OFST-2,sp)
+1646  037b 2605          	jrne	L374
+1647                     ; 548 		return TRUE;
+1649  037d               LC003:
+1651  037d a601          	ld	a,#1
+1653  037f               L651:
+1655  037f 5b07          	addw	sp,#7
+1656  0381 81            	ret	
+1657  0382               L374:
+1658                     ; 561 	return FALSE;	
+1660  0382 4f            	clr	a
+1662  0383 20fa          	jra	L651
+1701                     ; 573 void LP_WakeUpTerm(void)
+1701                     ; 574 {
+1702                     	switch	.text
+1703  0385               _LP_WakeUpTerm:
+1705  0385 88            	push	a
+1706       00000001      OFST:	set	1
+1709                     ; 575 	u8 nRepFlg = 0;
+1711  0386 0f01          	clr	(OFST+0,sp)
+1712                     ; 577 	InitializeBase();
+1714  0388 cd0000        	call	_InitializeBase
+1716                     ; 578 	InitializeFile();
+1718  038b cd0000        	call	_InitializeFile
+1720                     ; 579 	nRepFlg = ReadReportFlag();
+1722  038e cd0000        	call	_ReadReportFlag
+1724  0391 6b01          	ld	(OFST+0,sp),a
+1725                     ; 580 	SaveReportFlag((nRepFlg|KEY_WUAKEUP_FLG));		
+1727  0393 aa01          	or	a,#1
+1728  0395 cd0000        	call	_SaveReportFlag
+1730                     ; 581 	SetIO_LEDOn();
+1732  0398 4b01          	push	#1
+1733  039a 4b04          	push	#4
+1734  039c ae5005        	ldw	x,#20485
+1735  039f cd0000        	call	_GPIO_WriteBit
+1737  03a2 85            	popw	x
+1738                     ; 582 	LP_DelayMs(100);	
+1740  03a3 ae0064        	ldw	x,#100
+1741  03a6 89            	pushw	x
+1742  03a7 5f            	clrw	x
+1743  03a8 89            	pushw	x
+1744  03a9 cd003d        	call	_LP_DelayMs
+1746  03ac 5b04          	addw	sp,#4
+1747                     ; 583 	LP_TermReset();
+1749  03ae cd00cc        	call	_LP_TermReset
+1751                     ; 584 	return ;
+1754  03b1 84            	pop	a
+1755  03b2 81            	ret	
+1779                     ; 596 u8 LP_CheckGuardKeyStat(void)
+1779                     ; 597 { 	
+1780                     	switch	.text
+1781  03b3               _LP_CheckGuardKeyStat:
+1785                     ; 620 	return FALSE;		
+1787  03b3 4f            	clr	a
+1790  03b4 81            	ret	
+1877                     ; 632 void LP_LowPowerManage(void)
+1877                     ; 633 {
+1878                     	switch	.text
+1879  03b5               _LP_LowPowerManage:
+1881  03b5 5215          	subw	sp,#21
+1882       00000015      OFST:	set	21
+1885                     ; 634 	uint32_t dwCount = 0, dwCntTimeOut = LP_WAKEUP_TO;
+1887  03b7 5f            	clrw	x
+1888  03b8 1f08          	ldw	(OFST-13,sp),x
+1889  03ba 1f06          	ldw	(OFST-15,sp),x
+1892  03bc 96            	ldw	x,sp
+1893  03bd 1c0002        	addw	x,#OFST-19
+1894  03c0 cd0000        	call	c_ltor
+1896                     ; 635 	int32_t  dwTickOffset = 0;
+1898  03c3 96            	ldw	x,sp
+1899  03c4 1c0012        	addw	x,#OFST-3
+1900  03c7 cd0000        	call	c_ltor
+1902                     ; 636 	u8 nRepFlg = 0;	
+1904  03ca 0f01          	clr	(OFST-20,sp)
+1905                     ; 640 	if(LP_START_FLG_OK != m_nPowrDown)
+1907  03cc c60001        	ld	a,L5_m_nPowrDown
+1908  03cf a103          	cp	a,#3
+1909  03d1 2666          	jrne	L232
+1910                     ; 642 		return ;
+1912                     ; 651 	dwCntTimeOut = LP_HD_CalReportConut();
+1914  03d3 cd0000        	call	_LP_HD_CalReportConut
+1916  03d6 96            	ldw	x,sp
+1917  03d7 1c0002        	addw	x,#OFST-19
+1918  03da cd0000        	call	c_rtol
+1920                     ; 654 	LP_DelayMs(10);
+1922  03dd ae000a        	ldw	x,#10
+1923  03e0 89            	pushw	x
+1924  03e1 5f            	clrw	x
+1925  03e2 89            	pushw	x
+1926  03e3 cd003d        	call	_LP_DelayMs
+1928  03e6 5b04          	addw	sp,#4
+1929                     ; 657 	IWDG->KR = IWDG_KEY_REFRESH;
+1931  03e8 35aa50e0      	mov	20704,#170
+1932                     ; 659 	LP_BSP_DeInit();
+1934  03ec cd01f5        	call	_LP_BSP_DeInit
+1936                     ; 662 	LP_EXTI_Configuration();
+1938  03ef cd00b9        	call	_LP_EXTI_Configuration
+1940                     ; 665 	LP_RTC_Config(); //edit by maronglang 20150609
+1942  03f2 cd0262        	call	_LP_RTC_Config
+1944  03f5               L155:
+1945                     ; 670 		IWDG->KR = IWDG_KEY_REFRESH;
+1947  03f5 35aa50e0      	mov	20704,#170
+1948                     ; 673 		RTC_WakeUpCmd(ENABLE); 	//edit by maronglang
+1950  03f9 a601          	ld	a,#1
+1951  03fb cd0000        	call	_RTC_WakeUpCmd
+1953                     ; 676 		PWR->CSR2 = 0x2;
+1955  03fe 350250b3      	mov	20659,#2
+1956                     ; 679 		halt();
+1959  0402 8e            	halt	
+1961                     ; 680 		nop();
+1965  0403 9d            	nop	
+1967                     ; 681 		nop();
+1971  0404 9d            	nop	
+1973                     ; 682 		nop();
+1977  0405 9d            	nop	
+1979                     ; 683 		nop();
+1983  0406 9d            	nop	
+1985                     ; 684 		nop();
+1989  0407 9d            	nop	
+1991                     ; 686 		RTC_WakeUpCmd(DISABLE); 		
+1994  0408 4f            	clr	a
+1995  0409 cd0000        	call	_RTC_WakeUpCmd
+1997                     ; 688 		if(WU_MODE_KEY == m_nKeyWuFlg)
+1999  040c c60000        	ld	a,L3_m_nKeyWuFlg
+2000  040f 4a            	dec	a
+2001  0410 2605          	jrne	L555
+2002                     ; 690 			LP_ExitWakeUpProc();
+2004  0412 cd02d1        	call	_LP_ExitWakeUpProc
+2007  0415 2025          	jra	L755
+2008  0417               L555:
+2009                     ; 704 			dwCount++;
+2011  0417 96            	ldw	x,sp
+2012  0418 1c0006        	addw	x,#OFST-15
+2013  041b a601          	ld	a,#1
+2014  041d cd0000        	call	c_lgadc
+2016                     ; 707 			if((dwCount >= dwCntTimeOut)||(LP_ClaReportTime()))
+2018  0420 96            	ldw	x,sp
+2019  0421 1c0006        	addw	x,#OFST-15
+2020  0424 cd0000        	call	c_ltor
+2022  0427 96            	ldw	x,sp
+2023  0428 1c0002        	addw	x,#OFST-19
+2024  042b cd0000        	call	c_lcmp
+2026  042e 2406          	jruge	L365
+2028  0430 cd034c        	call	_LP_ClaReportTime
+2030  0433 4d            	tnz	a
+2031  0434 2706          	jreq	L755
+2032  0436               L365:
+2033                     ; 709 				LP_TermReset();
+2035  0436 cd00cc        	call	_LP_TermReset
+2037                     ; 710 				return ;
+2038  0439               L232:
+2041  0439 5b15          	addw	sp,#21
+2042  043b 81            	ret	
+2043  043c               L755:
+2044                     ; 715 		if(3 <= m_nWakeUpCnt)
+2046  043c c60002        	ld	a,L7_m_nWakeUpCnt
+2047  043f a103          	cp	a,#3
+2048  0441 25b2          	jrult	L155
+2049                     ; 718 			LP_WakeUpTerm();
+2051  0443 cd0385        	call	_LP_WakeUpTerm
+2053                     ; 719 			return ;
+2055  0446 20f1          	jra	L232
+2182                     	switch	.const
+2183  0004               L062:
+2184  0004 0000003c      	dc.l	60
+2185                     ; 1034 uint32_t LP_130_CalReportConut(void)
+2185                     ; 1035 {
+2186                     	switch	.text
+2187  0448               _LP_130_CalReportConut:
+2189  0448 5236          	subw	sp,#54
+2190       00000036      OFST:	set	54
+2193                     ; 1036 	uint32_t dwTmp = 0, dwCount = 0;
+2195  044a 96            	ldw	x,sp
+2196  044b 1c002b        	addw	x,#OFST-11
+2197  044e cd0000        	call	c_ltor
+2201  0451 96            	ldw	x,sp
+2202  0452 1c002b        	addw	x,#OFST-11
+2203  0455 cd0000        	call	c_ltor
+2205                     ; 1037 	int32_t  dwOffset = 0,dwTemp = 0;
+2207  0458 96            	ldw	x,sp
+2208  0459 1c001f        	addw	x,#OFST-23
+2209  045c cd0000        	call	c_ltor
+2213  045f 96            	ldw	x,sp
+2214  0460 1c002b        	addw	x,#OFST-11
+2215  0463 cd0000        	call	c_ltor
+2217                     ; 1039 	u8       nRepFlg = 0;
+2219                     ; 1045 	MemcpyFunc((u8*)&tyTime, (u8*)&tyReport.Time, sizeof(TypeTime));
+2221  0466 4b06          	push	#6
+2222  0468 ae0004        	ldw	x,#_tyReport+4
+2223  046b 89            	pushw	x
+2224  046c ae0000        	ldw	x,#_tyTime
+2225  046f cd0000        	call	_MemcpyFunc
+2227  0472 5b03          	addw	sp,#3
+2228                     ; 1046 	JX_BL_Change((u16)sizeof(TypeTime), (u8*)&tyTime);
+2230  0474 ae0000        	ldw	x,#_tyTime
+2231  0477 89            	pushw	x
+2232  0478 ae0006        	ldw	x,#6
+2233  047b cd0000        	call	_JX_BL_Change
+2235  047e 85            	popw	x
+2236                     ; 1047 	MemcpyFunc((u8*)&stLastTime, (u8*)&tyTime, sizeof(TypeTime));
+2238  047f 4b06          	push	#6
+2239  0481 ae0000        	ldw	x,#_tyTime
+2240  0484 89            	pushw	x
+2241  0485 96            	ldw	x,sp
+2242  0486 1c001a        	addw	x,#OFST-28
+2243  0489 cd0000        	call	_MemcpyFunc
+2245  048c 5b03          	addw	sp,#3
+2246                     ; 1048 	STM8_RTC_Get(&stTimeNow);
+2248  048e ae0000        	ldw	x,#_stTimeNow
+2249  0491 cd0000        	call	_STM8_RTC_Get
+2251                     ; 1049 	TM_TimeChangeAToB(&stTimeNow, &stEnd);
+2253  0494 96            	ldw	x,sp
+2254  0495 1c0023        	addw	x,#OFST-19
+2255  0498 89            	pushw	x
+2256  0499 ae0000        	ldw	x,#_stTimeNow
+2257  049c cd0000        	call	_TM_TimeChangeAToB
+2259  049f 85            	popw	x
+2260                     ; 1050 	TM_TimeChangeAToB(&stLastTime, &stStar);
+2262  04a0 96            	ldw	x,sp
+2263  04a1 1c000f        	addw	x,#OFST-39
+2264  04a4 89            	pushw	x
+2265  04a5 1c0008        	addw	x,#8
+2266  04a8 cd0000        	call	_TM_TimeChangeAToB
+2268  04ab 85            	popw	x
+2269                     ; 1051 	dwOffset = TM_DiffSecond(&stStar, &stEnd);	
+2271  04ac 96            	ldw	x,sp
+2272  04ad 1c0023        	addw	x,#OFST-19
+2273  04b0 89            	pushw	x
+2274  04b1 1d0014        	subw	x,#20
+2275  04b4 cd0000        	call	_TM_DiffSecond
+2277  04b7 85            	popw	x
+2278  04b8 96            	ldw	x,sp
+2279  04b9 1c001f        	addw	x,#OFST-23
+2280  04bc cd0000        	call	c_rtol
+2282                     ; 1052 	stEnd.nSecond = 0;	
+2284  04bf 0f29          	clr	(OFST-13,sp)
+2285                     ; 1053 	MemcpyFunc((u8*)&stTmpTime,  (u8*)&stEnd, sizeof(stTmpTime));
+2287  04c1 4b08          	push	#8
+2288  04c3 96            	ldw	x,sp
+2289  04c4 1c0024        	addw	x,#OFST-18
+2290  04c7 89            	pushw	x
+2291  04c8 1c000c        	addw	x,#12
+2292  04cb cd0000        	call	_MemcpyFunc
+2294  04ce 5b03          	addw	sp,#3
+2295                     ; 1056 	if(0 < dwOffset) 
+2297  04d0 96            	ldw	x,sp
+2298  04d1 1c001f        	addw	x,#OFST-23
+2299  04d4 cd0000        	call	c_lzmp
+2301  04d7 2d52          	jrsle	L736
+2302                     ; 1058 		TM_RTimeAddnMinute(&stEnd, (tyReport.wGatherCycle - (u16)((dwOffset/60)%(u32)tyReport.wGatherCycle)));
+2304  04d9 5500000003    	mov	c_lreg+3,_tyReport
+2305  04de 3f02          	clr	c_lreg+2
+2306  04e0 3f01          	clr	c_lreg+1
+2307  04e2 3f00          	clr	c_lreg
+2308  04e4 96            	ldw	x,sp
+2309  04e5 1c0003        	addw	x,#OFST-51
+2310  04e8 cd0000        	call	c_rtol
+2312  04eb 96            	ldw	x,sp
+2313  04ec 1c001f        	addw	x,#OFST-23
+2314  04ef cd0000        	call	c_ltor
+2316  04f2 ae0004        	ldw	x,#L062
+2317  04f5 cd0000        	call	c_ldiv
+2319  04f8 96            	ldw	x,sp
+2320  04f9 1c0003        	addw	x,#OFST-51
+2321  04fc cd0000        	call	c_lmod
+2323  04ff be02          	ldw	x,c_lreg+2
+2324  0501 1f01          	ldw	(OFST-53,sp),x
+2325  0503 c60000        	ld	a,_tyReport
+2326  0506 5f            	clrw	x
+2327  0507 97            	ld	xl,a
+2328  0508 72f001        	subw	x,(OFST-53,sp)
+2329  050b cd0000        	call	c_uitolx
+2331  050e be02          	ldw	x,c_lreg+2
+2332  0510 89            	pushw	x
+2333  0511 be00          	ldw	x,c_lreg
+2334  0513 89            	pushw	x
+2335  0514 96            	ldw	x,sp
+2336  0515 1c0027        	addw	x,#OFST-15
+2337  0518 cd0000        	call	_TM_RTimeAddnMinute
+2339  051b 5b04          	addw	sp,#4
+2340                     ; 1059 		TM_TimeChangeBToA(&stEnd, &g_stNextGmTime); 
+2342  051d ae000f        	ldw	x,#_g_stNextGmTime
+2343  0520 89            	pushw	x
+2344  0521 96            	ldw	x,sp
+2345  0522 1c0025        	addw	x,#OFST-17
+2346  0525 cd0000        	call	_TM_TimeChangeBToA
+2348  0528 85            	popw	x
+2350  0529 200f          	jra	L146
+2351  052b               L736:
+2352                     ; 1063 		MemcpyFunc((u8*)&g_stNextGmTime, (u8*)&stLastTime, sizeof(ST_Time));
+2354  052b 4b07          	push	#7
+2355  052d 96            	ldw	x,sp
+2356  052e 1c0018        	addw	x,#OFST-30
+2357  0531 89            	pushw	x
+2358  0532 ae000f        	ldw	x,#_g_stNextGmTime
+2359  0535 cd0000        	call	_MemcpyFunc
+2361  0538 5b03          	addw	sp,#3
+2362  053a               L146:
+2363                     ; 1068 	dwOffset = TM_DiffSecond(&stLastReportT, &stTmpTime);
+2365  053a 96            	ldw	x,sp
+2366  053b 1c002f        	addw	x,#OFST-7
+2367  053e 89            	pushw	x
+2368  053f ae0000        	ldw	x,#_stLastReportT
+2369  0542 cd0000        	call	_TM_DiffSecond
+2371  0545 85            	popw	x
+2372  0546 96            	ldw	x,sp
+2373  0547 1c001f        	addw	x,#OFST-23
+2374  054a cd0000        	call	c_rtol
+2376                     ; 1069 	dwTemp   = ClaReportTimeToSec(tyReport.cycle);
+2378  054d c60002        	ld	a,_tyReport+2
+2379  0550 cd0000        	call	_ClaReportTimeToSec
+2381  0553 96            	ldw	x,sp
+2382  0554 1c002b        	addw	x,#OFST-11
+2383  0557 cd0000        	call	c_rtol
+2385                     ; 1072 	if(0 < dwOffset) 
+2387  055a 96            	ldw	x,sp
+2388  055b 1c001f        	addw	x,#OFST-23
+2389  055e cd0000        	call	c_lzmp
+2391  0561 2d42          	jrsle	L346
+2392                     ; 1074 		TM_RTimeAddnMinute(&stTmpTime, ((dwTemp - (u32)(dwOffset%dwTemp))/60));
+2394  0563 96            	ldw	x,sp
+2395  0564 1c001f        	addw	x,#OFST-23
+2396  0567 cd0000        	call	c_ltor
+2398  056a 96            	ldw	x,sp
+2399  056b 1c002b        	addw	x,#OFST-11
+2400  056e cd0000        	call	c_lumd
+2402  0571 96            	ldw	x,sp
+2403  0572 1c0003        	addw	x,#OFST-51
+2404  0575 cd0000        	call	c_rtol
+2406  0578 96            	ldw	x,sp
+2407  0579 1c002b        	addw	x,#OFST-11
+2408  057c cd0000        	call	c_ltor
+2410  057f 96            	ldw	x,sp
+2411  0580 1c0003        	addw	x,#OFST-51
+2412  0583 cd0000        	call	c_lsub
+2414  0586 ae0004        	ldw	x,#L062
+2415  0589 cd0000        	call	c_ludv
+2417  058c be02          	ldw	x,c_lreg+2
+2418  058e 89            	pushw	x
+2419  058f be00          	ldw	x,c_lreg
+2420  0591 89            	pushw	x
+2421  0592 96            	ldw	x,sp
+2422  0593 1c0033        	addw	x,#OFST-3
+2423  0596 cd0000        	call	_TM_RTimeAddnMinute
+2425  0599 5b04          	addw	sp,#4
+2426                     ; 1075 		TM_TimeChangeBToA(&stTmpTime, &g_stNextRepTime);
+2428  059b ae0016        	ldw	x,#_g_stNextRepTime
+2429  059e 89            	pushw	x
+2430  059f 96            	ldw	x,sp
+2431  05a0 1c0031        	addw	x,#OFST-5
+2434  05a3 2007          	jra	L546
+2435  05a5               L346:
+2436                     ; 1079 		TM_TimeChangeBToA(&stLastReportT, &g_stNextRepTime);
+2438  05a5 ae0016        	ldw	x,#_g_stNextRepTime
+2439  05a8 89            	pushw	x
+2440  05a9 ae0000        	ldw	x,#_stLastReportT
+2442  05ac               L546:
+2443  05ac cd0000        	call	_TM_TimeChangeBToA
+2444  05af 85            	popw	x
+2445                     ; 1083 	nRepFlg = GetReportFailFlag();
+2447  05b0 cd0000        	call	_GetReportFailFlag
+2449  05b3 6b1e          	ld	(OFST-24,sp),a
+2450                     ; 1084 	if(nRepFlg&REPORT_FAIL_FLG)
+2452  05b5 a50e          	bcp	a,#14
+2453  05b7 2774          	jreq	L746
+2454                     ; 1086 		STM8_RTC_Get(&stTimeNow);		
+2456  05b9 ae0000        	ldw	x,#_stTimeNow
+2457  05bc cd0000        	call	_STM8_RTC_Get
+2459                     ; 1087 		TM_TimeChangeAToB(&stTimeNow, &stTime);
+2461  05bf 96            	ldw	x,sp
+2462  05c0 1c0007        	addw	x,#OFST-47
+2463  05c3 89            	pushw	x
+2464  05c4 ae0000        	ldw	x,#_stTimeNow
+2465  05c7 cd0000        	call	_TM_TimeChangeAToB
+2467  05ca 85            	popw	x
+2468                     ; 1088 		MemcpyFunc((u8*)&stTmpTime, (u8*)&stTime, sizeof(TM_Time));
+2470  05cb 4b08          	push	#8
+2471  05cd 96            	ldw	x,sp
+2472  05ce 1c0008        	addw	x,#OFST-46
+2473  05d1 89            	pushw	x
+2474  05d2 1c0028        	addw	x,#40
+2475  05d5 cd0000        	call	_MemcpyFunc
+2477  05d8 5b03          	addw	sp,#3
+2478                     ; 1091 		if(nRepFlg&THIRD_REP_FAIL)
+2480  05da 7b1e          	ld	a,(OFST-24,sp)
+2481  05dc a508          	bcp	a,#8
+2482  05de 2711          	jreq	L156
+2483                     ; 1096 			if(0x41 == tyReport.cycle)
+2485  05e0 c60002        	ld	a,_tyReport+2
+2486  05e3 a141          	cp	a,#65
+2487  05e5 2605          	jrne	L356
+2488                     ; 1098 				TM_RTimeAddnMinute(&stTmpTime, 15);
+2490  05e7 ae000f        	ldw	x,#15
+2493  05ea 2029          	jra	L756
+2494  05ec               L356:
+2495                     ; 1102 				TM_RTimeAddnMinute(&stTmpTime, 540);
+2497  05ec ae021c        	ldw	x,#540
+2499  05ef 2024          	jra	L756
+2500  05f1               L156:
+2501                     ; 1106 		else if(nRepFlg&SECOND_REP_FAIL)
+2503  05f1 a504          	bcp	a,#4
+2504  05f3 2711          	jreq	L166
+2505                     ; 1111 			if(0x41 == tyReport.cycle)
+2507  05f5 c60002        	ld	a,_tyReport+2
+2508  05f8 a141          	cp	a,#65
+2509  05fa 2605          	jrne	L366
+2510                     ; 1113 				TM_RTimeAddnMinute(&stTmpTime, 10);
+2512  05fc ae000a        	ldw	x,#10
+2515  05ff 2014          	jra	L756
+2516  0601               L366:
+2517                     ; 1117 				TM_RTimeAddnMinute(&stTmpTime, 360);
+2519  0601 ae0168        	ldw	x,#360
+2521  0604 200f          	jra	L756
+2522  0606               L166:
+2523                     ; 1126 			if(0x41 == tyReport.cycle)
+2525  0606 c60002        	ld	a,_tyReport+2
+2526  0609 a141          	cp	a,#65
+2527  060b 2605          	jrne	L176
+2528                     ; 1128 				TM_RTimeAddnMinute(&stTmpTime, 5);
+2530  060d ae0005        	ldw	x,#5
+2533  0610 2003          	jra	L756
+2534  0612               L176:
+2535                     ; 1132 				TM_RTimeAddnMinute(&stTmpTime, 180);
+2537  0612 ae00b4        	ldw	x,#180
+2539  0615               L756:
+2540  0615 89            	pushw	x
+2541  0616 5f            	clrw	x
+2542  0617 89            	pushw	x
+2543  0618 96            	ldw	x,sp
+2544  0619 1c0033        	addw	x,#OFST-3
+2545  061c cd0000        	call	_TM_RTimeAddnMinute
+2546  061f 5b04          	addw	sp,#4
+2547                     ; 1136 		TM_TimeChangeBToA(&stTmpTime, &g_stNextRepTime);	
+2549  0621 ae0016        	ldw	x,#_g_stNextRepTime
+2550  0624 89            	pushw	x
+2551  0625 96            	ldw	x,sp
+2552  0626 1c0031        	addw	x,#OFST-5
+2553  0629 cd0000        	call	_TM_TimeChangeBToA
+2555  062c 85            	popw	x
+2556  062d               L746:
+2557                     ; 1140 	ReadParameterForType((u8 *)&tyReport, sizeof(tyReport), REPORT_PARA);
+2559  062d 4b03          	push	#3
+2560  062f 4b0a          	push	#10
+2561  0631 ae0000        	ldw	x,#_tyReport
+2562  0634 cd0000        	call	_ReadParameterForType
+2564  0637 c60000        	ld	a,_tyReport
+2565  063a 85            	popw	x
+2566                     ; 1141 	if(0 < tyReport.wGatherCycle)
+2568  063b 2725          	jreq	L576
+2569                     ; 1143 		dwTmp = tyReport.wGatherCycle;
+2571  063d 6b2e          	ld	(OFST-8,sp),a
+2572  063f 4f            	clr	a
+2573  0640 6b2d          	ld	(OFST-9,sp),a
+2574  0642 6b2c          	ld	(OFST-10,sp),a
+2575  0644 6b2b          	ld	(OFST-11,sp),a
+2576                     ; 1144 		dwCount = dwTmp*60;
+2578  0646 96            	ldw	x,sp
+2579  0647 1c002b        	addw	x,#OFST-11
+2580  064a cd0000        	call	c_ltor
+2582  064d a63c          	ld	a,#60
+2583  064f cd0000        	call	c_smul
+2585  0652 96            	ldw	x,sp
+2586  0653 1c002b        	addw	x,#OFST-11
+2587  0656 cd0000        	call	c_rtol
+2590                     ; 1151 	return dwCount;
+2592  0659 96            	ldw	x,sp
+2593  065a 1c002b        	addw	x,#OFST-11
+2594  065d cd0000        	call	c_ltor
+2597  0660 200a          	jra	L033
+2598  0662               L576:
+2599                     ; 1148 		return LP_WAKEUP_TO;
+2601  0662 ae8c00        	ldw	x,#35840
+2602  0665 bf02          	ldw	c_lreg+2,x
+2603  0667 ae000a        	ldw	x,#10
+2604  066a bf00          	ldw	c_lreg,x
+2606  066c               L033:
+2608  066c 5b36          	addw	sp,#54
+2609  066e 81            	ret	
+2692                     	xdef	_LP_CheckGuardKeyStat
+2693                     	xdef	_LP_WakeUpTerm
+2694                     	xdef	_LP_ClaReportTime
+2695                     	xdef	_LP_ExitWakeUpProc
+2696                     	xdef	_LP_RTC_Config
+2697                     	xdef	_LP_CalReportGatherTime
+2698                     	xdef	_LP_ADC_DeInit
+2699                     	xdef	_LP_UART_DeInit
+2700                     	xdef	_LP_TimeDeInit
+2701                     	xdef	_LP_EXTI_Configuration
+2702                     	xdef	_LP_GPIO_DefaultConfig
+2703                     	xdef	_LP_130_CalReportConut
+2704                     	switch	.bss
+2705  0000               _g_stPowrOnTime:
+2706  0000 000000000000  	ds.b	7
+2707                     	xdef	_g_stPowrOnTime
+2708  0007               _m_stStartTime:
+2709  0007 000000000000  	ds.b	8
+2710                     	xdef	_m_stStartTime
+2711                     	xdef	_m_nDebugFlg
+2712                     	xref	_LP_HD_CalReportConut
+2713                     	xref	_tyTime
+2714                     	xref	_TurnBusUartOff
+2715                     	xdef	_LP_DelayMs
+2716                     	xdef	_LP_TermReset
+2717                     	xdef	_LP_GetKeyWuFlg
+2718                     	xdef	_LP_ClrLowPwrStartFlg
+2719                     	xdef	_LP_SetLowPwrStartFlg
+2720                     	xdef	_LP_SetKeyWuFlg
+2721                     	xdef	_LP_BSP_DeInit
+2722                     	xdef	_LP_LowPowerManage
+2723  000f               _g_stNextGmTime:
+2724  000f 000000000000  	ds.b	7
+2725                     	xdef	_g_stNextGmTime
+2726  0016               _g_stNextRepTime:
+2727  0016 000000000000  	ds.b	7
+2728                     	xdef	_g_stNextRepTime
+2729                     	xref	_STM8_RTC_Get
+2730                     	xref	_ReadReportFlag
+2731                     	xref	_SaveReportFlag
+2732                     	xref	_ReadParameterForType
+2733                     	xref	_InitializeFile
+2734                     	xref	_ClaReportTimeToSec
+2735                     	xref	_GetReportFailFlag
+2736                     	xref	_stLastReportT
+2737                     	xref	_stTimeNow
+2738                     	xref	_tyReport
+2739                     	xref	_InitializeBase
+2740                     	xref	_TM_RTimeAddnMinute
+2741                     	xref	_TM_DiffSecond
+2742                     	xref	_TM_TimeChangeBToA
+2743                     	xref	_TM_TimeChangeAToB
+2744                     	xref	_JX_BL_Change
+2745                     	xref	_MemcpyFunc
+2746                     	xdef	_RTC_WakeUpCmd
+2747                     	xref	_RTC_WaitForSynchro
+2748                     	xref	_GPIO_WriteBit
+2749                     	xref	_GPIO_Init
+2750                     	xref	_EXTI_ClearITPendingBit
+2751                     	xref	_EXTI_SelectPort
+2752                     	xref	_EXTI_SetPinSensitivity
+2753                     	xref	_CLK_PeripheralClockConfig
+2754                     	xref.b	c_lreg
+2774                     	xref	c_smul
+2775                     	xref	c_ludv
+2776                     	xref	c_lsub
+2777                     	xref	c_lumd
+2778                     	xref	c_uitolx
+2779                     	xref	c_lmod
+2780                     	xref	c_ldiv
+2781                     	xref	c_lgadc
+2782                     	xref	c_lcmp
+2783                     	xref	c_rtol
+2784                     	xref	c_lrzmp
+2785                     	xref	c_ltor
+2786                     	xref	c_lzmp
+2787                     	xref	c_lgsbc
+2788                     	end

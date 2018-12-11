@@ -59,7 +59,7 @@ typedef struct
 	#define TMADDRESS_LEN           0           //TMµÿ÷∑≥§∂»
 #endif
 
-#define MAX_LEN                 ADDRESS_PARAMETER_LEN
+#define MAX_LEN                 ADDRESS_IPPARA_LEN
 
 
 

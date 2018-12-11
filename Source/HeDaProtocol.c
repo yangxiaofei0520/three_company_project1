@@ -45,12 +45,12 @@ s32 HD_ClaReportTimeToSec(void)
 {
 	switch(tyReport.nIntervalType)
 	{
-		case HD_INTERVAL_MIN:return tyReport.cycle*60;
-		case HD_INTERVAL_HOUR:return tyReport.cycle*3600;
-		case HD_INTERVAL_DAY:return tyReport.cycle*3600*24;
-		default:return 24*3600;
+		case HD_INTERVAL_MIN:return (s32)tyReport.cycle*60;
+		case HD_INTERVAL_HOUR:return (s32)tyReport.cycle*3600;
+		case HD_INTERVAL_DAY:return (s32)tyReport.cycle*3600*24;
+		default:return (s32)24*3600;
 	}
-	return 24*3600;
+	return (s32)24*3600;
 }
 
 
@@ -1313,7 +1313,7 @@ void HD_InitializeGsm(void)
 	}
 
 	/* ªÒ»°APN */
-	if(TRUE == ReadParameterForType(&g_nApnBuf[1], APN_LEN, APN_PARA))
+	if(TRUE == ReadParameterForType(&g_nApnBuf[1], APN_LEN-1, APN_PARA))
 	{
 		JX_StringCat(g_nApnBuf, "\"", 2);
 	}

@@ -563,478 +563,415 @@
 1595  027a ae5005        	ldw	x,#20485
 1596  027d cd0000        	call	_GPIO_Init
 1598  0280 85            	popw	x
-1599                     ; 508 	GPIO_Init(MOTO_VCC_PORT, MOTO_VCC_PIN, GPIO_Mode_Out_PP_Low_Slow); 
-1601  0281 4bc0          	push	#192
-1602  0283 4b02          	push	#2
-1603  0285 ae500f        	ldw	x,#20495
-1604  0288 cd0000        	call	_GPIO_Init
-1606  028b 85            	popw	x
-1607                     ; 509 	GPIO_Init(MOTO_POSI_PORT, MOTO_POSI_PIN, GPIO_Mode_Out_PP_Low_Slow);
-1609  028c 4bc0          	push	#192
-1610  028e 4b02          	push	#2
-1611  0290 ae5005        	ldw	x,#20485
-1612  0293 cd0000        	call	_GPIO_Init
-1614  0296 85            	popw	x
-1615                     ; 510 	GPIO_Init(MOTO_NEGA_PORT, MOTO_NEGA_PIN, GPIO_Mode_Out_PP_Low_Slow);
-1617  0297 4bc0          	push	#192
-1618  0299 4b01          	push	#1
-1619  029b ae5005        	ldw	x,#20485
-1620  029e cd0000        	call	_GPIO_Init
-1622  02a1 85            	popw	x
-1623                     ; 512 	GPIO_Init(MOTO_MS1_PORT, MOTO_MS1_PIN, GPIO_Mode_In_FL_No_IT); 
-1625  02a2 4b00          	push	#0
-1626  02a4 4b08          	push	#8
-1627  02a6 ae500f        	ldw	x,#20495
-1628  02a9 cd0000        	call	_GPIO_Init
-1630  02ac 85            	popw	x
-1631                     ; 513 	GPIO_Init(MOTO_MS2_PORT, MOTO_MS2_PIN, GPIO_Mode_In_FL_No_IT);
-1633  02ad 4b00          	push	#0
-1634  02af 4b04          	push	#4
-1635  02b1 ae500f        	ldw	x,#20495
-1636  02b4 cd0000        	call	_GPIO_Init
-1638  02b7 85            	popw	x
-1639                     ; 516 }
-1642  02b8 81            	ret	
-1683                     ; 527 void InitializeBase(void)
-1683                     ; 528 {
-1684                     	switch	.text
-1685  02b9               _InitializeBase:
-1689                     ; 530 	disableInterrupts();
-1692  02b9 9b            	sim	
-1694                     ; 533 	CLK_Config();
-1697  02ba cd01a1        	call	_CLK_Config
-1699                     ; 536 	IWDG_Config();
-1701  02bd cd002e        	call	_IWDG_Config
-1703                     ; 539 	CLK_PeripheralClockConfig(CLK_Peripheral_USART1, ENABLE); //
-1705  02c0 ae0001        	ldw	x,#1
-1706  02c3 a605          	ld	a,#5
-1707  02c5 ad7a          	call	LC001
-1708  02c7 a602          	ld	a,#2
-1709  02c9 ad76          	call	LC001
-1710  02cb a611          	ld	a,#17
-1711  02cd ad72          	call	LC001
-1712  02cf 4f            	clr	a
-1713  02d0 95            	ld	xh,a
-1714  02d1 cd0000        	call	_CLK_PeripheralClockConfig
-1716                     ; 548 	if (((FlagStatus)(((uint8_t)(RST->SR & RST_FLAG_IWDGF) == (uint8_t)0x00) ? RESET : SET))!= RESET)
-1718  02d4 720250b103    	btjt	20657,#1,L651
-1719  02d9 4f            	clr	a
-1720  02da 2002          	jra	L061
-1721  02dc               L651:
-1722  02dc a601          	ld	a,#1
-1723  02de               L061:
-1724  02de 4d            	tnz	a
-1725                     ; 555 	IoInit();
-1727  02df cd01bb        	call	_IoInit
-1729                     ; 557 	ITC_SetSoftwarePriority(USART1_RX_IRQn, ITC_PriorityLevel_1);
-1731  02e2 ae0001        	ldw	x,#1
-1732  02e5 a61c          	ld	a,#28
-1733  02e7 95            	ld	xh,a
-1734  02e8 cd0047        	call	_ITC_SetSoftwarePriority
-1736                     ; 558 	ITC_SetSoftwarePriority(USART1_TX_IRQn, ITC_PriorityLevel_2);
-1738  02eb 5f            	clrw	x
-1739  02ec a61b          	ld	a,#27
-1740  02ee 95            	ld	xh,a
-1741  02ef cd0047        	call	_ITC_SetSoftwarePriority
-1743                     ; 559 	ITC_SetSoftwarePriority(TIM4_UPD_OVF_TRG_IRQn, ITC_PriorityLevel_3);
-1745  02f2 ae0003        	ldw	x,#3
-1746  02f5 a619          	ld	a,#25
-1747  02f7 95            	ld	xh,a
-1748  02f8 cd0047        	call	_ITC_SetSoftwarePriority
-1750                     ; 560 	ITC_SetSoftwarePriority(EXTI4_IRQn, ITC_PriorityLevel_1);
-1752  02fb ae0001        	ldw	x,#1
-1753  02fe a60c          	ld	a,#12
-1754  0300 95            	ld	xh,a
-1755  0301 cd0047        	call	_ITC_SetSoftwarePriority
-1757                     ; 561 	ITC_SetSoftwarePriority(TIM1_UPD_OVF_TRG_IRQn, ITC_PriorityLevel_2);
-1759  0304 5f            	clrw	x
-1760  0305 a617          	ld	a,#23
-1761  0307 95            	ld	xh,a
-1762  0308 cd0047        	call	_ITC_SetSoftwarePriority
-1764                     ; 564 	EXTI_SelectPort(EXTI_Port_D);
-1766  030b a602          	ld	a,#2
-1767  030d cd0000        	call	_EXTI_SelectPort
-1769                     ; 565 	EXTI_SetPinSensitivity(UART2_RX_PIN, EXTI_Trigger_Falling);
-1771  0310 ae0002        	ldw	x,#2
-1772  0313 a610          	ld	a,#16
-1773  0315 95            	ld	xh,a
-1774  0316 cd0000        	call	_EXTI_SetPinSensitivity
-1776                     ; 566 	EXTI_ClearITPendingBit(EXTI_IT_Pin4);
-1778  0319 ae0010        	ldw	x,#16
-1779  031c cd0000        	call	_EXTI_ClearITPendingBit
-1781                     ; 569 	TIM4_Config();
-1783  031f cd0188        	call	L515_TIM4_Config
-1785                     ; 572 	TIM1_Config();
-1787  0322 cd015f        	call	L305_TIM1_Config
-1789                     ; 575 	Usart1Initialize();
-1791  0325 cd0000        	call	_Usart1Initialize
-1793                     ; 578 	STM8_RTC_Init();
-1795  0328 cd0000        	call	_STM8_RTC_Init
-1797                     ; 581 	ADC_Config();
-1799  032b cd0115        	call	_ADC_Config
-1801                     ; 584 	enableInterrupts();	
-1804  032e 9a            	rim	
-1806                     ; 586 	STM8_RTC_Get(&stTimeNow);
-1809  032f ae0000        	ldw	x,#_stTimeNow
-1810  0332 cd0000        	call	_STM8_RTC_Get
-1812                     ; 587 	LP_DelayMs(20); // 相当于1s
-1814  0335 ae0014        	ldw	x,#20
-1815  0338 89            	pushw	x
-1816  0339 5f            	clrw	x
-1817  033a 89            	pushw	x
-1818  033b cd0000        	call	_LP_DelayMs
-1820  033e 5b04          	addw	sp,#4
-1821                     ; 588 }
-1824  0340 81            	ret	
-1826  0341               LC001:
-1827  0341 95            	ld	xh,a
-1828  0342 cd0000        	call	_CLK_PeripheralClockConfig
-1830                     ; 542 	CLK_PeripheralClockConfig(CLK_Peripheral_TIM2, ENABLE); //
-1832  0345 ae0001        	ldw	x,#1
-1833  0348 81            	ret	
-1835                     	switch	.data
-1836  0012               L575_nHighCnt:
-1837  0012 00            	dc.b	0
-1838  0013               L775_nLowCnt:
-1839  0013 00            	dc.b	0
-1840  0014               L106_nStat:
-1841  0014 01            	dc.b	1
-1842  0015               L306_dwStartTime:
-1843  0015 00000000      	dc.l	0
-1911                     	switch	.const
-1912  003a               L032:
-1913  003a 00007530      	dc.l	30000
-1914                     ; 600 u8 CheckDebugInsertStat(void)
-1914                     ; 601 {
-1915                     	switch	.text
-1916  0349               _CheckDebugInsertStat:
-1918  0349 88            	push	a
-1919       00000001      OFST:	set	1
-1922                     ; 603 	u8 nNowStat = FALSE;
-1924  034a 0f01          	clr	(OFST+0,sp)
-1925                     ; 606 	nNowStat = GetDebugMode();
-1927  034c cd03e9        	call	LC002
-1928  034f 6b01          	ld	(OFST+0,sp),a
-1929                     ; 607 	if((nNowStat == nStat)&&(30000 > GetSysTemTick() - dwStartTime))
-1931  0351 c10014        	cp	a,L106_nStat
-1932  0354 2617          	jrne	L136
-1934  0356 cd0000        	call	_GetSysTemTick
-1936  0359 ae0015        	ldw	x,#L306_dwStartTime
-1937  035c cd0000        	call	c_lsub
-1939  035f ae003a        	ldw	x,#L032
-1940  0362 cd0000        	call	c_lcmp
-1942  0365 2406          	jruge	L136
-1943                     ; 609 		return nDebugFlg;
-1945  0367 c60008        	ld	a,L3_nDebugFlg
-1948  036a 5b01          	addw	sp,#1
-1949  036c 81            	ret	
-1950  036d               L136:
-1951                     ; 612 	if(FALSE == GetDebugMode())
-1953  036d ad7a          	call	LC002
-1954  036f 4d            	tnz	a
-1955  0370 2635          	jrne	L336
-1956                     ; 614 		nLowCnt = 0;
-1958  0372 c70013        	ld	L775_nLowCnt,a
-1959                     ; 615 		if(3 <= nHighCnt++)
-1961  0375 c60012        	ld	a,L575_nHighCnt
-1962  0378 725c0012      	inc	L575_nHighCnt
-1963  037c a103          	cp	a,#3
-1964  037e 2563          	jrult	L736
-1965                     ; 617 			nHighCnt  = 3;
-1967  0380 35030012      	mov	L575_nHighCnt,#3
-1968                     ; 618 			nDebugFlg = TRUE;			
-1970  0384 35010008      	mov	L3_nDebugFlg,#1
-1971                     ; 619 			dwStartTime = GetSysTemTick();
-1973  0388 ad6a          	call	LC003
-1975                     ; 623 			SetPortMeterPowerOn();
-1977  038a 4b01          	push	#1
-1978  038c 4b08          	push	#8
-1979  038e ae5000        	ldw	x,#20480
-1980  0391 cd0000        	call	_GPIO_WriteBit
-1982  0394 85            	popw	x
-1983                     ; 624 			SetPortGsmPowerOff();
-1985  0395 4b00          	push	#0
-1986  0397 4b10          	push	#16
-1987  0399 ae500a        	ldw	x,#20490
-1988  039c cd0000        	call	_GPIO_WriteBit
-1990  039f 85            	popw	x
-1991                     ; 625 			nStat = nNowStat;
-1993  03a0 7b01          	ld	a,(OFST+0,sp)
-1994  03a2 c70014        	ld	L106_nStat,a
-1995  03a5 203c          	jra	L736
-1996  03a7               L336:
-1997                     ; 630 		nHighCnt = 0;
-1999  03a7 725f0012      	clr	L575_nHighCnt
-2000                     ; 631 		if(3 <= nLowCnt++)
-2002  03ab c60013        	ld	a,L775_nLowCnt
-2003  03ae 725c0013      	inc	L775_nLowCnt
-2004  03b2 a103          	cp	a,#3
-2005  03b4 252d          	jrult	L736
-2006                     ; 633 			nLowCnt = 3;
-2008  03b6 35030013      	mov	L775_nLowCnt,#3
-2009                     ; 634 			nStat = nNowStat;
-2011  03ba 7b01          	ld	a,(OFST+0,sp)
-2012  03bc c70014        	ld	L106_nStat,a
-2013                     ; 635 			dwStartTime = GetSysTemTick();
-2015  03bf ad33          	call	LC003
-2017                     ; 638 			if(nDebugFlg)
-2019  03c1 c60008        	ld	a,L3_nDebugFlg
-2020  03c4 2719          	jreq	L346
-2021                     ; 641 				SetReportIndex(0);  // 注释掉用于测试失败补报3
-2023  03c6 4f            	clr	a
-2024  03c7 cd0000        	call	_SetReportIndex
-2026                     ; 643 				ReWriteRepFlg();
-2028  03ca cd0000        	call	_ReWriteRepFlg
-2030                     ; 645 				SaveReportFlag(FALSE);
-2032  03cd 4f            	clr	a
-2033  03ce cd0000        	call	_SaveReportFlag
-2035                     ; 646 				UC_SleepFunc(100);				
-2037  03d1 ae0064        	ldw	x,#100
-2038  03d4 89            	pushw	x
-2039  03d5 5f            	clrw	x
-2040  03d6 89            	pushw	x
-2041  03d7 cd0000        	call	_UC_SleepFunc
-2043  03da 5b04          	addw	sp,#4
-2044                     ; 647 				LP_TermReset();
-2046  03dc cd0000        	call	_LP_TermReset
-2048  03df               L346:
-2049                     ; 649 			nDebugFlg = FALSE;
-2051  03df 725f0008      	clr	L3_nDebugFlg
-2052  03e3               L736:
-2053                     ; 652 	return nDebugFlg;
-2055  03e3 c60008        	ld	a,L3_nDebugFlg
-2058  03e6 5b01          	addw	sp,#1
-2059  03e8 81            	ret	
-2061  03e9               LC002:
-2062  03e9 4b20          	push	#32
-2063  03eb ae5000        	ldw	x,#20480
-2064  03ee cd0000        	call	_GPIO_ReadInputDataBit
-2066  03f1 5b01          	addw	sp,#1
-2067  03f3 81            	ret	
-2068  03f4               LC003:
-2069  03f4 cd0000        	call	_GetSysTemTick
-2071  03f7 ae0015        	ldw	x,#L306_dwStartTime
-2072  03fa cc0000        	jp	c_rtol
-2095                     ; 665 u8 GetTmDebugModeStat(void)
-2095                     ; 666 {
-2096                     	switch	.text
-2097  03fd               _GetTmDebugModeStat:
-2101                     ; 667 	return nDebugFlg;
-2103  03fd c60008        	ld	a,L3_nDebugFlg
-2106  0400 81            	ret	
-2139                     ; 679 u8 SetTmDebugModeStat(u8 nMode)
-2139                     ; 680 {
-2140                     	switch	.text
-2141  0401               _SetTmDebugModeStat:
-2145                     ; 681 	m_nWorkMode = nMode;
-2147  0401 c70009        	ld	_m_nWorkMode,a
-2148                     ; 682 }
-2151  0404 81            	ret	
-2174                     ; 689 void InitializEnd(void)
-2174                     ; 690 {
-2175                     	switch	.text
-2176  0405               _InitializEnd:
-2180                     ; 692 }
-2183  0405 81            	ret	
-2208                     ; 699 void TurnOnExit(void)
-2208                     ; 700 {
-2209                     	switch	.text
-2210  0406               _TurnOnExit:
-2214                     ; 701 	GPIO_Init(UART2_RX_PORT, UART2_RX_PIN, GPIO_Mode_In_PU_IT); // GPIO_Mode_In_FL_IT 开始首帧数据丢失问题
-2216  0406 4b60          	push	#96
-2217  0408 4b10          	push	#16
-2218  040a ae500f        	ldw	x,#20495
-2219  040d cd0000        	call	_GPIO_Init
-2221  0410 85            	popw	x
-2222                     ; 702 	EXTI_ClearITPendingBit(EXTI_IT_Pin4);	
-2224  0411 ae0010        	ldw	x,#16
-2226                     ; 703 }
-2229  0414 cc0000        	jp	_EXTI_ClearITPendingBit
-2253                     ; 710 void TurnOffExit(void)
-2253                     ; 711 {
-2254                     	switch	.text
-2255  0417               _TurnOffExit:
-2259                     ; 712 	GPIO_Init(UART2_RX_PORT, UART2_RX_PIN, GPIO_Mode_In_PU_No_IT);// GPIO_Mode_In_FL_No_IT
-2261  0417 4b40          	push	#64
-2262  0419 4b10          	push	#16
-2263  041b ae500f        	ldw	x,#20495
-2264  041e cd0000        	call	_GPIO_Init
-2266  0421 85            	popw	x
-2267                     ; 713 }
-2270  0422 81            	ret	
-2303                     ; 761 void DecIoModeChange(u8 nMode)
-2303                     ; 762 {
-2304                     	switch	.text
-2305  0423               _DecIoModeChange:
-2309                     ; 763 	if(PULLUPOUTPUT == nMode)
-2311  0423 4a            	dec	a
-2312  0424 260f          	jrne	L537
-2313                     ; 765 		GPIO_Init(RS485_DE_PORT, RS485_DE_PIN, GPIO_Mode_Out_PP_High_Slow);
-2315  0426 4bd0          	push	#208
-2316  0428 4b10          	push	#16
-2317  042a ae5000        	ldw	x,#20480
-2318  042d cd0000        	call	_GPIO_Init
-2320  0430 85            	popw	x
-2321                     ; 766 		GPIO_Init(DEBUG_PORT, DEBUG_PIN, GPIO_Mode_In_FL_No_IT);
-2323  0431 4b00          	push	#0
-2326  0433 200d          	jra	L737
-2327  0435               L537:
-2328                     ; 770 		GPIO_Init(RS485_DE_PORT, RS485_DE_PIN, GPIO_Mode_In_FL_No_IT);
-2330  0435 4b00          	push	#0
-2331  0437 4b10          	push	#16
-2332  0439 ae5000        	ldw	x,#20480
-2333  043c cd0000        	call	_GPIO_Init
-2335  043f 85            	popw	x
-2336                     ; 771 		GPIO_Init(DEBUG_PORT, DEBUG_PIN, GPIO_Mode_In_PU_No_IT);
-2338  0440 4b40          	push	#64
-2340  0442               L737:
-2341  0442 4b20          	push	#32
-2342  0444 ae5000        	ldw	x,#20480
-2343  0447 cd0000        	call	_GPIO_Init
-2344  044a 85            	popw	x
-2345                     ; 773 }
-2348  044b 81            	ret	
-2382                     ; 784 void ValveStatIoModeChange(u8 nMode)
-2382                     ; 785 {
-2383                     	switch	.text
-2384  044c               _ValveStatIoModeChange:
-2388                     ; 786 	if(PULLUPINPUT == nMode)
-2390  044c a102          	cp	a,#2
-2391  044e 260f          	jrne	L557
-2392                     ; 788 		GPIO_Init(MOTO_MS1_PORT, MOTO_MS1_PIN, GPIO_Mode_In_PU_No_IT); 
-2394  0450 4b40          	push	#64
-2395  0452 4b08          	push	#8
-2396  0454 ae500f        	ldw	x,#20495
-2397  0457 cd0000        	call	_GPIO_Init
-2399  045a 85            	popw	x
-2400                     ; 789 		GPIO_Init(MOTO_MS2_PORT, MOTO_MS2_PIN, GPIO_Mode_In_PU_No_IT);
-2402  045b 4b40          	push	#64
-2405  045d 200d          	jra	L757
-2406  045f               L557:
-2407                     ; 793 		GPIO_Init(MOTO_MS1_PORT, MOTO_MS1_PIN, GPIO_Mode_In_FL_No_IT); 
-2409  045f 4b00          	push	#0
-2410  0461 4b08          	push	#8
-2411  0463 ae500f        	ldw	x,#20495
-2412  0466 cd0000        	call	_GPIO_Init
-2414  0469 85            	popw	x
-2415                     ; 794 		GPIO_Init(MOTO_MS2_PORT, MOTO_MS2_PIN, GPIO_Mode_In_FL_No_IT);
-2417  046a 4b00          	push	#0
-2419  046c               L757:
-2420  046c 4b04          	push	#4
-2421  046e ae500f        	ldw	x,#20495
-2422  0471 cd0000        	call	_GPIO_Init
-2423  0474 85            	popw	x
-2424                     ; 796 }
-2427  0475 81            	ret	
-2456                     	switch	.const
-2457  003e               L623:
-2458  003e 000003e9      	dc.l	1001
-2459  0042               L243:
-2460  0042 000000c9      	dc.l	201
-2461                     ; 811 void fixTaskLed(void)
-2461                     ; 812 {	
-2462                     	switch	.text
-2463  0476               _fixTaskLed:
-2467                     ; 813 	if((1000 < GetSysTemTick()-m_dwSecTick)	&&(GetLedFlg()&&(GSM_SHAKEHAND > GetGprsConntStat())))
-2469  0476 cd0000        	call	_GetSysTemTick
-2471  0479 ae000a        	ldw	x,#_m_dwSecTick
-2472  047c cd0000        	call	c_lsub
-2474  047f ae003e        	ldw	x,#L623
-2475  0482 cd0000        	call	c_lcmp
-2477  0485 2518          	jrult	L177
-2479  0487 cd0000        	call	_GetLedFlg
-2481  048a 4d            	tnz	a
-2482  048b 2712          	jreq	L177
-2484  048d cd0000        	call	_GetGprsConntStat
-2486  0490 a102          	cp	a,#2
-2487  0492 240b          	jruge	L177
-2488                     ; 815 		Toggle_LED();
-2490  0494 ad3a          	call	LC004
-2491                     ; 816 		m_dwSecTick = GetSysTemTick();
-2493  0496 cd0000        	call	_GetSysTemTick
-2495  0499 ae000a        	ldw	x,#_m_dwSecTick
-2499  049c cc0000        	jp	c_rtol
-2500  049f               L177:
-2501                     ; 818 	else if((200 < GetSysTemTick()-m_dw500MsTick)&&(GetLedFlg()
-2501                     ; 819 		&&(GSM_SEND > GetGprsConntStat())&&(GSM_SHAKEHAND <= GetGprsConntStat())))
-2503  049f cd0000        	call	_GetSysTemTick
-2505  04a2 ae000e        	ldw	x,#_m_dw500MsTick
-2506  04a5 cd0000        	call	c_lsub
-2508  04a8 ae0042        	ldw	x,#L243
-2509  04ab cd0000        	call	c_lcmp
-2511  04ae 251f          	jrult	L377
-2513  04b0 cd0000        	call	_GetLedFlg
-2515  04b3 4d            	tnz	a
-2516  04b4 2719          	jreq	L377
-2518  04b6 cd0000        	call	_GetGprsConntStat
-2520  04b9 a104          	cp	a,#4
-2521  04bb 2412          	jruge	L377
-2523  04bd cd0000        	call	_GetGprsConntStat
-2525  04c0 a102          	cp	a,#2
-2526  04c2 250b          	jrult	L377
-2527                     ; 821 		m_dw500MsTick = GetSysTemTick();
-2529  04c4 cd0000        	call	_GetSysTemTick
-2531  04c7 ae000e        	ldw	x,#_m_dw500MsTick
-2532  04ca cd0000        	call	c_rtol
-2534                     ; 822 		Toggle_LED();
-2536  04cd ad01          	call	LC004
-2537  04cf               L377:
-2538                     ; 824 	return ;
-2541  04cf 81            	ret	
-2543  04d0               LC004:
-2544  04d0 4b04          	push	#4
-2545  04d2 ae5005        	ldw	x,#20485
-2546  04d5 cd0000        	call	_GPIO_ToggleBits
-2548  04d8 84            	pop	a
-2549  04d9 81            	ret	
-2612                     	xdef	_InitializEnd
-2613                     	xdef	_IoInit
-2614                     	xdef	_ADC_Config
-2615                     	xdef	_IWDG_Config
-2616                     	xdef	_m_dw500MsTick
-2617                     	xdef	_m_dwSecTick
-2618                     	xdef	_m_nWorkMode
-2619                     	xdef	_g_wIwdgTickExt
-2620                     	xref	_SaveReportFlag
-2621                     	xref	_LP_DelayMs
-2622                     	xref	_LP_TermReset
-2623                     	xref	_GetGprsConntStat
-2624                     	xref	_GetLedFlg
-2625                     	xref	_SetReportIndex
-2626                     	xref	_ReWriteRepFlg
-2627                     	xref	_UC_SleepFunc
-2628                     	xref	_stTimeNow
-2629                     	xref	_STM8_RTC_Get
-2630                     	xref	_STM8_RTC_Init
-2631                     	xref	_Usart1Initialize
-2632                     	xdef	_ValveStatIoModeChange
-2633                     	xdef	_SetTmDebugModeStat
-2634                     	xdef	_DecIoModeChange
-2635                     	xdef	_fixTaskLed
-2636                     	xdef	_FeedSoftWareIwdg
-2637                     	xdef	_CLK_Config
-2638                     	xdef	_GetTmDebugModeStat
-2639                     	xdef	_CheckDebugInsertStat
-2640                     	xdef	_TurnOffExit
-2641                     	xdef	_TurnOnExit
-2642                     	xdef	_InitializeBase
-2643                     	xdef	_g_wIwdgTick
-2644                     	xdef	_g_dwSysTick
-2645                     	xref	_GetSysTemTick
-2646                     	xdef	_ITC_SetSoftwarePriority
-2647                     	xref	_GPIO_ReadInputDataBit
-2648                     	xref	_GPIO_ToggleBits
-2649                     	xref	_GPIO_WriteBit
-2650                     	xref	_GPIO_Init
-2651                     	xref	_EXTI_ClearITPendingBit
-2652                     	xref	_EXTI_SelectPort
-2653                     	xref	_EXTI_SetPinSensitivity
-2654                     	xref	_CLK_GetFlagStatus
-2655                     	xref	_CLK_PeripheralClockConfig
-2656                     	xref	_CLK_SYSCLKDivConfig
-2657                     	xref	_CLK_LSICmd
-2658                     	xdef	_ADC_ChannelCmd
-2677                     	xref	c_rtol
-2678                     	xref	c_lcmp
-2679                     	xref	c_lsub
-2680                     	end
+1599                     ; 516 }
+1602  0281 81            	ret	
+1643                     ; 527 void InitializeBase(void)
+1643                     ; 528 {
+1644                     	switch	.text
+1645  0282               _InitializeBase:
+1649                     ; 530 	disableInterrupts();
+1652  0282 9b            	sim	
+1654                     ; 533 	CLK_Config();
+1657  0283 cd01a1        	call	_CLK_Config
+1659                     ; 536 	IWDG_Config();
+1661  0286 cd002e        	call	_IWDG_Config
+1663                     ; 539 	CLK_PeripheralClockConfig(CLK_Peripheral_USART1, ENABLE); //
+1665  0289 ae0001        	ldw	x,#1
+1666  028c a605          	ld	a,#5
+1667  028e ad7a          	call	LC001
+1668  0290 a602          	ld	a,#2
+1669  0292 ad76          	call	LC001
+1670  0294 a611          	ld	a,#17
+1671  0296 ad72          	call	LC001
+1672  0298 4f            	clr	a
+1673  0299 95            	ld	xh,a
+1674  029a cd0000        	call	_CLK_PeripheralClockConfig
+1676                     ; 548 	if (((FlagStatus)(((uint8_t)(RST->SR & RST_FLAG_IWDGF) == (uint8_t)0x00) ? RESET : SET))!= RESET)
+1678  029d 720250b103    	btjt	20657,#1,L441
+1679  02a2 4f            	clr	a
+1680  02a3 2002          	jra	L641
+1681  02a5               L441:
+1682  02a5 a601          	ld	a,#1
+1683  02a7               L641:
+1684  02a7 4d            	tnz	a
+1685                     ; 555 	IoInit();
+1687  02a8 cd01bb        	call	_IoInit
+1689                     ; 557 	ITC_SetSoftwarePriority(USART1_RX_IRQn, ITC_PriorityLevel_1);
+1691  02ab ae0001        	ldw	x,#1
+1692  02ae a61c          	ld	a,#28
+1693  02b0 95            	ld	xh,a
+1694  02b1 cd0047        	call	_ITC_SetSoftwarePriority
+1696                     ; 558 	ITC_SetSoftwarePriority(USART1_TX_IRQn, ITC_PriorityLevel_2);
+1698  02b4 5f            	clrw	x
+1699  02b5 a61b          	ld	a,#27
+1700  02b7 95            	ld	xh,a
+1701  02b8 cd0047        	call	_ITC_SetSoftwarePriority
+1703                     ; 559 	ITC_SetSoftwarePriority(TIM4_UPD_OVF_TRG_IRQn, ITC_PriorityLevel_3);
+1705  02bb ae0003        	ldw	x,#3
+1706  02be a619          	ld	a,#25
+1707  02c0 95            	ld	xh,a
+1708  02c1 cd0047        	call	_ITC_SetSoftwarePriority
+1710                     ; 560 	ITC_SetSoftwarePriority(EXTI4_IRQn, ITC_PriorityLevel_1);
+1712  02c4 ae0001        	ldw	x,#1
+1713  02c7 a60c          	ld	a,#12
+1714  02c9 95            	ld	xh,a
+1715  02ca cd0047        	call	_ITC_SetSoftwarePriority
+1717                     ; 561 	ITC_SetSoftwarePriority(TIM1_UPD_OVF_TRG_IRQn, ITC_PriorityLevel_2);
+1719  02cd 5f            	clrw	x
+1720  02ce a617          	ld	a,#23
+1721  02d0 95            	ld	xh,a
+1722  02d1 cd0047        	call	_ITC_SetSoftwarePriority
+1724                     ; 564 	EXTI_SelectPort(EXTI_Port_D);
+1726  02d4 a602          	ld	a,#2
+1727  02d6 cd0000        	call	_EXTI_SelectPort
+1729                     ; 565 	EXTI_SetPinSensitivity(UART2_RX_PIN, EXTI_Trigger_Falling);
+1731  02d9 ae0002        	ldw	x,#2
+1732  02dc a610          	ld	a,#16
+1733  02de 95            	ld	xh,a
+1734  02df cd0000        	call	_EXTI_SetPinSensitivity
+1736                     ; 566 	EXTI_ClearITPendingBit(EXTI_IT_Pin4);
+1738  02e2 ae0010        	ldw	x,#16
+1739  02e5 cd0000        	call	_EXTI_ClearITPendingBit
+1741                     ; 569 	TIM4_Config();
+1743  02e8 cd0188        	call	L515_TIM4_Config
+1745                     ; 572 	TIM1_Config();
+1747  02eb cd015f        	call	L305_TIM1_Config
+1749                     ; 575 	Usart1Initialize();
+1751  02ee cd0000        	call	_Usart1Initialize
+1753                     ; 578 	STM8_RTC_Init();
+1755  02f1 cd0000        	call	_STM8_RTC_Init
+1757                     ; 581 	ADC_Config();
+1759  02f4 cd0115        	call	_ADC_Config
+1761                     ; 584 	enableInterrupts();	
+1764  02f7 9a            	rim	
+1766                     ; 586 	STM8_RTC_Get(&stTimeNow);
+1769  02f8 ae0000        	ldw	x,#_stTimeNow
+1770  02fb cd0000        	call	_STM8_RTC_Get
+1772                     ; 587 	LP_DelayMs(20); // 相当于1s
+1774  02fe ae0014        	ldw	x,#20
+1775  0301 89            	pushw	x
+1776  0302 5f            	clrw	x
+1777  0303 89            	pushw	x
+1778  0304 cd0000        	call	_LP_DelayMs
+1780  0307 5b04          	addw	sp,#4
+1781                     ; 588 }
+1784  0309 81            	ret	
+1786  030a               LC001:
+1787  030a 95            	ld	xh,a
+1788  030b cd0000        	call	_CLK_PeripheralClockConfig
+1790                     ; 542 	CLK_PeripheralClockConfig(CLK_Peripheral_TIM2, ENABLE); //
+1792  030e ae0001        	ldw	x,#1
+1793  0311 81            	ret	
+1795                     	switch	.data
+1796  0012               L575_nHighCnt:
+1797  0012 00            	dc.b	0
+1798  0013               L775_nLowCnt:
+1799  0013 00            	dc.b	0
+1800  0014               L106_nStat:
+1801  0014 01            	dc.b	1
+1802  0015               L306_dwStartTime:
+1803  0015 00000000      	dc.l	0
+1871                     	switch	.const
+1872  003a               L612:
+1873  003a 00007530      	dc.l	30000
+1874                     ; 600 u8 CheckDebugInsertStat(void)
+1874                     ; 601 {
+1875                     	switch	.text
+1876  0312               _CheckDebugInsertStat:
+1878  0312 88            	push	a
+1879       00000001      OFST:	set	1
+1882                     ; 603 	u8 nNowStat = FALSE;
+1884  0313 0f01          	clr	(OFST+0,sp)
+1885                     ; 606 	nNowStat = GetDebugMode();
+1887  0315 cd03b2        	call	LC002
+1888  0318 6b01          	ld	(OFST+0,sp),a
+1889                     ; 607 	if((nNowStat == nStat)&&(30000 > GetSysTemTick() - dwStartTime))
+1891  031a c10014        	cp	a,L106_nStat
+1892  031d 2617          	jrne	L136
+1894  031f cd0000        	call	_GetSysTemTick
+1896  0322 ae0015        	ldw	x,#L306_dwStartTime
+1897  0325 cd0000        	call	c_lsub
+1899  0328 ae003a        	ldw	x,#L612
+1900  032b cd0000        	call	c_lcmp
+1902  032e 2406          	jruge	L136
+1903                     ; 609 		return nDebugFlg;
+1905  0330 c60008        	ld	a,L3_nDebugFlg
+1908  0333 5b01          	addw	sp,#1
+1909  0335 81            	ret	
+1910  0336               L136:
+1911                     ; 612 	if(FALSE == GetDebugMode())
+1913  0336 ad7a          	call	LC002
+1914  0338 4d            	tnz	a
+1915  0339 2635          	jrne	L336
+1916                     ; 614 		nLowCnt = 0;
+1918  033b c70013        	ld	L775_nLowCnt,a
+1919                     ; 615 		if(3 <= nHighCnt++)
+1921  033e c60012        	ld	a,L575_nHighCnt
+1922  0341 725c0012      	inc	L575_nHighCnt
+1923  0345 a103          	cp	a,#3
+1924  0347 2563          	jrult	L736
+1925                     ; 617 			nHighCnt  = 3;
+1927  0349 35030012      	mov	L575_nHighCnt,#3
+1928                     ; 618 			nDebugFlg = TRUE;			
+1930  034d 35010008      	mov	L3_nDebugFlg,#1
+1931                     ; 619 			dwStartTime = GetSysTemTick();
+1933  0351 ad6a          	call	LC003
+1935                     ; 623 			SetPortMeterPowerOn();
+1937  0353 4b01          	push	#1
+1938  0355 4b08          	push	#8
+1939  0357 ae5000        	ldw	x,#20480
+1940  035a cd0000        	call	_GPIO_WriteBit
+1942  035d 85            	popw	x
+1943                     ; 624 			SetPortGsmPowerOff();
+1945  035e 4b00          	push	#0
+1946  0360 4b10          	push	#16
+1947  0362 ae500a        	ldw	x,#20490
+1948  0365 cd0000        	call	_GPIO_WriteBit
+1950  0368 85            	popw	x
+1951                     ; 625 			nStat = nNowStat;
+1953  0369 7b01          	ld	a,(OFST+0,sp)
+1954  036b c70014        	ld	L106_nStat,a
+1955  036e 203c          	jra	L736
+1956  0370               L336:
+1957                     ; 630 		nHighCnt = 0;
+1959  0370 725f0012      	clr	L575_nHighCnt
+1960                     ; 631 		if(3 <= nLowCnt++)
+1962  0374 c60013        	ld	a,L775_nLowCnt
+1963  0377 725c0013      	inc	L775_nLowCnt
+1964  037b a103          	cp	a,#3
+1965  037d 252d          	jrult	L736
+1966                     ; 633 			nLowCnt = 3;
+1968  037f 35030013      	mov	L775_nLowCnt,#3
+1969                     ; 634 			nStat = nNowStat;
+1971  0383 7b01          	ld	a,(OFST+0,sp)
+1972  0385 c70014        	ld	L106_nStat,a
+1973                     ; 635 			dwStartTime = GetSysTemTick();
+1975  0388 ad33          	call	LC003
+1977                     ; 638 			if(nDebugFlg)
+1979  038a c60008        	ld	a,L3_nDebugFlg
+1980  038d 2719          	jreq	L346
+1981                     ; 641 				SetReportIndex(0);  // 注释掉用于测试失败补报3
+1983  038f 4f            	clr	a
+1984  0390 cd0000        	call	_SetReportIndex
+1986                     ; 643 				ReWriteRepFlg();
+1988  0393 cd0000        	call	_ReWriteRepFlg
+1990                     ; 645 				SaveReportFlag(FALSE);
+1992  0396 4f            	clr	a
+1993  0397 cd0000        	call	_SaveReportFlag
+1995                     ; 646 				UC_SleepFunc(100);				
+1997  039a ae0064        	ldw	x,#100
+1998  039d 89            	pushw	x
+1999  039e 5f            	clrw	x
+2000  039f 89            	pushw	x
+2001  03a0 cd0000        	call	_UC_SleepFunc
+2003  03a3 5b04          	addw	sp,#4
+2004                     ; 647 				LP_TermReset();
+2006  03a5 cd0000        	call	_LP_TermReset
+2008  03a8               L346:
+2009                     ; 649 			nDebugFlg = FALSE;
+2011  03a8 725f0008      	clr	L3_nDebugFlg
+2012  03ac               L736:
+2013                     ; 652 	return nDebugFlg;
+2015  03ac c60008        	ld	a,L3_nDebugFlg
+2018  03af 5b01          	addw	sp,#1
+2019  03b1 81            	ret	
+2021  03b2               LC002:
+2022  03b2 4b20          	push	#32
+2023  03b4 ae5000        	ldw	x,#20480
+2024  03b7 cd0000        	call	_GPIO_ReadInputDataBit
+2026  03ba 5b01          	addw	sp,#1
+2027  03bc 81            	ret	
+2028  03bd               LC003:
+2029  03bd cd0000        	call	_GetSysTemTick
+2031  03c0 ae0015        	ldw	x,#L306_dwStartTime
+2032  03c3 cc0000        	jp	c_rtol
+2055                     ; 665 u8 GetTmDebugModeStat(void)
+2055                     ; 666 {
+2056                     	switch	.text
+2057  03c6               _GetTmDebugModeStat:
+2061                     ; 667 	return nDebugFlg;
+2063  03c6 c60008        	ld	a,L3_nDebugFlg
+2066  03c9 81            	ret	
+2099                     ; 679 u8 SetTmDebugModeStat(u8 nMode)
+2099                     ; 680 {
+2100                     	switch	.text
+2101  03ca               _SetTmDebugModeStat:
+2105                     ; 681 	m_nWorkMode = nMode;
+2107  03ca c70009        	ld	_m_nWorkMode,a
+2108                     ; 682 }
+2111  03cd 81            	ret	
+2134                     ; 689 void InitializEnd(void)
+2134                     ; 690 {
+2135                     	switch	.text
+2136  03ce               _InitializEnd:
+2140                     ; 692 }
+2143  03ce 81            	ret	
+2168                     ; 699 void TurnOnExit(void)
+2168                     ; 700 {
+2169                     	switch	.text
+2170  03cf               _TurnOnExit:
+2174                     ; 701 	GPIO_Init(UART2_RX_PORT, UART2_RX_PIN, GPIO_Mode_In_PU_IT); // GPIO_Mode_In_FL_IT 开始首帧数据丢失问题
+2176  03cf 4b60          	push	#96
+2177  03d1 4b10          	push	#16
+2178  03d3 ae500f        	ldw	x,#20495
+2179  03d6 cd0000        	call	_GPIO_Init
+2181  03d9 85            	popw	x
+2182                     ; 702 	EXTI_ClearITPendingBit(EXTI_IT_Pin4);	
+2184  03da ae0010        	ldw	x,#16
+2186                     ; 703 }
+2189  03dd cc0000        	jp	_EXTI_ClearITPendingBit
+2213                     ; 710 void TurnOffExit(void)
+2213                     ; 711 {
+2214                     	switch	.text
+2215  03e0               _TurnOffExit:
+2219                     ; 712 	GPIO_Init(UART2_RX_PORT, UART2_RX_PIN, GPIO_Mode_In_PU_No_IT);// GPIO_Mode_In_FL_No_IT
+2221  03e0 4b40          	push	#64
+2222  03e2 4b10          	push	#16
+2223  03e4 ae500f        	ldw	x,#20495
+2224  03e7 cd0000        	call	_GPIO_Init
+2226  03ea 85            	popw	x
+2227                     ; 713 }
+2230  03eb 81            	ret	
+2263                     ; 761 void DecIoModeChange(u8 nMode)
+2263                     ; 762 {
+2264                     	switch	.text
+2265  03ec               _DecIoModeChange:
+2269                     ; 763 	if(PULLUPOUTPUT == nMode)
+2271  03ec 4a            	dec	a
+2272  03ed 260f          	jrne	L537
+2273                     ; 765 		GPIO_Init(RS485_DE_PORT, RS485_DE_PIN, GPIO_Mode_Out_PP_High_Slow);
+2275  03ef 4bd0          	push	#208
+2276  03f1 4b10          	push	#16
+2277  03f3 ae5000        	ldw	x,#20480
+2278  03f6 cd0000        	call	_GPIO_Init
+2280  03f9 85            	popw	x
+2281                     ; 766 		GPIO_Init(DEBUG_PORT, DEBUG_PIN, GPIO_Mode_In_FL_No_IT);
+2283  03fa 4b00          	push	#0
+2286  03fc 200d          	jra	L737
+2287  03fe               L537:
+2288                     ; 770 		GPIO_Init(RS485_DE_PORT, RS485_DE_PIN, GPIO_Mode_In_FL_No_IT);
+2290  03fe 4b00          	push	#0
+2291  0400 4b10          	push	#16
+2292  0402 ae5000        	ldw	x,#20480
+2293  0405 cd0000        	call	_GPIO_Init
+2295  0408 85            	popw	x
+2296                     ; 771 		GPIO_Init(DEBUG_PORT, DEBUG_PIN, GPIO_Mode_In_PU_No_IT);
+2298  0409 4b40          	push	#64
+2300  040b               L737:
+2301  040b 4b20          	push	#32
+2302  040d ae5000        	ldw	x,#20480
+2303  0410 cd0000        	call	_GPIO_Init
+2304  0413 85            	popw	x
+2305                     ; 773 }
+2308  0414 81            	ret	
+2337                     	switch	.const
+2338  003e               L203:
+2339  003e 000003e9      	dc.l	1001
+2340  0042               L613:
+2341  0042 000000c9      	dc.l	201
+2342                     ; 811 void fixTaskLed(void)
+2342                     ; 812 {	
+2343                     	switch	.text
+2344  0415               _fixTaskLed:
+2348                     ; 813 	if((1000 < GetSysTemTick()-m_dwSecTick)	&&(GetLedFlg()&&(GSM_SHAKEHAND > GetGprsConntStat())))
+2350  0415 cd0000        	call	_GetSysTemTick
+2352  0418 ae000a        	ldw	x,#_m_dwSecTick
+2353  041b cd0000        	call	c_lsub
+2355  041e ae003e        	ldw	x,#L203
+2356  0421 cd0000        	call	c_lcmp
+2358  0424 2518          	jrult	L157
+2360  0426 cd0000        	call	_GetLedFlg
+2362  0429 4d            	tnz	a
+2363  042a 2712          	jreq	L157
+2365  042c cd0000        	call	_GetGprsConntStat
+2367  042f a102          	cp	a,#2
+2368  0431 240b          	jruge	L157
+2369                     ; 815 		Toggle_LED();
+2371  0433 ad3a          	call	LC004
+2372                     ; 816 		m_dwSecTick = GetSysTemTick();
+2374  0435 cd0000        	call	_GetSysTemTick
+2376  0438 ae000a        	ldw	x,#_m_dwSecTick
+2380  043b cc0000        	jp	c_rtol
+2381  043e               L157:
+2382                     ; 818 	else if((200 < GetSysTemTick()-m_dw500MsTick)&&(GetLedFlg()
+2382                     ; 819 		&&(GSM_SEND > GetGprsConntStat())&&(GSM_SHAKEHAND <= GetGprsConntStat())))
+2384  043e cd0000        	call	_GetSysTemTick
+2386  0441 ae000e        	ldw	x,#_m_dw500MsTick
+2387  0444 cd0000        	call	c_lsub
+2389  0447 ae0042        	ldw	x,#L613
+2390  044a cd0000        	call	c_lcmp
+2392  044d 251f          	jrult	L357
+2394  044f cd0000        	call	_GetLedFlg
+2396  0452 4d            	tnz	a
+2397  0453 2719          	jreq	L357
+2399  0455 cd0000        	call	_GetGprsConntStat
+2401  0458 a104          	cp	a,#4
+2402  045a 2412          	jruge	L357
+2404  045c cd0000        	call	_GetGprsConntStat
+2406  045f a102          	cp	a,#2
+2407  0461 250b          	jrult	L357
+2408                     ; 821 		m_dw500MsTick = GetSysTemTick();
+2410  0463 cd0000        	call	_GetSysTemTick
+2412  0466 ae000e        	ldw	x,#_m_dw500MsTick
+2413  0469 cd0000        	call	c_rtol
+2415                     ; 822 		Toggle_LED();
+2417  046c ad01          	call	LC004
+2418  046e               L357:
+2419                     ; 824 	return ;
+2422  046e 81            	ret	
+2424  046f               LC004:
+2425  046f 4b04          	push	#4
+2426  0471 ae5005        	ldw	x,#20485
+2427  0474 cd0000        	call	_GPIO_ToggleBits
+2429  0477 84            	pop	a
+2430  0478 81            	ret	
+2493                     	xdef	_InitializEnd
+2494                     	xdef	_IoInit
+2495                     	xdef	_ADC_Config
+2496                     	xdef	_IWDG_Config
+2497                     	xdef	_m_dw500MsTick
+2498                     	xdef	_m_dwSecTick
+2499                     	xdef	_m_nWorkMode
+2500                     	xdef	_g_wIwdgTickExt
+2501                     	xref	_SaveReportFlag
+2502                     	xref	_LP_DelayMs
+2503                     	xref	_LP_TermReset
+2504                     	xref	_GetGprsConntStat
+2505                     	xref	_GetLedFlg
+2506                     	xref	_SetReportIndex
+2507                     	xref	_ReWriteRepFlg
+2508                     	xref	_UC_SleepFunc
+2509                     	xref	_stTimeNow
+2510                     	xref	_STM8_RTC_Get
+2511                     	xref	_STM8_RTC_Init
+2512                     	xref	_Usart1Initialize
+2513                     	xdef	_SetTmDebugModeStat
+2514                     	xdef	_DecIoModeChange
+2515                     	xdef	_fixTaskLed
+2516                     	xdef	_FeedSoftWareIwdg
+2517                     	xdef	_CLK_Config
+2518                     	xdef	_GetTmDebugModeStat
+2519                     	xdef	_CheckDebugInsertStat
+2520                     	xdef	_TurnOffExit
+2521                     	xdef	_TurnOnExit
+2522                     	xdef	_InitializeBase
+2523                     	xdef	_g_wIwdgTick
+2524                     	xdef	_g_dwSysTick
+2525                     	xref	_GetSysTemTick
+2526                     	xdef	_ITC_SetSoftwarePriority
+2527                     	xref	_GPIO_ReadInputDataBit
+2528                     	xref	_GPIO_ToggleBits
+2529                     	xref	_GPIO_WriteBit
+2530                     	xref	_GPIO_Init
+2531                     	xref	_EXTI_ClearITPendingBit
+2532                     	xref	_EXTI_SelectPort
+2533                     	xref	_EXTI_SetPinSensitivity
+2534                     	xref	_CLK_GetFlagStatus
+2535                     	xref	_CLK_PeripheralClockConfig
+2536                     	xref	_CLK_SYSCLKDivConfig
+2537                     	xref	_CLK_LSICmd
+2538                     	xdef	_ADC_ChannelCmd
+2557                     	xref	c_rtol
+2558                     	xref	c_lcmp
+2559                     	xref	c_lsub
+2560                     	end

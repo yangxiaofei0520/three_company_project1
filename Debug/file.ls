@@ -341,53 +341,53 @@
 1925                     .const:	section	.text
 1926  0000               L1121_nBuf:
 1927  0000 00            	dc.b	0
-1928  0001 000000000000  	ds.b	32
+1928  0001 000000000000  	ds.b	39
 1991                     ; 501 void SaveParameterForType(u8* pnDat, u8 nLen, u8 nTpye)
 1991                     ; 502 {
 1992                     	switch	.text
 1993  01be               _SaveParameterForType:
 1995  01be 89            	pushw	x
-1996  01bf 5221          	subw	sp,#33
-1997       00000021      OFST:	set	33
+1996  01bf 5228          	subw	sp,#40
+1997       00000028      OFST:	set	40
 2000                     ; 503   u8 nBuf[MAX_LEN+1] = {0};
 2002  01c1 96            	ldw	x,sp
 2003  01c2 5c            	incw	x
 2004  01c3 90ae0000      	ldw	y,#L1121_nBuf
-2005  01c7 a621          	ld	a,#33
+2005  01c7 a628          	ld	a,#40
 2006  01c9 cd0000        	call	c_xymvx
 2008                     ; 505   nBuf[nLen] = JX_AddSum8Bit(pnDat, nLen);
 2010  01cc 96            	ldw	x,sp
 2011  01cd 5c            	incw	x
 2012  01ce 9f            	ld	a,xl
 2013  01cf 5e            	swapw	x
-2014  01d0 1b26          	add	a,(OFST+5,sp)
+2014  01d0 1b2d          	add	a,(OFST+5,sp)
 2015  01d2 2401          	jrnc	L07
 2016  01d4 5c            	incw	x
 2017  01d5               L07:
 2018  01d5 02            	rlwa	x,a
 2019  01d6 89            	pushw	x
-2020  01d7 7b28          	ld	a,(OFST+7,sp)
+2020  01d7 7b2f          	ld	a,(OFST+7,sp)
 2021  01d9 5f            	clrw	x
 2022  01da 97            	ld	xl,a
 2023  01db 89            	pushw	x
-2024  01dc 1e26          	ldw	x,(OFST+5,sp)
+2024  01dc 1e2d          	ldw	x,(OFST+5,sp)
 2025  01de cd0000        	call	_JX_AddSum8Bit
 2027  01e1 85            	popw	x
 2028  01e2 85            	popw	x
 2029  01e3 f7            	ld	(x),a
 2030                     ; 506 	MemcpyFunc(nBuf, pnDat, nLen);
-2032  01e4 7b26          	ld	a,(OFST+5,sp)
+2032  01e4 7b2d          	ld	a,(OFST+5,sp)
 2033  01e6 88            	push	a
-2034  01e7 1e23          	ldw	x,(OFST+2,sp)
+2034  01e7 1e2a          	ldw	x,(OFST+2,sp)
 2035  01e9 89            	pushw	x
 2036  01ea 96            	ldw	x,sp
-2037  01eb 1c0004        	addw	x,#OFST-29
+2037  01eb 1c0004        	addw	x,#OFST-36
 2038  01ee cd0000        	call	_MemcpyFunc
 2040  01f1 5b03          	addw	sp,#3
 2041                     ; 507 	nLen = nLen + 1;
-2043  01f3 0c26          	inc	(OFST+5,sp)
+2043  01f3 0c2d          	inc	(OFST+5,sp)
 2044                     ; 509 	if(IPANDPORT_PARA == nTpye)
-2046  01f5 7b27          	ld	a,(OFST+6,sp)
+2046  01f5 7b2e          	ld	a,(OFST+6,sp)
 2047  01f7 a101          	cp	a,#1
 2048  01f9 2637          	jrne	L1421
 2049                     ; 511 		SaveGroup(nLen, ADDRESS_IPPARA, nBuf);
@@ -396,7 +396,7 @@
 2053  01fd 89            	pushw	x
 2054  01fe ae1027        	ldw	x,#4135
 2055  0201 89            	pushw	x
-2056  0202 7b2a          	ld	a,(OFST+9,sp)
+2056  0202 7b31          	ld	a,(OFST+9,sp)
 2057  0204 cd0077        	call	_SaveGroup
 2059  0207 5b04          	addw	sp,#4
 2060                     ; 512 		SaveGroup(nLen, ADDRESS_IPPARA_BK, nBuf);
@@ -405,14 +405,14 @@
 2064  020b 89            	pushw	x
 2065  020c ae10a7        	ldw	x,#4263
 2066  020f 89            	pushw	x
-2067  0210 7b2a          	ld	a,(OFST+9,sp)
+2067  0210 7b31          	ld	a,(OFST+9,sp)
 2068  0212 cd0077        	call	_SaveGroup
 2070  0215 5b04          	addw	sp,#4
 2071                     ; 514 		MemsetFunc(nBuf, 0, sizeof(nBuf));
-2073  0217 4b21          	push	#33
+2073  0217 4b28          	push	#40
 2074  0219 4b00          	push	#0
 2075  021b 96            	ldw	x,sp
-2076  021c 1c0003        	addw	x,#OFST-30
+2076  021c 1c0003        	addw	x,#OFST-37
 2077  021f cd0000        	call	_MemsetFunc
 2079  0222 85            	popw	x
 2080                     ; 515 		ReadGroup(nLen, ADDRESS_IPPARA, nBuf);
@@ -421,7 +421,7 @@
 2084  0225 89            	pushw	x
 2085  0226 ae1027        	ldw	x,#4135
 2086  0229 89            	pushw	x
-2087  022a 7b2a          	ld	a,(OFST+9,sp)
+2087  022a 7b31          	ld	a,(OFST+9,sp)
 2088  022c cd0000        	call	_ReadGroup
 2091  022f cc02d3        	jp	LC003
 2092  0232               L1421:
@@ -434,7 +434,7 @@
 2101  0238 89            	pushw	x
 2102  0239 ae104f        	ldw	x,#4175
 2103  023c 89            	pushw	x
-2104  023d 7b2a          	ld	a,(OFST+9,sp)
+2104  023d 7b31          	ld	a,(OFST+9,sp)
 2105  023f cd0077        	call	_SaveGroup
 2107  0242 5b04          	addw	sp,#4
 2108                     ; 520 		SaveGroup(nLen, ADDRESS_APN_BK, nBuf);
@@ -453,7 +453,7 @@
 2126  0253 89            	pushw	x
 2127  0254 ae1064        	ldw	x,#4196
 2128  0257 89            	pushw	x
-2129  0258 7b2a          	ld	a,(OFST+9,sp)
+2129  0258 7b31          	ld	a,(OFST+9,sp)
 2130  025a cd0077        	call	_SaveGroup
 2132  025d 5b04          	addw	sp,#4
 2133                     ; 525 		SaveGroup(nLen, ADDRESS_REPOERCYCLE_BK, nBuf);		
@@ -472,7 +472,7 @@
 2151  026d 89            	pushw	x
 2152  026e ae1006        	ldw	x,#4102
 2153  0271 89            	pushw	x
-2154  0272 7b2a          	ld	a,(OFST+9,sp)
+2154  0272 7b31          	ld	a,(OFST+9,sp)
 2155  0274 cd0077        	call	_SaveGroup
 2157  0277 5b04          	addw	sp,#4
 2158                     ; 530 		SaveGroup(nLen, ADDRESS_PARAMETER_BK, nBuf);		
@@ -491,7 +491,7 @@
 2176  0287 89            	pushw	x
 2177  0288 ae106f        	ldw	x,#4207
 2178  028b 89            	pushw	x
-2179  028c 7b2a          	ld	a,(OFST+9,sp)
+2179  028c 7b31          	ld	a,(OFST+9,sp)
 2180  028e cd0077        	call	_SaveGroup
 2182  0291 5b04          	addw	sp,#4
 2183                     ; 535 		SaveGroup(nLen, ADDRESS_REPORTTIME_BK, nBuf);		
@@ -510,7 +510,7 @@
 2201  02a1 89            	pushw	x
 2202  02a2 ae107a        	ldw	x,#4218
 2203  02a5 89            	pushw	x
-2204  02a6 7b2a          	ld	a,(OFST+9,sp)
+2204  02a6 7b31          	ld	a,(OFST+9,sp)
 2205  02a8 cd0077        	call	_SaveGroup
 2207  02ab 5b04          	addw	sp,#4
 2208                     ; 540 		SaveGroup(nLen, ADDRESS_OPTVALVE_BK, nBuf);		
@@ -529,7 +529,7 @@
 2226  02bb 89            	pushw	x
 2227  02bc ae1005        	ldw	x,#4101
 2228  02bf 89            	pushw	x
-2229  02c0 7b2a          	ld	a,(OFST+9,sp)
+2229  02c0 7b31          	ld	a,(OFST+9,sp)
 2230  02c2 cd0077        	call	_SaveGroup
 2232  02c5 5b04          	addw	sp,#4
 2233                     ; 545 		SaveGroup(nLen, ADDRESS_TMADDRESS_BK, nBuf);		
@@ -539,42 +539,42 @@
 2238  02ca ae1085        	ldw	x,#4229
 2239  02cd               LC004:
 2240  02cd 89            	pushw	x
-2241  02ce 7b2a          	ld	a,(OFST+9,sp)
+2241  02ce 7b31          	ld	a,(OFST+9,sp)
 2242  02d0 cd0077        	call	_SaveGroup
 2244  02d3               LC003:
 2245  02d3 5b04          	addw	sp,#4
 2246  02d5               L3421:
 2247                     ; 547 }
-2250  02d5 5b23          	addw	sp,#35
+2250  02d5 5b2a          	addw	sp,#42
 2251  02d7 81            	ret	
 2254                     	switch	.const
-2255  0021               L3721_nBuf:
-2256  0021 00            	dc.b	0
-2257  0022 000000000000  	ds.b	32
+2255  0028               L3721_nBuf:
+2256  0028 00            	dc.b	0
+2257  0029 000000000000  	ds.b	39
 2333                     ; 554 u8 ReadParameterForType(u8* pnDat, u8 nLen, u8 nTpye)
 2333                     ; 555 {
 2334                     	switch	.text
 2335  02d8               _ReadParameterForType:
 2337  02d8 89            	pushw	x
-2338  02d9 5226          	subw	sp,#38
-2339       00000026      OFST:	set	38
+2338  02d9 522d          	subw	sp,#45
+2339       0000002d      OFST:	set	45
 2342                     ; 556 	u16 Address = 0, AddressBk = 0;
 2344  02db 5f            	clrw	x
-2345  02dc 1f02          	ldw	(OFST-36,sp),x
-2348  02de 1f04          	ldw	(OFST-34,sp),x
+2345  02dc 1f02          	ldw	(OFST-43,sp),x
+2348  02de 1f04          	ldw	(OFST-41,sp),x
 2349                     ; 557 	u8 nBuf[MAX_LEN+1] = {0};
 2351  02e0 96            	ldw	x,sp
-2352  02e1 1c0006        	addw	x,#OFST-32
-2353  02e4 90ae0021      	ldw	y,#L3721_nBuf
-2354  02e8 a621          	ld	a,#33
+2352  02e1 1c0006        	addw	x,#OFST-39
+2353  02e4 90ae0028      	ldw	y,#L3721_nBuf
+2354  02e8 a628          	ld	a,#40
 2355  02ea cd0000        	call	c_xymvx
 2357                     ; 559 	if(IPANDPORT_PARA == nTpye)
-2359  02ed 7b2c          	ld	a,(OFST+6,sp)
+2359  02ed 7b33          	ld	a,(OFST+6,sp)
 2360  02ef a101          	cp	a,#1
 2361  02f1 260a          	jrne	L7231
 2362                     ; 561 		Address   = ADDRESS_IPPARA;
 2364  02f3 ae1027        	ldw	x,#4135
-2365  02f6 1f02          	ldw	(OFST-36,sp),x
+2365  02f6 1f02          	ldw	(OFST-43,sp),x
 2366                     ; 562 		AddressBk = ADDRESS_IPPARA_BK;
 2368  02f8 ae10a7        	ldw	x,#4263
 2370  02fb 2052          	jp	LC005
@@ -584,7 +584,7 @@
 2375  02ff 260a          	jrne	L3331
 2376                     ; 566 		Address   = ADDRESS_APN;
 2378  0301 ae104f        	ldw	x,#4175
-2379  0304 1f02          	ldw	(OFST-36,sp),x
+2379  0304 1f02          	ldw	(OFST-43,sp),x
 2380                     ; 567 		AddressBk = ADDRESS_APN_BK;
 2382  0306 ae10cf        	ldw	x,#4303
 2384  0309 2044          	jp	LC005
@@ -594,7 +594,7 @@
 2389  030d 260a          	jrne	L7331
 2390                     ; 571 		Address   = ADDRESS_REPOERCYCLE;
 2392  030f ae1064        	ldw	x,#4196
-2393  0312 1f02          	ldw	(OFST-36,sp),x
+2393  0312 1f02          	ldw	(OFST-43,sp),x
 2394                     ; 572 		AddressBk = ADDRESS_REPOERCYCLE_BK;
 2396  0314 ae10e4        	ldw	x,#4324
 2398  0317 2036          	jp	LC005
@@ -604,7 +604,7 @@
 2403  031b 260a          	jrne	L3431
 2404                     ; 576 		Address   = ADDRESS_PARAMETER;
 2406  031d ae1006        	ldw	x,#4102
-2407  0320 1f02          	ldw	(OFST-36,sp),x
+2407  0320 1f02          	ldw	(OFST-43,sp),x
 2408                     ; 577 		AddressBk = ADDRESS_PARAMETER_BK;
 2410  0322 ae1086        	ldw	x,#4230
 2412  0325 2028          	jp	LC005
@@ -614,7 +614,7 @@
 2417  0329 260a          	jrne	L7431
 2418                     ; 581 		Address   = ADDRESS_REPORTTIME;
 2420  032b ae106f        	ldw	x,#4207
-2421  032e 1f02          	ldw	(OFST-36,sp),x
+2421  032e 1f02          	ldw	(OFST-43,sp),x
 2422                     ; 582 		AddressBk = ADDRESS_REPORTTIME_BK;
 2424  0330 ae10ef        	ldw	x,#4335
 2426  0333 201a          	jp	LC005
@@ -624,7 +624,7 @@
 2431  0337 260a          	jrne	L3531
 2432                     ; 586 		Address   = ADDRESS_OPTVALVE;
 2434  0339 ae107a        	ldw	x,#4218
-2435  033c 1f02          	ldw	(OFST-36,sp),x
+2435  033c 1f02          	ldw	(OFST-43,sp),x
 2436                     ; 587 		AddressBk = ADDRESS_OPTVALVE_BK;
 2438  033e ae10fa        	ldw	x,#4346
 2440  0341 200c          	jp	LC005
@@ -634,46 +634,46 @@
 2445  0345 260a          	jrne	L1331
 2446                     ; 591 		Address   = ADDRESS_TMADDRESS;
 2448  0347 ae1005        	ldw	x,#4101
-2449  034a 1f02          	ldw	(OFST-36,sp),x
+2449  034a 1f02          	ldw	(OFST-43,sp),x
 2450                     ; 592 		AddressBk = ADDRESS_TMADDRESS_BK;	
 2452  034c ae1085        	ldw	x,#4229
 2453  034f               LC005:
-2454  034f 1f04          	ldw	(OFST-34,sp),x
+2454  034f 1f04          	ldw	(OFST-41,sp),x
 2455  0351               L1331:
 2456                     ; 595 	ReadGroup(nLen+1, Address, nBuf);	
 2458  0351 96            	ldw	x,sp
-2459  0352 1c0006        	addw	x,#OFST-32
+2459  0352 1c0006        	addw	x,#OFST-39
 2460  0355 89            	pushw	x
-2461  0356 1e04          	ldw	x,(OFST-34,sp)
+2461  0356 1e04          	ldw	x,(OFST-41,sp)
 2462  0358 89            	pushw	x
-2463  0359 7b2f          	ld	a,(OFST+9,sp)
+2463  0359 7b36          	ld	a,(OFST+9,sp)
 2464  035b 4c            	inc	a
 2465  035c cd0000        	call	_ReadGroup
 2467  035f 5b04          	addw	sp,#4
 2468                     ; 596 	if(nBuf[nLen] == JX_AddSum8Bit(nBuf, nLen))
-2470  0361 7b2b          	ld	a,(OFST+5,sp)
+2470  0361 7b32          	ld	a,(OFST+5,sp)
 2471  0363 5f            	clrw	x
 2472  0364 97            	ld	xl,a
 2473  0365 89            	pushw	x
 2474  0366 96            	ldw	x,sp
-2475  0367 1c0008        	addw	x,#OFST-30
+2475  0367 1c0008        	addw	x,#OFST-37
 2476  036a cd0000        	call	_JX_AddSum8Bit
 2478  036d 85            	popw	x
-2479  036e 6b01          	ld	(OFST-37,sp),a
+2479  036e 6b01          	ld	(OFST-44,sp),a
 2480  0370 96            	ldw	x,sp
-2481  0371 1c0006        	addw	x,#OFST-32
+2481  0371 1c0006        	addw	x,#OFST-39
 2482  0374 9f            	ld	a,xl
 2483  0375 5e            	swapw	x
-2484  0376 1b2b          	add	a,(OFST+5,sp)
+2484  0376 1b32          	add	a,(OFST+5,sp)
 2485  0378 2401          	jrnc	L441
 2486  037a 5c            	incw	x
 2487  037b               L441:
 2488  037b 02            	rlwa	x,a
 2489  037c f6            	ld	a,(x)
-2490  037d 1101          	cp	a,(OFST-37,sp)
+2490  037d 1101          	cp	a,(OFST-44,sp)
 2491  037f 2618          	jrne	L1631
 2492                     ; 598 		if(!JX_IsAllFillDat(nBuf, 0, nLen))
-2494  0381 7b2b          	ld	a,(OFST+5,sp)
+2494  0381 7b32          	ld	a,(OFST+5,sp)
 2495  0383 b703          	ld	c_lreg+3,a
 2496  0385 3f02          	clr	c_lreg+2
 2497  0387 3f01          	clr	c_lreg+1
@@ -684,45 +684,45 @@
 2502  0390 89            	pushw	x
 2503  0391 4b00          	push	#0
 2504  0393 96            	ldw	x,sp
-2505  0394 1c000b        	addw	x,#OFST-27
+2505  0394 1c000b        	addw	x,#OFST-34
 2507                     ; 600 			MemcpyFunc(pnDat, nBuf, nLen);
 2509                     ; 601 			return TRUE;
 2511  0397 2044          	jp	LC006
 2512  0399               L1631:
 2513                     ; 606 		ReadGroup(nLen+1, AddressBk, nBuf);	
 2515  0399 96            	ldw	x,sp
-2516  039a 1c0006        	addw	x,#OFST-32
+2516  039a 1c0006        	addw	x,#OFST-39
 2517  039d 89            	pushw	x
-2518  039e 1e06          	ldw	x,(OFST-32,sp)
+2518  039e 1e06          	ldw	x,(OFST-39,sp)
 2519  03a0 89            	pushw	x
-2520  03a1 7b2f          	ld	a,(OFST+9,sp)
+2520  03a1 7b36          	ld	a,(OFST+9,sp)
 2521  03a3 4c            	inc	a
 2522  03a4 cd0000        	call	_ReadGroup
 2524  03a7 5b04          	addw	sp,#4
 2525                     ; 607 		if(nBuf[nLen] == JX_AddSum8Bit(nBuf, nLen))
-2527  03a9 7b2b          	ld	a,(OFST+5,sp)
+2527  03a9 7b32          	ld	a,(OFST+5,sp)
 2528  03ab 5f            	clrw	x
 2529  03ac 97            	ld	xl,a
 2530  03ad 89            	pushw	x
 2531  03ae 96            	ldw	x,sp
-2532  03af 1c0008        	addw	x,#OFST-30
+2532  03af 1c0008        	addw	x,#OFST-37
 2533  03b2 cd0000        	call	_JX_AddSum8Bit
 2535  03b5 85            	popw	x
-2536  03b6 6b01          	ld	(OFST-37,sp),a
+2536  03b6 6b01          	ld	(OFST-44,sp),a
 2537  03b8 96            	ldw	x,sp
-2538  03b9 1c0006        	addw	x,#OFST-32
+2538  03b9 1c0006        	addw	x,#OFST-39
 2539  03bc 9f            	ld	a,xl
 2540  03bd 5e            	swapw	x
-2541  03be 1b2b          	add	a,(OFST+5,sp)
+2541  03be 1b32          	add	a,(OFST+5,sp)
 2542  03c0 2401          	jrnc	L651
 2543  03c2 5c            	incw	x
 2544  03c3               L651:
 2545  03c3 02            	rlwa	x,a
 2546  03c4 f6            	ld	a,(x)
-2547  03c5 1101          	cp	a,(OFST-37,sp)
+2547  03c5 1101          	cp	a,(OFST-44,sp)
 2548  03c7 2630          	jrne	L5631
 2549                     ; 609 			if(!JX_IsAllFillDat(pnDat, 0, nLen))
-2551  03c9 7b2b          	ld	a,(OFST+5,sp)
+2551  03c9 7b32          	ld	a,(OFST+5,sp)
 2552  03cb b703          	ld	c_lreg+3,a
 2553  03cd 3f02          	clr	c_lreg+2
 2554  03cf 3f01          	clr	c_lreg+1
@@ -732,7 +732,7 @@
 2558  03d6 be00          	ldw	x,c_lreg
 2559  03d8 89            	pushw	x
 2560  03d9 4b00          	push	#0
-2561  03db 1e2c          	ldw	x,(OFST+6,sp)
+2561  03db 1e33          	ldw	x,(OFST+6,sp)
 2563                     ; 611 				MemcpyFunc(pnDat, nBuf, nLen);
 2566                     ; 612 				return TRUE;
 2568  03dd               LC006:
@@ -740,34 +740,34 @@
 2570  03e0 5b05          	addw	sp,#5
 2571  03e2 4d            	tnz	a
 2572  03e3 2614          	jrne	L5631
-2574  03e5 7b2b          	ld	a,(OFST+5,sp)
+2574  03e5 7b32          	ld	a,(OFST+5,sp)
 2575  03e7 88            	push	a
 2576  03e8 96            	ldw	x,sp
-2577  03e9 1c0007        	addw	x,#OFST-31
+2577  03e9 1c0007        	addw	x,#OFST-38
 2578  03ec 89            	pushw	x
-2579  03ed 1e2a          	ldw	x,(OFST+4,sp)
+2579  03ed 1e31          	ldw	x,(OFST+4,sp)
 2580  03ef cd0000        	call	_MemcpyFunc
 2581  03f2 5b03          	addw	sp,#3
 2583  03f4 a601          	ld	a,#1
 2585  03f6               L461:
-2587  03f6 5b28          	addw	sp,#40
+2587  03f6 5b2f          	addw	sp,#47
 2588  03f8 81            	ret	
 2589  03f9               L5631:
 2590                     ; 617 	return FALSE;
 2592  03f9 4f            	clr	a
 2594  03fa 20fa          	jra	L461
 2597                     	switch	.const
-2598  0042               L3731_nBuf:
-2599  0042 00            	dc.b	0
-2600  0043 000000000000  	ds.b	12
-2601  004f               L5731_nTmpBuf:
-2602  004f ff            	dc.b	255
-2603  0050 ff            	dc.b	255
-2604  0051 ff            	dc.b	255
-2605  0052 ff            	dc.b	255
-2606  0053 ff            	dc.b	255
-2607  0054 ff            	dc.b	255
-2608  0055 000000000000  	ds.b	7
+2598  0050               L3731_nBuf:
+2599  0050 00            	dc.b	0
+2600  0051 000000000000  	ds.b	12
+2601  005d               L5731_nTmpBuf:
+2602  005d ff            	dc.b	255
+2603  005e ff            	dc.b	255
+2604  005f ff            	dc.b	255
+2605  0060 ff            	dc.b	255
+2606  0061 ff            	dc.b	255
+2607  0062 ff            	dc.b	255
+2608  0063 000000000000  	ds.b	7
 2756                     ; 632 void AddRecordFun(u8 *Record, u8 nLen, u8 *pnRecIndex, u8 nMaxNum, 
 2756                     ; 633 	u32 dwIndexAdd, u32 dwRecordAdd, u8 nRecordLen)
 2756                     ; 634 {
@@ -780,13 +780,13 @@
 2775                     ; 637 	u8 nBuf[RECORD_LEN+1]    = {0};
 2777  03ff 96            	ldw	x,sp
 2778  0400 5c            	incw	x
-2779  0401 90ae0042      	ldw	y,#L3731_nBuf
+2779  0401 90ae0050      	ldw	y,#L3731_nBuf
 2780  0405 a60d          	ld	a,#13
 2781  0407 cd0000        	call	c_xymvx
 2783                     ; 638 	u8 nTmpBuf[RECORD_LEN+1] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 2785  040a 96            	ldw	x,sp
 2786  040b 1c000e        	addw	x,#OFST-24
-2787  040e 90ae004f      	ldw	y,#L5731_nTmpBuf
+2787  040e 90ae005d      	ldw	y,#L5731_nTmpBuf
 2788  0412 a60d          	ld	a,#13
 2789  0414 cd0000        	call	c_xymvx
 2791                     ; 640 	nBuf[nLen] = JX_AddSum8Bit(Record, nLen);
@@ -982,9 +982,9 @@
 3032                     ; 688 }
 3035  0519 81            	ret	
 3038                     	switch	.const
-3039  005c               L3151_nBuf:
-3040  005c 00            	dc.b	0
-3041  005d 000000000000  	ds.b	12
+3039  006a               L3151_nBuf:
+3040  006a 00            	dc.b	0
+3041  006b 000000000000  	ds.b	12
 3144                     ; 697 u8 ReadRecordFun(u8 nIndex, u8 *Record, u8 nOutLen, u8 nRecIndex, u8 nMaxNum, u32 dwRecordAdd)
 3144                     ; 698 {
 3145                     	switch	.text
@@ -997,7 +997,7 @@
 3159                     ; 701 	u8 nBuf[RECORD_LEN+1] = {0};
 3161  051d 96            	ldw	x,sp
 3162  051e 1c0006        	addw	x,#OFST-14
-3163  0521 90ae005c      	ldw	y,#L3151_nBuf
+3163  0521 90ae006a      	ldw	y,#L3151_nBuf
 3164  0525 a60d          	ld	a,#13
 3165  0527 cd0000        	call	c_xymvx
 3167                     ; 703 	if(NULL == Record || nOutLen > sizeof(TypeRecord) || (nMaxNum <= nIndex))
@@ -1116,9 +1116,9 @@
 3305  05d4 4f            	clr	a
 3307  05d5 20fa          	jra	L642
 3310                     	switch	.const
-3311  0069               L5751_nBuf:
-3312  0069 00            	dc.b	0
-3313  006a 000000000000  	ds.b	15
+3311  0077               L5751_nBuf:
+3312  0077 00            	dc.b	0
+3313  0078 000000000000  	ds.b	15
 3398                     ; 741 u8 EditRecord(u8 nIndex, u8 *Record, u8 nInLen)
 3398                     ; 742 {
 3399                     	switch	.text
@@ -1131,7 +1131,7 @@
 3413                     ; 745 	u8 nBuf[16] = {0};
 3415  05da 96            	ldw	x,sp
 3416  05db 1c0008        	addw	x,#OFST-15
-3417  05de 90ae0069      	ldw	y,#L5751_nBuf
+3417  05de 90ae0077      	ldw	y,#L5751_nBuf
 3418  05e2 a610          	ld	a,#16
 3419  05e4 cd0000        	call	c_xymvx
 3421                     ; 747 	if(NULL == Record || nInLen < sizeof(TypeRecord) || (NUMBER_RECORD < nIndex))

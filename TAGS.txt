@@ -4,7 +4,7 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
-ACR_Modbus_FindFrame	source\protocol.c	809;"	function	signature:(uint8_t* pnRecvBuf, uint16_t wRecvLen, uint16_t *pwFrameLen,uint16_t *pwDatLen, uint8_t *pnDatBuf)
+ACR_Modbus_FindFrame	source\protocol.c	810;"	function	signature:(uint8_t* pnRecvBuf, uint16_t wRecvLen, uint16_t *pwFrameLen,uint16_t *pwDatLen, uint8_t *pnDatBuf)
 ACtrlB	source\xinjiangprotocol.h	98;"	member	struct:__anon128::__anon129
 ADC1	source\libraries\inc\stm8l15x.h	2893;"	macro
 ADC1_BASE	source\libraries\inc\stm8l15x.h	2833;"	macro
@@ -200,47 +200,48 @@ ADC_TempSensorCmd	source\libraries\inc\stm8l15x_adc.h	349;"	prototype	signature:
 ADC_TypeDef	source\libraries\inc\stm8l15x.h	2329;"	typedef	typeref:struct:ADC_struct
 ADC_VrefintCmd	source\libraries\inc\stm8l15x_adc.h	350;"	prototype	signature:(FunctionalState NewState)
 ADC_struct	source\libraries\inc\stm8l15x.h	2314;"	struct
-ADDRESS_APN	source\fileglobal.h	70;"	macro
-ADDRESS_APN_BK	source\fileglobal.h	78;"	macro
+ADDRESS_APN	source\fileglobal.h	75;"	macro
+ADDRESS_APN_BK	source\fileglobal.h	83;"	macro
 ADDRESS_APN_LEN	source\fileglobal.h	33;"	macro
 ADDRESS_APN_LEN	source\fileglobal.h	47;"	macro
-ADDRESS_GUARD_EN	source\fileglobal.h	64;"	macro
-ADDRESS_INDEX	source\fileglobal.h	100;"	macro
-ADDRESS_INDEX	source\fileglobal.h	114;"	macro
-ADDRESS_INDEX	source\fileglobal.h	125;"	macro
-ADDRESS_INDEX_ALM	source\fileglobal.h	83;"	macro
-ADDRESS_INDEX_DAY	source\fileglobal.h	106;"	macro
-ADDRESS_INDEX_DAY	source\fileglobal.h	131;"	macro
-ADDRESS_INDEX_MON	source\fileglobal.h	120;"	macro
-ADDRESS_INDEX_MON	source\fileglobal.h	94;"	macro
-ADDRESS_IPPARA	source\fileglobal.h	69;"	macro
-ADDRESS_IPPARA_BK	source\fileglobal.h	77;"	macro
+ADDRESS_APN_LEN	source\fileglobal.h	58;"	macro
+ADDRESS_GUARD_EN	source\fileglobal.h	69;"	macro
+ADDRESS_INDEX	source\fileglobal.h	105;"	macro
+ADDRESS_INDEX	source\fileglobal.h	119;"	macro
+ADDRESS_INDEX	source\fileglobal.h	130;"	macro
+ADDRESS_INDEX_ALM	source\fileglobal.h	88;"	macro
+ADDRESS_INDEX_DAY	source\fileglobal.h	111;"	macro
+ADDRESS_INDEX_DAY	source\fileglobal.h	136;"	macro
+ADDRESS_INDEX_MON	source\fileglobal.h	125;"	macro
+ADDRESS_INDEX_MON	source\fileglobal.h	99;"	macro
+ADDRESS_IPPARA	source\fileglobal.h	74;"	macro
+ADDRESS_IPPARA_BK	source\fileglobal.h	82;"	macro
 ADDRESS_IPPARA_LEN	source\fileglobal.h	32;"	macro
 ADDRESS_IPPARA_LEN	source\fileglobal.h	46;"	macro
 ADDRESS_IPPARA_LEN	source\fileglobal.h	53;"	macro
-ADDRESS_OPTVALVE	source\fileglobal.h	73;"	macro
-ADDRESS_OPTVALVE_BK	source\fileglobal.h	81;"	macro
-ADDRESS_PARAMETER	source\fileglobal.h	68;"	macro
-ADDRESS_PARAMETER_BK	source\fileglobal.h	76;"	macro
+ADDRESS_OPTVALVE	source\fileglobal.h	78;"	macro
+ADDRESS_OPTVALVE_BK	source\fileglobal.h	86;"	macro
+ADDRESS_PARAMETER	source\fileglobal.h	73;"	macro
+ADDRESS_PARAMETER_BK	source\fileglobal.h	81;"	macro
 ADDRESS_PARAMETER_LEN	source\fileglobal.h	31;"	macro
 ADDRESS_PARAMETER_LEN	source\fileglobal.h	41;"	macro
 ADDRESS_PARAMETER_LEN	source\fileglobal.h	43;"	macro
 ADDRESS_PARAMETER_LEN	source\fileglobal.h	54;"	macro
-ADDRESS_RECORD	source\fileglobal.h	101;"	macro
-ADDRESS_RECORD	source\fileglobal.h	115;"	macro
-ADDRESS_RECORD	source\fileglobal.h	126;"	macro
-ADDRESS_RECORD_ALM	source\fileglobal.h	84;"	macro
-ADDRESS_RECORD_DAY	source\fileglobal.h	107;"	macro
-ADDRESS_RECORD_DAY	source\fileglobal.h	132;"	macro
-ADDRESS_RECORD_MON	source\fileglobal.h	121;"	macro
-ADDRESS_RECORD_MON	source\fileglobal.h	95;"	macro
-ADDRESS_REPOERCYCLE	source\fileglobal.h	71;"	macro
-ADDRESS_REPOERCYCLE_BK	source\fileglobal.h	79;"	macro
-ADDRESS_REPORTFLG	source\fileglobal.h	65;"	macro
-ADDRESS_REPORTTIME	source\fileglobal.h	72;"	macro
-ADDRESS_REPORTTIME_BK	source\fileglobal.h	80;"	macro
-ADDRESS_TMADDRESS	source\fileglobal.h	67;"	macro
-ADDRESS_TMADDRESS_BK	source\fileglobal.h	75;"	macro
+ADDRESS_RECORD	source\fileglobal.h	106;"	macro
+ADDRESS_RECORD	source\fileglobal.h	120;"	macro
+ADDRESS_RECORD	source\fileglobal.h	131;"	macro
+ADDRESS_RECORD_ALM	source\fileglobal.h	89;"	macro
+ADDRESS_RECORD_DAY	source\fileglobal.h	112;"	macro
+ADDRESS_RECORD_DAY	source\fileglobal.h	137;"	macro
+ADDRESS_RECORD_MON	source\fileglobal.h	100;"	macro
+ADDRESS_RECORD_MON	source\fileglobal.h	126;"	macro
+ADDRESS_REPOERCYCLE	source\fileglobal.h	76;"	macro
+ADDRESS_REPOERCYCLE_BK	source\fileglobal.h	84;"	macro
+ADDRESS_REPORTFLG	source\fileglobal.h	70;"	macro
+ADDRESS_REPORTTIME	source\fileglobal.h	77;"	macro
+ADDRESS_REPORTTIME_BK	source\fileglobal.h	85;"	macro
+ADDRESS_TMADDRESS	source\fileglobal.h	72;"	macro
+ADDRESS_TMADDRESS_BK	source\fileglobal.h	80;"	macro
 AES	source\libraries\inc\stm8l15x.h	2892;"	macro
 AES_BASE	source\libraries\inc\stm8l15x.h	2835;"	macro
 AES_CR_CCFC	source\libraries\inc\stm8l15x.h	2777;"	macro
@@ -392,34 +393,34 @@ AT_CMD_XBANDSEL	source\gsm.h	503;"	macro
 AT_CMD_XGAUTH	source\gsm.h	528;"	macro
 AT_CMD_XIIC	source\gsm.h	538;"	macro
 AT_CMD_XISP	source\gsm.h	539;"	macro
-AT_CmdFailProc	source\gsm.c	1469;"	function	signature:(u8 nCmd, u8 *pnParameter, uint8_t *pnMatch1, uint8_t *pnMatch2, uint8_t *pnMatch3, uint8_t *pnMatch4, uint8_t **pnOutMatchPtr, uint32_t dwWaitmS)
+AT_CmdFailProc	source\gsm.c	1472;"	function	signature:(u8 nCmd, u8 *pnParameter, uint8_t *pnMatch1, uint8_t *pnMatch2, uint8_t *pnMatch3, uint8_t *pnMatch4, uint8_t **pnOutMatchPtr, uint32_t dwWaitmS)
 AT_HEAD_0	source\gsm.h	240;"	macro
 AT_HEAD_1	source\gsm.h	241;"	macro
 AT_SHUT_DOWN	source\gsm.h	558;"	macro
 AT_TAIL_0	source\gsm.h	242;"	macro
 AT_TAIL_1	source\gsm.h	243;"	macro
 AddAlmRecord	source\file.c	790;"	function	signature:(u8 *Record, u8 nLen)
-AddAlmRecord	source\fileglobal.h	155;"	prototype	signature:(u8 *Record, u8 nLen)
+AddAlmRecord	source\fileglobal.h	160;"	prototype	signature:(u8 *Record, u8 nLen)
 AddDayFreezeRecord	source\file.c	844;"	function	signature:(u8 *Record, u8 nLen)
-AddDayFreezeRecord	source\fileglobal.h	158;"	prototype	signature:(u8 *Record, u8 nLen)
+AddDayFreezeRecord	source\fileglobal.h	163;"	prototype	signature:(u8 *Record, u8 nLen)
 AddMonFreezeRecord	source\file.c	869;"	function	signature:(u8 *Record, u8 nLen)
-AddMonFreezeRecord	source\fileglobal.h	160;"	prototype	signature:(u8 *Record, u8 nLen)
+AddMonFreezeRecord	source\fileglobal.h	165;"	prototype	signature:(u8 *Record, u8 nLen)
 AddRecord	source\file.c	190;"	function	signature:(u8 *Record)
 AddRecord	source\file.c	817;"	function	signature:(u8 *Record, u8 nLen)
-AddRecord	source\fileglobal.h	143;"	prototype	signature:(u8 *Record, u8 nLen)
+AddRecord	source\fileglobal.h	148;"	prototype	signature:(u8 *Record, u8 nLen)
 AddRecordFun	source\file.c	632;"	function	signature:(u8 *Record, u8 nLen, u8 *pnRecIndex, u8 nMaxNum, u32 dwIndexAdd, u32 dwRecordAdd, u8 nRecordLen)
 Addr	source\hedaprotocol.h	10;"	member	struct:__anon120
 Address	source\global.h	291;"	member	struct:__anon174
 Address	source\global.h	340;"	member	struct:__anon179
-Address	source\global.h	416;"	member	struct:__anon186::__anon187::__anon188
-Address	source\global.h	424;"	member	struct:__anon186::__anon187::__anon189
+Address	source\global.h	421;"	member	struct:__anon186::__anon187::__anon188
+Address	source\global.h	429;"	member	struct:__anon186::__anon187::__anon189
 Address	source\gsm.h	199;"	member	struct:__anon145::__anon146
 Address	source\xinjiangprotocol.h	100;"	member	struct:__anon128::__anon129
-AddressComparePro	source\gsm.c	3445;"	function	signature:(u8 *pnAddr)
+AddressComparePro	source\gsm.c	3472;"	function	signature:(u8 *pnAddr)
 AffBit	source\libraries\inc\stm8l15x.h	2986;"	macro
 Afn	source\gsm.h	201;"	member	struct:__anon145::__anon146
-AlmMakeFrame	source\gsm.c	440;"	function	signature:(u8* pnOutBuf)
-AutoReportMakeFrame	source\gsm.c	2271;"	function	signature:(u8* pnOutBuf)
+AlmMakeFrame	source\gsm.c	439;"	function	signature:(u8* pnOutBuf)
+AutoReportMakeFrame	source\gsm.c	2298;"	function	signature:(u8* pnOutBuf)
 B0	source\global.h	137;"	member	struct:__anon160::__anon162
 B0	source\global.h	91;"	member	struct:__anon155::__anon156
 B1	source\global.h	138;"	member	struct:__anon160::__anon162
@@ -466,7 +467,7 @@ BEEP_CSR2_BEEPSEL	source\libraries\inc\stm8l15x.h	630;"	macro
 BEEP_CSR2_RESET_VALUE	source\libraries\inc\stm8l15x.h	618;"	macro
 BEEP_TypeDef	source\libraries\inc\stm8l15x.h	612;"	typedef	typeref:struct:BEEP_struct
 BEEP_struct	source\libraries\inc\stm8l15x.h	605;"	struct
-BIT_MASK	source\pwrctr.c	27;"	macro	file:
+BIT_MASK	source\pwrctr.c	28;"	macro	file:
 BKR	source\libraries\inc\stm8l15x.h	1755;"	member	struct:TIM1_struct
 BKR	source\libraries\inc\stm8l15x.h	1982;"	member	struct:TIM_struct
 BLOCK_OPERATION	source\file.c	18;"	macro	file:
@@ -480,7 +481,7 @@ BYTE_0	source\libraries\inc\stm8l15x.h	2993;"	macro
 BYTE_1	source\libraries\inc\stm8l15x.h	2994;"	macro
 BYTE_2	source\libraries\inc\stm8l15x.h	2995;"	macro
 BYTE_3	source\libraries\inc\stm8l15x.h	2996;"	macro
-BatteryVolRepPro	source\gsm.c	412;"	function	signature:(void)
+BatteryVolRepPro	source\gsm.c	411;"	function	signature:(void)
 Bcd2ToByte	source\stm8_rtc.c	95;"	function	file:	signature:(uint8_t Value)
 BitAction	source\libraries\inc\stm8l15x.h	246;"	typedef	typeref:enum:__anon117
 BitClr	source\libraries\inc\stm8l15x.h	3014;"	macro
@@ -494,7 +495,7 @@ Broadcast	source\gsm.h	200;"	member	struct:__anon145::__anon146
 Buf	source\gsm.h	204;"	member	struct:__anon145::__anon146
 Buf	source\hedaprotocol.h	24;"	member	struct:__anon121::__anon122
 Buf	source\xinjiangprotocol.h	102;"	member	struct:__anon128::__anon129
-Buffer	source\global.h	413;"	member	union:__anon186::__anon187
+Buffer	source\global.h	418;"	member	union:__anon186::__anon187
 Buffer	source\gsm.h	206;"	member	union:__anon145
 Buffer	source\hedaprotocol.h	26;"	member	union:__anon121
 Buffer	source\xinjiangprotocol.h	104;"	member	union:__anon128
@@ -609,21 +610,21 @@ CJ188_WRITE_VALVE_ID	source\cj188.h	66;"	macro
 CJ188_WRITE_VALVE_ID1	source\cj188.h	67;"	macro
 CJT188_ADDR_LEN	source\protocol.h	48;"	macro
 CJT188_ADDR_LEN	source\protocol.h	49;"	macro
-CJ_T188ProtocolGM	source\protocol.c	625;"	function	signature:(void)
+CJ_T188ProtocolGM	source\protocol.c	626;"	function	signature:(void)
 CJ_T188ProtocolGM	source\protocolglobal.h	68;"	prototype	signature:(void)
-CJ_T188ProtocolOptValve	source\protocol.c	721;"	function	signature:(u8 nOptCmd)
+CJ_T188ProtocolOptValve	source\protocol.c	722;"	function	signature:(u8 nOptCmd)
 CJ_T188ProtocolOptValve	source\protocolglobal.h	67;"	prototype	signature:(u8 nOptCmd)
-CJ_T188ProtocolReadAdd	source\protocol.c	663;"	function	signature:(u8* pnOutAddr)
+CJ_T188ProtocolReadAdd	source\protocol.c	664;"	function	signature:(u8* pnOutAddr)
 CJ_T188ProtocolReadAdd	source\protocolglobal.h	73;"	prototype	signature:(u8* pnOutAddr)
 CKDIVR	source\libraries\inc\stm8l15x.h	735;"	member	struct:CLK_struct
-CLB0	source\global.h	445;"	macro
-CLB1	source\global.h	446;"	macro
-CLB2	source\global.h	447;"	macro
-CLB3	source\global.h	448;"	macro
-CLB4	source\global.h	449;"	macro
-CLB5	source\global.h	450;"	macro
-CLB6	source\global.h	451;"	macro
-CLB7	source\global.h	452;"	macro
+CLB0	source\global.h	450;"	macro
+CLB1	source\global.h	451;"	macro
+CLB2	source\global.h	452;"	macro
+CLB3	source\global.h	453;"	macro
+CLB4	source\global.h	454;"	macro
+CLB5	source\global.h	455;"	macro
+CLB6	source\global.h	456;"	macro
+CLB7	source\global.h	457;"	macro
 CLK	source\libraries\inc\stm8l15x.h	2863;"	macro
 CLK_AdjustHSICalibrationValue	source\libraries\inc\stm8l15x_clk.h	398;"	prototype	signature:(uint8_t CLK_HSICalibrationValue)
 CLK_AdjustHSICalibrationValue	source\libraries\src\stm8l15x_clk.c	188;"	function	signature:(uint8_t CLK_HSICalibrationValue)
@@ -867,7 +868,7 @@ CLK_SYSCLKSource_LSI	source\libraries\inc\stm8l15x_clk.h	87;"	enumerator	enum:__
 CLK_SYSCLKSource_TypeDef	source\libraries\inc\stm8l15x_clk.h	90;"	typedef	typeref:enum:__anon193
 CLK_TypeDef	source\libraries\inc\stm8l15x.h	753;"	typedef	typeref:struct:CLK_struct
 CLK_struct	source\libraries\inc\stm8l15x.h	733;"	struct
-CLOCK_MCU	source\global.h	459;"	macro
+CLOCK_MCU	source\global.h	464;"	macro
 CM0ARH	source\libraries\inc\stm8l15x.h	2556;"	member	struct:DMA_Channel_struct
 CM0ARL	source\libraries\inc\stm8l15x.h	2557;"	member	struct:DMA_Channel_struct
 CM0EAR	source\libraries\inc\stm8l15x.h	2555;"	member	struct:DMA_Channel_struct
@@ -919,7 +920,7 @@ CONFIRM_MARK	source\gsmglobal.h	74;"	macro
 CONST	source\libraries\inc\stm8l15x.h	158;"	macro
 CONST	source\libraries\inc\stm8l15x.h	164;"	macro
 CONST	source\libraries\inc\stm8l15x.h	178;"	macro
-COUNTER_INIT	source\pwrctr.c	26;"	macro	file:
+COUNTER_INIT	source\pwrctr.c	27;"	macro	file:
 CPARH	source\libraries\inc\stm8l15x.h	2553;"	member	struct:DMA_Channel_struct
 CPARL	source\libraries\inc\stm8l15x.h	2554;"	member	struct:DMA_Channel_struct
 CPU_SOFT_INT_DISABLED	source\libraries\inc\stm8l15x_itc.h	235;"	macro
@@ -966,7 +967,7 @@ CR4	source\libraries\inc\stm8l15x.h	2232;"	member	struct:USART_struct
 CR4	source\libraries\inc\stm8l15x.h	2693;"	member	struct:LCD_struct
 CR4	source\libraries\inc\stm8l15x.h	948;"	member	struct:EXTI_struct
 CR5	source\libraries\inc\stm8l15x.h	2233;"	member	struct:USART_struct
-CRC16check	source\protocol.c	778;"	function	signature:(unsigned char *pcrc, unsigned char count)
+CRC16check	source\protocol.c	779;"	function	signature:(unsigned char *pcrc, unsigned char count)
 CRCPR	source\libraries\inc\stm8l15x.h	1658;"	member	struct:SPI_struct
 CRTCR	source\libraries\inc\stm8l15x.h	736;"	member	struct:CLK_struct
 CSPR	source\libraries\inc\stm8l15x.h	2551;"	member	struct:DMA_Channel_struct
@@ -995,7 +996,7 @@ CTL_VALVE_DISABLE	source\meter.h	16;"	macro
 CTL_VALVE_OVER	source\meter.h	17;"	macro
 CTL_VAVLE_ENABLE	source\meter.h	15;"	macro
 Calendar_Init	source\stm8_rtc.c	467;"	function	signature:(void)
-CheckCrc	source\protocol.c	115;"	function	signature:(u8 Length, u8 *Point)
+CheckCrc	source\protocol.c	116;"	function	signature:(u8 Length, u8 *Point)
 CheckDebugInsertStat	source\inicialize.c	600;"	function	signature:(void)
 CheckDebugInsertStat	source\initialize.h	231;"	prototype	signature:(void)
 CheckRecordFull	source\file.c	322;"	function	signature:(void)
@@ -1008,17 +1009,17 @@ CheckWhichBusUartReceive	source\driveruart.h	61;"	prototype	signature:(void)
 ChgBit	source\libraries\inc\stm8l15x.h	2985;"	macro
 ClaGatherMeterTime	source\meter.c	614;"	function	signature:(TypeTime stTime)
 ClaGatherMeterTime	source\meter.h	85;"	prototype	signature:(TypeTime stTime)
-ClaReportTimeToSec	source\gsm.c	250;"	function	signature:(u8 nCycle)
-ClaReportTimeToSec	source\gsmglobal.h	148;"	prototype	signature:(u8 nCycle)
+ClaReportTimeToSec	source\gsm.c	249;"	function	signature:(u8 nCycle)
+ClaReportTimeToSec	source\gsmglobal.h	149;"	prototype	signature:(u8 nCycle)
 ClearRxBuff	source\driveruart.c	823;"	function	signature:(void)
 ClearRxBuff	source\driveruart.h	77;"	prototype	signature:(void)
 ClearRxBuffUnUsedLen	source\driveruart.c	840;"	function	signature:(u8 UnUsednLen)
 ClearRxBuffUnUsedLen	source\driveruart.h	80;"	prototype	signature:(u8 UnUsednLen)
 ClrBit	source\libraries\inc\stm8l15x.h	2983;"	macro
-Cmd	source\global.h	417;"	member	struct:__anon186::__anon187::__anon188
-Cmd	source\global.h	425;"	member	struct:__anon186::__anon187::__anon189
+Cmd	source\global.h	422;"	member	struct:__anon186::__anon187::__anon188
+Cmd	source\global.h	430;"	member	struct:__anon186::__anon187::__anon189
 Cmd	source\hedaprotocol.h	23;"	member	struct:__anon121::__anon122
-Code	source\global.h	418;"	member	struct:__anon186::__anon187::__anon188
+Code	source\global.h	423;"	member	struct:__anon186::__anon187::__anon188
 CommF	source\cj188.h	84;"	macro
 CommRx	source\cj188.h	87;"	macro
 CommRxDat	source\cj188.h	88;"	macro
@@ -1027,9 +1028,9 @@ CommUF	source\cj188.h	83;"	macro
 Comm_CJ188_Enum	source\cj188.h	104;"	typedef	typeref:enum:__anon130
 Comm_Rst	source\cj188.c	26;"	function	signature:(void)
 Control	source\gsm.h	198;"	member	struct:__anon145::__anon146
-Count	source\global.h	434;"	member	struct:__anon186
-Crc	source\global.h	419;"	member	struct:__anon186::__anon187::__anon188
-Crc	source\global.h	430;"	member	struct:__anon186::__anon187::__anon189
+Count	source\global.h	439;"	member	struct:__anon186
+Crc	source\global.h	424;"	member	struct:__anon186::__anon187::__anon188
+Crc	source\global.h	435;"	member	struct:__anon186::__anon187::__anon189
 Ctrl	source\hedaprotocol.h	21;"	member	struct:__anon121::__anon122
 CtrlB	source\xinjiangprotocol.h	97;"	member	struct:__anon128::__anon129
 D0	source\global.h	101;"	member	struct:__anon155::__anon158
@@ -1115,7 +1116,7 @@ DENY_MARK	source\gsmglobal.h	75;"	macro
 DER	source\libraries\inc\stm8l15x.h	1729;"	member	struct:TIM1_struct
 DER	source\libraries\inc\stm8l15x.h	1965;"	member	struct:TIM_struct
 DER	source\libraries\inc\stm8l15x.h	2146;"	member	struct:TIM4_struct
-DG_DebugPrintfFun	source\protocol.c	1268;"	function	signature:(u8 *pnBuf, u8 nLen, u8 nIndex)
+DG_DebugPrintfFun	source\protocol.c	1269;"	function	signature:(u8 *pnBuf, u8 nLen, u8 nIndex)
 DG_DebugPrintfFun	source\protocolglobal.h	77;"	prototype	signature:(u8 *pnBuf, u8 nLen, u8 nIndex)
 DH	source\global.h	222;"	member	struct:__anon166::__anon168
 DINR	source\libraries\inc\stm8l15x.h	2754;"	member	struct:AES_struct
@@ -1260,11 +1261,11 @@ Day	source\global.h	214;"	member	struct:__anon166::__anon167
 DayFreezeDatProc	source\meter.c	827;"	function	signature:(void)
 DecIoModeChange	source\inicialize.c	761;"	function	signature:(u8 nMode)
 DecIoModeChange	source\initialize.h	237;"	prototype	signature:(u8 nMode)
-DecodeCmd	source\gsm.c	3401;"	function	signature:(u8* pnRxBuf, u8* pnLen)
-DecodeParameter	source\gsm.c	3481;"	function	signature:(u8* pnRxBuf, u8 nRxLen)
-DecodeParameter	source\gsmglobal.h	140;"	prototype	signature:(u8* pnRxBuf, u8 nRxLen)
+DecodeCmd	source\gsm.c	3428;"	function	signature:(u8* pnRxBuf, u8* pnLen)
+DecodeParameter	source\gsm.c	3508;"	function	signature:(u8* pnRxBuf, u8 nRxLen)
+DecodeParameter	source\gsmglobal.h	141;"	prototype	signature:(u8* pnRxBuf, u8 nRxLen)
 DelRecord	source\file.c	243;"	function	signature:(u8 Index)
-DelRecord	source\fileglobal.h	144;"	prototype	signature:(u8 Index)
+DelRecord	source\fileglobal.h	149;"	prototype	signature:(u8 Index)
 Doublets	source\global.h	109;"	member	union:__anon155	typeref:struct:__anon155::__anon158
 Doublets	source\global.h	169;"	member	union:__anon160	typeref:struct:__anon160::__anon164
 Doublets	source\global.h	75;"	member	union:__anon151	typeref:struct:__anon151::__anon153
@@ -1277,13 +1278,13 @@ EGR	source\libraries\inc\stm8l15x.h	1969;"	member	struct:TIM_struct
 EGR	source\libraries\inc\stm8l15x.h	2149;"	member	struct:TIM4_struct
 EMCF_RET	source\main.c	37;"	macro	file:
 ENABLE	source\libraries\inc\stm8l15x.h	248;"	enumerator	enum:__anon118
-ENABLE_BUS_I2C	source\global.h	462;"	macro
-ENABLE_BUS_UART	source\global.h	461;"	macro
+ENABLE_BUS_I2C	source\global.h	467;"	macro
+ENABLE_BUS_UART	source\global.h	466;"	macro
 ERROR	source\global.h	20;"	macro
 ERROR	source\libraries\inc\stm8l15x.h	251;"	enumerator	enum:__anon119
 ETR	source\libraries\inc\stm8l15x.h	1728;"	member	struct:TIM1_struct
 ETR	source\libraries\inc\stm8l15x.h	1964;"	member	struct:TIM_struct
-EVEN	source\global.h	457;"	macro
+EVEN	source\global.h	462;"	macro
 EXTI	source\libraries\inc\stm8l15x.h	2860;"	macro
 EXTI0_IRQHandler	source\stm8l15x_it.c	96;"	function	signature:(void)
 EXTI0_IRQHandler	source\stm8l15x_it.h	53;"	prototype	signature:(void)
@@ -1418,9 +1419,9 @@ EXTI_Trigger_TypeDef	source\libraries\inc\stm8l15x_exti.h	59;"	typedef	typeref:e
 EXTI_TypeDef	source\libraries\inc\stm8l15x.h	951;"	typedef	typeref:struct:EXTI_struct
 EXTI_struct	source\libraries\inc\stm8l15x.h	939;"	struct
 EditRecord	source\file.c	741;"	function	signature:(u8 nIndex, u8 *Record, u8 nInLen)
-EditRecord	source\fileglobal.h	153;"	prototype	signature:(u8 nIndex, u8 *Record, u8 nInLen)
-End	source\global.h	420;"	member	struct:__anon186::__anon187::__anon188
-End	source\global.h	431;"	member	struct:__anon186::__anon187::__anon189
+EditRecord	source\fileglobal.h	158;"	prototype	signature:(u8 nIndex, u8 *Record, u8 nInLen)
+End	source\global.h	425;"	member	struct:__anon186::__anon187::__anon188
+End	source\global.h	436;"	member	struct:__anon186::__anon187::__anon189
 EraseAllBlock	source\file.c	126;"	function	signature:(void)
 ErrorStatus	source\libraries\inc\stm8l15x.h	251;"	typedef	typeref:enum:__anon119
 FAILURE_GLOBAL	source\global.h	19;"	macro
@@ -1542,9 +1543,9 @@ FixTimerModule3	source\gsmglobal.h	100;"	macro
 FlagStatus	source\libraries\inc\stm8l15x.h	246;"	typedef	typeref:enum:__anon117
 Flag_Data_Is_Finish	source\hedaprotocol.h	118;"	macro
 Flag_Data_Is_Secret	source\hedaprotocol.h	117;"	macro
-FrameSendFunc	source\gsm.c	470;"	function	signature:(u8 Size, u8 nComChannel, u8* pnPoint)
-FrameSendFunc	source\gsmglobal.h	153;"	prototype	signature:(u8 Size, u8 nComChannel, u8* pnPoint)
-FreezeUnitTransform	source\gsm.c	2167;"	function	signature:(u16 wGmTime)
+FrameSendFunc	source\gsm.c	469;"	function	signature:(u8 Size, u8 nComChannel, u8* pnPoint)
+FrameSendFunc	source\gsmglobal.h	154;"	prototype	signature:(u8 Size, u8 nComChannel, u8* pnPoint)
+FreezeUnitTransform	source\gsm.c	2194;"	function	signature:(u16 wGmTime)
 FunctionalState	source\libraries\inc\stm8l15x.h	248;"	typedef	typeref:enum:__anon118
 GAS_METER	source\protocol.h	25;"	macro
 GCR	source\libraries\inc\stm8l15x.h	646;"	member	struct:CFG_struct
@@ -1661,56 +1662,56 @@ GUARD_KEY_EN_FLG	source\alarm.h	48;"	macro
 GUARD_KEY_UP	source\alarm.h	33;"	macro
 GUARD_PIN	source\initialize.h	94;"	macro
 GUARD_PORT	source\initialize.h	93;"	macro
-GatherMeterFun	source\protocol.c	972;"	function	signature:(void)
+GatherMeterFun	source\protocol.c	973;"	function	signature:(void)
 GatherMeterFun	source\protocolglobal.h	71;"	prototype	signature:(void)
-GetBoardVavleStat	source\protocol.c	1000;"	function	signature:(void)
-GetBoardVavleStat	source\protocol.c	37;"	prototype	file:	signature:(void)
+GetBoardVavleStat	source\protocol.c	1001;"	function	signature:(void)
+GetBoardVavleStat	source\protocol.c	38;"	prototype	file:	signature:(void)
 GetBoardVavleStat	source\protocolglobal.h	78;"	prototype	signature:(void)
 GetBusUartData	source\driveruart.c	726;"	function	signature:(void)
 GetBusUartData	source\driveruart.h	62;"	prototype	signature:(void)
 GetBusUartUartBaudate	source\driveruart.h	63;"	prototype	signature:(uint8_t Channel)
-GetCrcCcitt	source\protocol.c	88;"	function	signature:(u8 Length, u8 *Point)
+GetCrcCcitt	source\protocol.c	89;"	function	signature:(u8 Length, u8 *Point)
 GetDebugMode	source\initialize.h	147;"	macro
 GetGatherMeterFlg	source\meter.h	79;"	prototype	signature:(void)
-GetGprStatus	source\gsmglobal.h	139;"	prototype	signature:(void)
-GetGprsConntStat	source\gsm.c	3809;"	function	signature:(void)
-GetGprsConntStat	source\gsmglobal.h	156;"	prototype	signature:(void)
-GetIsmiCcidDat	source\gsm.c	494;"	function	signature:(void)
-GetIsmiCcidDat	source\gsmglobal.h	157;"	prototype	signature:(void)
-GetLedFlg	source\gsm.c	3796;"	function	signature:(void)
-GetLedFlg	source\gsmglobal.h	154;"	prototype	signature:(void)
+GetGprStatus	source\gsmglobal.h	140;"	prototype	signature:(void)
+GetGprsConntStat	source\gsm.c	3836;"	function	signature:(void)
+GetGprsConntStat	source\gsmglobal.h	157;"	prototype	signature:(void)
+GetIsmiCcidDat	source\gsm.c	493;"	function	signature:(void)
+GetIsmiCcidDat	source\gsmglobal.h	158;"	prototype	signature:(void)
+GetLedFlg	source\gsm.c	3823;"	function	signature:(void)
+GetLedFlg	source\gsmglobal.h	155;"	prototype	signature:(void)
 GetMs1Stat	source\initialize.h	61;"	macro
 GetMs2Stat	source\initialize.h	64;"	macro
-GetOnLineStatus	source\gsm.c	3823;"	function	signature:(void)
-GetOnLineStatus	source\gsmglobal.h	155;"	prototype	signature:(void)
-GetReportFailFlag	source\gsm.c	3941;"	function	signature:(void)
-GetReportFailFlag	source\gsmglobal.h	146;"	prototype	signature:(void)
-GetReportFlag	source\gsm.c	3927;"	function	signature:(void)
-GetReportFlag	source\gsmglobal.h	132;"	prototype	signature:(void)
-GetSysTemTick	source\protocol.c	1327;"	function	signature:(void)
+GetOnLineStatus	source\gsm.c	3850;"	function	signature:(void)
+GetOnLineStatus	source\gsmglobal.h	156;"	prototype	signature:(void)
+GetReportFailFlag	source\gsm.c	3968;"	function	signature:(void)
+GetReportFailFlag	source\gsmglobal.h	147;"	prototype	signature:(void)
+GetReportFlag	source\gsm.c	3954;"	function	signature:(void)
+GetReportFlag	source\gsmglobal.h	133;"	prototype	signature:(void)
+GetSysTemTick	source\protocol.c	1328;"	function	signature:(void)
 GetSysTemTick	source\protocolglobal.h	62;"	prototype	signature:(void)
-GetTermReportTime	source\gsm.c	3837;"	function	signature:(void)
-GetTermReportTime	source\gsmglobal.h	144;"	prototype	signature:(void)
+GetTermReportTime	source\gsm.c	3864;"	function	signature:(void)
+GetTermReportTime	source\gsmglobal.h	145;"	prototype	signature:(void)
 GetTmDebugModeStat	source\inicialize.c	665;"	function	signature:(void)
 GetTmDebugModeStat	source\initialize.h	232;"	prototype	signature:(void)
 GetUartRxBuf	source\driveruart.c	861;"	function	signature:(void)
 GetUartRxBuf	source\driveruart.h	78;"	prototype	signature:(void)
-GetVavleStat	source\protocol.c	1128;"	function	signature:(void)
-GetVavleStat	source\protocol.c	1167;"	function	signature:(void)
+GetVavleStat	source\protocol.c	1129;"	function	signature:(void)
+GetVavleStat	source\protocol.c	1168;"	function	signature:(void)
 GetVavleStat	source\protocolglobal.h	74;"	prototype	signature:(void)
 HALF_FULL_RANGE	source\meter.h	62;"	macro
-HD_AddressComparePro	source\hedaprotocol.c	583;"	function	signature:(u8 *pnAddr, u8 nLen)
+HD_AddressComparePro	source\hedaprotocol.c	584;"	function	signature:(u8 *pnAddr, u8 nLen)
 HD_AddressComparePro	source\hedaprotocol.h	153;"	prototype	signature:(u8 *pnAddr, u8 nLen)
 HD_ClaReportTimeToSec	source\hedaprotocol.c	44;"	function	signature:(void)
 HD_ClaReportTimeToSec	source\hedaprotocol.h	141;"	prototype	signature:(void)
 HD_CmdSetNetParam	source\hedaprotocol.h	37;"	typedef	typeref:struct:__anon123
-HD_DecodeParameter	source\hedaprotocol.c	493;"	function	signature:(u8* pnRxBuf, u8 nRxLen)
+HD_DecodeParameter	source\hedaprotocol.c	494;"	function	signature:(u8* pnRxBuf, u8 nRxLen)
 HD_DecodeParameter	source\hedaprotocol.h	152;"	prototype	signature:(u8* pnRxBuf, u8 nRxLen)
 HD_FRAME_OTHER_LEN	source\hedaprotocol.h	48;"	macro
 HD_INTERVAL_DAY	source\hedaprotocol.h	128;"	macro
 HD_INTERVAL_HOUR	source\hedaprotocol.h	129;"	macro
 HD_INTERVAL_MIN	source\hedaprotocol.h	130;"	macro
-HD_InitializeGsm	source\hedaprotocol.c	1275;"	function	signature:(void)
+HD_InitializeGsm	source\hedaprotocol.c	1279;"	function	signature:(void)
 HD_InitializeGsm	source\hedaprotocol.h	139;"	prototype	signature:(void)
 HD_Login_Domain_Name	source\hedaprotocol.h	135;"	macro
 HD_Login_IP	source\hedaprotocol.h	134;"	macro
@@ -1719,7 +1720,7 @@ HD_Online	source\hedaprotocol.c	285;"	function	signature:(u8 nLogonMode)
 HD_Online	source\hedaprotocol.h	150;"	prototype	signature:(u8 nLogonMode)
 HD_OnlineCtl	source\hedaprotocol.c	251;"	function	signature:(void)
 HD_OnlineCtl	source\hedaprotocol.h	149;"	prototype	signature:(void)
-HD_ProtolHandle	source\hedaprotocol.c	622;"	function	signature:(void)
+HD_ProtolHandle	source\hedaprotocol.c	623;"	function	signature:(void)
 HD_ProtolHandle	source\hedaprotocol.h	154;"	prototype	signature:(void)
 HD_ProtolProc	source\hedaprotocol.c	226;"	function	signature:(void)
 HD_ProtolProc	source\hedaprotocol.h	146;"	prototype	signature:(void)
@@ -1748,58 +1749,58 @@ HeDa_Burst_Event_Pressure2_Limit_Up	source\hedaprotocol.h	85;"	enumerator	enum:_
 HeDa_Cmd	source\hedaprotocol.h	78;"	typedef	typeref:enum:__anon124
 HeDa_Cmd_Burst_Upload	source\hedaprotocol.h	54;"	enumerator	enum:__anon124
 HeDa_Cmd_Get_Addr	source\hedaprotocol.h	73;"	enumerator	enum:__anon124
-HeDa_Cmd_Get_Addr_Handle	source\hedaprotocol.c	1231;"	function	signature:(u8 *pData)
+HeDa_Cmd_Get_Addr_Handle	source\hedaprotocol.c	1235;"	function	signature:(u8 *pData)
 HeDa_Cmd_Get_Addr_Handle	source\hedaprotocol.h	179;"	prototype	signature:(u8 *pData)
 HeDa_Cmd_Get_All_Param	source\hedaprotocol.h	75;"	enumerator	enum:__anon124
-HeDa_Cmd_Get_All_Param_Handle	source\hedaprotocol.c	1247;"	function	signature:(u8 *pData)
+HeDa_Cmd_Get_All_Param_Handle	source\hedaprotocol.c	1251;"	function	signature:(u8 *pData)
 HeDa_Cmd_Get_All_Param_Handle	source\hedaprotocol.h	184;"	prototype	signature:(u8 *pData)
 HeDa_Cmd_Get_Appoint_Data	source\hedaprotocol.h	76;"	enumerator	enum:__anon124
-HeDa_Cmd_Get_Appoint_Data_Handle	source\hedaprotocol.c	1261;"	function	signature:(u8 *pData)
+HeDa_Cmd_Get_Appoint_Data_Handle	source\hedaprotocol.c	1265;"	function	signature:(u8 *pData)
 HeDa_Cmd_Get_Appoint_Data_Handle	source\hedaprotocol.h	185;"	prototype	signature:(u8 *pData)
 HeDa_Cmd_Get_Net_Param	source\hedaprotocol.h	69;"	enumerator	enum:__anon124
-HeDa_Cmd_Get_Net_Param_Handle	source\hedaprotocol.c	898;"	function	signature:(u8 *pData)
+HeDa_Cmd_Get_Net_Param_Handle	source\hedaprotocol.c	899;"	function	signature:(u8 *pData)
 HeDa_Cmd_Get_Net_Param_Handle	source\hedaprotocol.h	168;"	prototype	signature:(u8 *pData)
 HeDa_Cmd_Get_Pressure_Threshold	source\hedaprotocol.h	71;"	enumerator	enum:__anon124
-HeDa_Cmd_Get_Pressure_Threshold_Handle	source\hedaprotocol.c	1143;"	function	signature:(u8 *pData)
+HeDa_Cmd_Get_Pressure_Threshold_Handle	source\hedaprotocol.c	1147;"	function	signature:(u8 *pData)
 HeDa_Cmd_Get_Pressure_Threshold_Handle	source\hedaprotocol.h	176;"	prototype	signature:(u8 *pData)
 HeDa_Cmd_Get_Report_Cycle	source\hedaprotocol.h	70;"	enumerator	enum:__anon124
-HeDa_Cmd_Get_Report_Cycle_Handle	source\hedaprotocol.c	955;"	function	signature:(u8 *pData)
+HeDa_Cmd_Get_Report_Cycle_Handle	source\hedaprotocol.c	956;"	function	signature:(u8 *pData)
 HeDa_Cmd_Get_Report_Cycle_Handle	source\hedaprotocol.h	173;"	prototype	signature:(u8 *pData)
 HeDa_Cmd_Get_Sampling_Interval	source\hedaprotocol.h	68;"	enumerator	enum:__anon124
-HeDa_Cmd_Get_Sampling_Interval_Handle	source\hedaprotocol.c	810;"	function	signature:(u8 *pData)
+HeDa_Cmd_Get_Sampling_Interval_Handle	source\hedaprotocol.c	811;"	function	signature:(u8 *pData)
 HeDa_Cmd_Get_Sampling_Interval_Handle	source\hedaprotocol.h	165;"	prototype	signature:(u8 *pData)
 HeDa_Cmd_Get_Secret_Key	source\hedaprotocol.h	72;"	enumerator	enum:__anon124
-HeDa_Cmd_Get_Secret_Key_Handle	source\hedaprotocol.c	1180;"	function	signature:(u8 *pData)
+HeDa_Cmd_Get_Secret_Key_Handle	source\hedaprotocol.c	1184;"	function	signature:(u8 *pData)
 HeDa_Cmd_Get_Secret_Key_Handle	source\hedaprotocol.h	183;"	prototype	signature:(u8 *pData)
 HeDa_Cmd_HeartBeat_Upload	source\hedaprotocol.h	55;"	enumerator	enum:__anon124
 HeDa_Cmd_Normal_Upload	source\hedaprotocol.h	53;"	enumerator	enum:__anon124
 HeDa_Cmd_Reply_Upload	source\hedaprotocol.h	56;"	enumerator	enum:__anon124
-HeDa_Cmd_Reply_Upload_Handle	source\hedaprotocol.c	727;"	function	signature:(u8 *pData,u8 ctrl)
+HeDa_Cmd_Reply_Upload_Handle	source\hedaprotocol.c	728;"	function	signature:(u8 *pData,u8 ctrl)
 HeDa_Cmd_Reply_Upload_Handle	source\hedaprotocol.h	162;"	prototype	signature:(u8 *pData,u8 ctrl)
 HeDa_Cmd_Set_Addr	source\hedaprotocol.h	66;"	enumerator	enum:__anon124
-HeDa_Cmd_Set_Addr_Handle	source\hedaprotocol.c	1195;"	function	signature:(u8 *pData)
+HeDa_Cmd_Set_Addr_Handle	source\hedaprotocol.c	1199;"	function	signature:(u8 *pData)
 HeDa_Cmd_Set_Addr_Handle	source\hedaprotocol.h	178;"	prototype	signature:(u8 *pData)
 HeDa_Cmd_Set_Net_Param	source\hedaprotocol.h	62;"	enumerator	enum:__anon124
-HeDa_Cmd_Set_Net_Param_Handle	source\hedaprotocol.c	826;"	function	signature:(HD_CmdSetNetParam *pData)
+HeDa_Cmd_Set_Net_Param_Handle	source\hedaprotocol.c	827;"	function	signature:(HD_CmdSetNetParam *pData)
 HeDa_Cmd_Set_Net_Param_Handle	source\hedaprotocol.h	167;"	prototype	signature:(HD_CmdSetNetParam *pData)
 HeDa_Cmd_Set_Pressure_Threshold	source\hedaprotocol.h	64;"	enumerator	enum:__anon124
-HeDa_Cmd_Set_Pressure_Threshold_Handle	source\hedaprotocol.c	1076;"	function	signature:(u8 *pData)
+HeDa_Cmd_Set_Pressure_Threshold_Handle	source\hedaprotocol.c	1080;"	function	signature:(u8 *pData)
 HeDa_Cmd_Set_Pressure_Threshold_Handle	source\hedaprotocol.h	175;"	prototype	signature:(u8 *pData)
 HeDa_Cmd_Set_Report_Cycle	source\hedaprotocol.h	63;"	enumerator	enum:__anon124
-HeDa_Cmd_Set_Report_Cycle_Handle	source\hedaprotocol.c	920;"	function	signature:(u8 *pData)
+HeDa_Cmd_Set_Report_Cycle_Handle	source\hedaprotocol.c	921;"	function	signature:(u8 *pData)
 HeDa_Cmd_Set_Report_Cycle_Handle	source\hedaprotocol.h	172;"	prototype	signature:(u8 *pData)
 HeDa_Cmd_Set_Sampling_Interval	source\hedaprotocol.h	61;"	enumerator	enum:__anon124
-HeDa_Cmd_Set_Sampling_Interval_Handle	source\hedaprotocol.c	778;"	function	signature:(u8 *pData)
+HeDa_Cmd_Set_Sampling_Interval_Handle	source\hedaprotocol.c	779;"	function	signature:(u8 *pData)
 HeDa_Cmd_Set_Sampling_Interval_Handle	source\hedaprotocol.h	164;"	prototype	signature:(u8 *pData)
 HeDa_Cmd_Set_Secret_Key	source\hedaprotocol.h	65;"	enumerator	enum:__anon124
-HeDa_Cmd_Set_Secret_Key_Handle	source\hedaprotocol.c	1159;"	function	signature:(u8 *pData)
+HeDa_Cmd_Set_Secret_Key_Handle	source\hedaprotocol.c	1163;"	function	signature:(u8 *pData)
 HeDa_Cmd_Set_Secret_Key_Handle	source\hedaprotocol.h	182;"	prototype	signature:(u8 *pData)
 HeDa_Default_Heart_Beat_Interval	source\hedaprotocol.h	110;"	macro
 HeDa_Get_String_len	source\jx_math.c	1015;"	function	signature:(char *str,u8 str_buf_size)
 HeDa_Get_String_len	source\jx_math.h	95;"	prototype	signature:(char *str,u8 str_buf_size)
 HeDa_Heart_Beat_Interval_Max	source\hedaprotocol.h	111;"	macro
 HeDa_Packet_Max_Len	source\hedaprotocol.h	114;"	macro
-HeDa_ReportCycleType_To_TypeAddCycle	source\hedaprotocol.c	970;"	function	signature:(u8 Report_Cycle_Type,u8 *Report_Time_Type,u8 *cycle_num)
+HeDa_ReportCycleType_To_TypeAddCycle	source\hedaprotocol.c	971;"	function	signature:(u8 Report_Cycle_Type,u8 *Report_Time_Type,u8 *cycle_num)
 HeDa_ReportCycleType_To_TypeAddCycle	source\hedaprotocol.h	171;"	prototype	signature:(u8 Report_Cycle_Type,u8 *Report_Time_Type,u8 *cycle_num)
 HeDa_Report_Cycle	source\hedaprotocol.h	106;"	typedef	typeref:enum:__anon126
 HeDa_Report_Cycle_Hour_1	source\hedaprotocol.h	99;"	enumerator	enum:__anon126
@@ -1815,9 +1816,9 @@ HeDa_Report_Cycle_Minute_10	source\hedaprotocol.h	96;"	enumerator	enum:__anon126
 HeDa_Report_Cycle_Minute_15	source\hedaprotocol.h	97;"	enumerator	enum:__anon126
 HeDa_Report_Cycle_Minute_30	source\hedaprotocol.h	98;"	enumerator	enum:__anon126
 HeDa_Report_Cycle_Minute_5	source\hedaprotocol.h	95;"	enumerator	enum:__anon126
-HeDa_TypeAddCycle_To_ReportCycleType	source\hedaprotocol.c	1035;"	function	signature:(u8 Report_Time_Type,u8 cycle_num)
+HeDa_TypeAddCycle_To_ReportCycleType	source\hedaprotocol.c	1036;"	function	signature:(u8 Report_Time_Type,u8 cycle_num)
 HeDa_TypeAddCycle_To_ReportCycleType	source\hedaprotocol.h	170;"	prototype	signature:(u8 Report_Time_Type,u8 cycle_num)
-Head	source\global.h	436;"	member	struct:__anon186
+Head	source\global.h	441;"	member	struct:__anon186
 Head	source\hedaprotocol.h	9;"	member	struct:__anon120
 Head0	source\gsm.h	182;"	member	struct:__anon143
 Head0	source\xinjiangprotocol.h	88;"	member	struct:__anon127
@@ -2046,11 +2047,11 @@ IER	source\libraries\inc\stm8l15x.h	2147;"	member	struct:TIM4_struct
 ILLOPF_RET	source\main.c	35;"	macro	file:
 INITF_TIMEOUT	source\stm8_rtc.h	19;"	macro
 INIT_ADDRESS	source\protocol.h	19;"	macro
-INIT_CCID_4	source\gsm.c	35;"	macro	file:
-INIT_CPIN_2	source\gsm.c	33;"	macro	file:
-INIT_CREG_6	source\gsm.c	37;"	macro	file:
-INIT_CSQ_5	source\gsm.c	36;"	macro	file:
-INIT_IMSI_3	source\gsm.c	34;"	macro	file:
+INIT_CCID_4	source\gsm.c	36;"	macro	file:
+INIT_CPIN_2	source\gsm.c	34;"	macro	file:
+INIT_CREG_6	source\gsm.c	38;"	macro	file:
+INIT_CSQ_5	source\gsm.c	37;"	macro	file:
+INIT_IMSI_3	source\gsm.c	35;"	macro	file:
 INIT_P1DIR	source\initialize.h	208;"	macro
 INIT_P1IE	source\initialize.h	209;"	macro
 INIT_P1IES	source\initialize.h	210;"	macro
@@ -2068,14 +2069,14 @@ INIT_P2REN	source\initialize.h	222;"	macro
 INIT_P2SEL	source\initialize.h	223;"	macro
 INIT_P2SEL2	source\initialize.h	224;"	macro
 INIT_PASSWORD	source\protocol.h	20;"	macro
-INIT_PBREADY_1	source\gsm.c	31;"	macro	file:
-INIT_PWR_OFF	source\gsm.c	27;"	macro	file:
-INIT_PWR_ON	source\gsm.c	28;"	macro	file:
-INIT_SET_IPR	source\gsm.c	32;"	macro	file:
+INIT_PBREADY_1	source\gsm.c	32;"	macro	file:
+INIT_PWR_OFF	source\gsm.c	28;"	macro	file:
+INIT_PWR_ON	source\gsm.c	29;"	macro	file:
+INIT_SET_IPR	source\gsm.c	33;"	macro	file:
 INIT_STATUS	source\protocol.h	18;"	macro
-INIT_SWITCH_OFF	source\gsm.c	29;"	macro	file:
-INIT_SWITCH_ON	source\gsm.c	30;"	macro	file:
-INTERNAL_RC	source\global.h	463;"	macro
+INIT_SWITCH_OFF	source\gsm.c	30;"	macro	file:
+INIT_SWITCH_ON	source\gsm.c	31;"	macro	file:
+INTERNAL_RC	source\global.h	468;"	macro
 INTERRUPT	source\libraries\inc\stm8l15x.h	2963;"	macro
 INTERRUPT	source\libraries\inc\stm8l15x.h	2965;"	macro
 INTERRUPT_HANDLER	source\libraries\inc\stm8l15x.h	2941;"	macro
@@ -2437,27 +2438,27 @@ InitializeBase	source\inicialize.c	527;"	function	signature:(void)
 InitializeBase	source\initialize.h	228;"	prototype	signature:(void)
 InitializeFile	source\file.c	145;"	function	signature:(void)
 InitializeFile	source\file.c	469;"	function	signature:(void)
-InitializeFile	source\fileglobal.h	145;"	prototype	signature:(void)
-InitializeGsm	source\gsm.c	4147;"	function	signature:(void)
-InitializeGsm	source\gsmglobal.h	135;"	prototype	signature:(void)
+InitializeFile	source\fileglobal.h	150;"	prototype	signature:(void)
+InitializeGsm	source\gsm.c	4174;"	function	signature:(void)
+InitializeGsm	source\gsmglobal.h	136;"	prototype	signature:(void)
 InitializeMeter	source\meter.c	1128;"	function	signature:(void)
 InitializeMeter	source\meter.h	80;"	prototype	signature:(void)
 InitializeModule2	source\protocolglobal.h	51;"	macro
 InitializeModule3	source\gsmglobal.h	101;"	macro
 InitializeModule4	source\fileglobal.h	27;"	macro
-InitializeProtocol	source\protocol.c	1340;"	function	signature:(void)
+InitializeProtocol	source\protocol.c	1341;"	function	signature:(void)
 InitializeProtocol	source\protocolglobal.h	57;"	prototype	signature:(void)
 Int	source\global.h	224;"	member	union:__anon166	typeref:struct:__anon166::__anon168
 IoInit	source\inicialize.c	452;"	function	signature:(void)
-JASON130_GetDayFreezeDat	source\gsm.c	1958;"	function	signature:(u8 nYear, u8 nMon, u8 nDay, u8* pnOutBuf)
-JASON130_GetMonFreezeDat	source\gsm.c	2000;"	function	signature:(u8 nYear, u8 nMon, u8* pnOutBuf)
-JASON_130InitializeGsm	source\gsm.c	3703;"	function	signature:(void)
-JASON_130OnlineCtl	source\gsm.c	3602;"	function	signature:(void)
-JASON_130ProtolProc	source\gsm.c	3574;"	function	signature:(void)
+JASON130_GetDayFreezeDat	source\gsm.c	1985;"	function	signature:(u8 nYear, u8 nMon, u8 nDay, u8* pnOutBuf)
+JASON130_GetMonFreezeDat	source\gsm.c	2027;"	function	signature:(u8 nYear, u8 nMon, u8* pnOutBuf)
+JASON_130InitializeGsm	source\gsm.c	3730;"	function	signature:(void)
+JASON_130OnlineCtl	source\gsm.c	3629;"	function	signature:(void)
+JASON_130ProtolProc	source\gsm.c	3601;"	function	signature:(void)
 JASON_130PurchasePro	source\meter.c	274;"	function	signature:(void)
 JASON_130PurchasePro	source\meter.h	86;"	prototype	signature:(void)
 JASON_130TaskMeter	source\meter.c	426;"	function	signature:(void)
-JASON_130TimeOutReUpLoad	source\gsm.c	3663;"	function	signature:(void)
+JASON_130TimeOutReUpLoad	source\gsm.c	3690;"	function	signature:(void)
 JASON_ADDR_LEN	source\protocol.h	36;"	macro
 JASON_AUTO_TEST	source\protocolglobal.h	22;"	macro
 JASON_BROADCAST	source\protocol.h	35;"	macro
@@ -2529,27 +2530,30 @@ JX_IsAllFillDat	source\jx_math.c	809;"	function	signature:(uint8_t *nMatchDat, u
 JX_IsAllFillDat	source\jx_math.h	62;"	prototype	signature:(uint8_t *nMatchDat, uint8_t nFillDat, uint32_t nMatchLen)
 JX_MAX_VALID_YEAR	source\jx_math.h	50;"	macro
 JX_MIN_VALID_YEAR	source\jx_math.h	51;"	macro
-JX_StringCat	source\gsm.c	555;"	function	signature:(char* pbSrc,char * pnStr, u8 nLen)
-JX_Strlen	source\gsm.c	532;"	function	signature:(char* pbSrc)
+JX_StringCat	source\gsm.c	554;"	function	signature:(char* pbSrc,char * pnStr, u8 nLen)
+JX_StringCat	source\gsmglobal.h	163;"	prototype	signature:(char* pbSrc,char * pnStr, u8 nLen)
+JX_Strlen	source\gsm.c	531;"	function	signature:(char* pbSrc)
+JX_Strlen	source\gsmglobal.h	162;"	prototype	signature:(char* pbSrc)
 JX_U32ToStr	source\jx_math.c	934;"	function	signature:(u32 value, char * p_str)
 JX_U32ToStr	source\jx_math.h	82;"	prototype	signature:(u32 value, char * p_str)
 JX_VALVE_CLOSE	source\cj188.h	77;"	macro
 JX_VALVE_OPEN	source\cj188.h	76;"	macro
-JasonCmdMaster	source\protocol.c	295;"	function	signature:(void)
-JasonCmdSlave	source\protocol.c	233;"	function	signature:(void)
-JasonDataRate	source\protocol.c	49;"	function	signature:(u8 nRate, u32 data)
-JasonGatherMeterDecode	source\protocol.c	497;"	function	signature:(u16 wTimeOut)
-JasonProtocolGM	source\protocol.c	546;"	function	signature:(void)
+JasonCmdMaster	source\protocol.c	296;"	function	signature:(void)
+JasonCmdSlave	source\protocol.c	234;"	function	signature:(void)
+JasonDataRate	source\protocol.c	50;"	function	signature:(u8 nRate, u32 data)
+JasonGatherMeterDecode	source\protocol.c	498;"	function	signature:(u16 wTimeOut)
+JasonProtocolGM	source\protocol.c	547;"	function	signature:(void)
 JasonProtocolGM	source\protocolglobal.h	65;"	prototype	signature:(void)
-JasonProtocolOptValve	source\protocol.c	586;"	function	signature:(u8 nOptCmd)
+JasonProtocolOptValve	source\protocol.c	587;"	function	signature:(u8 nOptCmd)
 JasonProtocolOptValve	source\protocolglobal.h	66;"	prototype	signature:(u8 nOptCmd)
-JasonReceiveMaster	source\protocol.c	413;"	function	signature:(u8 Data)
-JasonReceiveSlave	source\protocol.c	341;"	function	signature:(u8 Data)
-JasonReset	source\protocol.c	139;"	function	signature:(void)
+JasonReceiveMaster	source\protocol.c	414;"	function	signature:(u8 Data)
+JasonReceiveSlave	source\protocol.c	342;"	function	signature:(u8 Data)
+JasonReset	source\protocol.c	140;"	function	signature:(void)
 KEY_WUAKEUP_FLG	source\gsmglobal.h	62;"	macro
 KR	source\libraries\inc\stm8l15x.h	1267;"	member	struct:IWDG_struct
 LASTREPORTTIME_LEN	source\fileglobal.h	35;"	macro
 LASTREPORTTIME_LEN	source\fileglobal.h	49;"	macro
+LASTREPORTTIME_LEN	source\fileglobal.h	57;"	macro
 LCD	source\libraries\inc\stm8l15x.h	2875;"	macro
 LCD_AES_IRQHandler	source\stm8l15x_it.h	61;"	prototype	signature:(void)
 LCD_BASE	source\libraries\inc\stm8l15x.h	2836;"	macro
@@ -2588,83 +2592,83 @@ LIMIT_PURCHASE	source\meter.h	58;"	macro
 LOAD_PIN	source\initialize.h	89;"	macro
 LOAD_PORT	source\initialize.h	88;"	macro
 LOND_COND	source\cj188.h	71;"	macro
-LP_130_CalReportConut	source\pwrctr.c	1033;"	function	signature:(void)
-LP_130_CalReportConut	source\pwrctr.c	41;"	prototype	file:	signature:(void)
-LP_ADC_DeInit	source\pwrctr.c	335;"	function	signature:(void)
-LP_BSP_DeInit	source\pwrctr.c	356;"	function	signature:(void)
-LP_BSP_DeInit	source\pwrctr.h	48;"	prototype	signature:(void)
-LP_CalReportGatherTime	source\pwrctr.c	380;"	function	signature:(void)
-LP_CheckGuardKeyStat	source\pwrctr.c	595;"	function	signature:(void)
-LP_ClaReportTime	source\pwrctr.c	529;"	function	signature:(void)
-LP_ClrLowPwrStartFlg	source\pwrctr.c	479;"	function	signature:(u8 nFlg)
-LP_ClrLowPwrStartFlg	source\pwrctr.h	52;"	prototype	signature:(u8 nFlg)
-LP_DelayMs	source\pwrctr.c	116;"	function	signature:(uint32_t dwTime)
-LP_DelayMs	source\pwrctr.h	55;"	prototype	signature:(uint32_t dwTime)
-LP_EXTI_Configuration	source\pwrctr.c	203;"	function	signature:(void)
-LP_ExitWakeUpProc	source\pwrctr.c	493;"	function	signature:(void)
+LP_130_CalReportConut	source\pwrctr.c	1034;"	function	signature:(void)
+LP_130_CalReportConut	source\pwrctr.c	42;"	prototype	file:	signature:(void)
+LP_ADC_DeInit	source\pwrctr.c	336;"	function	signature:(void)
+LP_BSP_DeInit	source\pwrctr.c	357;"	function	signature:(void)
+LP_BSP_DeInit	source\pwrctr.h	53;"	prototype	signature:(void)
+LP_CalReportGatherTime	source\pwrctr.c	381;"	function	signature:(void)
+LP_CheckGuardKeyStat	source\pwrctr.c	596;"	function	signature:(void)
+LP_ClaReportTime	source\pwrctr.c	530;"	function	signature:(void)
+LP_ClrLowPwrStartFlg	source\pwrctr.c	480;"	function	signature:(u8 nFlg)
+LP_ClrLowPwrStartFlg	source\pwrctr.h	57;"	prototype	signature:(u8 nFlg)
+LP_DelayMs	source\pwrctr.c	117;"	function	signature:(uint32_t dwTime)
+LP_DelayMs	source\pwrctr.h	60;"	prototype	signature:(uint32_t dwTime)
+LP_EXTI_Configuration	source\pwrctr.c	204;"	function	signature:(void)
+LP_ExitWakeUpProc	source\pwrctr.c	494;"	function	signature:(void)
 LP_GM_FLG_OK	source\pwrctr.h	28;"	macro
-LP_GPIO_DefaultConfig	source\pwrctr.c	168;"	function	signature:(void)
+LP_GPIO_DefaultConfig	source\pwrctr.c	169;"	function	signature:(void)
 LP_GPRS_FLG_OK	source\pwrctr.h	29;"	macro
-LP_GetKeyWuFlg	source\pwrctr.c	154;"	function	signature:(void)
-LP_GetKeyWuFlg	source\pwrctr.h	53;"	prototype	signature:(void)
+LP_GetKeyWuFlg	source\pwrctr.c	155;"	function	signature:(void)
+LP_GetKeyWuFlg	source\pwrctr.h	58;"	prototype	signature:(void)
 LP_HD_CalReportConut	source\hedaprotocol.c	66;"	function	signature:(void)
 LP_HD_CalReportConut	source\hedaprotocol.h	142;"	prototype	signature:(void)
 LP_KEYWU_PRO_TO	source\pwrctr.h	33;"	macro
 LP_KEYWU_TO	source\pwrctr.h	32;"	macro
-LP_LowPowerManage	source\pwrctr.c	631;"	function	signature:(void)
-LP_LowPowerManage	source\pwrctr.h	47;"	prototype	signature:(void)
-LP_RTC_Config	source\pwrctr.c	412;"	function	signature:(void)
+LP_LowPowerManage	source\pwrctr.c	632;"	function	signature:(void)
+LP_LowPowerManage	source\pwrctr.h	52;"	prototype	signature:(void)
+LP_RTC_Config	source\pwrctr.c	413;"	function	signature:(void)
 LP_START_FLG_OK	source\pwrctr.h	30;"	macro
-LP_SYSCLKConfig_STOP	source\pwrctr.h	50;"	prototype	signature:(void)
-LP_SetKeyWuFlg	source\pwrctr.c	140;"	function	signature:(uint8_t nFlg)
-LP_SetKeyWuFlg	source\pwrctr.h	49;"	prototype	signature:(uint8_t nFlg)
-LP_SetLowPwrStartFlg	source\pwrctr.c	465;"	function	signature:(u8 nFlg)
-LP_SetLowPwrStartFlg	source\pwrctr.h	51;"	prototype	signature:(u8 nFlg)
-LP_TermReset	source\pwrctr.c	220;"	function	signature:(void)
-LP_TermReset	source\pwrctr.h	54;"	prototype	signature:(void)
-LP_TimeDeInit	source\pwrctr.c	237;"	function	signature:(void)
-LP_UART_DeInit	source\pwrctr.c	306;"	function	signature:(void)
+LP_SYSCLKConfig_STOP	source\pwrctr.h	55;"	prototype	signature:(void)
+LP_SetKeyWuFlg	source\pwrctr.c	141;"	function	signature:(uint8_t nFlg)
+LP_SetKeyWuFlg	source\pwrctr.h	54;"	prototype	signature:(uint8_t nFlg)
+LP_SetLowPwrStartFlg	source\pwrctr.c	466;"	function	signature:(u8 nFlg)
+LP_SetLowPwrStartFlg	source\pwrctr.h	56;"	prototype	signature:(u8 nFlg)
+LP_TermReset	source\pwrctr.c	221;"	function	signature:(void)
+LP_TermReset	source\pwrctr.h	59;"	prototype	signature:(void)
+LP_TimeDeInit	source\pwrctr.c	238;"	function	signature:(void)
+LP_UART_DeInit	source\pwrctr.c	307;"	function	signature:(void)
 LP_WAKEUP_TO	source\pwrctr.h	15;"	macro
 LP_WU_TIMEBASE	source\pwrctr.h	17;"	macro
 LP_WU_TIMEBASE	source\pwrctr.h	19;"	macro
-LP_WakeUpTerm	source\pwrctr.c	572;"	function	signature:(void)
-LP_XJ_CalReportConut	source\pwrctr.c	40;"	prototype	file:	signature:(void)
-LP_XJ_CalReportConut	source\pwrctr.c	985;"	function	signature:(void)
-LP_XJ_CalReportTime	source\pwrctr.c	794;"	function	signature:(TM_Time* pStNextTime)
-LP_XJ_CalReportTime	source\pwrctr.h	56;"	prototype	signature:(TM_Time* pStNextTime)
-LP_XJ_GetDebugReportFlg	source\pwrctr.c	756;"	function	signature:(void)
-LP_XJ_GetDebugReportFlg	source\pwrctr.h	57;"	prototype	signature:(void)
-LP_XJ_ReportTimeCla	source\pwrctr.c	770;"	function	signature:(u8 nTime, TM_Time* pstTmpTime)
+LP_WakeUpTerm	source\pwrctr.c	573;"	function	signature:(void)
+LP_XJ_CalReportConut	source\pwrctr.c	41;"	prototype	file:	signature:(void)
+LP_XJ_CalReportConut	source\pwrctr.c	986;"	function	signature:(void)
+LP_XJ_CalReportTime	source\pwrctr.c	795;"	function	signature:(TM_Time* pStNextTime)
+LP_XJ_CalReportTime	source\pwrctr.h	61;"	prototype	signature:(TM_Time* pStNextTime)
+LP_XJ_GetDebugReportFlg	source\pwrctr.c	757;"	function	signature:(void)
+LP_XJ_GetDebugReportFlg	source\pwrctr.h	62;"	prototype	signature:(void)
+LP_XJ_ReportTimeCla	source\pwrctr.c	771;"	function	signature:(u8 nTime, TM_Time* pstTmpTime)
 LSE_VALUE	source\libraries\inc\stm8l15x.h	140;"	macro
 LSI_VALUE	source\libraries\inc\stm8l15x.h	150;"	macro
 LTRH	source\libraries\inc\stm8l15x.h	2324;"	member	struct:ADC_struct
 LTRL	source\libraries\inc\stm8l15x.h	2325;"	member	struct:ADC_struct
 LT_REP_TIME	source\gsmglobal.h	26;"	macro
-Length	source\global.h	435;"	member	struct:__anon186
+Length	source\global.h	440;"	member	struct:__anon186
 Length0	source\gsm.h	183;"	member	struct:__anon143
 Length0	source\xinjiangprotocol.h	89;"	member	struct:__anon127
 Length1	source\gsm.h	184;"	member	struct:__anon143
 Link	source\gsm.h	190;"	member	struct:__anon144
 Long	source\global.h	131;"	member	union:__anon160
-M590_ClaRxLength	source\gsm.c	168;"	prototype	file:	signature:(u8* pnRxBuf, u8* pnRxLen)
-M590_CloseConnect	source\gsm.c	166;"	prototype	file:	signature:(void)
-M590_CloseConnect	source\gsm.c	1801;"	function	signature:(void)
-M590_CloseConnect	source\gsmglobal.h	152;"	prototype	signature:(void)
-M590_ConnectServer	source\gsm.c	1848;"	function	signature:(u8 nBkFlg)
-M590_HandShake	source\gsm.c	1649;"	function	signature:(void)
-M590_Init	source\gsm.c	1503;"	function	signature:(void)
-M590_TcpSendDatLen	source\gsm.c	167;"	prototype	file:	signature:(u8 nLen)
-M590_TcpSendDatLen	source\gsm.c	1893;"	function	signature:(u8 nLen)
-M590_TcpSendDatLen	source\gsmglobal.h	151;"	prototype	signature:(u8 nLen)
+M590_ClaRxLength	source\gsm.c	167;"	prototype	file:	signature:(u8* pnRxBuf, u8* pnRxLen)
+M590_CloseConnect	source\gsm.c	165;"	prototype	file:	signature:(void)
+M590_CloseConnect	source\gsm.c	1804;"	function	signature:(void)
+M590_CloseConnect	source\gsmglobal.h	153;"	prototype	signature:(void)
+M590_ConnectServer	source\gsm.c	1851;"	function	signature:(u8 nBkFlg)
+M590_HandShake	source\gsm.c	1652;"	function	signature:(void)
+M590_Init	source\gsm.c	1506;"	function	signature:(void)
+M590_TcpSendDatLen	source\gsm.c	166;"	prototype	file:	signature:(u8 nLen)
+M590_TcpSendDatLen	source\gsm.c	1896;"	function	signature:(u8 nLen)
+M590_TcpSendDatLen	source\gsmglobal.h	152;"	prototype	signature:(u8 nLen)
 MASTER_NEW	source\gsmglobal.h	36;"	macro
 MASTER_OLD	source\gsmglobal.h	35;"	macro
-MAX_1_BYTE	source\global.h	440;"	macro
-MAX_2_BYTE	source\global.h	441;"	macro
-MAX_3_BYTE	source\global.h	442;"	macro
-MAX_4_BYTE	source\global.h	443;"	macro
+MAX_1_BYTE	source\global.h	445;"	macro
+MAX_2_BYTE	source\global.h	446;"	macro
+MAX_3_BYTE	source\global.h	447;"	macro
+MAX_4_BYTE	source\global.h	448;"	macro
 MAX_ALM_NUM	source\gsmglobal.h	94;"	macro
 MAX_JASON	source\protocol.h	17;"	macro
-MAX_LEN	source\fileglobal.h	57;"	macro
+MAX_LEN	source\fileglobal.h	62;"	macro
 MAX_METER	source\gsm.h	135;"	macro
 MAX_REPORT_NUM	source\gsmglobal.h	93;"	macro
 MAX_REP_TIMES	source\gsmglobal.h	32;"	macro
@@ -2675,7 +2679,7 @@ MEMCPY	source\libraries\inc\stm8l15x.h	171;"	macro
 METER_6BIT	source\global.h	53;"	macro
 METER_ERROR	source\alarm.h	32;"	macro
 METER_PARA	source\gsmglobal.h	25;"	macro
-MODBUS_GetPizeometer	source\protocol.c	875;"	function	signature:(u8 nCmd)
+MODBUS_GetPizeometer	source\protocol.c	876;"	function	signature:(u8 nCmd)
 MODBUS_GetPizeometer	source\protocolglobal.h	75;"	prototype	signature:(u8 nCmd)
 MODE_GETSIGNAL_CNT	source\gsm.h	125;"	macro
 MOTO_MS1_PIN	source\initialize.h	44;"	macro
@@ -2708,7 +2712,7 @@ MemoryAddressCast	source\libraries\inc\stm8l15x.h	194;"	macro
 MemsetFunc	source\jx_math.c	48;"	function	signature:(u8 *pnDeStr, u8 nVal, u8 nSize)
 MemsetFunc	source\jx_math.h	55;"	prototype	signature:(u8 *pnDeStr, u8 nVal, u8 nSize)
 MeterID	source\cj188.h	85;"	macro
-MeterTnNumTransform	source\gsm.c	210;"	function	signature:(u8 nMasterType, u8 *pnNum1, u8 *pnNum2)
+MeterTnNumTransform	source\gsm.c	209;"	function	signature:(u8 nMasterType, u8 *pnNum1, u8 *pnNum2)
 MeterType	source\xinjiangprotocol.h	99;"	member	struct:__anon128::__anon129
 Minute	source\global.h	212;"	member	struct:__anon166::__anon167
 MonFreezeDatProc	source\meter.c	761;"	function	signature:(void)
@@ -2737,7 +2741,7 @@ N7	source\global.h	150;"	member	struct:__anon160::__anon163
 NEAR	source\libraries\inc\stm8l15x.h	155;"	macro
 NEAR	source\libraries\inc\stm8l15x.h	161;"	macro
 NEAR	source\libraries\inc\stm8l15x.h	175;"	macro
-NONE	source\global.h	455;"	macro
+NONE	source\global.h	460;"	macro
 NORMAL_MODE	source\initialize.h	21;"	macro
 NOT_CORRECT_TAMPER	source\libraries\inc\stm8l15x_rtc.h	776;"	macro
 NO_ALARM	source\alarm.h	35;"	macro
@@ -2746,15 +2750,15 @@ NULL	source\global.h	59;"	macro
 NUMBER_AT	source\gsm.h	175;"	macro
 NUMBER_AT_R	source\gsm.h	178;"	macro
 NUMBER_ERROR	source\gsm.h	167;"	macro
-NUMBER_RECORD	source\fileglobal.h	102;"	macro
-NUMBER_RECORD	source\fileglobal.h	116;"	macro
-NUMBER_RECORD	source\fileglobal.h	127;"	macro
-NUMBER_RECORD_ALM	source\fileglobal.h	86;"	macro
-NUMBER_RECORD_ALM	source\fileglobal.h	88;"	macro
-NUMBER_RECORD_DAY	source\fileglobal.h	108;"	macro
-NUMBER_RECORD_DAY	source\fileglobal.h	133;"	macro
-NUMBER_RECORD_MON	source\fileglobal.h	122;"	macro
-NUMBER_RECORD_MON	source\fileglobal.h	96;"	macro
+NUMBER_RECORD	source\fileglobal.h	107;"	macro
+NUMBER_RECORD	source\fileglobal.h	121;"	macro
+NUMBER_RECORD	source\fileglobal.h	132;"	macro
+NUMBER_RECORD_ALM	source\fileglobal.h	91;"	macro
+NUMBER_RECORD_ALM	source\fileglobal.h	93;"	macro
+NUMBER_RECORD_DAY	source\fileglobal.h	113;"	macro
+NUMBER_RECORD_DAY	source\fileglobal.h	138;"	macro
+NUMBER_RECORD_MON	source\fileglobal.h	101;"	macro
+NUMBER_RECORD_MON	source\fileglobal.h	127;"	macro
 NUMBER_UART_RX	source\driveruart.h	17;"	macro
 NUMBER_UART_TX	source\driveruart.h	18;"	macro
 NeedSendMasterCmd	source\protocolglobal.h	60;"	prototype	signature:(u8 Cmd)
@@ -2767,7 +2771,7 @@ NonHandledInterrupt	source\stm8l15x_it.h	41;"	prototype	signature:(void)
 OAR2	source\libraries\inc\stm8l15x.h	1088;"	member	struct:I2C_struct
 OARH	source\libraries\inc\stm8l15x.h	1087;"	member	struct:I2C_struct
 OARL	source\libraries\inc\stm8l15x.h	1086;"	member	struct:I2C_struct
-ODD	source\global.h	456;"	macro
+ODD	source\global.h	461;"	macro
 ODR	source\libraries\inc\stm8l15x.h	281;"	member	struct:GPIO_struct
 OISR	source\libraries\inc\stm8l15x.h	1757;"	member	struct:TIM1_struct
 OISR	source\libraries\inc\stm8l15x.h	1983;"	member	struct:TIM_struct
@@ -2776,6 +2780,7 @@ OLD_VAVLE_ERROR	source\gsmglobal.h	40;"	macro
 OPT	source\libraries\inc\stm8l15x.h	2895;"	macro
 OPTVALVE_LEN	source\fileglobal.h	36;"	macro
 OPTVALVE_LEN	source\fileglobal.h	50;"	macro
+OPTVALVE_LEN	source\fileglobal.h	55;"	macro
 OPTVALVE_TIMEOUT	source\meter.h	28;"	macro
 OPT_BASE	source\libraries\inc\stm8l15x.h	2794;"	macro
 OPT_TypeDef	source\libraries\inc\stm8l15x.h	1372;"	typedef	typeref:struct:OPT_struct
@@ -2788,7 +2793,7 @@ OWED_REP_FAIL	source\meter.h	40;"	macro
 OWED_REP_SUCC	source\meter.h	39;"	macro
 OWED_STAT_FLG	source\meter.h	37;"	macro
 OWED_USED_FLG	source\meter.h	38;"	macro
-Online	source\gsm.c	3188;"	function	signature:(u8 nLogonMode)
+Online	source\gsm.c	3215;"	function	signature:(u8 nLogonMode)
 PARITY_EVEN	source\driveruart.h	28;"	macro
 PARITY_HIGH	source\driveruart.h	27;"	macro
 PARITY_LOW	source\driveruart.h	26;"	macro
@@ -2800,20 +2805,19 @@ PCKENR3	source\libraries\inc\stm8l15x.h	751;"	member	struct:CLK_struct
 PCODESIZE	source\libraries\inc\stm8l15x.h	1367;"	member	struct:OPT_struct
 PECR	source\libraries\inc\stm8l15x.h	1097;"	member	struct:I2C_struct
 PHOTOELECTRIC_METER	source\global.h	49;"	macro
-PIEZOMETER	source\global.h	47;"	macro
 PIEZOMETER_ERROR	source\alarm.h	30;"	macro
 PM	source\libraries\inc\stm8l15x.h	2689;"	member	struct:LCD_struct
-PPP_ATE0_4	source\gsm.c	58;"	macro	file:
-PPP_CGATT_0	source\gsm.c	54;"	macro	file:
-PPP_CGATT_3	source\gsm.c	50;"	macro	file:
-PPP_CIFSR_3	source\gsm.c	57;"	macro	file:
-PPP_CIICR_2	source\gsm.c	56;"	macro	file:
-PPP_CSTT_1	source\gsm.c	55;"	macro	file:
-PPP_GETIP_5	source\gsm.c	52;"	macro	file:
-PPP_PDPCM_1	source\gsm.c	48;"	macro	file:
-PPP_XGAUTH_2	source\gsm.c	49;"	macro	file:
-PPP_XIIC_4	source\gsm.c	51;"	macro	file:
-PPP_XISP_0	source\gsm.c	47;"	macro	file:
+PPP_ATE0_4	source\gsm.c	59;"	macro	file:
+PPP_CGATT_0	source\gsm.c	55;"	macro	file:
+PPP_CGATT_3	source\gsm.c	51;"	macro	file:
+PPP_CIFSR_3	source\gsm.c	58;"	macro	file:
+PPP_CIICR_2	source\gsm.c	57;"	macro	file:
+PPP_CSTT_1	source\gsm.c	56;"	macro	file:
+PPP_GETIP_5	source\gsm.c	53;"	macro	file:
+PPP_PDPCM_1	source\gsm.c	49;"	macro	file:
+PPP_XGAUTH_2	source\gsm.c	50;"	macro	file:
+PPP_XIIC_4	source\gsm.c	52;"	macro	file:
+PPP_XISP_0	source\gsm.c	48;"	macro	file:
 PR	source\libraries\inc\stm8l15x.h	1268;"	member	struct:IWDG_struct
 PRESS_DOWNLIMIT	source\alarm.h	28;"	macro
 PRESS_UPLIMIT	source\alarm.h	29;"	macro
@@ -2868,17 +2872,17 @@ PWR_PVDLevel_TypeDef	source\libraries\inc\stm8l15x_pwr.h	63;"	typedef	typeref:en
 PWR_TypeDef	source\libraries\inc\stm8l15x.h	1428;"	typedef	typeref:struct:PWR_struct
 PWR_UltraLowPowerCmd	source\libraries\inc\stm8l15x_pwr.h	112;"	prototype	signature:(FunctionalState NewState)
 PWR_struct	source\libraries\inc\stm8l15x.h	1422;"	struct
-PackAtCmd	source\gsm.c	580;"	function	signature:(u8 Cmd)
-PackAtCmdExt	source\gsm.c	853;"	function	signature:(void)
-PackAtCmdParameter	source\gsm.c	613;"	function	signature:(u8 Cmd, u8 *Parameter)
-PackAtCmdParameter2	source\gsm.c	651;"	function	signature:(u8 Cmd, u8 *Parameter1, u8 *Parameter2)
-PackAtCmdParameter3	source\gsm.c	707;"	function	signature:(u8 Cmd, u8 *Parameter1, u8 *Parameter2, u8 *Parameter3)
-PackAtCmdTcpsend	source\gsm.c	775;"	function	signature:(u8 Length)
-PackProtocolMaster	source\protocol.c	152;"	function	signature:(u8 Length)
-PackProtocolMasterCopy	source\protocol.c	205;"	function	signature:(u8 Length, u8 *Pack)
-PackProtocolSlave	source\protocol.c	179;"	function	signature:(u8 Length)
-PackProtocolSlaveCopy	source\protocol.c	219;"	function	signature:(u8 Length, u8 *Pack)
-PackTcpSendData	source\gsm.c	836;"	function	signature:(u8 nLen)
+PackAtCmd	source\gsm.c	579;"	function	signature:(u8 Cmd)
+PackAtCmdExt	source\gsm.c	852;"	function	signature:(void)
+PackAtCmdParameter	source\gsm.c	612;"	function	signature:(u8 Cmd, u8 *Parameter)
+PackAtCmdParameter2	source\gsm.c	650;"	function	signature:(u8 Cmd, u8 *Parameter1, u8 *Parameter2)
+PackAtCmdParameter3	source\gsm.c	706;"	function	signature:(u8 Cmd, u8 *Parameter1, u8 *Parameter2, u8 *Parameter3)
+PackAtCmdTcpsend	source\gsm.c	774;"	function	signature:(u8 Length)
+PackProtocolMaster	source\protocol.c	153;"	function	signature:(u8 Length)
+PackProtocolMasterCopy	source\protocol.c	206;"	function	signature:(u8 Length, u8 *Pack)
+PackProtocolSlave	source\protocol.c	180;"	function	signature:(u8 Length)
+PackProtocolSlaveCopy	source\protocol.c	220;"	function	signature:(u8 Length, u8 *Pack)
+PackTcpSendData	source\gsm.c	835;"	function	signature:(u8 nLen)
 Packet	source\gsm.h	205;"	member	union:__anon145	typeref:struct:__anon145::__anon146
 Packet	source\hedaprotocol.h	25;"	member	union:__anon121	typeref:struct:__anon121::__anon122
 Packet	source\xinjiangprotocol.h	103;"	member	union:__anon128	typeref:struct:__anon128::__anon129
@@ -2887,7 +2891,7 @@ Packet_End_1	source\hedaprotocol.h	42;"	macro
 Packet_Head_0	source\hedaprotocol.h	39;"	macro
 Packet_Head_1	source\hedaprotocol.h	40;"	macro
 Password	source\global.h	235;"	member	struct:__anon169
-Password	source\global.h	429;"	member	struct:__anon186::__anon187::__anon189
+Password	source\global.h	434;"	member	struct:__anon186::__anon187::__anon189
 PointerAttr	source\libraries\inc\stm8l15x.h	189;"	macro
 PointerAttr	source\libraries\inc\stm8l15x.h	193;"	macro
 Pressure1_LimitDown	source\global.h	346;"	member	struct:__anon179
@@ -2896,12 +2900,12 @@ Pressure2_LimitDown	source\global.h	348;"	member	struct:__anon179
 Pressure2_LimitUp	source\global.h	347;"	member	struct:__anon179
 Pro_Com_Str	source\cj188.h	179;"	typedef	typeref:struct:__anon131
 Protocol_Version	source\hedaprotocol.h	46;"	macro
-Protol130Handle	source\gsm.c	2396;"	function	signature:(void)
-Protol130Handle	source\gsmglobal.h	141;"	prototype	signature:(void)
-Protol130Send	source\gsm.c	2332;"	function	signature:(u8 Size, u8 nComChannel)
-Protol130Send	source\gsmglobal.h	142;"	prototype	signature:(u8 Size, u8 nComChannel)
-QH_SearchStrVal	source\gsm.c	1038;"	function	signature:(int8_t* pStart, int8_t* pEnd, uint32_t *dwVal)
-QH_bufbuf	source\gsm.c	968;"	function	signature:(int8_t* pbSrc, uint32_t wSrcLen, int8_t* pbSub, uint32_t wSubLen)
+Protol130Handle	source\gsm.c	2423;"	function	signature:(void)
+Protol130Handle	source\gsmglobal.h	142;"	prototype	signature:(void)
+Protol130Send	source\gsm.c	2359;"	function	signature:(u8 Size, u8 nComChannel)
+Protol130Send	source\gsmglobal.h	143;"	prototype	signature:(u8 Size, u8 nComChannel)
+QH_SearchStrVal	source\gsm.c	1037;"	function	signature:(int8_t* pStart, int8_t* pEnd, uint32_t *dwVal)
+QH_bufbuf	source\gsm.c	967;"	function	signature:(int8_t* pbSrc, uint32_t wSrcLen, int8_t* pbSub, uint32_t wSubLen)
 RAM	source\libraries\inc\stm8l15x.h	2691;"	member	struct:LCD_struct
 RCR	source\libraries\inc\stm8l15x.h	1482;"	member	struct:RI_struct
 RCR	source\libraries\inc\stm8l15x.h	1746;"	member	struct:TIM1_struct
@@ -2910,14 +2914,14 @@ READDATA	source\protocolglobal.h	35;"	macro
 READ_CMD	source\protocolglobal.h	46;"	macro
 RECORD_HEAD_0	source\file.h	21;"	macro
 RECORD_HEAD_1	source\file.h	22;"	macro
-RECORD_LEN	source\fileglobal.h	103;"	macro
-RECORD_LEN	source\fileglobal.h	117;"	macro
-RECORD_LEN	source\fileglobal.h	128;"	macro
-RECORD_LEN_ALM	source\fileglobal.h	90;"	macro
-RECORD_LEN_DAY	source\fileglobal.h	109;"	macro
-RECORD_LEN_DAY	source\fileglobal.h	134;"	macro
-RECORD_LEN_MON	source\fileglobal.h	123;"	macro
-RECORD_LEN_MON	source\fileglobal.h	97;"	macro
+RECORD_LEN	source\fileglobal.h	108;"	macro
+RECORD_LEN	source\fileglobal.h	122;"	macro
+RECORD_LEN	source\fileglobal.h	133;"	macro
+RECORD_LEN_ALM	source\fileglobal.h	95;"	macro
+RECORD_LEN_DAY	source\fileglobal.h	114;"	macro
+RECORD_LEN_DAY	source\fileglobal.h	139;"	macro
+RECORD_LEN_MON	source\fileglobal.h	102;"	macro
+RECORD_LEN_MON	source\fileglobal.h	128;"	macro
 REGCSR	source\libraries\inc\stm8l15x.h	750;"	member	struct:CLK_struct
 RELOAD_VALUE	source\initialize.h	8;"	macro
 REMAP_DMA1Channel_ADC1ToChannel0	source\libraries\inc\stm8l15x_syscfg.h	240;"	enumerator	enum:__anon225
@@ -3541,7 +3545,7 @@ RTC_WakeUpClock_RTCCLK_Div4	source\libraries\inc\stm8l15x_rtc.h	186;"	enumerator
 RTC_WakeUpClock_RTCCLK_Div8	source\libraries\inc\stm8l15x_rtc.h	185;"	enumerator	enum:__anon66
 RTC_WakeUpClock_TypeDef	source\libraries\inc\stm8l15x_rtc.h	191;"	typedef	typeref:enum:__anon66
 RTC_WakeUpCmd	source\libraries\inc\stm8l15x_rtc.h	906;"	prototype	signature:(FunctionalState NewState)
-RTC_WakeUpCmd	source\pwrctr.c	54;"	function	signature:(FunctionalState NewState)
+RTC_WakeUpCmd	source\pwrctr.c	55;"	function	signature:(FunctionalState NewState)
 RTC_WeekDay	source\libraries\inc\stm8l15x_rtc.h	527;"	member	struct:__anon86
 RTC_Weekday_Friday	source\libraries\inc\stm8l15x_rtc.h	57;"	enumerator	enum:__anon59
 RTC_Weekday_Monday	source\libraries\inc\stm8l15x_rtc.h	53;"	enumerator	enum:__anon59
@@ -3559,37 +3563,38 @@ RTN_FAIL	source\jx_libtype.h	67;"	macro
 RTN_OK	source\jx_libtype.h	64;"	macro
 RTN_TIMEOUT	source\jx_libtype.h	73;"	macro
 RXCRCR	source\libraries\inc\stm8l15x.h	1659;"	member	struct:SPI_struct
-ReWriteRepFlg	source\gsm.c	2042;"	function	signature:(void)
-ReWriteRepFlg	source\gsmglobal.h	145;"	prototype	signature:(void)
+ReWriteRepFlg	source\gsm.c	1958;"	function	signature:(void)
+ReWriteRepFlg	source\gsm.c	2069;"	function	signature:(void)
+ReWriteRepFlg	source\gsmglobal.h	146;"	prototype	signature:(void)
 ReadAlmRecord	source\file.c	804;"	function	signature:(u8 nIndex, u8 *Record, u8 nOutLen)
-ReadAlmRecord	source\fileglobal.h	156;"	prototype	signature:(u8 nIndex, u8 *Record, u8 nOutLen)
-ReadDataMemory	source\fileglobal.h	162;"	prototype	signature:(u8 nIndex, u8 *Record, u8 nOutLen)
+ReadAlmRecord	source\fileglobal.h	161;"	prototype	signature:(u8 nIndex, u8 *Record, u8 nOutLen)
+ReadDataMemory	source\fileglobal.h	167;"	prototype	signature:(u8 nIndex, u8 *Record, u8 nOutLen)
 ReadDayFreezeRecord	source\file.c	857;"	function	signature:(u8 nIndex, u8 *Record, u8 nOutLen)
-ReadDayFreezeRecord	source\fileglobal.h	159;"	prototype	signature:(u8 nIndex, u8 *Record, u8 nOutLen)
+ReadDayFreezeRecord	source\fileglobal.h	164;"	prototype	signature:(u8 nIndex, u8 *Record, u8 nOutLen)
 ReadGroup	source\file.c	30;"	function	signature:(u8 Length, u16 Address, u8 *Data)
-ReadGroup	source\fileglobal.h	151;"	prototype	signature:(u8 Length, u16 Address, u8 *Data)
+ReadGroup	source\fileglobal.h	156;"	prototype	signature:(u8 Length, u16 Address, u8 *Data)
 ReadIndex	source\file.c	433;"	function	signature:(u16 wAddr)
 ReadMonFreezeRecord	source\file.c	882;"	function	signature:(u8 nIndex, u8 *Record, u8 nOutLen)
-ReadMonFreezeRecord	source\fileglobal.h	161;"	prototype	signature:(u8 nIndex, u8 *Record, u8 nOutLen)
+ReadMonFreezeRecord	source\fileglobal.h	166;"	prototype	signature:(u8 nIndex, u8 *Record, u8 nOutLen)
 ReadParameterForType	source\file.c	554;"	function	signature:(u8* pnDat, u8 nLen, u8 nTpye)
-ReadParameterForType	source\fileglobal.h	147;"	prototype	signature:(u8* pnDat, u8 nLen, u8 nTpye)
+ReadParameterForType	source\fileglobal.h	152;"	prototype	signature:(u8* pnDat, u8 nLen, u8 nTpye)
 ReadRecord	source\file.c	231;"	function	signature:(u8 Index)
 ReadRecord	source\file.c	830;"	function	signature:(u8 nIndex, u8 *Record, u8 nOutLen)
-ReadRecord	source\fileglobal.h	146;"	prototype	signature:(u8 nIndex, u8 *Record, u8 nOutLen)
+ReadRecord	source\fileglobal.h	151;"	prototype	signature:(u8 nIndex, u8 *Record, u8 nOutLen)
 ReadRecordFun	source\file.c	697;"	function	signature:(u8 nIndex, u8 *Record, u8 nOutLen, u8 nRecIndex, u8 nMaxNum, u32 dwRecordAdd)
 ReadReportFlag	source\file.c	399;"	function	signature:(void)
-ReadReportFlag	source\fileglobal.h	150;"	prototype	signature:(void)
+ReadReportFlag	source\fileglobal.h	155;"	prototype	signature:(void)
 ReceivedBusUart	source\driveruart.c	669;"	function	signature:(void)
 ReceivedBusUart	source\driveruart.h	65;"	prototype	signature:(void)
 ReceivedBusUart2	source\driveruart.c	185;"	function	signature:(void)
 ReceivedBusUart2	source\driveruart.h	66;"	prototype	signature:(void)
 ReceivedBusUart2Tail	source\driveruart.c	164;"	function	signature:(void)
-RepPizeometerMakeFrame	source\gsm.c	2199;"	function	signature:(u8* pnOutBuf, u8* pnLen)
-RepPizeometerMakeFrame	source\gsmglobal.h	158;"	prototype	signature:(u8* pnOutBuf, u8* pnLen)
-ReportTimeOutPro	source\gsm.c	3851;"	function	signature:(void)
+RepPizeometerMakeFrame	source\gsm.c	2226;"	function	signature:(u8* pnOutBuf, u8* pnLen)
+RepPizeometerMakeFrame	source\gsmglobal.h	159;"	prototype	signature:(u8* pnOutBuf, u8* pnLen)
+ReportTimeOutPro	source\gsm.c	3878;"	function	signature:(void)
 RestoreStat	source\global.h	295;"	member	struct:__anon174
 RestoreStat	source\global.h	344;"	member	struct:__anon179
-Rx	source\global.h	432;"	member	union:__anon186::__anon187	typeref:struct:__anon186::__anon187::__anon189
+Rx	source\global.h	437;"	member	union:__anon186::__anon187	typeref:struct:__anon186::__anon187::__anon189
 S0	source\global.h	133;"	member	struct:__anon160::__anon161
 S1	source\global.h	134;"	member	struct:__anon160::__anon161
 S16_MAX	source\libraries\inc\stm8l15x.h	257;"	macro
@@ -3605,17 +3610,17 @@ SET	source\libraries\inc\stm8l15x.h	246;"	enumerator	enum:__anon117
 SET_CMD	source\protocolglobal.h	45;"	macro
 SHIFTRH	source\libraries\inc\stm8l15x.h	346;"	member	struct:RTC_struct
 SHIFTRL	source\libraries\inc\stm8l15x.h	347;"	member	struct:RTC_struct
-SIMGK7M_GetCIMI	source\gsm.c	1419;"	function	signature:(u8 *pnOutBuf, u8 nLen)
-SIMGK7M_GetCIMI	source\gsm.h	604;"	prototype	signature:(u8 *pnOutBuf, u8 nLen)
-SIMGL868_GetCCID	source\gsm.c	1442;"	function	signature:(u8 *pnOutBuf, u8 nLen)
-SIMGL868_GetCCID	source\gsm.c	169;"	prototype	file:	signature:(u8 *pnOutBuf, u8 nLen)
-SIMGL868_UpdateSignal	source\gsm.c	1394;"	function	signature:(void)
-SIMGL868_UpdateSignal	source\gsm.h	603;"	prototype	signature:(void)
-SIMGetRegisterStat	source\gsm.c	1375;"	function	signature:(void)
+SIMGK7M_GetCIMI	source\gsm.c	1422;"	function	signature:(u8 *pnOutBuf, u8 nLen)
+SIMGK7M_GetCIMI	source\gsm.h	605;"	prototype	signature:(u8 *pnOutBuf, u8 nLen)
+SIMGL868_GetCCID	source\gsm.c	1445;"	function	signature:(u8 *pnOutBuf, u8 nLen)
+SIMGL868_GetCCID	source\gsm.c	168;"	prototype	file:	signature:(u8 *pnOutBuf, u8 nLen)
+SIMGL868_UpdateSignal	source\gsm.c	1397;"	function	signature:(void)
+SIMGL868_UpdateSignal	source\gsm.h	604;"	prototype	signature:(void)
+SIMGetRegisterStat	source\gsm.c	1378;"	function	signature:(void)
 SIM_REG_FAILURE	source\gsm.h	129;"	macro
 SIM_REG_SUCCESS	source\gsm.h	128;"	macro
 SIZE_BLOCK	source\file.h	24;"	macro
-SIZE_EEPROM	source\fileglobal.h	62;"	macro
+SIZE_EEPROM	source\fileglobal.h	67;"	macro
 SIZE_STORE	source\file.h	23;"	macro
 SMCR	source\libraries\inc\stm8l15x.h	1727;"	member	struct:TIM1_struct
 SMCR	source\libraries\inc\stm8l15x.h	1963;"	member	struct:TIM_struct
@@ -3698,7 +3703,7 @@ STM8_RTC_Init	source\stm8_rtc.h	22;"	prototype	signature:(void)
 STM8_RTC_Set	source\stm8_rtc.c	597;"	function	signature:(ST_Time *time)
 STM8_RTC_Set	source\stm8_rtc.h	24;"	prototype	signature:(ST_Time *time)
 STRINGVECTOR	source\libraries\inc\stm8l15x.h	2951;"	macro
-ST_SPECIA	source\global.h	465;"	macro
+ST_SPECIA	source\global.h	470;"	macro
 ST_Time	source\jx_math.h	38;"	typedef	typeref:struct:__anon149
 SUCCESS	source\libraries\inc\stm8l15x.h	251;"	enumerator	enum:__anon119
 SUCCESS_GLOBAL	source\global.h	18;"	macro
@@ -3746,12 +3751,12 @@ SYSCFG_TypeDef	source\libraries\inc\stm8l15x.h	682;"	typedef	typeref:struct:SYSC
 SYSCFG_struct	source\libraries\inc\stm8l15x.h	676;"	struct
 SYSDivFactor	source\libraries\src\stm8l15x_clk.c	74;"	variable
 SaveByte	source\file.c	51;"	function	signature:(u16 Address, u8 Data)
-SaveByte	source\fileglobal.h	152;"	prototype	signature:(u16 Address, u8 Data)
+SaveByte	source\fileglobal.h	157;"	prototype	signature:(u16 Address, u8 Data)
 SaveGroup	source\file.c	84;"	function	signature:(u8 Length, u16 Address, u8 *Data)
 SaveParameterForType	source\file.c	501;"	function	signature:(u8* pnDat, u8 nLen, u8 nTpye)
-SaveParameterForType	source\fileglobal.h	148;"	prototype	signature:(u8* pnDat, u8 nLen, u8 nTpye)
+SaveParameterForType	source\fileglobal.h	153;"	prototype	signature:(u8* pnDat, u8 nLen, u8 nTpye)
 SaveReportFlag	source\file.c	358;"	function	signature:(u8 nReportFlg)
-SaveReportFlag	source\fileglobal.h	149;"	prototype	signature:(u8 nReportFlg)
+SaveReportFlag	source\fileglobal.h	154;"	prototype	signature:(u8 nReportFlg)
 Second	source\global.h	211;"	member	struct:__anon166::__anon167
 SendBusUartOver	source\driveruart.c	642;"	function	signature:(void)
 SendBusUartOver	source\driveruart.h	67;"	prototype	signature:(void)
@@ -3767,8 +3772,8 @@ SetGuardPinOff	source\initialize.h	98;"	macro
 SetGuardPinOn	source\initialize.h	97;"	macro
 SetIO_LEDOff	source\initialize.h	84;"	macro
 SetIO_LEDOn	source\initialize.h	83;"	macro
-SetLogonMode	source\gsm.c	234;"	function	signature:(u8 nMode)
-SetLogonMode	source\gsmglobal.h	150;"	prototype	signature:(u8 nMode)
+SetLogonMode	source\gsm.c	233;"	function	signature:(u8 nMode)
+SetLogonMode	source\gsmglobal.h	151;"	prototype	signature:(u8 nMode)
 SetMeterBoradAdd	source\protocolglobal.h	76;"	prototype	signature:(u8 *pnBuf)
 SetPortBatGatDisable	source\initialize.h	143;"	macro
 SetPortBatGatEnable	source\initialize.h	142;"	macro
@@ -3786,19 +3791,19 @@ SetPortRS485Rx	source\initialize.h	118;"	macro
 SetPortRS485Tx	source\initialize.h	119;"	macro
 SetPortSoftSwitchOff	source\initialize.h	132;"	macro
 SetPortSoftSwitchOn	source\initialize.h	133;"	macro
-SetReportIndex	source\gsm.c	3913;"	function	signature:(u8 nDat)
-SetReportIndex	source\gsmglobal.h	147;"	prototype	signature:(u8 nDat)
+SetReportIndex	source\gsm.c	3940;"	function	signature:(u8 nDat)
+SetReportIndex	source\gsmglobal.h	148;"	prototype	signature:(u8 nDat)
 SetTmDebugModeStat	source\inicialize.c	679;"	function	signature:(u8 nMode)
 SetTmDebugModeStat	source\initialize.h	238;"	prototype	signature:(u8 nMode)
 Short	source\global.h	89;"	member	union:__anon155
 Shorts	source\global.h	135;"	member	union:__anon160	typeref:struct:__anon160::__anon161
 StartSendBusUartGroup	source\driveruart.c	684;"	function	signature:(u8 Length)
 StartSendBusUartGroup	source\driveruart.h	71;"	prototype	signature:(uint8_t Length)
-StartSendGprs	source\gsmglobal.h	138;"	prototype	signature:(void)
+StartSendGprs	source\gsmglobal.h	139;"	prototype	signature:(void)
 Status	source\global.h	232;"	member	struct:__anon169
 Status	source\global.h	294;"	member	struct:__anon174
 Status	source\global.h	343;"	member	struct:__anon179
-Status	source\global.h	427;"	member	struct:__anon186::__anon187::__anon189
+Status	source\global.h	432;"	member	struct:__anon186::__anon187::__anon189
 Sub_IP	source\global.h	259;"	member	struct:__anon171
 Sub_Port	source\global.h	261;"	member	struct:__anon171
 SystemTask	source\main.c	59;"	function	signature:(void)
@@ -4684,6 +4689,7 @@ TINY	source\libraries\inc\stm8l15x.h	156;"	macro
 TINY	source\libraries\inc\stm8l15x.h	162;"	macro
 TINY	source\libraries\inc\stm8l15x.h	176;"	macro
 TMADDRESS_LEN	source\fileglobal.h	39;"	macro
+TMADDRESS_LEN	source\fileglobal.h	59;"	macro
 TM_ADDRESS_PRAA	source\gsmglobal.h	28;"	macro
 TM_CalPastedDays	source\jx_math.c	123;"	function	signature:(const TM_Time *timeNow)
 TM_CalPastedDays	source\jx_math.h	69;"	prototype	signature:(const TM_Time *timeNow)
@@ -4713,7 +4719,7 @@ TM_TimeChangeAToB	source\jx_math.c	201;"	function	signature:(ST_Time *pstTimeA, 
 TM_TimeChangeAToB	source\jx_math.h	66;"	prototype	signature:(ST_Time *pstTimeA, TM_Time *pstTimeB)
 TM_TimeChangeBToA	source\jx_math.c	227;"	function	signature:(const TM_Time *pstTimeB, ST_Time *pstTimeA)
 TM_TimeChangeBToA	source\jx_math.h	67;"	prototype	signature:(const TM_Time *pstTimeB, ST_Time *pstTimeA)
-TO_MAXCNT	source\gsm.c	39;"	macro	file:
+TO_MAXCNT	source\gsm.c	40;"	macro	file:
 TR1	source\libraries\inc\stm8l15x.h	306;"	member	struct:RTC_struct
 TR2	source\libraries\inc\stm8l15x.h	307;"	member	struct:RTC_struct
 TR3	source\libraries\inc\stm8l15x.h	308;"	member	struct:RTC_struct
@@ -4724,7 +4730,7 @@ TRISER	source\libraries\inc\stm8l15x.h	1096;"	member	struct:I2C_struct
 TRUE	source\jx_libtype.h	56;"	macro
 TRUE	source\libraries\inc\stm8l15x.h	244;"	enumerator	enum:__anon116
 TXCRCR	source\libraries\inc\stm8l15x.h	1660;"	member	struct:SPI_struct
-TermReportReplyPro	source\gsm.c	2067;"	function	signature:(u32 dwItem, u8 *pnBuf)
+TermReportReplyPro	source\gsm.c	2094;"	function	signature:(u32 dwItem, u8 *pnBuf)
 Time	source\global.h	252;"	member	struct:__anon170
 Time	source\global.h	266;"	member	struct:__anon172
 Time	source\global.h	310;"	member	struct:__anon175
@@ -4745,16 +4751,16 @@ TurnOnExit	source\inicialize.c	699;"	function	signature:(void)
 TurnOnExit	source\initialize.h	229;"	prototype	signature:(void)
 TurnOnTimerUart	source\driveruart.c	76;"	function	signature:(void)
 TurnOnTimerUart	source\driveruart.h	74;"	prototype	signature:(void)
-Tx	source\global.h	421;"	member	union:__anon186::__anon187	typeref:struct:__anon186::__anon187::__anon188
+Tx	source\global.h	426;"	member	union:__anon186::__anon187	typeref:struct:__anon186::__anon187::__anon188
 Type	source\global.h	231;"	member	struct:__anon169
 Type	source\global.h	290;"	member	struct:__anon174
 Type	source\global.h	339;"	member	struct:__anon179
-Type	source\global.h	426;"	member	struct:__anon186::__anon187::__anon189
+Type	source\global.h	431;"	member	struct:__anon186::__anon187::__anon189
 Type16Bits	source\global.h	128;"	typedef	typeref:union:__anon155
 Type32Bits	source\global.h	204;"	typedef	typeref:union:__anon160
 Type8Bits	source\global.h	86;"	typedef	typeref:union:__anon151
 TypeGprs	source\gsm.h	192;"	typedef	typeref:struct:__anon144
-TypeJason	source\global.h	437;"	typedef	typeref:struct:__anon186
+TypeJason	source\global.h	442;"	typedef	typeref:struct:__anon186
 TypeParameter	source\global.h	245;"	typedef	typeref:struct:__anon169
 TypeParameter	source\global.h	296;"	typedef	typeref:struct:__anon174
 TypeParameter	source\global.h	349;"	typedef	typeref:struct:__anon179
@@ -4766,9 +4772,9 @@ TypeProtol_HD	source\hedaprotocol.h	27;"	typedef	typeref:union:__anon121
 TypeProtol_XJ	source\xinjiangprotocol.h	105;"	typedef	typeref:union:__anon128
 TypeRecord	source\global.h	273;"	typedef	typeref:struct:__anon172
 TypeRecord	source\global.h	323;"	typedef	typeref:struct:__anon177
-TypeRecord	source\global.h	372;"	typedef	typeref:struct:__anon182
-TypeRecordDay	source\global.h	382;"	typedef	typeref:struct:__anon183
-TypeRecordMon	source\global.h	389;"	typedef	typeref:struct:__anon184
+TypeRecord	source\global.h	376;"	typedef	typeref:struct:__anon182
+TypeRecordDay	source\global.h	387;"	typedef	typeref:struct:__anon183
+TypeRecordMon	source\global.h	394;"	typedef	typeref:struct:__anon184
 TypeReport	source\global.h	254;"	typedef	typeref:struct:__anon170
 TypeReport	source\global.h	311;"	typedef	typeref:struct:__anon175
 TypeReport	source\global.h	358;"	typedef	typeref:struct:__anon180
@@ -4777,7 +4783,7 @@ TypeReportParameter	source\global.h	262;"	typedef	typeref:struct:__anon171
 TypeReportParameter	source\global.h	317;"	typedef	typeref:struct:__anon176
 TypeReportParameter	source\global.h	366;"	typedef	typeref:struct:__anon181
 TypeTime	source\global.h	225;"	typedef	typeref:union:__anon166
-TypeValveOpt	source\global.h	404;"	typedef	typeref:struct:__anon185
+TypeValveOpt	source\global.h	409;"	typedef	typeref:struct:__anon185
 U16_MAX	source\libraries\inc\stm8l15x.h	256;"	macro
 U32_MAX	source\libraries\inc\stm8l15x.h	259;"	macro
 U8_MAX	source\libraries\inc\stm8l15x.h	253;"	macro
@@ -4792,13 +4798,13 @@ UART_BUSY_TX1	source\driveruart.h	44;"	macro
 UART_BUSY_TX2	source\driveruart.h	45;"	macro
 UART_BUSY_TX3	source\driveruart.h	46;"	macro
 UBC	source\libraries\inc\stm8l15x.h	1362;"	member	struct:OPT_struct
-UC_CommAT	source\gsm.c	1090;"	function	signature:(u8 nCmd, u8 *pnParameter, uint8_t *pnMatch1, uint8_t *pnMatch2, uint8_t *pnMatch3, uint8_t *pnMatch4, uint8_t **pnOutMatchPtr, uint32_t dwWaitmS)
-UC_CommAT	source\gsm.c	170;"	prototype	file:	signature:(u8 nCmd, u8 *pnParameter, uint8_t *pnMatch1, uint8_t *pnMatch2, uint8_t *pnMatch3, uint8_t *pnMatch4, uint8_t **pnOutMatchPtr, uint32_t dwWaitmS)
-UC_CommATExt	source\gsm.c	1232;"	function	signature:(u8 nCmd, u8 *pnParameter1, u8 *pnParameter2, u8 *pnParameter3, uint8_t *pnMatch1, uint8_t *pnMatch2, uint8_t *pnMatch3, uint8_t *pnMatch4, uint8_t **pnOutMatchPtr, uint32_t dwWaitmS)
-UC_SetSleepCnt	source\gsm.c	880;"	function	signature:(uint32_t dwWaitmS)
-UC_SleepFunc	source\gsm.c	928;"	function	signature:(uint32_t dwWaitmS)
-UC_SleepFunc	source\gsmglobal.h	143;"	prototype	signature:(uint32_t dwWaitmS)
-UC_SleepProc	source\gsm.c	894;"	function	signature:(void)
+UC_CommAT	source\gsm.c	1089;"	function	signature:(u8 nCmd, u8 *pnParameter, uint8_t *pnMatch1, uint8_t *pnMatch2, uint8_t *pnMatch3, uint8_t *pnMatch4, uint8_t **pnOutMatchPtr, uint32_t dwWaitmS)
+UC_CommAT	source\gsm.c	169;"	prototype	file:	signature:(u8 nCmd, u8 *pnParameter, uint8_t *pnMatch1, uint8_t *pnMatch2, uint8_t *pnMatch3, uint8_t *pnMatch4, uint8_t **pnOutMatchPtr, uint32_t dwWaitmS)
+UC_CommATExt	source\gsm.c	1233;"	function	signature:(u8 nCmd, u8 *pnParameter1, u8 *pnParameter2, u8 *pnParameter3, uint8_t *pnMatch1, uint8_t *pnMatch2, uint8_t *pnMatch3, uint8_t *pnMatch4, uint8_t **pnOutMatchPtr, uint32_t dwWaitmS)
+UC_SetSleepCnt	source\gsm.c	879;"	function	signature:(uint32_t dwWaitmS)
+UC_SleepFunc	source\gsm.c	927;"	function	signature:(uint32_t dwWaitmS)
+UC_SleepFunc	source\gsmglobal.h	144;"	prototype	signature:(uint32_t dwWaitmS)
+UC_SleepProc	source\gsm.c	893;"	function	signature:(void)
 UP_FREE	source\gsm.h	153;"	macro
 UP_FREE	source\gsm.h	155;"	macro
 UP_FREE_XJ	source\xinjiangprotocol.h	29;"	macro
@@ -4965,21 +4971,20 @@ USART_WordLength_9b	source\libraries\inc\stm8l15x_usart.h	198;"	enumerator	enum:
 USART_WordLength_TypeDef	source\libraries\inc\stm8l15x_usart.h	199;"	typedef	typeref:enum:__anon51
 USART_struct	source\libraries\inc\stm8l15x.h	2223;"	struct
 USE_STDPERIPH_DRIVER	source\libraries\inc\stm8l15x.h	122;"	macro
-U_TranShort	source\protocol.c	31;"	variable	typeref:union:__anon190
-UpLinkSaveReportTime	source\gsm.c	316;"	function	signature:(void)
+U_TranShort	source\protocol.c	32;"	variable	typeref:union:__anon190
+UpLinkSaveReportTime	source\gsm.c	315;"	function	signature:(void)
 Usart1Initialize	source\driveruart.c	564;"	function	signature:(void)
 Usart1Initialize	source\driveruart.h	79;"	prototype	signature:(void)
 VALVECLOSE	source\protocolglobal.h	39;"	macro
 VALVEOPEN	source\protocolglobal.h	38;"	macro
 VALVE_CLOSE	source\cj188.h	31;"	macro
 VALVE_CLOSE_188	source\gsm.h	142;"	macro
-VALVE_CLOSE_UP	source\gsm.c	42;"	macro	file:
+VALVE_CLOSE_UP	source\gsm.c	43;"	macro	file:
 VALVE_ERROR	source\cj188.h	32;"	macro
-VALVE_ERROR_UP	source\gsm.c	43;"	macro	file:
+VALVE_ERROR_UP	source\gsm.c	44;"	macro	file:
 VALVE_OPEN	source\cj188.h	30;"	macro
 VALVE_OPEN_188	source\gsm.h	141;"	macro
 VAVLE_DELAY	source\meter.h	32;"	macro
-VAVLE_METER	source\global.h	41;"	macro
 VAVLE_OPT_DELAY	source\meter.h	34;"	macro
 VAVLE_TIMEOUT	source\meter.h	33;"	macro
 VECTOR_ID	source\libraries\inc\stm8l15x.h	2952;"	macro
@@ -4990,16 +4995,16 @@ Value	source\global.h	293;"	member	struct:__anon174
 Value	source\global.h	321;"	member	struct:__anon177
 Value	source\global.h	342;"	member	struct:__anon179
 Value	source\global.h	370;"	member	struct:__anon182
-Value	source\global.h	378;"	member	struct:__anon183
-Value	source\global.h	386;"	member	struct:__anon184
-Value	source\global.h	428;"	member	struct:__anon186::__anon187::__anon189
+Value	source\global.h	382;"	member	struct:__anon183
+Value	source\global.h	391;"	member	struct:__anon184
+Value	source\global.h	433;"	member	struct:__anon186::__anon187::__anon189
 ValveStatIoModeChange	source\inicialize.c	784;"	function	signature:(u8 nMode)
 ValveStatIoModeChange	source\initialize.h	239;"	prototype	signature:(u8 nMode)
-VavleOperateFun	source\protocol.c	1181;"	function	signature:(u8 nOptCmd)
+VavleOperateFun	source\protocol.c	1182;"	function	signature:(u8 nOptCmd)
 VavleOperateFun	source\protocolglobal.h	72;"	prototype	signature:(u8 nOptCmd)
-VavleOperateFunExt	source\protocol.c	1034;"	function	signature:(u8 nOptCmd)
-VavleOperateFunExt	source\protocol.c	1142;"	function	signature:(u8 nOptCmd)
-VavleStatTransform	source\gsm.c	186;"	function	signature:(u8 nMasterType, u8 nOldMastVavle, u8* pnNewVavleStat)
+VavleOperateFunExt	source\protocol.c	1035;"	function	signature:(u8 nOptCmd)
+VavleOperateFunExt	source\protocol.c	1143;"	function	signature:(u8 nOptCmd)
+VavleStatTransform	source\gsm.c	185;"	function	signature:(u8 nMasterType, u8 nOldMastVavle, u8* pnNewVavleStat)
 Version	source\hedaprotocol.h	11;"	member	struct:__anon120
 WAKE_UP_EXTIT_PIN	source\pwrctr.h	39;"	macro
 WAKE_UP_EXTIT_PIN	source\pwrctr.h	43;"	macro
@@ -5079,7 +5084,7 @@ WFE_Source_USART3_EV	source\libraries\inc\stm8l15x_wfe.h	89;"	enumerator	enum:__
 WFE_TypeDef	source\libraries\inc\stm8l15x.h	1297;"	typedef	typeref:struct:WFE_struct
 WFE_WakeUpSourceEventCmd	source\libraries\inc\stm8l15x_wfe.h	141;"	prototype	signature:(WFE_Source_TypeDef WFE_Source, FunctionalState NewState)
 WFE_struct	source\libraries\inc\stm8l15x.h	1290;"	struct
-WINDOW_VALUE	source\pwrctr.c	25;"	macro	file:
+WINDOW_VALUE	source\pwrctr.c	26;"	macro	file:
 WITHOUT_BAT	source\alarm.h	45;"	macro
 WPR	source\libraries\inc\stm8l15x.h	344;"	member	struct:RTC_struct
 WR	source\libraries\inc\stm8l15x.h	2648;"	member	struct:WWDG_struct
@@ -5110,8 +5115,8 @@ WWDG_WR_MSB	source\libraries\inc\stm8l15x.h	2671;"	macro
 WWDG_WR_RESET_VALUE	source\libraries\inc\stm8l15x.h	2657;"	macro
 WWDG_WR_W	source\libraries\inc\stm8l15x.h	2672;"	macro
 WWDG_struct	source\libraries\inc\stm8l15x.h	2645;"	struct
-WatitDataSendOk	source\gsm.c	1931;"	function	signature:(void)
-WatitDataSendOk	source\gsmglobal.h	149;"	prototype	signature:(void)
+WatitDataSendOk	source\gsm.c	1934;"	function	signature:(void)
+WatitDataSendOk	source\gsmglobal.h	150;"	prototype	signature:(void)
 XIAMEN_QIJUN_GPRS	source\gsm.h	132;"	macro
 XJ_ALM_CLR_LEN	source\xinjiangprotocol.h	46;"	macro
 XJ_APN_LEN	source\xinjiangprotocol.h	45;"	macro
@@ -5172,9 +5177,9 @@ XJ_WATERGAGE_LEN	source\xinjiangprotocol.h	47;"	macro
 XTSTARTUP	source\libraries\inc\stm8l15x.h	1369;"	member	struct:OPT_struct
 YM	source\global.h	223;"	member	struct:__anon166::__anon168
 Year	source\global.h	217;"	member	struct:__anon166::__anon167
-_ACR_CMD_OFFSET	source\protocol.c	22;"	macro	file:
-_ACR_DAT_OFFSET	source\protocol.c	24;"	macro	file:
-_ACR_LEN_OFFSET	source\protocol.c	23;"	macro	file:
+_ACR_CMD_OFFSET	source\protocol.c	23;"	macro	file:
+_ACR_DAT_OFFSET	source\protocol.c	25;"	macro	file:
+_ACR_LEN_OFFSET	source\protocol.c	24;"	macro	file:
 _COSMIC_	source\libraries\inc\stm8l15x.h	109;"	macro
 _HeDaProtocol_H_	source\hedaprotocol.h	2;"	macro
 _IAR_	source\libraries\inc\stm8l15x.h	113;"	macro
@@ -5308,11 +5313,11 @@ aucAtPAscii_Equal0	source\gsm.h	214;"	variable
 aucAtPAscii_Equal1	source\gsm.h	213;"	variable
 aucAtPAscii_Question	source\gsm.h	210;"	variable
 aucAtPBaudrate	source\gsm.h	215;"	variable
-aucAtPPort1	source\gsm.c	68;"	variable
+aucAtPPort1	source\gsm.c	69;"	variable
 aucAtPPort2	source\gsm.h	218;"	variable
-aucAtPPortBk	source\gsm.c	70;"	variable
-aucAtPServer1	source\gsm.c	67;"	variable
-aucAtPServerBk	source\gsm.c	69;"	variable
+aucAtPPortBk	source\gsm.c	71;"	variable
+aucAtPServer1	source\gsm.c	68;"	variable
+aucAtPServerBk	source\gsm.c	70;"	variable
 aucAtPTimeServer1	source\gsm.h	216;"	variable
 aucAtPTimeServer2	source\gsm.h	217;"	variable
 aucAtPdpCm	source\gsm.h	306;"	variable
@@ -5423,7 +5428,7 @@ b8	source\global.h	119;"	member	struct:__anon155::__anon159
 b8	source\global.h	179;"	member	struct:__anon160::__anon165
 b9	source\global.h	120;"	member	struct:__anon155::__anon159
 b9	source\global.h	180;"	member	struct:__anon160::__anon165
-bNeedReport	source\gsm.h	601;"	macro
+bNeedReport	source\gsm.h	602;"	macro
 bool	source\libraries\inc\stm8l15x.h	244;"	typedef	typeref:enum:__anon116
 buff	source\cj188.h	110;"	member	union:__anon131::__anon132
 buff	source\cj188.h	127;"	member	union:__anon131::__anon132::__anon133::__anon135::__anon136
@@ -5446,9 +5451,9 @@ disableInterrupts	source\libraries\inc\stm8l15x.h	2917;"	macro
 disableInterrupts	source\libraries\inc\stm8l15x.h	2928;"	macro
 disturb_time	source\cj188.h	163;"	member	struct:__anon131::__anon132::__anon133::__anon135::__anon139::__anon142
 domain_name	source\hedaprotocol.h	34;"	member	struct:__anon123
-dwNowTime	source\protocol.c	34;"	variable
+dwNowTime	source\protocol.c	35;"	variable
 dwPurchaseVal	source\global.h	236;"	member	struct:__anon169
-dwTime	source\protocol.c	34;"	variable
+dwTime	source\protocol.c	35;"	variable
 electricity	source\cj188.h	164;"	member	struct:__anon131::__anon132::__anon133::__anon135::__anon139::__anon142
 enable	source\global.h	250;"	member	struct:__anon170
 enableInterrupts	source\libraries\inc\stm8l15x.h	2906;"	macro
@@ -5456,44 +5461,43 @@ enableInterrupts	source\libraries\inc\stm8l15x.h	2916;"	macro
 enableInterrupts	source\libraries\inc\stm8l15x.h	2927;"	macro
 encrypt	source\cj188.h	134;"	member	struct:__anon131::__anon132::__anon133::__anon135::__anon136::__anon137
 fixTaskFile	source\file.c	141;"	function	signature:(void)
-fixTaskGsm	source\gsm.c	4037;"	function	signature:(void)
-fixTaskGsm	source\gsmglobal.h	133;"	prototype	signature:(void)
-fixTaskGsmProc	source\gsm.c	3955;"	function	signature:(void)
+fixTaskGsm	source\gsm.c	4064;"	function	signature:(void)
+fixTaskGsm	source\gsmglobal.h	134;"	prototype	signature:(void)
+fixTaskGsmProc	source\gsm.c	3982;"	function	signature:(void)
 fixTaskLed	source\inicialize.c	811;"	function	signature:(void)
 fixTaskLed	source\initialize.h	235;"	prototype	signature:(void)
 fixTaskMeter	source\meter.c	1100;"	function	signature:(void)
 fixTaskMeter	source\meter.h	78;"	prototype	signature:(void)
 fixTaskMeterTestCode	source\meter.c	910;"	function	signature:(void)
-fixTaskProtocolDebug	source\protocol.c	1285;"	function	signature:(void)
+fixTaskProtocolDebug	source\protocol.c	1286;"	function	signature:(void)
 fixTaskProtocolDebug	source\protocolglobal.h	56;"	prototype	signature:(void)
 fixTaskVavle	source\meter.c	638;"	function	signature:(void)
 fixTaskVavle	source\meter.h	82;"	prototype	signature:(void)
 fixTimerFile	source\file.c	137;"	function	signature:(void)
-fixTimerGsm	source\gsmglobal.h	134;"	prototype	signature:(void)
+fixTimerGsm	source\gsmglobal.h	135;"	prototype	signature:(void)
 flag_Login_Mode	source\global.h	365;"	member	struct:__anon181
 flag_change	source\hedaprotocol.h	31;"	member	struct:__anon123
 flag_error	source\cj188.h	178;"	member	struct:__anon131
 flagok	source\cj188.h	177;"	member	struct:__anon131
-g_BatRepFlg	source\gsm.c	138;"	variable
-g_Device_Info	source\hedaprotocol.c	26;"	variable
+g_BatRepFlg	source\gsm.c	139;"	variable
 g_HD_Ctrl	source\hedaprotocol.c	28;"	variable
 g_HD_Msg_Tag	source\hedaprotocol.c	29;"	variable
 g_HD_aralm_type	source\hedaprotocol.c	30;"	variable
 g_HD_device_addr	source\hedaprotocol.c	31;"	variable
-g_OptValveRepFlg	source\gsm.c	136;"	variable
+g_OptValveRepFlg	source\gsm.c	137;"	variable
 g_dwBatNoLoadVol	source\alarm.c	27;"	variable
 g_dwBatVol	source\alarm.c	26;"	variable
-g_dwCommDelay	source\gsm.c	137;"	variable
+g_dwCommDelay	source\gsm.c	138;"	variable
 g_dwInnerVol	source\alarm.c	28;"	variable
 g_dwNowMeterVal	source\meter.c	47;"	variable
-g_dwRepTick	source\gsm.c	140;"	variable
+g_dwRepTick	source\gsm.c	141;"	variable
 g_dwSysTick	source\inicialize.c	22;"	variable
-g_dwTmAddress	source\gsm.c	155;"	variable
+g_dwTmAddress	source\gsm.c	156;"	variable
 g_nAlmRepFailCnt	source\alarm.c	30;"	variable
 g_nAlmStat	source\alarm.c	25;"	variable
-g_nApnBuf	source\gsm.c	64;"	variable
-g_nApnType	source\gsm.c	141;"	variable
-g_nDatRepCnt	source\gsm.c	139;"	variable
+g_nApnBuf	source\gsm.c	65;"	variable
+g_nApnType	source\gsm.c	142;"	variable
+g_nDatRepCnt	source\gsm.c	140;"	variable
 g_nDayRecIndex	source\file.h	50;"	variable
 g_nEmcf	source\main.c	44;"	variable
 g_nErrFlg	source\meter.c	38;"	variable
@@ -5506,23 +5510,23 @@ g_nMonRecIndex	source\file.h	51;"	variable
 g_nOhterRes	source\main.c	46;"	variable
 g_nOptValveTask	source\meter.c	44;"	variable
 g_nOthe	source\main.c	45;"	variable
-g_nOwedRepFlg	source\gsm.c	158;"	variable
-g_nPwdBuf	source\gsm.c	66;"	variable
+g_nOwedRepFlg	source\gsm.c	159;"	variable
+g_nPwdBuf	source\gsm.c	67;"	variable
 g_nRecAlmIndex	source\file.h	43;"	variable
-g_nReportFlg	source\gsm.c	133;"	variable
+g_nReportFlg	source\gsm.c	134;"	variable
 g_nSeqNum	source\cj188.c	15;"	variable
-g_nSignal	source\gsm.c	63;"	variable
+g_nSignal	source\gsm.c	64;"	variable
 g_nSwimf	source\main.c	43;"	variable
-g_nUsrBuf	source\gsm.c	65;"	variable
-g_nValveStat	source\protocol.c	36;"	variable
+g_nUsrBuf	source\gsm.c	66;"	variable
+g_nValveStat	source\protocol.c	37;"	variable
 g_nWwdgf	source\main.c	41;"	variable
-g_stNextGmTime	source\pwrctr.c	38;"	variable
-g_stNextRepTime	source\pwrctr.c	37;"	variable
-g_stPowrOnTime	source\pwrctr.c	36;"	variable
+g_stNextGmTime	source\pwrctr.c	39;"	variable
+g_stNextRepTime	source\pwrctr.c	38;"	variable
+g_stPowrOnTime	source\pwrctr.c	37;"	variable
 g_wGMInterval	source\meter.c	28;"	variable
 g_wIwdgTick	source\inicialize.c	25;"	variable
 g_wIwdgTickExt	source\inicialize.c	28;"	variable
-g_wTmReportCnt	source\gsm.c	132;"	variable
+g_wTmReportCnt	source\gsm.c	133;"	variable
 halt	source\libraries\inc\stm8l15x.h	2914;"	macro
 halt	source\libraries\inc\stm8l15x.h	2924;"	macro
 halt	source\libraries\inc\stm8l15x.h	2935;"	macro
@@ -5541,48 +5545,48 @@ le00	source\protocol.h	61;"	variable
 lf00	source\protocol.h	63;"	variable
 m_dw500MsTick	source\inicialize.c	36;"	variable
 m_dwSecTick	source\inicialize.c	35;"	variable
-m_dwTimeCnt	source\gsm.c	130;"	variable
-m_nAlmRepFlg	source\gsm.c	153;"	variable
-m_nCcidBuf	source\gsm.c	123;"	variable
+m_dwTimeCnt	source\gsm.c	131;"	variable
+m_nAlmRepFlg	source\gsm.c	154;"	variable
+m_nCcidBuf	source\gsm.c	124;"	variable
 m_nChinaMobileApn	source\xinjiangprotocol.c	35;"	variable
-m_nCnt	source\gsm.c	161;"	variable	file:
-m_nDataRepSucFlg	source\gsm.c	147;"	variable
-m_nDebugFlg	source\pwrctr.c	33;"	variable
-m_nGmTn_1	source\gsm.c	150;"	variable
-m_nGmTn_2	source\gsm.c	151;"	variable
-m_nGprsStep	source\gsm.c	129;"	variable
-m_nImsiBuf	source\gsm.c	124;"	variable
-m_nImsiBufXJ	source\gsm.c	125;"	variable
-m_nIpAddBk	source\gsm.c	144;"	variable
-m_nKeyWuFlg	source\pwrctr.c	30;"	variable	file:
-m_nLedFlashFlg	source\gsm.c	148;"	variable
-m_nMasterType	source\gsm.c	149;"	variable
+m_nCnt	source\gsm.c	162;"	variable	file:
+m_nDataRepSucFlg	source\gsm.c	148;"	variable
+m_nDebugFlg	source\pwrctr.c	34;"	variable
+m_nGmTn_1	source\gsm.c	151;"	variable
+m_nGmTn_2	source\gsm.c	152;"	variable
+m_nGprsStep	source\gsm.c	130;"	variable
+m_nImsiBuf	source\gsm.c	125;"	variable
+m_nImsiBufXJ	source\gsm.c	126;"	variable
+m_nIpAddBk	source\gsm.c	145;"	variable
+m_nKeyWuFlg	source\pwrctr.c	31;"	variable	file:
+m_nLedFlashFlg	source\gsm.c	149;"	variable
+m_nMasterType	source\gsm.c	150;"	variable
 m_nMonthMaxDaysTab	source\jx_math.c	15;"	variable	file:
-m_nPowrDown	source\pwrctr.c	31;"	variable	file:
-m_nPtrcoVerBuf	source\gsm.c	121;"	variable
-m_nRepEnableFlg	source\gsm.c	143;"	variable
-m_nRepFailFlg	source\gsm.c	146;"	variable
-m_nRepIndex	source\gsm.c	145;"	variable
+m_nPowrDown	source\pwrctr.c	32;"	variable	file:
+m_nPtrcoVerBuf	source\gsm.c	122;"	variable
+m_nRepEnableFlg	source\gsm.c	144;"	variable
+m_nRepFailFlg	source\gsm.c	147;"	variable
+m_nRepIndex	source\gsm.c	146;"	variable
 m_nUartRxLockFlg	source\driveruart.c	48;"	variable	file:
 m_nUnicomApn	source\xinjiangprotocol.c	34;"	variable
-m_nUploadMode	source\gsm.c	152;"	variable
-m_nVerBuf	source\gsm.c	101;"	variable
-m_nVerBuf	source\gsm.c	106;"	variable
-m_nVerBuf	source\gsm.c	108;"	variable
-m_nVerBuf	source\gsm.c	111;"	variable
-m_nVerBuf	source\gsm.c	73;"	variable
-m_nVerBuf	source\gsm.c	76;"	variable
-m_nVerBuf	source\gsm.c	79;"	variable
-m_nVerBuf	source\gsm.c	82;"	variable
-m_nVerBuf	source\gsm.c	85;"	variable
-m_nVerBuf	source\gsm.c	88;"	variable
-m_nVerBuf	source\gsm.c	91;"	variable
-m_nVerBuf	source\gsm.c	96;"	variable
-m_nVerBuf	source\gsm.c	98;"	variable
-m_nWakeUpCnt	source\pwrctr.c	32;"	variable	file:
-m_nWakeupReportFlg	source\gsm.c	128;"	variable
+m_nUploadMode	source\gsm.c	153;"	variable
+m_nVerBuf	source\gsm.c	102;"	variable
+m_nVerBuf	source\gsm.c	107;"	variable
+m_nVerBuf	source\gsm.c	109;"	variable
+m_nVerBuf	source\gsm.c	112;"	variable
+m_nVerBuf	source\gsm.c	74;"	variable
+m_nVerBuf	source\gsm.c	77;"	variable
+m_nVerBuf	source\gsm.c	80;"	variable
+m_nVerBuf	source\gsm.c	83;"	variable
+m_nVerBuf	source\gsm.c	86;"	variable
+m_nVerBuf	source\gsm.c	89;"	variable
+m_nVerBuf	source\gsm.c	92;"	variable
+m_nVerBuf	source\gsm.c	97;"	variable
+m_nVerBuf	source\gsm.c	99;"	variable
+m_nWakeUpCnt	source\pwrctr.c	33;"	variable	file:
+m_nWakeupReportFlg	source\gsm.c	129;"	variable
 m_nWorkMode	source\inicialize.c	32;"	variable
-m_stStartTime	source\pwrctr.c	35;"	variable
+m_stStartTime	source\pwrctr.c	36;"	variable
 m_wSoftVison	source\xinjiangprotocol.c	28;"	variable
 m_wSubSwVison	source\xinjiangprotocol.c	29;"	variable
 m_wWaterGage	source\xinjiangprotocol.c	32;"	variable
@@ -5600,21 +5604,20 @@ meter_lenth	source\cj188.h	116;"	member	struct:__anon131::__anon132::__anon133
 meter_ser	source\cj188.h	122;"	member	struct:__anon131::__anon132::__anon133
 meter_type	source\cj188.h	113;"	member	struct:__anon131::__anon132::__anon133
 nAlmCtl	source\global.h	241;"	member	struct:__anon169
-nDatBuf	source\protocol.c	29;"	member	union:__anon190	file:
+nDatBuf	source\protocol.c	30;"	member	union:__anon190	file:
 nDay	source\global.h	282;"	member	struct:__anon173
 nDay	source\global.h	331;"	member	struct:__anon178
-nDay	source\global.h	381;"	member	struct:__anon183
-nDay	source\global.h	398;"	member	struct:__anon185
+nDay	source\global.h	385;"	member	struct:__anon183
+nDay	source\global.h	403;"	member	struct:__anon185
 nDay	source\jx_math.h	22;"	member	struct:__anon148
 nDay	source\jx_math.h	33;"	member	struct:__anon149
 nDay	source\jx_math.h	44;"	member	struct:__anon150
 nDebugFlg	source\inicialize.c	31;"	variable	file:
 nDownLmtRate	source\global.h	243;"	member	struct:__anon169
 nEmergencyVal	source\global.h	237;"	member	struct:__anon169
-nEnableFlg	source\global.h	394;"	member	struct:__anon185
-nEndHour	source\global.h	400;"	member	struct:__anon185
+nEnableFlg	source\global.h	399;"	member	struct:__anon185
+nEndHour	source\global.h	405;"	member	struct:__anon185
 nGatherCycle	source\global.h	300;"	member	struct:__anon175
-nGatherCycle	source\global.h	353;"	member	struct:__anon180
 nHour	source\global.h	283;"	member	struct:__anon173
 nHour	source\global.h	332;"	member	struct:__anon178
 nHour	source\jx_math.h	23;"	member	struct:__anon148
@@ -5628,22 +5631,23 @@ nMinute	source\global.h	333;"	member	struct:__anon178
 nMinute	source\jx_math.h	24;"	member	struct:__anon148
 nMinute	source\jx_math.h	35;"	member	struct:__anon149
 nMinute	source\jx_math.h	46;"	member	struct:__anon150
-nMon	source\global.h	380;"	member	struct:__anon183
-nMon	source\global.h	388;"	member	struct:__anon184
+nMon	source\global.h	384;"	member	struct:__anon183
+nMon	source\global.h	393;"	member	struct:__anon184
 nMonFreezeDay	source\global.h	253;"	member	struct:__anon170
 nMonFreezeDay	source\global.h	308;"	member	struct:__anon175
 nMonFreezeDay	source\global.h	356;"	member	struct:__anon180
 nMonth	source\global.h	281;"	member	struct:__anon173
 nMonth	source\global.h	330;"	member	struct:__anon178
-nMonth	source\global.h	397;"	member	struct:__anon185
+nMonth	source\global.h	402;"	member	struct:__anon185
 nMonth	source\jx_math.h	21;"	member	struct:__anon148
 nMonth	source\jx_math.h	32;"	member	struct:__anon149
 nMonth	source\jx_math.h	43;"	member	struct:__anon150
-nOptFlg	source\global.h	395;"	member	struct:__anon185
+nOptFlg	source\global.h	400;"	member	struct:__anon185
 nOverBuyFlg	source\global.h	238;"	member	struct:__anon169
 nReceiveDataFlg	source\driveruart.c	45;"	variable
-nRepFailCnt	source\global.h	402;"	member	struct:__anon185
+nRepFailCnt	source\global.h	407;"	member	struct:__anon185
 nRepFlg	source\global.h	272;"	member	struct:__anon172
+nRepFlg	source\global.h	375;"	member	struct:__anon182
 nReportType	source\global.h	309;"	member	struct:__anon175
 nSecond	source\global.h	285;"	member	struct:__anon173
 nSecond	source\global.h	334;"	member	struct:__anon178
@@ -5653,21 +5657,22 @@ nSecond	source\jx_math.h	47;"	member	struct:__anon150
 nSigal	source\fileglobal.h	23;"	member	struct:__anon147
 nStartDay	source\global.h	301;"	member	struct:__anon175
 nStartHour	source\global.h	302;"	member	struct:__anon175
-nStartHour	source\global.h	399;"	member	struct:__anon185
+nStartHour	source\global.h	404;"	member	struct:__anon185
 nStartMinute	source\global.h	303;"	member	struct:__anon175
 nStatus	source\global.h	271;"	member	struct:__anon172
+nStatus	source\global.h	374;"	member	struct:__anon182
 nTaiInterval	source\global.h	307;"	member	struct:__anon175
 nTailCtl	source\global.h	306;"	member	struct:__anon175
 nUpLmtRate	source\global.h	242;"	member	struct:__anon169
-nVavleCycle	source\global.h	403;"	member	struct:__anon185
-nVavleStat	source\global.h	401;"	member	struct:__anon185
+nVavleCycle	source\global.h	408;"	member	struct:__anon185
+nVavleStat	source\global.h	406;"	member	struct:__anon185
 nWeek	source\jx_math.h	26;"	member	struct:__anon148
 nWeek	source\jx_math.h	37;"	member	struct:__anon149
 nYear	source\global.h	280;"	member	struct:__anon173
 nYear	source\global.h	329;"	member	struct:__anon178
-nYear	source\global.h	379;"	member	struct:__anon183
-nYear	source\global.h	387;"	member	struct:__anon184
-nYear	source\global.h	396;"	member	struct:__anon185
+nYear	source\global.h	383;"	member	struct:__anon183
+nYear	source\global.h	392;"	member	struct:__anon184
+nYear	source\global.h	401;"	member	struct:__anon185
 nop	source\libraries\inc\stm8l15x.h	2910;"	macro
 nop	source\libraries\inc\stm8l15x.h	2920;"	macro
 nop	source\libraries\inc\stm8l15x.h	2931;"	macro
@@ -5690,14 +5695,14 @@ stDataPtrXJ	source\xinjiangprotocol.c	25;"	variable
 stDisturb	source\cj188.h	166;"	member	union:__anon131::__anon132::__anon133::__anon135::__anon139	typeref:struct:__anon131::__anon132::__anon133::__anon135::__anon139::__anon142
 stEncrypt	source\cj188.h	135;"	member	union:__anon131::__anon132::__anon133::__anon135::__anon136	typeref:struct:__anon131::__anon132::__anon133::__anon135::__anon136::__anon137
 stFrame	source\cj188.h	171;"	member	union:__anon131::__anon132	typeref:struct:__anon131::__anon132::__anon133
-stLastReportT	source\gsm.c	131;"	variable
-stOptValve	source\gsm.c	135;"	variable
+stLastReportT	source\gsm.c	132;"	variable
+stOptValve	source\gsm.c	136;"	variable
 stPassword	source\cj188.h	140;"	member	union:__anon131::__anon132::__anon133::__anon135::__anon136	typeref:struct:__anon131::__anon132::__anon133::__anon135::__anon136::__anon138
 stReadDatExt	source\cj188.h	160;"	member	union:__anon131::__anon132::__anon133::__anon135::__anon139	typeref:struct:__anon131::__anon132::__anon133::__anon135::__anon139::__anon141
 stReadMeter	source\cj188.h	151;"	member	union:__anon131::__anon132::__anon133::__anon135::__anon139	typeref:struct:__anon131::__anon132::__anon133::__anon135::__anon139::__anon140
 stRepFail	source\file.h	44;"	variable
 stTime	source\fileglobal.h	21;"	member	struct:__anon147
-stTimeNow	source\gsm.c	134;"	variable
+stTimeNow	source\gsm.c	135;"	variable
 status	source\cj188.h	159;"	member	struct:__anon131::__anon132::__anon133::__anon135::__anon139::__anon141
 status	source\cj188.h	176;"	member	struct:__anon131
 status1	source\cj188.h	149;"	member	struct:__anon131::__anon132::__anon133::__anon135::__anon139::__anon140
@@ -5721,7 +5726,7 @@ total_value	source\cj188.h	156;"	member	struct:__anon131::__anon132::__anon133::
 trap	source\libraries\inc\stm8l15x.h	2911;"	macro
 trap	source\libraries\inc\stm8l15x.h	2921;"	macro
 trap	source\libraries\inc\stm8l15x.h	2932;"	macro
-tyGSMFlag	source\gsm.h	600;"	variable
+tyGSMFlag	source\gsm.h	601;"	variable
 tyGprs	source\gsm.h	581;"	variable
 tyJasonMaster	source\protocol.h	86;"	variable
 tyJasonSlave	source\protocol.h	87;"	variable
@@ -5794,9 +5799,10 @@ valve_st	source\cj188.h	165;"	member	struct:__anon131::__anon132::__anon133::__a
 valve_status	source\cj188.h	168;"	member	union:__anon131::__anon132::__anon133::__anon135::__anon139
 vu8	source\libraries\inc\stm8l15x.h	102;"	typedef
 wBasePress	source\global.h	240;"	member	struct:__anon169
-wData	source\protocol.c	30;"	member	union:__anon190	file:
+wData	source\protocol.c	31;"	member	union:__anon190	file:
 wError	source\fileglobal.h	22;"	member	struct:__anon147
 wGatherCycle	source\global.h	249;"	member	struct:__anon170
+wGatherCycle	source\global.h	353;"	member	struct:__anon180
 wPressure	source\global.h	269;"	member	struct:__anon172
 wYear	source\jx_math.h	20;"	member	struct:__anon148
 wYear	source\jx_math.h	31;"	member	struct:__anon149
