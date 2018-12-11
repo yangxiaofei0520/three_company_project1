@@ -2798,11 +2798,11 @@
 8061  0cca 89            	pushw	x
 8062  0ccb 89            	pushw	x
 8063  0ccc 89            	pushw	x
-8064  0ccd ae04f3        	ldw	x,#L5373
+8064  0ccd ae04ff        	ldw	x,#L5373
 8065  0cd0 89            	pushw	x
-8066  0cd1 ae04dd        	ldw	x,#L3373
+8066  0cd1 ae04e9        	ldw	x,#L3373
 8067  0cd4 89            	pushw	x
-8068  0cd5 ae04e8        	ldw	x,#L1373
+8068  0cd5 ae04f4        	ldw	x,#L1373
 8069  0cd8 89            	pushw	x
 8070  0cd9 5f            	clrw	x
 8071  0cda 89            	pushw	x
@@ -2849,7 +2849,7 @@
 8180  0d09 89            	pushw	x
 8181  0d0a 89            	pushw	x
 8182  0d0b 89            	pushw	x
-8183  0d0c ae04d7        	ldw	x,#L7673
+8183  0d0c ae04e3        	ldw	x,#L7673
 8184  0d0f 89            	pushw	x
 8185  0d10 5f            	clrw	x
 8186  0d11 89            	pushw	x
@@ -2912,7 +2912,7 @@
 8323  0d61 89            	pushw	x
 8324  0d62 89            	pushw	x
 8325  0d63 89            	pushw	x
-8326  0d64 ae04d4        	ldw	x,#L5204
+8326  0d64 ae04e0        	ldw	x,#L5204
 8327  0d67 89            	pushw	x
 8328  0d68 5f            	clrw	x
 8329  0d69 89            	pushw	x
@@ -2972,7 +2972,7 @@
 8464  0db6 89            	pushw	x
 8465  0db7 89            	pushw	x
 8466  0db8 89            	pushw	x
-8467  0db9 ae04d1        	ldw	x,#L3604
+8467  0db9 ae04dd        	ldw	x,#L3604
 8468  0dbc 89            	pushw	x
 8469  0dbd 5f            	clrw	x
 8470  0dbe 89            	pushw	x
@@ -3202,9 +3202,9 @@
 8941  0ee0 89            	pushw	x
 8942  0ee1 89            	pushw	x
 8943  0ee2 89            	pushw	x
-8944  0ee3 ae04f3        	ldw	x,#L5373
+8944  0ee3 ae04ff        	ldw	x,#L5373
 8945  0ee6 89            	pushw	x
-8946  0ee7 ae04fb        	ldw	x,#L7324
+8946  0ee7 ae0507        	ldw	x,#L7324
 8947  0eea 89            	pushw	x
 8948  0eeb 5f            	clrw	x
 8949  0eec 89            	pushw	x
@@ -3235,9 +3235,9 @@
 8982  0f0f 89            	pushw	x
 8983  0f10 89            	pushw	x
 8984  0f11 89            	pushw	x
-8985  0f12 ae04f3        	ldw	x,#L5373
+8985  0f12 ae04ff        	ldw	x,#L5373
 8986  0f15 89            	pushw	x
-8987  0f16 ae04fb        	ldw	x,#L7324
+8987  0f16 ae0507        	ldw	x,#L7324
 8988  0f19 89            	pushw	x
 8989  0f1a 5f            	clrw	x
 8990  0f1b 89            	pushw	x
@@ -3267,9 +3267,9 @@
 9021  0f3c 89            	pushw	x
 9022  0f3d 89            	pushw	x
 9023  0f3e 89            	pushw	x
-9024  0f3f ae04f3        	ldw	x,#L5373
+9024  0f3f ae04ff        	ldw	x,#L5373
 9025  0f42 89            	pushw	x
-9026  0f43 ae04cb        	ldw	x,#L5424
+9026  0f43 ae04d7        	ldw	x,#L5424
 9027  0f46 89            	pushw	x
 9028  0f47 5f            	clrw	x
 9029  0f48 89            	pushw	x
@@ -3365,11 +3365,11 @@
 9150  0fc7 89            	pushw	x
 9151  0fc8 89            	pushw	x
 9152  0fc9 89            	pushw	x
-9153  0fca ae04f3        	ldw	x,#L5373
+9153  0fca ae04ff        	ldw	x,#L5373
 9154  0fcd 89            	pushw	x
-9155  0fce ae04dd        	ldw	x,#L3373
+9155  0fce ae04e9        	ldw	x,#L3373
 9156  0fd1 89            	pushw	x
-9157  0fd2 ae04e8        	ldw	x,#L1373
+9157  0fd2 ae04f4        	ldw	x,#L1373
 9158  0fd5 89            	pushw	x
 9159  0fd6 5f            	clrw	x
 9160  0fd7 89            	pushw	x
@@ -3477,9 +3477,9 @@
 9326  106c 89            	pushw	x
 9327  106d 89            	pushw	x
 9328  106e 89            	pushw	x
-9329  106f ae04f3        	ldw	x,#L5373
+9329  106f ae04ff        	ldw	x,#L5373
 9330  1072 89            	pushw	x
-9331  1073 ae04fb        	ldw	x,#L7324
+9331  1073 ae0507        	ldw	x,#L7324
 9332  1076 89            	pushw	x
 9333  1077 ae0002        	ldw	x,#_aucAtPAscii_1
 9334  107a 89            	pushw	x
@@ -3507,9 +3507,9 @@
 9362  1097 89            	pushw	x
 9363  1098 89            	pushw	x
 9364  1099 89            	pushw	x
-9365  109a ae04f3        	ldw	x,#L5373
+9365  109a ae04ff        	ldw	x,#L5373
 9366  109d 89            	pushw	x
-9367  109e ae04fb        	ldw	x,#L7324
+9367  109e ae0507        	ldw	x,#L7324
 9368  10a1 89            	pushw	x
 9369  10a2 ae0001        	ldw	x,#_g_nApnBuf
 9370  10a5 89            	pushw	x
@@ -3537,9 +3537,9 @@
 9398  10c2 89            	pushw	x
 9399  10c3 89            	pushw	x
 9400  10c4 89            	pushw	x
-9401  10c5 ae04f3        	ldw	x,#L5373
+9401  10c5 ae04ff        	ldw	x,#L5373
 9402  10c8 89            	pushw	x
-9403  10c9 ae04fb        	ldw	x,#L7324
+9403  10c9 ae0507        	ldw	x,#L7324
 9404  10cc 89            	pushw	x
 9405  10cd 5f            	clrw	x
 9406  10ce 89            	pushw	x
@@ -3567,9 +3567,9 @@
 9434  10e9 89            	pushw	x
 9435  10ea 89            	pushw	x
 9436  10eb 89            	pushw	x
-9437  10ec ae04f3        	ldw	x,#L5373
+9437  10ec ae04ff        	ldw	x,#L5373
 9438  10ef 89            	pushw	x
-9439  10f0 ae04fb        	ldw	x,#L7324
+9439  10f0 ae0507        	ldw	x,#L7324
 9440  10f3 89            	pushw	x
 9441  10f4 5f            	clrw	x
 9442  10f5 89            	pushw	x
@@ -3620,9 +3620,9 @@
 9501  113c 89            	pushw	x
 9502  113d 89            	pushw	x
 9503  113e 89            	pushw	x
-9504  113f ae04f3        	ldw	x,#L5373
+9504  113f ae04ff        	ldw	x,#L5373
 9505  1142 89            	pushw	x
-9506  1143 ae04fb        	ldw	x,#L7324
+9506  1143 ae0507        	ldw	x,#L7324
 9507  1146 89            	pushw	x
 9508  1147 ae0004        	ldw	x,#_aucAtPAscii_0
 9509  114a 89            	pushw	x
@@ -3680,9 +3680,9 @@
 9613  1188 89            	pushw	x
 9614  1189 89            	pushw	x
 9615  118a 89            	pushw	x
-9616  118b ae04f3        	ldw	x,#L5373
+9616  118b ae04ff        	ldw	x,#L5373
 9617  118e 89            	pushw	x
-9618  118f ae04fb        	ldw	x,#L7324
+9618  118f ae0507        	ldw	x,#L7324
 9619  1192 89            	pushw	x
 9620  1193 5f            	clrw	x
 9621  1194 89            	pushw	x
@@ -3697,9 +3697,9 @@
 9632  11a1 89            	pushw	x
 9633  11a2 89            	pushw	x
 9634  11a3 89            	pushw	x
-9635  11a4 ae04f3        	ldw	x,#L5373
+9635  11a4 ae04ff        	ldw	x,#L5373
 9636  11a7 89            	pushw	x
-9637  11a8 ae04fb        	ldw	x,#L7324
+9637  11a8 ae0507        	ldw	x,#L7324
 9638  11ab 89            	pushw	x
 9639  11ac 5f            	clrw	x
 9640  11ad 89            	pushw	x
@@ -3719,9 +3719,9 @@
 9660  11c4 89            	pushw	x
 9661  11c5 89            	pushw	x
 9662  11c6 89            	pushw	x
-9663  11c7 ae04f3        	ldw	x,#L5373
+9663  11c7 ae04ff        	ldw	x,#L5373
 9664  11ca 89            	pushw	x
-9665  11cb ae04fb        	ldw	x,#L7324
+9665  11cb ae0507        	ldw	x,#L7324
 9666  11ce 89            	pushw	x
 9667  11cf ae0004        	ldw	x,#_aucAtPAscii_0
 9668  11d2 89            	pushw	x
@@ -3736,9 +3736,9 @@
 9679  11df 89            	pushw	x
 9680  11e0 89            	pushw	x
 9681  11e1 89            	pushw	x
-9682  11e2 ae04f3        	ldw	x,#L5373
+9682  11e2 ae04ff        	ldw	x,#L5373
 9683  11e5 89            	pushw	x
-9684  11e6 ae04fb        	ldw	x,#L7324
+9684  11e6 ae0507        	ldw	x,#L7324
 9685  11e9 89            	pushw	x
 9686  11ea 5f            	clrw	x
 9687  11eb 89            	pushw	x
@@ -3774,13 +3774,13 @@
 9775  1210 5f            	clrw	x
 9776  1211 89            	pushw	x
 9777  1212 89            	pushw	x
-9778  1213 ae04f3        	ldw	x,#L5373
+9778  1213 ae04ff        	ldw	x,#L5373
 9779  1216 89            	pushw	x
-9780  1217 ae04a3        	ldw	x,#L3734
+9780  1217 ae04af        	ldw	x,#L3734
 9781  121a 89            	pushw	x
-9782  121b ae04b0        	ldw	x,#L1734
+9782  121b ae04bc        	ldw	x,#L1734
 9783  121e 89            	pushw	x
-9784  121f ae04c0        	ldw	x,#L7634
+9784  121f ae04cc        	ldw	x,#L7634
 9785  1222 89            	pushw	x
 9786  1223 5f            	clrw	x
 9787  1224 89            	pushw	x
@@ -3810,13 +3810,13 @@
 9819  124a 5f            	clrw	x
 9820  124b 89            	pushw	x
 9821  124c 89            	pushw	x
-9822  124d ae04f3        	ldw	x,#L5373
+9822  124d ae04ff        	ldw	x,#L5373
 9823  1250 89            	pushw	x
-9824  1251 ae04a3        	ldw	x,#L3734
+9824  1251 ae04af        	ldw	x,#L3734
 9825  1254 89            	pushw	x
-9826  1255 ae04b0        	ldw	x,#L1734
+9826  1255 ae04bc        	ldw	x,#L1734
 9827  1258 89            	pushw	x
-9828  1259 ae04c0        	ldw	x,#L7634
+9828  1259 ae04cc        	ldw	x,#L7634
 9829  125c 89            	pushw	x
 9830  125d 5f            	clrw	x
 9831  125e 89            	pushw	x
@@ -3876,11 +3876,11 @@
 9947  12a5 89            	pushw	x
 9948  12a6 89            	pushw	x
 9949  12a7 89            	pushw	x
-9950  12a8 ae0497        	ldw	x,#L5244
+9950  12a8 ae04a3        	ldw	x,#L5244
 9951  12ab 89            	pushw	x
-9952  12ac ae04f3        	ldw	x,#L5373
+9952  12ac ae04ff        	ldw	x,#L5373
 9953  12af 89            	pushw	x
-9954  12b0 ae04f9        	ldw	x,#L3244
+9954  12b0 ae0505        	ldw	x,#L3244
 9955  12b3 89            	pushw	x
 9956  12b4 5f            	clrw	x
 9957  12b5 89            	pushw	x
@@ -3932,9 +3932,9 @@
 10042  12eb 89            	pushw	x
 10043  12ec 89            	pushw	x
 10044  12ed 89            	pushw	x
-10045  12ee ae04f3        	ldw	x,#L5373
+10045  12ee ae04ff        	ldw	x,#L5373
 10046  12f1 89            	pushw	x
-10047  12f2 ae04fb        	ldw	x,#L7324
+10047  12f2 ae0507        	ldw	x,#L7324
 10048  12f5 89            	pushw	x
 10049  12f6 5f            	clrw	x
 10050  12f7 89            	pushw	x
@@ -4238,540 +4238,577 @@
 10787                     ; 4052 	return ;
 10790  1456 5b05          	addw	sp,#5
 10791  1458 81            	ret	
-10869                     	switch	.const
-10870  0493               L2211:
-10871  0493 0000003d      	dc.l	61
-10872                     ; 4064 void fixTaskGsm(void)
-10872                     ; 4065 {
-10873                     	switch	.text
-10874  1459               _fixTaskGsm:
-10876  1459 5217          	subw	sp,#23
-10877       00000017      OFST:	set	23
-10880                     ; 4066 	s32 dwReport = 0, dwOffset = 0;	
-10882  145b 96            	ldw	x,sp
-10883  145c 5c            	incw	x
-10884  145d cd0000        	call	c_ltor
-10888  1460 96            	ldw	x,sp
-10889  1461 1c0005        	addw	x,#OFST-18
-10890  1464 cd0000        	call	c_ltor
-10892                     ; 4070 	STM8_RTC_Get(&stReportTime);
-10894  1467 96            	ldw	x,sp
-10895  1468 1c0009        	addw	x,#OFST-14
-10896  146b cd0000        	call	_STM8_RTC_Get
-10898                     ; 4071 	TM_TimeChangeAToB(&stReportTime,&stTimeNowTm);
-10900  146e 96            	ldw	x,sp
-10901  146f 1c0010        	addw	x,#OFST-7
-10902  1472 89            	pushw	x
-10903  1473 1d0007        	subw	x,#7
-10904  1476 cd0000        	call	_TM_TimeChangeAToB
-10906  1479 c600a5        	ld	a,_m_nWakeupReportFlg
-10907  147c a50f          	bcp	a,#15
-10908  147e 85            	popw	x
-10909                     ; 4074 	if((FALSE != (m_nWakeupReportFlg&REPORT_FLG))
-10909                     ; 4075 		||FALSE == TM_IsValidTimePro(&stLastReportT)
-10909                     ; 4076 		||(2015 >= stTimeNowTm.wYear)||(TRUE == g_OptValveRepFlg)
-10909                     ; 4077 #ifdef PURCHASE_MODE
-10909                     ; 4078 		|| (OWED_STAT_FLG == (tyParameter.nOverBuyFlg&(OWED_REP_SUCC|OWED_REP_FAIL|OWED_STAT_FLG)))
-10909                     ; 4079 #endif
-10909                     ; 4080 		||((ALARM_MASK&ALM_GetBatStatus()&&(MAX_REP_TIMES > g_nAlmRepFailCnt)&&(ALARM_REP_FLG != (ALARM_REP_FLG&g_nGuardEnFlg)))))
-10911  147f 2629          	jrne	L1474
-10913  1481 ae000a        	ldw	x,#_stLastReportT
-10914  1484 cd0000        	call	_TM_IsValidTimePro
-10916  1487 4d            	tnz	a
-10917  1488 2720          	jreq	L1474
-10919  148a 1e10          	ldw	x,(OFST-7,sp)
-10920  148c a307e0        	cpw	x,#2016
-10921  148f 2519          	jrult	L1474
-10923  1491 c600ae        	ld	a,_g_OptValveRepFlg
-10924  1494 4a            	dec	a
-10925  1495 2713          	jreq	L1474
-10927  1497 cd0000        	call	_ALM_GetBatStatus
-10929  149a a50f          	bcp	a,#15
-10930  149c 271c          	jreq	L7374
-10932  149e c60000        	ld	a,_g_nAlmRepFailCnt
-10933  14a1 a103          	cp	a,#3
-10934  14a3 2415          	jruge	L7374
-10936  14a5 7202000010    	btjt	_g_nGuardEnFlg,#1,L7374
-10937  14aa               L1474:
-10938                     ; 4082 		g_nReportFlg  = TRUE;
-10940  14aa 350100ad      	mov	_g_nReportFlg,#1
-10941                     ; 4083 	    m_nUploadMode = OTHER_REP;
-10943  14ae 725f00c3      	clr	_m_nUploadMode
-10944                     ; 4084 		fixTaskGsmProc();
-10946  14b2               LC022:
-10948  14b2 cd13cd        	call	_fixTaskGsmProc
-10951  14b5               L1574:
-10952                     ; 4161 	ReportTimeOutPro();
-10954  14b5 cd1357        	call	_ReportTimeOutPro
-10956                     ; 4162 	return ;
-10958  14b8 2050          	jra	L6311
-10959  14ba               L7374:
-10960                     ; 4133 		if(FALSE == g_nReportFlg)
-10962  14ba c600ad        	ld	a,_g_nReportFlg
-10963  14bd 2656          	jrne	L3574
-10964                     ; 4135 			dwReport = HD_ClaReportTimeToSec();
-10966  14bf cd0000        	call	_HD_ClaReportTimeToSec
-10968  14c2 96            	ldw	x,sp
-10969  14c3 5c            	incw	x
-10970  14c4 cd0000        	call	c_rtol
-10972                     ; 4136 			dwOffset = TM_DiffSecond(&stLastReportT, &stTimeNowTm);
-10974  14c7 96            	ldw	x,sp
-10975  14c8 1c0010        	addw	x,#OFST-7
-10976  14cb 89            	pushw	x
-10977  14cc ae000a        	ldw	x,#_stLastReportT
-10978  14cf cd0000        	call	_TM_DiffSecond
-10980  14d2 85            	popw	x
-10981  14d3 96            	ldw	x,sp
-10982  14d4 1c0005        	addw	x,#OFST-18
-10983  14d7 cd0000        	call	c_rtol
-10985                     ; 4138 			if((60 < (dwOffset%dwReport)) ||
-10985                     ; 4139 				((TRUE == ReadRecord(0, (u8*)&tyRecord, sizeof(tyRecord)))&&(FALSE == tyRecord.nRepFlg)))
-10987  14da 96            	ldw	x,sp
-10988  14db 1c0005        	addw	x,#OFST-18
-10989  14de cd0000        	call	c_ltor
-10991  14e1 96            	ldw	x,sp
-10992  14e2 5c            	incw	x
-10993  14e3 cd0000        	call	c_lmod
-10995  14e6 ae0493        	ldw	x,#L2211
-10996  14e9 cd0000        	call	c_lcmp
-10998  14ec 2e14          	jrsge	L7574
-11000  14ee 4b0c          	push	#12
-11001  14f0 ae0000        	ldw	x,#_tyRecord
-11002  14f3 89            	pushw	x
-11003  14f4 4f            	clr	a
-11004  14f5 cd0000        	call	_ReadRecord
-11006  14f8 5b03          	addw	sp,#3
-11007  14fa 4a            	dec	a
-11008  14fb 2610          	jrne	L5574
-11010  14fd c6000b        	ld	a,_tyRecord+11
-11011  1500 260b          	jrne	L5574
-11012  1502               L7574:
-11013                     ; 4141 				LP_SetLowPwrStartFlg(LP_GPRS_FLG_OK);
-11015  1502 a601          	ld	a,#1
-11016  1504 cd0000        	call	_LP_SetLowPwrStartFlg
-11018                     ; 4144 				M590_CloseConnect();
-11020  1507 cd116c        	call	_M590_CloseConnect
-11022                     ; 4145 				return ;
-11023  150a               L6311:
-11026  150a 5b17          	addw	sp,#23
-11027  150c 81            	ret	
-11028  150d               L5574:
-11029                     ; 4149 				m_nUploadMode = TIME_DAT_REP;
-11031  150d a601          	ld	a,#1
-11032  150f c700c3        	ld	_m_nUploadMode,a
-11033                     ; 4150 				g_nReportFlg  = TRUE;
-11035  1512 c700ad        	ld	_g_nReportFlg,a
-11036  1515               L3574:
-11037                     ; 4153 		if(TRUE == g_nReportFlg)
-11039  1515 4a            	dec	a
-11040  1516 269d          	jrne	L1574
-11041                     ; 4155 			fixTaskGsmProc();
-11043  1518 2098          	jp	LC022
-11080                     ; 4174 void InitializeGsm(void)
-11080                     ; 4175 {	
-11081                     	switch	.text
-11082  151a               _InitializeGsm:
-11086                     ; 4176 	tyGSMFlag = 0xFF;
-11088  151a 35ff0019      	mov	_tyGSMFlag,#255
-11089                     ; 4177 	ucStatusGsm    = GSM_INIT;
-11091  151e 35010068      	mov	_ucStatusGsm,#1
-11092                     ; 4178 	ucStepGsm      = 0;
-11094  1522 725f0067      	clr	_ucStepGsm
-11095                     ; 4179 	m_nGprsStep    = INIT_PWR_ON;
-11097  1526 350100a6      	mov	_m_nGprsStep,#1
-11098                     ; 4180 	stRepFail.wError = 0;
-11100  152a 5f            	clrw	x
-11101  152b cf0006        	ldw	_stRepFail+6,x
-11102                     ; 4182 	m_nWakeupReportFlg = ReadReportFlag();
-11104  152e cd0000        	call	_ReadReportFlag
-11106  1531 c700a5        	ld	_m_nWakeupReportFlg,a
-11107                     ; 4183 	ReadGroup(1, ADDRESS_GUARD_EN, &g_nGuardEnFlg);
-11109  1534 ae0000        	ldw	x,#_g_nGuardEnFlg
-11110  1537 89            	pushw	x
-11111  1538 ae1000        	ldw	x,#4096
-11112  153b 89            	pushw	x
-11113  153c a601          	ld	a,#1
-11114  153e cd0000        	call	_ReadGroup
-11116  1541 5b04          	addw	sp,#4
-11117                     ; 4184 	g_nAlmRepFailCnt = (g_nGuardEnFlg>>6);
-11119  1543 c60000        	ld	a,_g_nGuardEnFlg
-11120  1546 4e            	swap	a
-11121  1547 a40c          	and	a,#12
-11122  1549 44            	srl	a
-11123  154a 44            	srl	a
-11124  154b c70000        	ld	_g_nAlmRepFailCnt,a
-11125                     ; 4191 	HD_InitializeGsm();
-11127  154e cd0000        	call	_HD_InitializeGsm
-11129                     ; 4195 	if(FALSE == ReadParameterForType((u8 *)&stOptValve, OPTVALVE_LEN, OPT_VALVE_PRAA))
-11131  1551 4b06          	push	#6
-11132  1553 4b0a          	push	#10
-11133  1555 ae0000        	ldw	x,#_stOptValve
-11134  1558 cd0000        	call	_ReadParameterForType
-11136  155b 4d            	tnz	a
-11137  155c 85            	popw	x
-11138  155d 2618          	jrne	L5774
-11139                     ; 4197 		stOptValve.nOptFlg    = CTL_VAVLE_ENABLE;
-11141  155f 35aa0001      	mov	_stOptValve+1,#170
-11142                     ; 4198 		stOptValve.nEnableFlg = CTL_VAVLE_ENABLE;
-11144  1563 35aa0000      	mov	_stOptValve,#170
-11145                     ; 4199 		stOptValve.nStartHour = 0x02;
-11147  1567 35020005      	mov	_stOptValve+5,#2
-11148                     ; 4200 		stOptValve.nEndHour   = 0x04;
-11150  156b 35040006      	mov	_stOptValve+6,#4
-11151                     ; 4201 		stOptValve.nVavleStat = 0;
-11153  156f 725f0007      	clr	_stOptValve+7
-11154                     ; 4202 		stOptValve.nVavleCycle= 0;
-11156  1573 725f0009      	clr	_stOptValve+9
-11157  1577               L5774:
-11158                     ; 4205 	if((MAX_REP_TIMES > stOptValve.nRepFailCnt)&&(CTL_VALVE_OVER == stOptValve.nOptFlg))
-11160  1577 c60008        	ld	a,_stOptValve+8
-11161  157a a103          	cp	a,#3
-11162  157c 240c          	jruge	L7774
-11164  157e c60001        	ld	a,_stOptValve+1
-11165  1581 a1ee          	cp	a,#238
-11166  1583 2605          	jrne	L7774
-11167                     ; 4207 		g_OptValveRepFlg = TRUE;
-11169  1585 350100ae      	mov	_g_OptValveRepFlg,#1
-11172  1589 81            	ret	
-11173  158a               L7774:
-11174                     ; 4209 	else if(MAX_REP_TIMES <= stOptValve.nRepFailCnt)
-11176  158a c60008        	ld	a,_stOptValve+8
-11177  158d a103          	cp	a,#3
-11178  158f 2508          	jrult	L1005
-11179                     ; 4211 		stOptValve.nOptFlg = 0;   /* 超出上报次数后，认为上报成功不在上报 */ 
-11181  1591 725f0001      	clr	_stOptValve+1
-11182                     ; 4212 		stOptValve.nRepFailCnt = 0;
-11184  1595 725f0008      	clr	_stOptValve+8
-11185  1599               L1005:
-11186                     ; 4214 	return ;
-11189  1599 81            	ret	
-11613                     	xdef	_fixTaskGsmProc
-11614                     	xdef	_ReportTimeOutPro
-11615                     	xdef	_M590_ConnectServer
-11616                     	xdef	_M590_HandShake
-11617                     	xdef	_M590_Init
-11618                     	xdef	_AT_CmdFailProc
-11619                     	xdef	_SIMGetRegisterStat
-11620                     	xdef	_UC_CommATExt
-11621                     	xdef	_QH_SearchStrVal
-11622                     	xdef	_QH_bufbuf
-11623                     	xdef	_UC_SleepProc
-11624                     	xdef	_UC_SetSleepCnt
-11625                     	xdef	_PackAtCmdExt
-11626                     	xdef	_PackTcpSendData
-11627                     	xdef	_PackAtCmdTcpsend
-11628                     	xdef	_PackAtCmdParameter3
-11629                     	xdef	_PackAtCmdParameter2
-11630                     	xdef	_PackAtCmdParameter
-11631                     	xdef	_PackAtCmd
-11632                     	xdef	_AlmMakeFrame
-11633                     	xdef	_BatteryVolRepPro
-11634                     	xdef	_UpLinkSaveReportTime
-11635                     	xdef	_MeterTnNumTransform
-11636                     	xdef	_VavleStatTransform
-11637                     	xdef	_UC_CommAT
-11638                     	xdef	_SIMGL868_GetCCID
-11639                     	xdef	_g_nOwedRepFlg
-11640                     	xdef	_m_nAlmRepFlg
-11641                     	xdef	_m_nGmTn_2
-11642                     	xdef	_m_nGmTn_1
-11643                     	xdef	_m_nMasterType
-11644                     	xdef	_m_nLedFlashFlg
-11645                     	xdef	_m_nDataRepSucFlg
-11646                     	xdef	_m_nRepIndex
-11647                     	xdef	_m_nIpAddBk
-11648                     	xdef	_g_BatRepFlg
-11649                     	xdef	_g_nReportFlg
-11650                     	xdef	_m_dwTimeCnt
-11651                     	xdef	_m_nGprsStep
-11652                     	xdef	_m_nWakeupReportFlg
-11653                     	xdef	_m_nCcidBuf
-11654                     	xdef	_m_nPtrcoVerBuf
-11655                     	xdef	_aucAtPPortBk
-11656                     	xdef	_aucAtPServerBk
-11657                     	xdef	_g_nPwdBuf
-11658                     	xdef	_g_nUsrBuf
-11659                     	xref	_HD_DecodeParameter
-11660                     	xref	_HD_ProtolProc
-11661                     	xref	_HD_TimeOutReUpLoad
-11662                     	xref	_HD_ClaReportTimeToSec
-11663                     	xref	_HD_InitializeGsm
-11664                     	xref	_ALM_GetBatStatus
-11665                     	xref	_g_nAlmRepFailCnt
-11666                     	xref	_g_nGuardEnFlg
-11667                     	xref	_LP_SetLowPwrStartFlg
-11668                     	xref	_STM8_RTC_Get
-11669                     	xref	_stRepFail
-11670                     	xref	_tyRecord
-11671                     	xref	_ReadAlmRecord
-11672                     	xref	_AddAlmRecord
-11673                     	xref	_EditRecord
-11674                     	xref	_SaveByte
-11675                     	xref	_ReadGroup
-11676                     	xref	_ReadReportFlag
-11677                     	xref	_SaveReportFlag
-11678                     	xref	_SaveParameterForType
-11679                     	xref	_ReadParameterForType
-11680                     	xref	_ReadRecord
-11681                     	xdef	_JX_StringCat
-11682                     	xdef	_JX_Strlen
-11683                     	xdef	_GetIsmiCcidDat
-11684                     	xdef	_GetGprsConntStat
-11685                     	xdef	_GetOnLineStatus
-11686                     	xdef	_GetLedFlg
-11687                     	xdef	_FrameSendFunc
-11688                     	xdef	_M590_CloseConnect
-11689                     	xdef	_M590_TcpSendDatLen
-11690                     	xdef	_SetLogonMode
-11691                     	xdef	_WatitDataSendOk
-11692                     	xdef	_ClaReportTimeToSec
-11693                     	xdef	_SetReportIndex
-11694                     	xdef	_GetReportFailFlag
-11695                     	xdef	_ReWriteRepFlg
-11696                     	xdef	_GetTermReportTime
-11697                     	xdef	_UC_SleepFunc
-11698                     	xdef	_InitializeGsm
-11699                     	xdef	_fixTaskGsm
-11700                     	xdef	_GetReportFlag
-11701                     	xdef	_m_nUploadMode
-11702                     	xdef	_g_dwTmAddress
-11703                     	xdef	_g_OptValveRepFlg
-11704                     	xdef	_g_nSignal
-11705                     	xdef	_g_wTmReportCnt
-11706                     	xdef	_aucAtPPort1
-11707                     	xdef	_aucAtPServer1
-11708                     	xdef	_g_dwCommDelay
-11709                     	xdef	_m_nImsiBufXJ
-11710                     	xdef	_m_nImsiBuf
-11711                     	xdef	_m_nVerBuf
-11712                     	xdef	_g_nApnType
-11713                     	xdef	_m_nRepFailFlg
-11714                     	xdef	_g_nDatRepCnt
-11715                     	xdef	_m_nRepEnableFlg
-11716                     	xdef	_g_dwRepTick
-11717                     	switch	.bss
-11718  0000               _stOptValve:
-11719  0000 000000000000  	ds.b	10
-11720                     	xdef	_stOptValve
-11721  000a               _stLastReportT:
-11722  000a 000000000000  	ds.b	8
-11723                     	xdef	_stLastReportT
-11724  0012               _stTimeNow:
-11725  0012 000000000000  	ds.b	7
-11726                     	xdef	_stTimeNow
-11727                     	xdef	_g_nApnBuf
-11728                     	xref	_GetUartRxBuf
-11729                     	xref	_ClearRxBuff
-11730                     	xref	_CheckRevDataLen
-11731                     	xref	_TurnBusUartOn
-11732                     	xref	_StartSendBusUartGroup
-11733                     	xref	_SetBusUart
-11734                     	xref	_FeedSoftWareIwdg
-11735                     	xdef	_SIMGK7M_GetCIMI
-11736                     	xdef	_SIMGL868_UpdateSignal
-11737  0019               _tyGSMFlag:
-11738  0019 00            	ds.b	1
-11739                     	xdef	_tyGSMFlag
-11740                     	xref	_aucUartTxBuffer
-11741  001a               _tyReportParameter:
-11742  001a 000000000000  	ds.b	39
-11743                     	xdef	_tyReportParameter
-11744  0041               _tyGprs:
-11745  0041 000000000000  	ds.b	22
-11746                     	xdef	_tyGprs
-11747  0057               _ucErrorGsm:
-11748  0057 00            	ds.b	1
-11749                     	xdef	_ucErrorGsm
-11750  0058               _tyTimerReport:
-11751  0058 00000000      	ds.b	4
-11752                     	xdef	_tyTimerReport
-11753  005c               _tyReport:
-11754  005c 000000000000  	ds.b	10
-11755                     	xdef	_tyReport
-11756  0066               _ucStepReveive:
-11757  0066 00            	ds.b	1
-11758                     	xdef	_ucStepReveive
-11759  0067               _ucStepGsm:
-11760  0067 00            	ds.b	1
-11761                     	xdef	_ucStepGsm
-11762  0068               _ucStatusGsm:
-11763  0068 00            	ds.b	1
-11764                     	xdef	_ucStatusGsm
-11765  0069               _nLogonModeBk:
-11766  0069 00            	ds.b	1
-11767                     	xdef	_nLogonModeBk
-11768  006a               _ucLogonMode:
-11769  006a 00            	ds.b	1
-11770                     	xdef	_ucLogonMode
-11771  006b               _ucNumberMessage:
-11772  006b 00            	ds.b	1
-11773                     	xdef	_ucNumberMessage
-11774                     	xdef	_aucAtRCmd
-11775                     	xdef	_aucAtCmd
-11776                     	xdef	_aucAtShutDown
-11777                     	xdef	_aucAtMytimeupdate
-11778                     	xdef	_aucAtMylacid
-11779                     	xdef	_aucAtMycged
-11780                     	xdef	_aucAtTcpsends
-11781                     	xdef	_aucAtTcprecv_S
-11782                     	xdef	_aucAtTcplisten
-11783                     	xdef	_aucAtSignal
-11784                     	xdef	_aucAtGprsstatus
-11785                     	xdef	_aucAtCloselisten
-11786                     	xdef	_aucAtCloseclient
-11787                     	xdef	_aucAtClientstatus
-11788                     	xdef	_aucAtFtpstatus
-11789                     	xdef	_aucAtFtpput
-11790                     	xdef	_aucAtFtplogout
-11791                     	xdef	_aucAtFtplogin
-11792                     	xdef	_aucAtFtpget
-11793                     	xdef	_aucAtDnsserver
-11794                     	xdef	_aucAtDns
-11795                     	xdef	_aucAtXisp
-11796                     	xdef	_aucAtXiic
-11797                     	xdef	_aucAtUdpsetup
-11798                     	xdef	_aucAtUdpsend
-11799                     	xdef	_aucAtUdprecv
-11800                     	xdef	_aucAtUdpclose
-11801                     	xdef	_aucAtTcpclose
-11802                     	xdef	_aucAtXgauth
-11803                     	xdef	_aucAtTcpsetup
-11804                     	xdef	_aucAtTcpsend
-11805                     	xdef	_aucAtTcprecv
-11806                     	xdef	_aucAtIpstatus
-11807                     	xdef	_aucAtCusd
-11808                     	xdef	_aucAtCgatt
-11809                     	xdef	_aucAtPdpUn
-11810                     	xdef	_aucAtPdpCm
-11811                     	xdef	_aucAtCpbw
-11812                     	xdef	_aucAtCpbs
-11813                     	xdef	_aucAtCpbr
-11814                     	xdef	_aucAtCpbf
-11815                     	xdef	_aucAtCnum
-11816                     	xdef	_aucAtCsms
-11817                     	xdef	_aucAtCsmp
-11818                     	xdef	_aucAtCsdh
-11819                     	xdef	_aucAtCscs
-11820                     	xdef	_aucAtCscb
-11821                     	xdef	_aucAtCsca
-11822                     	xdef	_aucAtCpms
-11823                     	xdef	_aucAtCnmi
-11824                     	xdef	_aucAtCmss
-11825                     	xdef	_aucAtCmgw
-11826                     	xdef	_aucAtCmgs
-11827                     	xdef	_aucAtCmgr
-11828                     	xdef	_aucAtCmgl
-11829                     	xdef	_aucAtCmgf
-11830                     	xdef	_aucAtCmgd
-11831                     	xdef	_aucAtXbandsel
-11832                     	xdef	_aucAtCsq
-11833                     	xdef	_aucAtCops
-11834                     	xdef	_aucAtIpr
-11835                     	xdef	_aucAtIcf
-11836                     	xdef	_aucAtEnpwrsavE
-11837                     	xdef	_aucAtCreg
-11838                     	xdef	_aucAtCpwroff
-11839                     	xdef	_aucAtCpwd
-11840                     	xdef	_aucAtCpin
-11841                     	xdef	_aucAtCpas
-11842                     	xdef	_aucAtCmux
-11843                     	xdef	_aucAtCmee
-11844                     	xdef	_aucAtClck
-11845                     	xdef	_aucAtCipstatus
-11846                     	xdef	_aucAtCfun
-11847                     	xdef	_aucAtCeer
-11848                     	xdef	_aucAtCclk
-11849                     	xdef	_aucAtGetvers
-11850                     	xdef	_aucAtCimi
-11851                     	xdef	_aucAtCgsn
-11852                     	xdef	_aucAtCgmm
-11853                     	xdef	_aucAtCgmi
-11854                     	xdef	_aucAtCcid
-11855                     	xdef	_aucAtI
-11856                     	xdef	_aucAtS_D
-11857                     	xdef	_aucAtS_O
-11858                     	xdef	_aucAtS_Plus
-11859                     	xdef	_aucAtS_D2
-11860                     	xdef	_aucATS_W
-11861                     	xdef	_aucATS_V
-11862                     	xdef	_aucATS_E
-11863                     	xdef	_aucATS_A
-11864                     	xdef	_aucAtNull
-11865                     	xdef	_aucAtInit
-11866                     	xdef	_aucAtrError
-11867                     	xdef	_aucAtrIpr
-11868                     	xdef	_aucAtrTcpclose
-11869                     	xdef	_aucAtrTcprecv
-11870                     	xdef	_aucAtrTcpsend
-11871                     	xdef	_aucAtrTcpsetup
-11872                     	xdef	_aucAtrXiic
-11873                     	xdef	_aucAtrOk
-11874                     	xdef	_aucAtrNeoway
-11875                     	xdef	_aucAtrCreg
-11876                     	xdef	_aucAtrCpinReady
-11877                     	xdef	_aucAtrCclk
-11878                     	xdef	_aucAtrPppFail
-11879                     	xdef	_aucAtrInit
-11880                     	xdef	_aucAtPPort2
-11881                     	xdef	_aucAtPTimeServer2
-11882                     	xdef	_aucAtPTimeServer1
-11883                     	xdef	_aucAtPBaudrate
-11884                     	xdef	_aucAtPAscii_Equal0
-11885                     	xdef	_aucAtPAscii_Equal1
-11886                     	xdef	_aucAtPAscii_0
-11887                     	xdef	_aucAtPAscii_1
-11888                     	xdef	_aucAtPAscii_Question
-11889                     	xref	_JX_ByteToBcd
-11890                     	xref	_TM_DiffSecond
-11891                     	xref	_TM_TimeChangeAToB
-11892                     	xref	_TM_IsValidTimePro
-11893                     	xref	_JX_BL_Change
-11894                     	xref	_MemcpyFunc
-11895                     	xref	_MemsetFunc
-11896                     	xref	_delay_ms
-11897                     	xref	_GetSysTemTick
-11898                     	xref	_GPIO_WriteBit
-11899                     	switch	.const
-11900  0497               L5244:
-11901  0497 4c696e6b2043  	dc.b	"Link Closed",0
-11902  04a3               L3734:
-11903  04a3 434f4e4e4543  	dc.b	"CONNECT FAIL",0
-11904  04b0               L1734:
-11905  04b0 414c52454144  	dc.b	"ALREADY CONNECT",0
-11906  04c0               L7634:
-11907  04c0 434f4e4e4543  	dc.b	"CONNECT OK",0
-11908  04cb               L5424:
-11909  04cb 524541445900  	dc.b	"READY",0
-11910  04d1               L3604:
-11911  04d1 383900        	dc.b	"89",0
-11912  04d4               L5204:
-11913  04d4 343600        	dc.b	"46",0
-11914  04d7               L7673:
-11915  04d7 2b4353513a00  	dc.b	"+CSQ:",0
-11916  04dd               L3373:
-11917  04dd 2b435245473a  	dc.b	"+CREG: 0,5",0
-11918  04e8               L1373:
-11919  04e8 2b435245473a  	dc.b	"+CREG: 0,1",0
-11920  04f3               L5373:
-11921  04f3 4552524f5200  	dc.b	"ERROR",0
-11922  04f9               L3244:
-11923  04f9 3e00          	dc.b	">",0
-11924  04fb               L7324:
-11925  04fb 4f4b00        	dc.b	"OK",0
-11926                     	xref.b	c_lreg
-11946                     	xref	c_lmod
-11947                     	xref	c_lzmp
-11948                     	xref	c_lrzmp
-11949                     	xref	c_itolx
-11950                     	xref	c_lsbc
-11951                     	xref	c_ladd
-11952                     	xref	c_smul
-11953                     	xref	c_lsub
-11954                     	xref	c_lcmp
-11955                     	xref	c_sdivx
-11956                     	xref	c_smodx
-11957                     	xref	c_xymvx
-11958                     	xref	c_ltor
-11959                     	xref	c_rtol
-11960                     	xref	c_lmul
-11961                     	end
+10794                     	switch	.const
+10795  0493               L1174_nBuf:
+10796  0493 00            	dc.b	0
+10797  0494 000000000000  	ds.b	11
+10886                     	switch	.const
+10887  049f               L2211:
+10888  049f 0000003d      	dc.l	61
+10889                     ; 4064 void fixTaskGsm(void)
+10889                     ; 4065 {
+10890                     	switch	.text
+10891  1459               _fixTaskGsm:
+10893  1459 5223          	subw	sp,#35
+10894       00000023      OFST:	set	35
+10897                     ; 4066 	s32 dwReport = 0, dwOffset = 0;	
+10899  145b 96            	ldw	x,sp
+10900  145c 1c000d        	addw	x,#OFST-22
+10901  145f cd0000        	call	c_ltor
+10905  1462 96            	ldw	x,sp
+10906  1463 1c0011        	addw	x,#OFST-18
+10907  1466 cd0000        	call	c_ltor
+10909                     ; 4070 	STM8_RTC_Get(&stReportTime);
+10911  1469 96            	ldw	x,sp
+10912  146a 1c0015        	addw	x,#OFST-14
+10913  146d cd0000        	call	_STM8_RTC_Get
+10915                     ; 4071 	TM_TimeChangeAToB(&stReportTime,&stTimeNowTm);
+10917  1470 96            	ldw	x,sp
+10918  1471 1c001c        	addw	x,#OFST-7
+10919  1474 89            	pushw	x
+10920  1475 1d0007        	subw	x,#7
+10921  1478 cd0000        	call	_TM_TimeChangeAToB
+10923  147b c600a5        	ld	a,_m_nWakeupReportFlg
+10924  147e a50f          	bcp	a,#15
+10925  1480 85            	popw	x
+10926                     ; 4074 	if((FALSE != (m_nWakeupReportFlg&REPORT_FLG))
+10926                     ; 4075 		||FALSE == TM_IsValidTimePro(&stLastReportT)
+10926                     ; 4076 		||(2015 >= stTimeNowTm.wYear)||(TRUE == g_OptValveRepFlg)
+10926                     ; 4077 #ifdef PURCHASE_MODE
+10926                     ; 4078 		|| (OWED_STAT_FLG == (tyParameter.nOverBuyFlg&(OWED_REP_SUCC|OWED_REP_FAIL|OWED_STAT_FLG)))
+10926                     ; 4079 #endif
+10926                     ; 4080 		||((ALARM_MASK&ALM_GetBatStatus()&&(MAX_REP_TIMES > g_nAlmRepFailCnt)&&(ALARM_REP_FLG != (ALARM_REP_FLG&g_nGuardEnFlg)))))
+10928  1481 2629          	jrne	L7474
+10930  1483 ae000a        	ldw	x,#_stLastReportT
+10931  1486 cd0000        	call	_TM_IsValidTimePro
+10933  1489 4d            	tnz	a
+10934  148a 2720          	jreq	L7474
+10936  148c 1e1c          	ldw	x,(OFST-7,sp)
+10937  148e a307e0        	cpw	x,#2016
+10938  1491 2519          	jrult	L7474
+10940  1493 c600ae        	ld	a,_g_OptValveRepFlg
+10941  1496 4a            	dec	a
+10942  1497 2713          	jreq	L7474
+10944  1499 cd0000        	call	_ALM_GetBatStatus
+10946  149c a50f          	bcp	a,#15
+10947  149e 271c          	jreq	L5474
+10949  14a0 c60000        	ld	a,_g_nAlmRepFailCnt
+10950  14a3 a103          	cp	a,#3
+10951  14a5 2415          	jruge	L5474
+10953  14a7 7202000010    	btjt	_g_nGuardEnFlg,#1,L5474
+10954  14ac               L7474:
+10955                     ; 4082 		g_nReportFlg  = TRUE;
+10957  14ac 350100ad      	mov	_g_nReportFlg,#1
+10958                     ; 4083 	    m_nUploadMode = OTHER_REP;
+10960  14b0 725f00c3      	clr	_m_nUploadMode
+10961                     ; 4084 		fixTaskGsmProc();
+10963  14b4               LC022:
+10965  14b4 cd13cd        	call	_fixTaskGsmProc
+10968  14b7               L7574:
+10969                     ; 4166 	ReportTimeOutPro();
+10971  14b7 cd1357        	call	_ReportTimeOutPro
+10973                     ; 4167 	return ;
+10975  14ba 2054          	jra	L4411
+10976  14bc               L5474:
+10977                     ; 4133 		if(FALSE == g_nReportFlg)
+10979  14bc c600ad        	ld	a,_g_nReportFlg
+10980  14bf 265a          	jrne	L1674
+10981                     ; 4135 			dwReport = HD_ClaReportTimeToSec();
+10983  14c1 cd0000        	call	_HD_ClaReportTimeToSec
+10985  14c4 96            	ldw	x,sp
+10986  14c5 1c000d        	addw	x,#OFST-22
+10987  14c8 cd0000        	call	c_rtol
+10989                     ; 4136 			dwOffset = TM_DiffSecond(&stLastReportT, &stTimeNowTm);
+10991  14cb 96            	ldw	x,sp
+10992  14cc 1c001c        	addw	x,#OFST-7
+10993  14cf 89            	pushw	x
+10994  14d0 ae000a        	ldw	x,#_stLastReportT
+10995  14d3 cd0000        	call	_TM_DiffSecond
+10997  14d6 85            	popw	x
+10998  14d7 96            	ldw	x,sp
+10999  14d8 1c0011        	addw	x,#OFST-18
+11000  14db cd0000        	call	c_rtol
+11002                     ; 4138 			if((60 < (dwOffset%dwReport)) ||
+11002                     ; 4139 				((TRUE == ReadRecord(0, (u8*)&tyRecord, sizeof(tyRecord)))&&(FALSE == tyRecord.nRepFlg)))
+11004  14de 96            	ldw	x,sp
+11005  14df 1c0011        	addw	x,#OFST-18
+11006  14e2 cd0000        	call	c_ltor
+11008  14e5 96            	ldw	x,sp
+11009  14e6 1c000d        	addw	x,#OFST-22
+11010  14e9 cd0000        	call	c_lmod
+11012  14ec ae049f        	ldw	x,#L2211
+11013  14ef cd0000        	call	c_lcmp
+11015  14f2 2e14          	jrsge	L5674
+11017  14f4 4b0c          	push	#12
+11018  14f6 ae0000        	ldw	x,#_tyRecord
+11019  14f9 89            	pushw	x
+11020  14fa 4f            	clr	a
+11021  14fb cd0000        	call	_ReadRecord
+11023  14fe 5b03          	addw	sp,#3
+11024  1500 4a            	dec	a
+11025  1501 2610          	jrne	L3674
+11027  1503 c6000b        	ld	a,_tyRecord+11
+11028  1506 260b          	jrne	L3674
+11029  1508               L5674:
+11030                     ; 4141 				LP_SetLowPwrStartFlg(LP_GPRS_FLG_OK);
+11032  1508 a601          	ld	a,#1
+11033  150a cd0000        	call	_LP_SetLowPwrStartFlg
+11035                     ; 4144 				M590_CloseConnect();
+11037  150d cd116c        	call	_M590_CloseConnect
+11039                     ; 4145 				return ;
+11040  1510               L4411:
+11043  1510 5b23          	addw	sp,#35
+11044  1512 81            	ret	
+11045  1513               L3674:
+11046                     ; 4149 				m_nUploadMode = TIME_DAT_REP;
+11048  1513 a601          	ld	a,#1
+11049  1515 c700c3        	ld	_m_nUploadMode,a
+11050                     ; 4150 				g_nReportFlg  = TRUE;
+11052  1518 c700ad        	ld	_g_nReportFlg,a
+11053  151b               L1674:
+11054                     ; 4153 		if(TRUE == g_nReportFlg)
+11056  151b 4a            	dec	a
+11057  151c 2699          	jrne	L7574
+11058                     ; 4155 			u8 nBuf[12]={0};
+11060  151e 96            	ldw	x,sp
+11061  151f 5c            	incw	x
+11062  1520 90ae0493      	ldw	y,#L1174_nBuf
+11063  1524 a60c          	ld	a,#12
+11064  1526 cd0000        	call	c_xymvx
+11066                     ; 4156 			g_wTmReportCnt++;
+11068  1529 ce00ab        	ldw	x,_g_wTmReportCnt
+11069  152c 5c            	incw	x
+11070  152d cf00ab        	ldw	_g_wTmReportCnt,x
+11071                     ; 4157 			MemcpyFunc(nBuf, (u8 *)&stTimeNowTm,sizeof(stTimeNowTm));			
+11073  1530 4b08          	push	#8
+11074  1532 96            	ldw	x,sp
+11075  1533 1c001d        	addw	x,#OFST-6
+11076  1536 89            	pushw	x
+11077  1537 1d001b        	subw	x,#27
+11078  153a cd0000        	call	_MemcpyFunc
+11080  153d 5b03          	addw	sp,#3
+11081                     ; 4158 			MemcpyFunc(&nBuf[8], (u8 *)&g_wTmReportCnt, 2);
+11083  153f 4b02          	push	#2
+11084  1541 ae00ab        	ldw	x,#_g_wTmReportCnt
+11085  1544 89            	pushw	x
+11086  1545 96            	ldw	x,sp
+11087  1546 1c000c        	addw	x,#OFST-23
+11088  1549 cd0000        	call	_MemcpyFunc
+11090  154c 5b03          	addw	sp,#3
+11091                     ; 4159 			SaveParameterForType(nBuf, 10, LT_REP_TIME); 
+11093  154e 4b05          	push	#5
+11094  1550 4b0a          	push	#10
+11095  1552 96            	ldw	x,sp
+11096  1553 1c0003        	addw	x,#OFST-32
+11097  1556 cd0000        	call	_SaveParameterForType
+11099  1559 85            	popw	x
+11100                     ; 4160 			fixTaskGsmProc();
+11102  155a cc14b4        	jp	LC022
+11139                     ; 4179 void InitializeGsm(void)
+11139                     ; 4180 {	
+11140                     	switch	.text
+11141  155d               _InitializeGsm:
+11145                     ; 4181 	tyGSMFlag = 0xFF;
+11147  155d 35ff0019      	mov	_tyGSMFlag,#255
+11148                     ; 4182 	ucStatusGsm    = GSM_INIT;
+11150  1561 35010068      	mov	_ucStatusGsm,#1
+11151                     ; 4183 	ucStepGsm      = 0;
+11153  1565 725f0067      	clr	_ucStepGsm
+11154                     ; 4184 	m_nGprsStep    = INIT_PWR_ON;
+11156  1569 350100a6      	mov	_m_nGprsStep,#1
+11157                     ; 4185 	stRepFail.wError = 0;
+11159  156d 5f            	clrw	x
+11160  156e cf0006        	ldw	_stRepFail+6,x
+11161                     ; 4187 	m_nWakeupReportFlg = ReadReportFlag();
+11163  1571 cd0000        	call	_ReadReportFlag
+11165  1574 c700a5        	ld	_m_nWakeupReportFlg,a
+11166                     ; 4188 	ReadGroup(1, ADDRESS_GUARD_EN, &g_nGuardEnFlg);
+11168  1577 ae0000        	ldw	x,#_g_nGuardEnFlg
+11169  157a 89            	pushw	x
+11170  157b ae1000        	ldw	x,#4096
+11171  157e 89            	pushw	x
+11172  157f a601          	ld	a,#1
+11173  1581 cd0000        	call	_ReadGroup
+11175  1584 5b04          	addw	sp,#4
+11176                     ; 4189 	g_nAlmRepFailCnt = (g_nGuardEnFlg>>6);
+11178  1586 c60000        	ld	a,_g_nGuardEnFlg
+11179  1589 4e            	swap	a
+11180  158a a40c          	and	a,#12
+11181  158c 44            	srl	a
+11182  158d 44            	srl	a
+11183  158e c70000        	ld	_g_nAlmRepFailCnt,a
+11184                     ; 4196 	HD_InitializeGsm();
+11186  1591 cd0000        	call	_HD_InitializeGsm
+11188                     ; 4200 	if(FALSE == ReadParameterForType((u8 *)&stOptValve, OPTVALVE_LEN, OPT_VALVE_PRAA))
+11190  1594 4b06          	push	#6
+11191  1596 4b0a          	push	#10
+11192  1598 ae0000        	ldw	x,#_stOptValve
+11193  159b cd0000        	call	_ReadParameterForType
+11195  159e 4d            	tnz	a
+11196  159f 85            	popw	x
+11197  15a0 2618          	jrne	L3005
+11198                     ; 4202 		stOptValve.nOptFlg    = CTL_VAVLE_ENABLE;
+11200  15a2 35aa0001      	mov	_stOptValve+1,#170
+11201                     ; 4203 		stOptValve.nEnableFlg = CTL_VAVLE_ENABLE;
+11203  15a6 35aa0000      	mov	_stOptValve,#170
+11204                     ; 4204 		stOptValve.nStartHour = 0x02;
+11206  15aa 35020005      	mov	_stOptValve+5,#2
+11207                     ; 4205 		stOptValve.nEndHour   = 0x04;
+11209  15ae 35040006      	mov	_stOptValve+6,#4
+11210                     ; 4206 		stOptValve.nVavleStat = 0;
+11212  15b2 725f0007      	clr	_stOptValve+7
+11213                     ; 4207 		stOptValve.nVavleCycle= 0;
+11215  15b6 725f0009      	clr	_stOptValve+9
+11216  15ba               L3005:
+11217                     ; 4210 	if((MAX_REP_TIMES > stOptValve.nRepFailCnt)&&(CTL_VALVE_OVER == stOptValve.nOptFlg))
+11219  15ba c60008        	ld	a,_stOptValve+8
+11220  15bd a103          	cp	a,#3
+11221  15bf 240c          	jruge	L5005
+11223  15c1 c60001        	ld	a,_stOptValve+1
+11224  15c4 a1ee          	cp	a,#238
+11225  15c6 2605          	jrne	L5005
+11226                     ; 4212 		g_OptValveRepFlg = TRUE;
+11228  15c8 350100ae      	mov	_g_OptValveRepFlg,#1
+11231  15cc 81            	ret	
+11232  15cd               L5005:
+11233                     ; 4214 	else if(MAX_REP_TIMES <= stOptValve.nRepFailCnt)
+11235  15cd c60008        	ld	a,_stOptValve+8
+11236  15d0 a103          	cp	a,#3
+11237  15d2 2508          	jrult	L7005
+11238                     ; 4216 		stOptValve.nOptFlg = 0;   /* 超出上报次数后，认为上报成功不在上报 */ 
+11240  15d4 725f0001      	clr	_stOptValve+1
+11241                     ; 4217 		stOptValve.nRepFailCnt = 0;
+11243  15d8 725f0008      	clr	_stOptValve+8
+11244  15dc               L7005:
+11245                     ; 4219 	return ;
+11248  15dc 81            	ret	
+11672                     	xdef	_fixTaskGsmProc
+11673                     	xdef	_ReportTimeOutPro
+11674                     	xdef	_M590_ConnectServer
+11675                     	xdef	_M590_HandShake
+11676                     	xdef	_M590_Init
+11677                     	xdef	_AT_CmdFailProc
+11678                     	xdef	_SIMGetRegisterStat
+11679                     	xdef	_UC_CommATExt
+11680                     	xdef	_QH_SearchStrVal
+11681                     	xdef	_QH_bufbuf
+11682                     	xdef	_UC_SleepProc
+11683                     	xdef	_UC_SetSleepCnt
+11684                     	xdef	_PackAtCmdExt
+11685                     	xdef	_PackTcpSendData
+11686                     	xdef	_PackAtCmdTcpsend
+11687                     	xdef	_PackAtCmdParameter3
+11688                     	xdef	_PackAtCmdParameter2
+11689                     	xdef	_PackAtCmdParameter
+11690                     	xdef	_PackAtCmd
+11691                     	xdef	_AlmMakeFrame
+11692                     	xdef	_BatteryVolRepPro
+11693                     	xdef	_UpLinkSaveReportTime
+11694                     	xdef	_MeterTnNumTransform
+11695                     	xdef	_VavleStatTransform
+11696                     	xdef	_UC_CommAT
+11697                     	xdef	_SIMGL868_GetCCID
+11698                     	xdef	_g_nOwedRepFlg
+11699                     	xdef	_m_nAlmRepFlg
+11700                     	xdef	_m_nGmTn_2
+11701                     	xdef	_m_nGmTn_1
+11702                     	xdef	_m_nMasterType
+11703                     	xdef	_m_nLedFlashFlg
+11704                     	xdef	_m_nDataRepSucFlg
+11705                     	xdef	_m_nRepIndex
+11706                     	xdef	_m_nIpAddBk
+11707                     	xdef	_g_BatRepFlg
+11708                     	xdef	_g_nReportFlg
+11709                     	xdef	_m_dwTimeCnt
+11710                     	xdef	_m_nGprsStep
+11711                     	xdef	_m_nWakeupReportFlg
+11712                     	xdef	_m_nCcidBuf
+11713                     	xdef	_m_nPtrcoVerBuf
+11714                     	xdef	_aucAtPPortBk
+11715                     	xdef	_aucAtPServerBk
+11716                     	xdef	_g_nPwdBuf
+11717                     	xdef	_g_nUsrBuf
+11718                     	xref	_HD_DecodeParameter
+11719                     	xref	_HD_ProtolProc
+11720                     	xref	_HD_TimeOutReUpLoad
+11721                     	xref	_HD_ClaReportTimeToSec
+11722                     	xref	_HD_InitializeGsm
+11723                     	xref	_ALM_GetBatStatus
+11724                     	xref	_g_nAlmRepFailCnt
+11725                     	xref	_g_nGuardEnFlg
+11726                     	xref	_LP_SetLowPwrStartFlg
+11727                     	xref	_STM8_RTC_Get
+11728                     	xref	_stRepFail
+11729                     	xref	_tyRecord
+11730                     	xref	_ReadAlmRecord
+11731                     	xref	_AddAlmRecord
+11732                     	xref	_EditRecord
+11733                     	xref	_SaveByte
+11734                     	xref	_ReadGroup
+11735                     	xref	_ReadReportFlag
+11736                     	xref	_SaveReportFlag
+11737                     	xref	_SaveParameterForType
+11738                     	xref	_ReadParameterForType
+11739                     	xref	_ReadRecord
+11740                     	xdef	_JX_StringCat
+11741                     	xdef	_JX_Strlen
+11742                     	xdef	_GetIsmiCcidDat
+11743                     	xdef	_GetGprsConntStat
+11744                     	xdef	_GetOnLineStatus
+11745                     	xdef	_GetLedFlg
+11746                     	xdef	_FrameSendFunc
+11747                     	xdef	_M590_CloseConnect
+11748                     	xdef	_M590_TcpSendDatLen
+11749                     	xdef	_SetLogonMode
+11750                     	xdef	_WatitDataSendOk
+11751                     	xdef	_ClaReportTimeToSec
+11752                     	xdef	_SetReportIndex
+11753                     	xdef	_GetReportFailFlag
+11754                     	xdef	_ReWriteRepFlg
+11755                     	xdef	_GetTermReportTime
+11756                     	xdef	_UC_SleepFunc
+11757                     	xdef	_InitializeGsm
+11758                     	xdef	_fixTaskGsm
+11759                     	xdef	_GetReportFlag
+11760                     	xdef	_m_nUploadMode
+11761                     	xdef	_g_dwTmAddress
+11762                     	xdef	_g_OptValveRepFlg
+11763                     	xdef	_g_nSignal
+11764                     	xdef	_g_wTmReportCnt
+11765                     	xdef	_aucAtPPort1
+11766                     	xdef	_aucAtPServer1
+11767                     	xdef	_g_dwCommDelay
+11768                     	xdef	_m_nImsiBufXJ
+11769                     	xdef	_m_nImsiBuf
+11770                     	xdef	_m_nVerBuf
+11771                     	xdef	_g_nApnType
+11772                     	xdef	_m_nRepFailFlg
+11773                     	xdef	_g_nDatRepCnt
+11774                     	xdef	_m_nRepEnableFlg
+11775                     	xdef	_g_dwRepTick
+11776                     	switch	.bss
+11777  0000               _stOptValve:
+11778  0000 000000000000  	ds.b	10
+11779                     	xdef	_stOptValve
+11780  000a               _stLastReportT:
+11781  000a 000000000000  	ds.b	8
+11782                     	xdef	_stLastReportT
+11783  0012               _stTimeNow:
+11784  0012 000000000000  	ds.b	7
+11785                     	xdef	_stTimeNow
+11786                     	xdef	_g_nApnBuf
+11787                     	xref	_GetUartRxBuf
+11788                     	xref	_ClearRxBuff
+11789                     	xref	_CheckRevDataLen
+11790                     	xref	_TurnBusUartOn
+11791                     	xref	_StartSendBusUartGroup
+11792                     	xref	_SetBusUart
+11793                     	xref	_FeedSoftWareIwdg
+11794                     	xdef	_SIMGK7M_GetCIMI
+11795                     	xdef	_SIMGL868_UpdateSignal
+11796  0019               _tyGSMFlag:
+11797  0019 00            	ds.b	1
+11798                     	xdef	_tyGSMFlag
+11799                     	xref	_aucUartTxBuffer
+11800  001a               _tyReportParameter:
+11801  001a 000000000000  	ds.b	39
+11802                     	xdef	_tyReportParameter
+11803  0041               _tyGprs:
+11804  0041 000000000000  	ds.b	22
+11805                     	xdef	_tyGprs
+11806  0057               _ucErrorGsm:
+11807  0057 00            	ds.b	1
+11808                     	xdef	_ucErrorGsm
+11809  0058               _tyTimerReport:
+11810  0058 00000000      	ds.b	4
+11811                     	xdef	_tyTimerReport
+11812  005c               _tyReport:
+11813  005c 000000000000  	ds.b	10
+11814                     	xdef	_tyReport
+11815  0066               _ucStepReveive:
+11816  0066 00            	ds.b	1
+11817                     	xdef	_ucStepReveive
+11818  0067               _ucStepGsm:
+11819  0067 00            	ds.b	1
+11820                     	xdef	_ucStepGsm
+11821  0068               _ucStatusGsm:
+11822  0068 00            	ds.b	1
+11823                     	xdef	_ucStatusGsm
+11824  0069               _nLogonModeBk:
+11825  0069 00            	ds.b	1
+11826                     	xdef	_nLogonModeBk
+11827  006a               _ucLogonMode:
+11828  006a 00            	ds.b	1
+11829                     	xdef	_ucLogonMode
+11830  006b               _ucNumberMessage:
+11831  006b 00            	ds.b	1
+11832                     	xdef	_ucNumberMessage
+11833                     	xdef	_aucAtRCmd
+11834                     	xdef	_aucAtCmd
+11835                     	xdef	_aucAtShutDown
+11836                     	xdef	_aucAtMytimeupdate
+11837                     	xdef	_aucAtMylacid
+11838                     	xdef	_aucAtMycged
+11839                     	xdef	_aucAtTcpsends
+11840                     	xdef	_aucAtTcprecv_S
+11841                     	xdef	_aucAtTcplisten
+11842                     	xdef	_aucAtSignal
+11843                     	xdef	_aucAtGprsstatus
+11844                     	xdef	_aucAtCloselisten
+11845                     	xdef	_aucAtCloseclient
+11846                     	xdef	_aucAtClientstatus
+11847                     	xdef	_aucAtFtpstatus
+11848                     	xdef	_aucAtFtpput
+11849                     	xdef	_aucAtFtplogout
+11850                     	xdef	_aucAtFtplogin
+11851                     	xdef	_aucAtFtpget
+11852                     	xdef	_aucAtDnsserver
+11853                     	xdef	_aucAtDns
+11854                     	xdef	_aucAtXisp
+11855                     	xdef	_aucAtXiic
+11856                     	xdef	_aucAtUdpsetup
+11857                     	xdef	_aucAtUdpsend
+11858                     	xdef	_aucAtUdprecv
+11859                     	xdef	_aucAtUdpclose
+11860                     	xdef	_aucAtTcpclose
+11861                     	xdef	_aucAtXgauth
+11862                     	xdef	_aucAtTcpsetup
+11863                     	xdef	_aucAtTcpsend
+11864                     	xdef	_aucAtTcprecv
+11865                     	xdef	_aucAtIpstatus
+11866                     	xdef	_aucAtCusd
+11867                     	xdef	_aucAtCgatt
+11868                     	xdef	_aucAtPdpUn
+11869                     	xdef	_aucAtPdpCm
+11870                     	xdef	_aucAtCpbw
+11871                     	xdef	_aucAtCpbs
+11872                     	xdef	_aucAtCpbr
+11873                     	xdef	_aucAtCpbf
+11874                     	xdef	_aucAtCnum
+11875                     	xdef	_aucAtCsms
+11876                     	xdef	_aucAtCsmp
+11877                     	xdef	_aucAtCsdh
+11878                     	xdef	_aucAtCscs
+11879                     	xdef	_aucAtCscb
+11880                     	xdef	_aucAtCsca
+11881                     	xdef	_aucAtCpms
+11882                     	xdef	_aucAtCnmi
+11883                     	xdef	_aucAtCmss
+11884                     	xdef	_aucAtCmgw
+11885                     	xdef	_aucAtCmgs
+11886                     	xdef	_aucAtCmgr
+11887                     	xdef	_aucAtCmgl
+11888                     	xdef	_aucAtCmgf
+11889                     	xdef	_aucAtCmgd
+11890                     	xdef	_aucAtXbandsel
+11891                     	xdef	_aucAtCsq
+11892                     	xdef	_aucAtCops
+11893                     	xdef	_aucAtIpr
+11894                     	xdef	_aucAtIcf
+11895                     	xdef	_aucAtEnpwrsavE
+11896                     	xdef	_aucAtCreg
+11897                     	xdef	_aucAtCpwroff
+11898                     	xdef	_aucAtCpwd
+11899                     	xdef	_aucAtCpin
+11900                     	xdef	_aucAtCpas
+11901                     	xdef	_aucAtCmux
+11902                     	xdef	_aucAtCmee
+11903                     	xdef	_aucAtClck
+11904                     	xdef	_aucAtCipstatus
+11905                     	xdef	_aucAtCfun
+11906                     	xdef	_aucAtCeer
+11907                     	xdef	_aucAtCclk
+11908                     	xdef	_aucAtGetvers
+11909                     	xdef	_aucAtCimi
+11910                     	xdef	_aucAtCgsn
+11911                     	xdef	_aucAtCgmm
+11912                     	xdef	_aucAtCgmi
+11913                     	xdef	_aucAtCcid
+11914                     	xdef	_aucAtI
+11915                     	xdef	_aucAtS_D
+11916                     	xdef	_aucAtS_O
+11917                     	xdef	_aucAtS_Plus
+11918                     	xdef	_aucAtS_D2
+11919                     	xdef	_aucATS_W
+11920                     	xdef	_aucATS_V
+11921                     	xdef	_aucATS_E
+11922                     	xdef	_aucATS_A
+11923                     	xdef	_aucAtNull
+11924                     	xdef	_aucAtInit
+11925                     	xdef	_aucAtrError
+11926                     	xdef	_aucAtrIpr
+11927                     	xdef	_aucAtrTcpclose
+11928                     	xdef	_aucAtrTcprecv
+11929                     	xdef	_aucAtrTcpsend
+11930                     	xdef	_aucAtrTcpsetup
+11931                     	xdef	_aucAtrXiic
+11932                     	xdef	_aucAtrOk
+11933                     	xdef	_aucAtrNeoway
+11934                     	xdef	_aucAtrCreg
+11935                     	xdef	_aucAtrCpinReady
+11936                     	xdef	_aucAtrCclk
+11937                     	xdef	_aucAtrPppFail
+11938                     	xdef	_aucAtrInit
+11939                     	xdef	_aucAtPPort2
+11940                     	xdef	_aucAtPTimeServer2
+11941                     	xdef	_aucAtPTimeServer1
+11942                     	xdef	_aucAtPBaudrate
+11943                     	xdef	_aucAtPAscii_Equal0
+11944                     	xdef	_aucAtPAscii_Equal1
+11945                     	xdef	_aucAtPAscii_0
+11946                     	xdef	_aucAtPAscii_1
+11947                     	xdef	_aucAtPAscii_Question
+11948                     	xref	_JX_ByteToBcd
+11949                     	xref	_TM_DiffSecond
+11950                     	xref	_TM_TimeChangeAToB
+11951                     	xref	_TM_IsValidTimePro
+11952                     	xref	_JX_BL_Change
+11953                     	xref	_MemcpyFunc
+11954                     	xref	_MemsetFunc
+11955                     	xref	_delay_ms
+11956                     	xref	_GetSysTemTick
+11957                     	xref	_GPIO_WriteBit
+11958                     	switch	.const
+11959  04a3               L5244:
+11960  04a3 4c696e6b2043  	dc.b	"Link Closed",0
+11961  04af               L3734:
+11962  04af 434f4e4e4543  	dc.b	"CONNECT FAIL",0
+11963  04bc               L1734:
+11964  04bc 414c52454144  	dc.b	"ALREADY CONNECT",0
+11965  04cc               L7634:
+11966  04cc 434f4e4e4543  	dc.b	"CONNECT OK",0
+11967  04d7               L5424:
+11968  04d7 524541445900  	dc.b	"READY",0
+11969  04dd               L3604:
+11970  04dd 383900        	dc.b	"89",0
+11971  04e0               L5204:
+11972  04e0 343600        	dc.b	"46",0
+11973  04e3               L7673:
+11974  04e3 2b4353513a00  	dc.b	"+CSQ:",0
+11975  04e9               L3373:
+11976  04e9 2b435245473a  	dc.b	"+CREG: 0,5",0
+11977  04f4               L1373:
+11978  04f4 2b435245473a  	dc.b	"+CREG: 0,1",0
+11979  04ff               L5373:
+11980  04ff 4552524f5200  	dc.b	"ERROR",0
+11981  0505               L3244:
+11982  0505 3e00          	dc.b	">",0
+11983  0507               L7324:
+11984  0507 4f4b00        	dc.b	"OK",0
+11985                     	xref.b	c_lreg
+12005                     	xref	c_lmod
+12006                     	xref	c_lzmp
+12007                     	xref	c_lrzmp
+12008                     	xref	c_itolx
+12009                     	xref	c_lsbc
+12010                     	xref	c_ladd
+12011                     	xref	c_smul
+12012                     	xref	c_lsub
+12013                     	xref	c_lcmp
+12014                     	xref	c_sdivx
+12015                     	xref	c_smodx
+12016                     	xref	c_xymvx
+12017                     	xref	c_ltor
+12018                     	xref	c_rtol
+12019                     	xref	c_lmul
+12020                     	end

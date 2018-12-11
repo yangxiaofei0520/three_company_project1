@@ -4152,6 +4152,11 @@ void fixTaskGsm(void)
 		}
 		if(TRUE == g_nReportFlg)
 		{
+			u8 nBuf[12]={0};
+			g_wTmReportCnt++;
+			MemcpyFunc(nBuf, (u8 *)&stTimeNowTm,sizeof(stTimeNowTm));			
+			MemcpyFunc(&nBuf[8], (u8 *)&g_wTmReportCnt, 2);
+			SaveParameterForType(nBuf, 10, LT_REP_TIME); 
 			fixTaskGsmProc();
 		}
 #endif
