@@ -1700,18 +1700,18 @@ GetVavleStat	source\protocol.c	1129;"	function	signature:(void)
 GetVavleStat	source\protocol.c	1168;"	function	signature:(void)
 GetVavleStat	source\protocolglobal.h	74;"	prototype	signature:(void)
 HALF_FULL_RANGE	source\meter.h	62;"	macro
-HD_AddressComparePro	source\hedaprotocol.c	584;"	function	signature:(u8 *pnAddr, u8 nLen)
+HD_AddressComparePro	source\hedaprotocol.c	583;"	function	signature:(u8 *pnAddr, u8 nLen)
 HD_AddressComparePro	source\hedaprotocol.h	153;"	prototype	signature:(u8 *pnAddr, u8 nLen)
 HD_ClaReportTimeToSec	source\hedaprotocol.c	44;"	function	signature:(void)
 HD_ClaReportTimeToSec	source\hedaprotocol.h	141;"	prototype	signature:(void)
 HD_CmdSetNetParam	source\hedaprotocol.h	37;"	typedef	typeref:struct:__anon123
-HD_DecodeParameter	source\hedaprotocol.c	494;"	function	signature:(u8* pnRxBuf, u8 nRxLen)
+HD_DecodeParameter	source\hedaprotocol.c	493;"	function	signature:(u8* pnRxBuf, u8 nRxLen)
 HD_DecodeParameter	source\hedaprotocol.h	152;"	prototype	signature:(u8* pnRxBuf, u8 nRxLen)
 HD_FRAME_OTHER_LEN	source\hedaprotocol.h	48;"	macro
 HD_INTERVAL_DAY	source\hedaprotocol.h	128;"	macro
 HD_INTERVAL_HOUR	source\hedaprotocol.h	129;"	macro
 HD_INTERVAL_MIN	source\hedaprotocol.h	130;"	macro
-HD_InitializeGsm	source\hedaprotocol.c	1279;"	function	signature:(void)
+HD_InitializeGsm	source\hedaprotocol.c	1278;"	function	signature:(void)
 HD_InitializeGsm	source\hedaprotocol.h	139;"	prototype	signature:(void)
 HD_Login_Domain_Name	source\hedaprotocol.h	135;"	macro
 HD_Login_IP	source\hedaprotocol.h	134;"	macro
@@ -1720,11 +1720,11 @@ HD_Online	source\hedaprotocol.c	285;"	function	signature:(u8 nLogonMode)
 HD_Online	source\hedaprotocol.h	150;"	prototype	signature:(u8 nLogonMode)
 HD_OnlineCtl	source\hedaprotocol.c	251;"	function	signature:(void)
 HD_OnlineCtl	source\hedaprotocol.h	149;"	prototype	signature:(void)
-HD_ProtolHandle	source\hedaprotocol.c	623;"	function	signature:(void)
+HD_ProtolHandle	source\hedaprotocol.c	622;"	function	signature:(void)
 HD_ProtolHandle	source\hedaprotocol.h	154;"	prototype	signature:(void)
 HD_ProtolProc	source\hedaprotocol.c	226;"	function	signature:(void)
 HD_ProtolProc	source\hedaprotocol.h	146;"	prototype	signature:(void)
-HD_ProtolSend	source\hedaprotocol.c	412;"	function	signature:(u8 Size, u8 nComChannel,u8 device_info_flag)
+HD_ProtolSend	source\hedaprotocol.c	411;"	function	signature:(u8 Size, u8 nComChannel,u8 device_info_flag)
 HD_ProtolSend	source\hedaprotocol.h	151;"	prototype	signature:(u8 Size, u8 nComChannel,u8 device_info_flag)
 HD_TimeOutReUpLoad	source\hedaprotocol.c	185;"	function	signature:(void)
 HD_TimeOutReUpLoad	source\hedaprotocol.h	145;"	prototype	signature:(void)
@@ -1749,58 +1749,58 @@ HeDa_Burst_Event_Pressure2_Limit_Up	source\hedaprotocol.h	85;"	enumerator	enum:_
 HeDa_Cmd	source\hedaprotocol.h	78;"	typedef	typeref:enum:__anon124
 HeDa_Cmd_Burst_Upload	source\hedaprotocol.h	54;"	enumerator	enum:__anon124
 HeDa_Cmd_Get_Addr	source\hedaprotocol.h	73;"	enumerator	enum:__anon124
-HeDa_Cmd_Get_Addr_Handle	source\hedaprotocol.c	1235;"	function	signature:(u8 *pData)
+HeDa_Cmd_Get_Addr_Handle	source\hedaprotocol.c	1234;"	function	signature:(u8 *pData)
 HeDa_Cmd_Get_Addr_Handle	source\hedaprotocol.h	179;"	prototype	signature:(u8 *pData)
 HeDa_Cmd_Get_All_Param	source\hedaprotocol.h	75;"	enumerator	enum:__anon124
-HeDa_Cmd_Get_All_Param_Handle	source\hedaprotocol.c	1251;"	function	signature:(u8 *pData)
+HeDa_Cmd_Get_All_Param_Handle	source\hedaprotocol.c	1250;"	function	signature:(u8 *pData)
 HeDa_Cmd_Get_All_Param_Handle	source\hedaprotocol.h	184;"	prototype	signature:(u8 *pData)
 HeDa_Cmd_Get_Appoint_Data	source\hedaprotocol.h	76;"	enumerator	enum:__anon124
-HeDa_Cmd_Get_Appoint_Data_Handle	source\hedaprotocol.c	1265;"	function	signature:(u8 *pData)
+HeDa_Cmd_Get_Appoint_Data_Handle	source\hedaprotocol.c	1264;"	function	signature:(u8 *pData)
 HeDa_Cmd_Get_Appoint_Data_Handle	source\hedaprotocol.h	185;"	prototype	signature:(u8 *pData)
 HeDa_Cmd_Get_Net_Param	source\hedaprotocol.h	69;"	enumerator	enum:__anon124
-HeDa_Cmd_Get_Net_Param_Handle	source\hedaprotocol.c	899;"	function	signature:(u8 *pData)
+HeDa_Cmd_Get_Net_Param_Handle	source\hedaprotocol.c	898;"	function	signature:(u8 *pData)
 HeDa_Cmd_Get_Net_Param_Handle	source\hedaprotocol.h	168;"	prototype	signature:(u8 *pData)
 HeDa_Cmd_Get_Pressure_Threshold	source\hedaprotocol.h	71;"	enumerator	enum:__anon124
-HeDa_Cmd_Get_Pressure_Threshold_Handle	source\hedaprotocol.c	1147;"	function	signature:(u8 *pData)
+HeDa_Cmd_Get_Pressure_Threshold_Handle	source\hedaprotocol.c	1146;"	function	signature:(u8 *pData)
 HeDa_Cmd_Get_Pressure_Threshold_Handle	source\hedaprotocol.h	176;"	prototype	signature:(u8 *pData)
 HeDa_Cmd_Get_Report_Cycle	source\hedaprotocol.h	70;"	enumerator	enum:__anon124
-HeDa_Cmd_Get_Report_Cycle_Handle	source\hedaprotocol.c	956;"	function	signature:(u8 *pData)
+HeDa_Cmd_Get_Report_Cycle_Handle	source\hedaprotocol.c	955;"	function	signature:(u8 *pData)
 HeDa_Cmd_Get_Report_Cycle_Handle	source\hedaprotocol.h	173;"	prototype	signature:(u8 *pData)
 HeDa_Cmd_Get_Sampling_Interval	source\hedaprotocol.h	68;"	enumerator	enum:__anon124
-HeDa_Cmd_Get_Sampling_Interval_Handle	source\hedaprotocol.c	811;"	function	signature:(u8 *pData)
+HeDa_Cmd_Get_Sampling_Interval_Handle	source\hedaprotocol.c	810;"	function	signature:(u8 *pData)
 HeDa_Cmd_Get_Sampling_Interval_Handle	source\hedaprotocol.h	165;"	prototype	signature:(u8 *pData)
 HeDa_Cmd_Get_Secret_Key	source\hedaprotocol.h	72;"	enumerator	enum:__anon124
-HeDa_Cmd_Get_Secret_Key_Handle	source\hedaprotocol.c	1184;"	function	signature:(u8 *pData)
+HeDa_Cmd_Get_Secret_Key_Handle	source\hedaprotocol.c	1183;"	function	signature:(u8 *pData)
 HeDa_Cmd_Get_Secret_Key_Handle	source\hedaprotocol.h	183;"	prototype	signature:(u8 *pData)
 HeDa_Cmd_HeartBeat_Upload	source\hedaprotocol.h	55;"	enumerator	enum:__anon124
 HeDa_Cmd_Normal_Upload	source\hedaprotocol.h	53;"	enumerator	enum:__anon124
 HeDa_Cmd_Reply_Upload	source\hedaprotocol.h	56;"	enumerator	enum:__anon124
-HeDa_Cmd_Reply_Upload_Handle	source\hedaprotocol.c	728;"	function	signature:(u8 *pData,u8 ctrl)
+HeDa_Cmd_Reply_Upload_Handle	source\hedaprotocol.c	727;"	function	signature:(u8 *pData,u8 ctrl)
 HeDa_Cmd_Reply_Upload_Handle	source\hedaprotocol.h	162;"	prototype	signature:(u8 *pData,u8 ctrl)
 HeDa_Cmd_Set_Addr	source\hedaprotocol.h	66;"	enumerator	enum:__anon124
-HeDa_Cmd_Set_Addr_Handle	source\hedaprotocol.c	1199;"	function	signature:(u8 *pData)
+HeDa_Cmd_Set_Addr_Handle	source\hedaprotocol.c	1198;"	function	signature:(u8 *pData)
 HeDa_Cmd_Set_Addr_Handle	source\hedaprotocol.h	178;"	prototype	signature:(u8 *pData)
 HeDa_Cmd_Set_Net_Param	source\hedaprotocol.h	62;"	enumerator	enum:__anon124
-HeDa_Cmd_Set_Net_Param_Handle	source\hedaprotocol.c	827;"	function	signature:(HD_CmdSetNetParam *pData)
+HeDa_Cmd_Set_Net_Param_Handle	source\hedaprotocol.c	826;"	function	signature:(HD_CmdSetNetParam *pData)
 HeDa_Cmd_Set_Net_Param_Handle	source\hedaprotocol.h	167;"	prototype	signature:(HD_CmdSetNetParam *pData)
 HeDa_Cmd_Set_Pressure_Threshold	source\hedaprotocol.h	64;"	enumerator	enum:__anon124
-HeDa_Cmd_Set_Pressure_Threshold_Handle	source\hedaprotocol.c	1080;"	function	signature:(u8 *pData)
+HeDa_Cmd_Set_Pressure_Threshold_Handle	source\hedaprotocol.c	1079;"	function	signature:(u8 *pData)
 HeDa_Cmd_Set_Pressure_Threshold_Handle	source\hedaprotocol.h	175;"	prototype	signature:(u8 *pData)
 HeDa_Cmd_Set_Report_Cycle	source\hedaprotocol.h	63;"	enumerator	enum:__anon124
-HeDa_Cmd_Set_Report_Cycle_Handle	source\hedaprotocol.c	921;"	function	signature:(u8 *pData)
+HeDa_Cmd_Set_Report_Cycle_Handle	source\hedaprotocol.c	920;"	function	signature:(u8 *pData)
 HeDa_Cmd_Set_Report_Cycle_Handle	source\hedaprotocol.h	172;"	prototype	signature:(u8 *pData)
 HeDa_Cmd_Set_Sampling_Interval	source\hedaprotocol.h	61;"	enumerator	enum:__anon124
-HeDa_Cmd_Set_Sampling_Interval_Handle	source\hedaprotocol.c	779;"	function	signature:(u8 *pData)
+HeDa_Cmd_Set_Sampling_Interval_Handle	source\hedaprotocol.c	778;"	function	signature:(u8 *pData)
 HeDa_Cmd_Set_Sampling_Interval_Handle	source\hedaprotocol.h	164;"	prototype	signature:(u8 *pData)
 HeDa_Cmd_Set_Secret_Key	source\hedaprotocol.h	65;"	enumerator	enum:__anon124
-HeDa_Cmd_Set_Secret_Key_Handle	source\hedaprotocol.c	1163;"	function	signature:(u8 *pData)
+HeDa_Cmd_Set_Secret_Key_Handle	source\hedaprotocol.c	1162;"	function	signature:(u8 *pData)
 HeDa_Cmd_Set_Secret_Key_Handle	source\hedaprotocol.h	182;"	prototype	signature:(u8 *pData)
 HeDa_Default_Heart_Beat_Interval	source\hedaprotocol.h	110;"	macro
 HeDa_Get_String_len	source\jx_math.c	1015;"	function	signature:(char *str,u8 str_buf_size)
 HeDa_Get_String_len	source\jx_math.h	95;"	prototype	signature:(char *str,u8 str_buf_size)
 HeDa_Heart_Beat_Interval_Max	source\hedaprotocol.h	111;"	macro
 HeDa_Packet_Max_Len	source\hedaprotocol.h	114;"	macro
-HeDa_ReportCycleType_To_TypeAddCycle	source\hedaprotocol.c	971;"	function	signature:(u8 Report_Cycle_Type,u8 *Report_Time_Type,u8 *cycle_num)
+HeDa_ReportCycleType_To_TypeAddCycle	source\hedaprotocol.c	970;"	function	signature:(u8 Report_Cycle_Type,u8 *Report_Time_Type,u8 *cycle_num)
 HeDa_ReportCycleType_To_TypeAddCycle	source\hedaprotocol.h	171;"	prototype	signature:(u8 Report_Cycle_Type,u8 *Report_Time_Type,u8 *cycle_num)
 HeDa_Report_Cycle	source\hedaprotocol.h	106;"	typedef	typeref:enum:__anon126
 HeDa_Report_Cycle_Hour_1	source\hedaprotocol.h	99;"	enumerator	enum:__anon126
@@ -1816,7 +1816,7 @@ HeDa_Report_Cycle_Minute_10	source\hedaprotocol.h	96;"	enumerator	enum:__anon126
 HeDa_Report_Cycle_Minute_15	source\hedaprotocol.h	97;"	enumerator	enum:__anon126
 HeDa_Report_Cycle_Minute_30	source\hedaprotocol.h	98;"	enumerator	enum:__anon126
 HeDa_Report_Cycle_Minute_5	source\hedaprotocol.h	95;"	enumerator	enum:__anon126
-HeDa_TypeAddCycle_To_ReportCycleType	source\hedaprotocol.c	1036;"	function	signature:(u8 Report_Time_Type,u8 cycle_num)
+HeDa_TypeAddCycle_To_ReportCycleType	source\hedaprotocol.c	1035;"	function	signature:(u8 Report_Time_Type,u8 cycle_num)
 HeDa_TypeAddCycle_To_ReportCycleType	source\hedaprotocol.h	170;"	prototype	signature:(u8 Report_Time_Type,u8 cycle_num)
 Head	source\global.h	441;"	member	struct:__anon186
 Head	source\hedaprotocol.h	9;"	member	struct:__anon120
@@ -2439,7 +2439,7 @@ InitializeBase	source\initialize.h	228;"	prototype	signature:(void)
 InitializeFile	source\file.c	145;"	function	signature:(void)
 InitializeFile	source\file.c	469;"	function	signature:(void)
 InitializeFile	source\fileglobal.h	150;"	prototype	signature:(void)
-InitializeGsm	source\gsm.c	4174;"	function	signature:(void)
+InitializeGsm	source\gsm.c	4176;"	function	signature:(void)
 InitializeGsm	source\gsmglobal.h	136;"	prototype	signature:(void)
 InitializeMeter	source\meter.c	1128;"	function	signature:(void)
 InitializeMeter	source\meter.h	80;"	prototype	signature:(void)

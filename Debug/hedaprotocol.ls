@@ -407,8 +407,8 @@
  856  0287 c60000        	ld	a,_g_nDatRepCnt
  857  028a a103          	cp	a,#3
  858  028c 2511          	jrult	L132
- 859                     ; 209 		SetLogonMode(UP_Upload_HD);
- 861  028e a604          	ld	a,#4
+ 859                     ; 209 		SetLogonMode(UP_Free_HD);
+ 861  028e a605          	ld	a,#5
  862  0290 cd0000        	call	_SetLogonMode
  864                     ; 210 		stRepFail.wError |= (1<<REP_RESPOND_FAIL);
  866  0293 72180007      	bset	_stRepFail+7,#4
@@ -434,7 +434,7 @@
  951  02a9 cd0000        	call	_CheckRevDataLen
  953  02ac 88            	push	a
  954  02ad 1e03          	ldw	x,(OFST-1,sp)
- 955  02af cd0618        	call	_HD_DecodeParameter
+ 955  02af cd0612        	call	_HD_DecodeParameter
  957  02b2 5b01          	addw	sp,#1
  958  02b4 6b04          	ld	(OFST+0,sp),a
  959                     ; 234 	if(0 < nSendLen)
@@ -444,7 +444,7 @@
  965  02ba ae0001        	ldw	x,#1
  966  02bd 7b05          	ld	a,(OFST+1,sp)
  967  02bf 95            	ld	xh,a
- 968  02c0 cd050e        	call	_HD_ProtolSend
+ 968  02c0 cd0508        	call	_HD_ProtolSend
  970  02c3 84            	pop	a
  971  02c4               L552:
  972                     ; 238 	UC_SleepFunc(50);
@@ -547,2353 +547,2347 @@
 1329  0349 7b38          	ld	a,(OFST+0,sp)
 1330  034b ab05          	add	a,#5
 1331  034d 6b38          	ld	(OFST+0,sp),a
-1332                     ; 325 		pnBuf[nOffset]=1;										//报文中的数据条数
-1334  034f 7b36          	ld	a,(OFST-2,sp)
-1335  0351 97            	ld	xl,a
-1336  0352 7b37          	ld	a,(OFST-1,sp)
-1337  0354 1b38          	add	a,(OFST+0,sp)
-1338  0356 2401          	jrnc	L251
-1339  0358 5c            	incw	x
-1340  0359               L251:
-1341  0359 02            	rlwa	x,a
-1342  035a a601          	ld	a,#1
-1343  035c f7            	ld	(x),a
-1344                     ; 326 		nOffset++;
-1346  035d 0c38          	inc	(OFST+0,sp)
-1347                     ; 328 		pnBuf[nOffset++]=0;										//报文中的数据间隔
-1349  035f 7b38          	ld	a,(OFST+0,sp)
-1350  0361 0c38          	inc	(OFST+0,sp)
-1351  0363 5f            	clrw	x
-1352  0364 97            	ld	xl,a
-1353  0365 72fb36        	addw	x,(OFST-2,sp)
-1354  0368 7f            	clr	(x)
-1355                     ; 330 		Bat_value=BAT_GetBatVol();
-1357  0369 cd0000        	call	_BAT_GetBatVol
-1359  036c 1f17          	ldw	(OFST-33,sp),x
-1360                     ; 331 		pnBuf[nOffset++]=(Bat_value>>8)&0xff;					//电池电压，除以100后为电池电压实际数值                   高位在前
-1362  036e 7b38          	ld	a,(OFST+0,sp)
-1363  0370 0c38          	inc	(OFST+0,sp)
-1364  0372 5f            	clrw	x
-1365  0373 97            	ld	xl,a
-1366  0374 72fb36        	addw	x,(OFST-2,sp)
-1367  0377 7b17          	ld	a,(OFST-33,sp)
-1368  0379 f7            	ld	(x),a
-1369                     ; 332 		pnBuf[nOffset++]=Bat_value&0xff;
-1371  037a 7b38          	ld	a,(OFST+0,sp)
-1372  037c 0c38          	inc	(OFST+0,sp)
-1373  037e 5f            	clrw	x
-1374  037f 97            	ld	xl,a
-1375  0380 72fb36        	addw	x,(OFST-2,sp)
-1376  0383 7b18          	ld	a,(OFST-32,sp)
-1377  0385 f7            	ld	(x),a
-1378                     ; 334 		pnBuf[nOffset++]=(g_HD_Msg_Tag>>8)&0xff;				//帧流水号     高位在前
-1380  0386 7b38          	ld	a,(OFST+0,sp)
-1381  0388 0c38          	inc	(OFST+0,sp)
-1382  038a 5f            	clrw	x
-1383  038b 97            	ld	xl,a
-1384  038c 72fb36        	addw	x,(OFST-2,sp)
-1385  038f c6008d        	ld	a,_g_HD_Msg_Tag
-1386  0392 f7            	ld	(x),a
-1387                     ; 335 		pnBuf[nOffset++]=g_HD_Msg_Tag&0xff;
-1389  0393 7b38          	ld	a,(OFST+0,sp)
-1390  0395 0c38          	inc	(OFST+0,sp)
-1391  0397 5f            	clrw	x
-1392  0398 97            	ld	xl,a
-1393  0399 72fb36        	addw	x,(OFST-2,sp)
-1394  039c c6008e        	ld	a,_g_HD_Msg_Tag+1
-1395  039f f7            	ld	(x),a
-1396                     ; 337 		pnBuf[nOffset++]=g_nSignal;								//信号强度
-1398  03a0 7b38          	ld	a,(OFST+0,sp)
-1399  03a2 0c38          	inc	(OFST+0,sp)
-1400  03a4 5f            	clrw	x
-1401  03a5 97            	ld	xl,a
-1402  03a6 72fb36        	addw	x,(OFST-2,sp)
-1403  03a9 c60000        	ld	a,_g_nSignal
-1404  03ac f7            	ld	(x),a
-1405                     ; 339 		pnBuf[nOffset++]=(g_HD_aralm_type>>8)&0xff;				//突发事件类型     高位在前
-1407  03ad 7b38          	ld	a,(OFST+0,sp)
-1408  03af 0c38          	inc	(OFST+0,sp)
-1409  03b1 5f            	clrw	x
-1410  03b2 97            	ld	xl,a
-1411  03b3 72fb36        	addw	x,(OFST-2,sp)
-1412  03b6 c6008f        	ld	a,_g_HD_aralm_type
-1413  03b9 f7            	ld	(x),a
-1414                     ; 340 		pnBuf[nOffset++]=g_HD_aralm_type&0xff;
-1416  03ba 7b38          	ld	a,(OFST+0,sp)
-1417  03bc 0c38          	inc	(OFST+0,sp)
-1418  03be 5f            	clrw	x
-1419  03bf 97            	ld	xl,a
-1420  03c0 72fb36        	addw	x,(OFST-2,sp)
-1421  03c3 c60090        	ld	a,_g_HD_aralm_type+1
-1422  03c6 f7            	ld	(x),a
-1423                     ; 342 		for(i=0;i<6;i++)pnBuf[nOffset++]=0;						//保留字段
-1425  03c7 0f35          	clr	(OFST-3,sp)
-1426  03c9               L773:
-1429  03c9 7b38          	ld	a,(OFST+0,sp)
-1430  03cb 0c38          	inc	(OFST+0,sp)
-1431  03cd 5f            	clrw	x
-1432  03ce 97            	ld	xl,a
-1433  03cf 72fb36        	addw	x,(OFST-2,sp)
-1434  03d2 7f            	clr	(x)
-1437  03d3 0c35          	inc	(OFST-3,sp)
-1440  03d5 7b35          	ld	a,(OFST-3,sp)
-1441  03d7 a106          	cp	a,#6
-1442  03d9 25ee          	jrult	L773
-1443                     ; 344 		pnBuf[nOffset++]=0x01;									//通道类型 
-1445  03db 7b38          	ld	a,(OFST+0,sp)
-1446  03dd 0c38          	inc	(OFST+0,sp)
-1447  03df 5f            	clrw	x
-1448  03e0 97            	ld	xl,a
-1449  03e1 72fb36        	addw	x,(OFST-2,sp)
-1450  03e4 a601          	ld	a,#1
-1451  03e6 f7            	ld	(x),a
-1452                     ; 345 		pnBuf[nOffset++]=0x01;									//通道号 
-1454  03e7 7b38          	ld	a,(OFST+0,sp)
-1455  03e9 0c38          	inc	(OFST+0,sp)
-1456  03eb 5f            	clrw	x
-1457  03ec 97            	ld	xl,a
-1458  03ed 72fb36        	addw	x,(OFST-2,sp)
-1459  03f0 a601          	ld	a,#1
-1460  03f2 f7            	ld	(x),a
-1461                     ; 353 			if(TRUE == ReadDayFreezeRecord(0, (u8*)&stDayFreeze, sizeof(TypeRecordDay)))
-1463  03f3 4b07          	push	#7
-1464  03f5 96            	ldw	x,sp
-1465  03f6 1c0011        	addw	x,#OFST-39
-1466  03f9 89            	pushw	x
-1467  03fa 4f            	clr	a
-1468  03fb cd0000        	call	_ReadDayFreezeRecord
-1470  03fe 5b03          	addw	sp,#3
-1471  0400 4a            	dec	a
-1472  0401 2703cc048f    	jrne	L504
-1473                     ; 355 				STM8_RTC_Get(&now_time);
-1475  0406 96            	ldw	x,sp
-1476  0407 1c0019        	addw	x,#OFST-31
-1477  040a cd0000        	call	_STM8_RTC_Get
-1479                     ; 356 				TM_TimeChangeAToB(&now_time, &stTmpTime);
-1481  040d 96            	ldw	x,sp
-1482  040e 5c            	incw	x
-1483  040f 89            	pushw	x
-1484  0410 1c0018        	addw	x,#24
-1485  0413 cd0000        	call	_TM_TimeChangeAToB
-1487  0416 85            	popw	x
-1488                     ; 357 				TM_RTimeDecnMinute(&stTmpTime, 1440);
-1490  0417 ae05a0        	ldw	x,#1440
-1491  041a 89            	pushw	x
-1492  041b 5f            	clrw	x
-1493  041c 89            	pushw	x
-1494  041d 96            	ldw	x,sp
-1495  041e 1c0005        	addw	x,#OFST-51
-1496  0421 cd0000        	call	_TM_RTimeDecnMinute
-1498  0424 5b04          	addw	sp,#4
-1499                     ; 358 				TM_TimeChangeBToA(&stTmpTime, &stYesterDay);
-1501  0426 96            	ldw	x,sp
-1502  0427 1c0009        	addw	x,#OFST-47
-1503  042a 89            	pushw	x
-1504  042b 1d0008        	subw	x,#8
-1505  042e cd0000        	call	_TM_TimeChangeBToA
-1507  0431 85            	popw	x
-1508                     ; 359 				if((stDayFreeze.nYear == stYesterDay.wYear) && 
-1508                     ; 360 					(stDayFreeze.nMon == stYesterDay.nMonth) && (stDayFreeze.nDay == stYesterDay.nDay))
-1510  0432 7b14          	ld	a,(OFST-36,sp)
-1511  0434 1109          	cp	a,(OFST-47,sp)
-1512  0436 263e          	jrne	L704
-1514  0438 7b15          	ld	a,(OFST-35,sp)
-1515  043a 110a          	cp	a,(OFST-46,sp)
-1516  043c 2638          	jrne	L704
-1518  043e 7b16          	ld	a,(OFST-34,sp)
-1519  0440 110b          	cp	a,(OFST-45,sp)
-1520  0442 2632          	jrne	L704
-1521                     ; 362 					pnBuf[nOffset++]=stDayFreeze.Value&0xff;
-1523  0444 7b38          	ld	a,(OFST+0,sp)
-1524  0446 0c38          	inc	(OFST+0,sp)
-1525  0448 5f            	clrw	x
-1526  0449 97            	ld	xl,a
-1527  044a 72fb36        	addw	x,(OFST-2,sp)
-1528  044d 7b13          	ld	a,(OFST-37,sp)
-1529  044f f7            	ld	(x),a
-1530                     ; 363 					pnBuf[nOffset++]=(stDayFreeze.Value>>8)&0xff;
-1532  0450 7b38          	ld	a,(OFST+0,sp)
-1533  0452 0c38          	inc	(OFST+0,sp)
-1534  0454 5f            	clrw	x
-1535  0455 97            	ld	xl,a
-1536  0456 72fb36        	addw	x,(OFST-2,sp)
-1537  0459 7b12          	ld	a,(OFST-38,sp)
-1538  045b f7            	ld	(x),a
-1539                     ; 364 					pnBuf[nOffset++]=(stDayFreeze.Value>>16)&0xff;
-1541  045c 7b38          	ld	a,(OFST+0,sp)
-1542  045e 0c38          	inc	(OFST+0,sp)
-1543  0460 5f            	clrw	x
-1544  0461 97            	ld	xl,a
-1545  0462 72fb36        	addw	x,(OFST-2,sp)
-1546  0465 7b11          	ld	a,(OFST-39,sp)
-1547  0467 f7            	ld	(x),a
-1548                     ; 365 					pnBuf[nOffset++]=(stDayFreeze.Value>>24)&0xff;
-1550  0468 7b38          	ld	a,(OFST+0,sp)
-1551  046a 0c38          	inc	(OFST+0,sp)
-1552  046c 5f            	clrw	x
-1553  046d 97            	ld	xl,a
-1554  046e 72fb36        	addw	x,(OFST-2,sp)
-1555  0471 7b10          	ld	a,(OFST-40,sp)
-1556  0473 f7            	ld	(x),a
-1558  0474 2019          	jra	L504
-1559  0476               L704:
-1560                     ; 370 					MemsetFunc(&pnBuf[nOffset], 0x00, 4);
-1562  0476 4b04          	push	#4
-1563  0478 4b00          	push	#0
-1564  047a 7b38          	ld	a,(OFST+0,sp)
-1565  047c 97            	ld	xl,a
-1566  047d 7b39          	ld	a,(OFST+1,sp)
-1567  047f 1b3a          	add	a,(OFST+2,sp)
-1568  0481 2401          	jrnc	L271
-1569  0483 5c            	incw	x
-1570  0484               L271:
-1571  0484 02            	rlwa	x,a
-1572  0485 cd0000        	call	_MemsetFunc
-1574  0488 85            	popw	x
-1575                     ; 371 					nOffset+=4;
-1577  0489 7b38          	ld	a,(OFST+0,sp)
-1578  048b ab04          	add	a,#4
-1579  048d 6b38          	ld	(OFST+0,sp),a
-1580  048f               L504:
-1581                     ; 376 			if(FALSE == GM_GetGatherMeterFlg())
-1583  048f cd0000        	call	_GM_GetGatherMeterFlg
-1585  0492 4d            	tnz	a
-1586  0493 2622          	jrne	L314
-1587                     ; 378 				if(TRUE == ReadRecord(0, (u8*)&tyRecord, sizeof(tyRecord)))
-1589  0495 4b0c          	push	#12
-1590  0497 ae0000        	ldw	x,#_tyRecord
-1591  049a 89            	pushw	x
-1592  049b cd0000        	call	_ReadRecord
-1594  049e 5b03          	addw	sp,#3
-1595  04a0 4a            	dec	a
-1596  04a1 260b          	jrne	L514
-1597                     ; 380 					tyParameter.Value = tyRecord.Value;
-1599  04a3 ce0002        	ldw	x,_tyRecord+2
-1600  04a6 cf000a        	ldw	_tyParameter+10,x
-1601  04a9 ce0000        	ldw	x,_tyRecord
-1603  04ac 2006          	jp	LC002
-1604  04ae               L514:
-1605                     ; 382 				else tyParameter.Value = INVALID_DATA;
-1607  04ae aeeeee        	ldw	x,#61166
-1608  04b1 cf000a        	ldw	_tyParameter+10,x
-1609  04b4               LC002:
-1610  04b4 cf0008        	ldw	_tyParameter+8,x
-1611  04b7               L314:
-1612                     ; 384 			pnBuf[nOffset++]=tyParameter.Value&0xff;
-1614  04b7 7b38          	ld	a,(OFST+0,sp)
-1615  04b9 0c38          	inc	(OFST+0,sp)
-1616  04bb 5f            	clrw	x
-1617  04bc 97            	ld	xl,a
-1618  04bd 72fb36        	addw	x,(OFST-2,sp)
-1619  04c0 c6000b        	ld	a,_tyParameter+11
-1620  04c3 f7            	ld	(x),a
-1621                     ; 385 			pnBuf[nOffset++]=(tyParameter.Value>>8)&0xff;
-1623  04c4 7b38          	ld	a,(OFST+0,sp)
-1624  04c6 0c38          	inc	(OFST+0,sp)
-1625  04c8 5f            	clrw	x
-1626  04c9 97            	ld	xl,a
-1627  04ca 72fb36        	addw	x,(OFST-2,sp)
-1628  04cd c6000a        	ld	a,_tyParameter+10
-1629  04d0 f7            	ld	(x),a
-1630                     ; 386 			pnBuf[nOffset++]=(tyParameter.Value>>16)&0xff;
-1632  04d1 7b38          	ld	a,(OFST+0,sp)
-1633  04d3 0c38          	inc	(OFST+0,sp)
-1634  04d5 5f            	clrw	x
-1635  04d6 97            	ld	xl,a
-1636  04d7 72fb36        	addw	x,(OFST-2,sp)
-1637  04da c60009        	ld	a,_tyParameter+9
-1638  04dd f7            	ld	(x),a
-1639                     ; 387 			pnBuf[nOffset++]=(tyParameter.Value>>24)&0xff;
-1641  04de 7b38          	ld	a,(OFST+0,sp)
-1642  04e0 0c38          	inc	(OFST+0,sp)
-1643  04e2 5f            	clrw	x
-1644  04e3 97            	ld	xl,a
-1645  04e4 72fb36        	addw	x,(OFST-2,sp)
-1646  04e7 c60008        	ld	a,_tyParameter+8
-1647  04ea f7            	ld	(x),a
-1648                     ; 389 		nSendLen =nOffset;	
-1650  04eb 7b38          	ld	a,(OFST+0,sp)
-1651  04ed 6b35          	ld	(OFST-3,sp),a
-1652                     ; 391 	HD_ProtolSend(nSendLen, COM_1,1);			//只有1组数据
-1654  04ef 4b01          	push	#1
-1655  04f1 ae0001        	ldw	x,#1
-1656  04f4 7b36          	ld	a,(OFST-2,sp)
-1657  04f6 95            	ld	xh,a
-1658  04f7 ad15          	call	_HD_ProtolSend
-1660  04f9 84            	pop	a
-1661                     ; 394 	if(FALSE == WatitDataSendOk())
-1663  04fa cd0000        	call	_WatitDataSendOk
-1665  04fd 4d            	tnz	a
-1666                     ; 396 		return FALSE;
-1669  04fe 270b          	jreq	L602
-1670                     ; 399 	g_dwRepTick = GetSysTemTick();
-1672  0500 cd0000        	call	_GetSysTemTick
-1674  0503 ae0000        	ldw	x,#_g_dwRepTick
-1675  0506 cd0000        	call	c_rtol
-1677                     ; 400 	return TRUE;
-1679  0509 a601          	ld	a,#1
-1681  050b               L602:
-1683  050b 5b38          	addw	sp,#56
-1684  050d 81            	ret	
-1830                     ; 412 s8 HD_ProtolSend(u8 Size, u8 nComChannel,u8 device_info_flag)
-1830                     ; 413 {
-1831                     	switch	.text
-1832  050e               _HD_ProtolSend:
-1834  050e 89            	pushw	x
-1835  050f 520e          	subw	sp,#14
-1836       0000000e      OFST:	set	14
-1839                     ; 415 	u16 length = 0;
-1841  0511 1e0c          	ldw	x,(OFST-2,sp)
-1842                     ; 417 	s8 nFailCnt = 0, nOptRelt = FALSE;
-1844  0513 0f03          	clr	(OFST-11,sp)
-1847                     ; 419 	if(device_info_flag)length=Size+15+HD_FRAME_OTHER_LEN;
-1849  0515 7b13          	ld	a,(OFST+5,sp)
-1850  0517 270a          	jreq	L305
-1853  0519 4f            	clr	a
-1854  051a 97            	ld	xl,a
-1855  051b a618          	ld	a,#24
-1856  051d 1b0f          	add	a,(OFST+1,sp)
-1857  051f 240a          	jrnc	L412
-1859  0521 2007          	jp	LC003
-1860  0523               L305:
-1861                     ; 420 	else length=Size+HD_FRAME_OTHER_LEN;
-1863  0523 97            	ld	xl,a
-1864  0524 a609          	ld	a,#9
-1865  0526 1b0f          	add	a,(OFST+1,sp)
-1866  0528 2401          	jrnc	L412
-1867  052a               LC003:
-1868  052a 5c            	incw	x
-1869  052b               L412:
-1870  052b 02            	rlwa	x,a
-1871  052c 1f0c          	ldw	(OFST-2,sp),x
-1872  052e 01            	rrwa	x,a
-1873                     ; 423 	if(COM_1 == nComChannel)
-1875  052f 7b10          	ld	a,(OFST+2,sp)
-1876  0531 4a            	dec	a
-1877  0532 2633          	jrne	L705
-1879  0534 2027          	jra	L315
-1880  0536               L115:
-1881                     ; 428 			nOptRelt = M590_TcpSendDatLen(length); //0x0D不算入长度
-1883  0536 7b0d          	ld	a,(OFST-1,sp)
-1884  0538 cd0000        	call	_M590_TcpSendDatLen
-1886  053b 6b0e          	ld	(OFST+0,sp),a
-1887                     ; 429 			if(-1 == nOptRelt)
-1889  053d a1ff          	cp	a,#255
-1890  053f 260f          	jrne	L715
-1891                     ; 431 				stRepFail.wError |= (1<<DATSEND_ERROR);
-1893  0541 72100006      	bset	_stRepFail+6,#0
-1894                     ; 432 				M590_CloseConnect();
-1896  0545 cd0000        	call	_M590_CloseConnect
-1898                     ; 433 				ucStatusGsm = GSM_SHAKEHAND;
-1900  0548 35020000      	mov	_ucStatusGsm,#2
-1901                     ; 434 				return -1;
-1903  054c a6ff          	ld	a,#255
-1905  054e 200a          	jra	L232
-1906  0550               L715:
-1907                     ; 436 			if(TRUE == nOptRelt)
-1909  0550 4a            	dec	a
-1910  0551 260a          	jrne	L315
-1911                     ; 438 				break;
-1912  0553               L515:
-1913                     ; 441 		if(nFailCnt >= 3 )
-1915  0553 7b03          	ld	a,(OFST-11,sp)
-1916  0555 a103          	cp	a,#3
-1917  0557 2f0e          	jrslt	L705
-1918                     ; 443 			return FALSE;
-1920  0559 4f            	clr	a
-1922  055a               L232:
-1924  055a 5b10          	addw	sp,#16
-1925  055c 81            	ret	
-1926  055d               L315:
-1927                     ; 426 		while(3 > nFailCnt++)
-1929  055d 7b03          	ld	a,(OFST-11,sp)
-1930  055f 0c03          	inc	(OFST-11,sp)
-1931  0561 a103          	cp	a,#3
-1932  0563 2fd1          	jrslt	L115
-1933  0565 20ec          	jra	L515
-1934  0567               L705:
-1935                     ; 447 	length = Size;		                   
-1937  0567 7b0f          	ld	a,(OFST+1,sp)
-1938  0569 5f            	clrw	x
-1939  056a 97            	ld	xl,a
-1940  056b 1f0c          	ldw	(OFST-2,sp),x
-1941                     ; 448 	tyProtolHead.Head[0] = Packet_Head_0;				//数据包头
-1943  056d a6a7          	ld	a,#167
-1944  056f 6b04          	ld	(OFST-10,sp),a
-1945                     ; 449 	tyProtolHead.Head[1] = Packet_Head_1;				//数据包头
-1947  0571 6b05          	ld	(OFST-9,sp),a
-1948                     ; 450 	tyProtolHead.Addr[0] = Maker_Addr;					//厂商地址
-1950  0573 a601          	ld	a,#1
-1951  0575 6b06          	ld	(OFST-8,sp),a
-1952                     ; 451 	tyProtolHead.Addr[1] = (g_HD_device_addr&0xFF);		//设备地址
-1954  0577 c60092        	ld	a,_g_HD_device_addr+1
-1955  057a 6b07          	ld	(OFST-7,sp),a
-1956                     ; 452 	tyProtolHead.Addr[2] = (g_HD_device_addr>>8)&0xFF;	//设备地址
-1958  057c c60091        	ld	a,_g_HD_device_addr
-1959  057f 6b08          	ld	(OFST-6,sp),a
-1960                     ; 453 	tyProtolHead.Version = Protocol_Version;			//协议版本号
-1962  0581 a614          	ld	a,#20
-1963  0583 6b09          	ld	(OFST-5,sp),a
-1964                     ; 455 	Point = aucUartTxBuffer;		//指针指向接收发送缓冲头
-1966  0585 ae0000        	ldw	x,#_aucUartTxBuffer
-1967  0588 1f0a          	ldw	(OFST-4,sp),x
-1968                     ; 457 	MemcpyFunc(Point, (u8 *)&tyProtolHead, sizeof(tyProtolHead) );	//复制数据头到缓冲中
-1970  058a 4b06          	push	#6
-1971  058c 96            	ldw	x,sp
-1972  058d 1c0005        	addw	x,#OFST-9
-1973  0590 89            	pushw	x
-1974  0591 1e0d          	ldw	x,(OFST-1,sp)
-1975  0593 cd0000        	call	_MemcpyFunc
-1977  0596 5b03          	addw	sp,#3
-1978                     ; 458 	Point += sizeof(tyProtolHead);									//指针向下
-1980  0598 1e0a          	ldw	x,(OFST-4,sp)
-1981  059a 1c0006        	addw	x,#6
-1982  059d 1f0a          	ldw	(OFST-4,sp),x
-1983                     ; 459 	if(device_info_flag)
-1985  059f 7b13          	ld	a,(OFST+5,sp)
-1986  05a1 2718          	jreq	L525
-1987                     ; 462 		MemsetFunc(Point,0, 15);
-1989  05a3 4b0f          	push	#15
-1990  05a5 4b00          	push	#0
-1991  05a7 1e0c          	ldw	x,(OFST-2,sp)
-1992  05a9 cd0000        	call	_MemsetFunc
-1994  05ac 85            	popw	x
-1995                     ; 463 		Point += sizeof(g_Device_Info);										//指针向下
-1997  05ad 1e0a          	ldw	x,(OFST-4,sp)
-1998  05af 1c000f        	addw	x,#15
-1999  05b2 1f0a          	ldw	(OFST-4,sp),x
-2000                     ; 464 		length +=sizeof(g_Device_Info);
-2002  05b4 1e0c          	ldw	x,(OFST-2,sp)
-2003  05b6 1c000f        	addw	x,#15
-2004  05b9 1f0c          	ldw	(OFST-2,sp),x
-2005  05bb               L525:
-2006                     ; 467 	MemcpyFunc(Point, (u8 *)&stDataPtrHD, Size );
-2008  05bb 7b0f          	ld	a,(OFST+1,sp)
-2009  05bd 88            	push	a
-2010  05be ae0000        	ldw	x,#_stDataPtrHD
-2011  05c1 89            	pushw	x
-2012  05c2 1e0d          	ldw	x,(OFST-1,sp)
-2013  05c4 cd0000        	call	_MemcpyFunc
-2015  05c7 5b03          	addw	sp,#3
-2016                     ; 468 	Point += Size;	
-2018  05c9 7b0f          	ld	a,(OFST+1,sp)
-2019  05cb 5f            	clrw	x
-2020  05cc 97            	ld	xl,a
-2021  05cd 1f01          	ldw	(OFST-13,sp),x
-2022  05cf 1e0a          	ldw	x,(OFST-4,sp)
-2023  05d1 72fb01        	addw	x,(OFST-13,sp)
-2024  05d4 1f0a          	ldw	(OFST-4,sp),x
-2025                     ; 469 	length += Size;
-2027  05d6 5f            	clrw	x
-2028  05d7 97            	ld	xl,a
-2029  05d8 1f01          	ldw	(OFST-13,sp),x
-2030  05da 1e0c          	ldw	x,(OFST-2,sp)
-2031  05dc 72fb01        	addw	x,(OFST-13,sp)
-2032  05df 1f0c          	ldw	(OFST-2,sp),x
-2033                     ; 471 	checksum = 0;					//校验和是累加和
-2035  05e1 0f03          	clr	(OFST-11,sp)
-2036                     ; 472 	for (nX = 0; nX < length; nX++)
-2038  05e3 0f0e          	clr	(OFST+0,sp)
-2040  05e5 200b          	jra	L335
-2041  05e7               L725:
-2042                     ; 474 		checksum += aucUartTxBuffer[nX];    //计算累加和
-2044  05e7 5f            	clrw	x
-2045  05e8 97            	ld	xl,a
-2046  05e9 7b03          	ld	a,(OFST-11,sp)
-2047  05eb db0000        	add	a,(_aucUartTxBuffer,x)
-2048  05ee 6b03          	ld	(OFST-11,sp),a
-2049                     ; 472 	for (nX = 0; nX < length; nX++)
-2051  05f0 0c0e          	inc	(OFST+0,sp)
-2052  05f2               L335:
-2055  05f2 7b0e          	ld	a,(OFST+0,sp)
-2056  05f4 5f            	clrw	x
-2057  05f5 97            	ld	xl,a
-2058  05f6 130c          	cpw	x,(OFST-2,sp)
-2059  05f8 25ed          	jrult	L725
-2060                     ; 476 	Point[length++] = checksum;
-2062  05fa 1e0c          	ldw	x,(OFST-2,sp)
-2063  05fc 5c            	incw	x
-2064  05fd 1f0c          	ldw	(OFST-2,sp),x
-2065  05ff 5a            	decw	x
-2066  0600 72fb0a        	addw	x,(OFST-4,sp)
-2067                     ; 477 	Point[length++] = Packet_End_0;
-2069                     ; 478 	Point[length++] = Packet_End_1;
-2071  0603 a60a          	ld	a,#10
-2072  0605 f7            	ld	(x),a
-2073                     ; 480 	FrameSendFunc(length, nComChannel, Point);
-2075  0606 1e0a          	ldw	x,(OFST-4,sp)
-2076  0608 89            	pushw	x
-2077  0609 7b12          	ld	a,(OFST+4,sp)
-2078  060b 97            	ld	xl,a
-2079  060c 7b0f          	ld	a,(OFST+1,sp)
-2080  060e 95            	ld	xh,a
-2081  060f cd0000        	call	_FrameSendFunc
-2083  0612 a601          	ld	a,#1
-2084  0614 85            	popw	x
-2085                     ; 481 	return TRUE;
-2088  0615 cc055a        	jra	L232
-2184                     ; 494 u8 HD_DecodeParameter(u8* pnRxBuf, u8 nRxLen)
-2184                     ; 495 {
-2185                     	switch	.text
-2186  0618               _HD_DecodeParameter:
-2188  0618 89            	pushw	x
-2189  0619 520e          	subw	sp,#14
-2190       0000000e      OFST:	set	14
-2193                     ; 496 	u8 *Point = NULL;
-2195                     ; 497 	u16 wDataLen = 0, wLen = 0;	
-2199  061b 5f            	clrw	x
-2200  061c 1f0b          	ldw	(OFST-3,sp),x
-2201                     ; 499 	u8 nSendLen = 0;
-2203  061e 0f08          	clr	(OFST-6,sp)
-2204                     ; 501 	if(NULL == pnRxBuf)
-2206  0620 1e0f          	ldw	x,(OFST+1,sp)
-2207  0622 2603          	jrne	L106
-2208                     ; 503 		return nSendLen;
-2210  0624 4f            	clr	a
-2212  0625 2020          	jra	L452
-2213  0627               L106:
-2214                     ; 505     Point = pnRxBuf;
-2216  0627 1f0d          	ldw	(OFST-1,sp),x
-2218  0629 201f          	jra	L706
-2219  062b               L306:
-2220                     ; 510 		Point++;
-2222  062b 5c            	incw	x
-2223  062c 1f0d          	ldw	(OFST-1,sp),x
-2224                     ; 511 		wLen++;
-2226  062e 1e0b          	ldw	x,(OFST-3,sp)
-2227  0630 5c            	incw	x
-2228  0631 1f0b          	ldw	(OFST-3,sp),x
-2229                     ; 512 		if(nRxLen <= wLen)
-2231  0633 7b13          	ld	a,(OFST+5,sp)
-2232  0635 5f            	clrw	x
-2233  0636 97            	ld	xl,a
-2234  0637 130b          	cpw	x,(OFST-3,sp)
-2235  0639 220f          	jrugt	L706
-2236                     ; 514 		    if(NUMBER_UART_RX <= CheckRevDataLen())
-2238  063b cd0000        	call	_CheckRevDataLen
-2240  063e a1c0          	cp	a,#192
-2241  0640 2503          	jrult	LC004
-2242                     ; 516 			    goto __UC_Pro_Exit;
-2243  0642               L735:
-2244                     ; 568 __UC_Pro_Exit:
-2244                     ; 569 
-2244                     ; 570 	/* add by maronglang clear RxBuf */
-2244                     ; 571 	ClearRxBuff();
-2246  0642 cd0000        	call	_ClearRxBuff
-2248                     ; 572 	return nSendLen;
-2250  0645               LC004:
-2252  0645 7b08          	ld	a,(OFST-6,sp)
-2254  0647               L452:
-2256  0647 5b10          	addw	sp,#16
-2257  0649 81            	ret	
-2258                     ; 518 			return nSendLen;
-2260  064a               L706:
-2261                     ; 508 	while((Packet_Head_0 != *Point)||(Packet_Head_1 != *(Point+1)))
-2263  064a 1e0d          	ldw	x,(OFST-1,sp)
-2264  064c f6            	ld	a,(x)
-2265  064d a1a7          	cp	a,#167
-2266  064f 26da          	jrne	L306
-2268  0651 e601          	ld	a,(1,x)
-2269  0653 a1a7          	cp	a,#167
-2270  0655 26d4          	jrne	L306
-2271                     ; 522 	if(NUMBER_UART_RX <= CheckRevDataLen())
-2273  0657 cd0000        	call	_CheckRevDataLen
-2275  065a a1c0          	cp	a,#192
-2276  065c 24e4          	jruge	L735
-2277                     ; 524 		goto __UC_Pro_Exit;
-2279                     ; 527 	MemcpyFunc((u8 *)&tyProtolHead, Point, sizeof(tyProtolHead));		//复制字符串到缓冲中
-2281  065e 4b06          	push	#6
-2282  0660 1e0e          	ldw	x,(OFST+0,sp)
-2283  0662 89            	pushw	x
-2284  0663 96            	ldw	x,sp
-2285  0664 1c0005        	addw	x,#OFST-9
-2286  0667 cd0000        	call	_MemcpyFunc
-2288  066a 5b03          	addw	sp,#3
-2289                     ; 528 	Point += sizeof(tyProtolHead);
-2291  066c 1e0d          	ldw	x,(OFST-1,sp)
-2292  066e 1c0006        	addw	x,#6
-2293  0671 1f0d          	ldw	(OFST-1,sp),x
-2294                     ; 530 	if( (nRxLen-wLen) > (sizeof(tyProtolHead)+ 9) )//数据包的最小长度，包头结构体+3控制字+2长度+1命令+1校验+2包尾
-2296  0673 7b13          	ld	a,(OFST+5,sp)
-2297  0675 5f            	clrw	x
-2298  0676 97            	ld	xl,a
-2299  0677 72f00b        	subw	x,(OFST-3,sp)
-2300  067a a30010        	cpw	x,#16
-2301  067d 25c3          	jrult	L735
-2302                     ; 532 		u16 msg_len= (u16)*(Point+3)+sizeof(tyProtolHead)+ 8;//计算该消息的总长度 datalen+3控制字+2长度+1校验+2包尾
-2304  067f 1e0d          	ldw	x,(OFST-1,sp)
-2305  0681 e603          	ld	a,(3,x)
-2306  0683 5f            	clrw	x
-2307  0684 97            	ld	xl,a
-2308  0685 1c000e        	addw	x,#14
-2309  0688 1f09          	ldw	(OFST-5,sp),x
-2310                     ; 533 		if( msg_len <= (nRxLen-wLen) )
-2312  068a 7b13          	ld	a,(OFST+5,sp)
-2313  068c 5f            	clrw	x
-2314  068d 97            	ld	xl,a
-2315  068e 72f00b        	subw	x,(OFST-3,sp)
-2316  0691 1309          	cpw	x,(OFST-5,sp)
-2317  0693 25ad          	jrult	L735
-2318                     ; 535 			wDataLen=stDataPtrHD.Packet.Data_Len+8;
-2320  0695 ce0003        	ldw	x,_stDataPtrHD+3
-2321  0698 1c0008        	addw	x,#8
-2322  069b 1f09          	ldw	(OFST-5,sp),x
-2323                     ; 536 			MemcpyFunc((u8 *)&stDataPtrHD, Point, wDataLen);		//复制字符串到缓冲中
-2325  069d 7b0a          	ld	a,(OFST-4,sp)
-2326  069f 88            	push	a
-2327  06a0 1e0e          	ldw	x,(OFST+0,sp)
-2328  06a2 89            	pushw	x
-2329  06a3 ae0000        	ldw	x,#_stDataPtrHD
-2330  06a6 cd0000        	call	_MemcpyFunc
-2332  06a9 5b03          	addw	sp,#3
-2334                     ; 549 	if( (Packet_End_0!=stDataPtrHD.Buffer[wDataLen-2]) || (Packet_End_1!=stDataPtrHD.Buffer[wDataLen-1]))
-2336  06ab 1e09          	ldw	x,(OFST-5,sp)
-2337  06ad 1d0002        	subw	x,#2
-2338  06b0 d60000        	ld	a,(_stDataPtrHD,x)
-2339  06b3 a10d          	cp	a,#13
-2340  06b5 268b          	jrne	L735
-2342  06b7 1e09          	ldw	x,(OFST-5,sp)
-2343  06b9 5a            	decw	x
-2344  06ba d60000        	ld	a,(_stDataPtrHD,x)
-2345  06bd a10a          	cp	a,#10
-2346  06bf 2681          	jrne	L735
-2347                     ; 555 	if( stDataPtrHD.Buffer[wDataLen-3] != JX_AddSum8Bit(pnRxBuf+wLen, sizeof(tyProtolHead)+wDataLen+3))
-2349  06c1 1e09          	ldw	x,(OFST-5,sp)
-2350  06c3 1c0009        	addw	x,#9
-2351  06c6 89            	pushw	x
-2352  06c7 1e11          	ldw	x,(OFST+3,sp)
-2353  06c9 72fb0d        	addw	x,(OFST-1,sp)
-2354  06cc cd0000        	call	_JX_AddSum8Bit
-2356  06cf 85            	popw	x
-2357  06d0 6b01          	ld	(OFST-13,sp),a
-2358  06d2 1e09          	ldw	x,(OFST-5,sp)
-2359  06d4 1d0003        	subw	x,#3
-2360  06d7 d60000        	ld	a,(_stDataPtrHD,x)
-2361  06da 1101          	cp	a,(OFST-13,sp)
-2362  06dc 2703cc0642    	jrne	L735
-2363                     ; 557 		goto __UC_Pro_Exit;
-2365                     ; 566 	nSendLen = HD_ProtolHandle();
-2367  06e1 ad7e          	call	_HD_ProtolHandle
-2369  06e3 6b08          	ld	(OFST-6,sp),a
-2370  06e5 cc0642        	jra	L735
-2373                     	switch	.const
-2374  001d               L736_nAddBuf:
-2375  001d 00            	dc.b	0
-2376  001e 000000000000  	ds.b	11
-2437                     ; 584 u8 HD_AddressComparePro(u8 *pnAddr, u8 nLen)
-2437                     ; 585 {		
-2438                     	switch	.text
-2439  06e8               _HD_AddressComparePro:
-2441  06e8 89            	pushw	x
-2442  06e9 520e          	subw	sp,#14
-2443       0000000e      OFST:	set	14
-2446                     ; 586 	u8 nAddBuf[12] = {0};
-2448  06eb 96            	ldw	x,sp
-2449  06ec 1c0002        	addw	x,#OFST-12
-2450  06ef 90ae001d      	ldw	y,#L736_nAddBuf
-2451  06f3 a60c          	ld	a,#12
-2452  06f5 cd0000        	call	c_xymvx
-2454                     ; 587 	u8 nLoop = 0;
-2456  06f8 0f0e          	clr	(OFST+0,sp)
-2457                     ; 589 	if(JX_IsAllFillDat(pnAddr, 0, nLen))
-2459  06fa 7b13          	ld	a,(OFST+5,sp)
-2460  06fc b703          	ld	c_lreg+3,a
-2461  06fe 3f02          	clr	c_lreg+2
-2462  0700 3f01          	clr	c_lreg+1
-2463  0702 3f00          	clr	c_lreg
-2464  0704 be02          	ldw	x,c_lreg+2
-2465  0706 89            	pushw	x
-2466  0707 be00          	ldw	x,c_lreg
-2467  0709 89            	pushw	x
-2468  070a 4b00          	push	#0
-2469  070c 1e14          	ldw	x,(OFST+6,sp)
-2470  070e cd0000        	call	_JX_IsAllFillDat
-2472  0711 5b05          	addw	sp,#5
-2473  0713 4d            	tnz	a
-2474                     ; 591 		return TRUE;
-2476  0714 2647          	jrne	L307
-2477                     ; 594 	MemcpyFunc(nAddBuf, &tyParameter.Type, nLen);
-2479  0716 7b13          	ld	a,(OFST+5,sp)
-2480  0718 88            	push	a
-2481  0719 ae0000        	ldw	x,#_tyParameter
-2482  071c 89            	pushw	x
-2483  071d 96            	ldw	x,sp
-2484  071e 1c0005        	addw	x,#OFST-9
-2485  0721 cd0000        	call	_MemcpyFunc
-2487  0724 5b03          	addw	sp,#3
-2488                     ; 597 	for(nLoop = 0; nLoop < nLen; nLoop++)
-2490  0726 0f0e          	clr	(OFST+0,sp)
-2492  0728 202b          	jra	L576
-2493  072a               L176:
-2494                     ; 599 		if(nAddBuf[nLoop] != pnAddr[nLoop])
-2496  072a 7b0f          	ld	a,(OFST+1,sp)
-2497  072c 97            	ld	xl,a
-2498  072d 7b10          	ld	a,(OFST+2,sp)
-2499  072f 1b0e          	add	a,(OFST+0,sp)
-2500  0731 2401          	jrnc	L462
-2501  0733 5c            	incw	x
-2502  0734               L462:
-2503  0734 02            	rlwa	x,a
-2504  0735 f6            	ld	a,(x)
-2505  0736 6b01          	ld	(OFST-13,sp),a
-2506  0738 96            	ldw	x,sp
-2507  0739 1c0002        	addw	x,#OFST-12
-2508  073c 9f            	ld	a,xl
-2509  073d 5e            	swapw	x
-2510  073e 1b0e          	add	a,(OFST+0,sp)
-2511  0740 2401          	jrnc	L662
-2512  0742 5c            	incw	x
-2513  0743               L662:
-2514  0743 02            	rlwa	x,a
-2515  0744 f6            	ld	a,(x)
-2516  0745 1101          	cp	a,(OFST-13,sp)
-2517  0747 270a          	jreq	L107
-2518                     ; 601 			break;
-2519  0749               L776:
-2520                     ; 605 	if(nLen > nLoop)
-2522  0749 7b13          	ld	a,(OFST+5,sp)
-2523  074b 110e          	cp	a,(OFST+0,sp)
-2524  074d 230e          	jrule	L307
-2525                     ; 607 		return FALSE;
-2527  074f 4f            	clr	a
-2529  0750               L072:
-2531  0750 5b10          	addw	sp,#16
-2532  0752 81            	ret	
-2533  0753               L107:
-2534                     ; 597 	for(nLoop = 0; nLoop < nLen; nLoop++)
-2536  0753 0c0e          	inc	(OFST+0,sp)
-2537  0755               L576:
-2540  0755 7b0e          	ld	a,(OFST+0,sp)
-2541  0757 1113          	cp	a,(OFST+5,sp)
-2542  0759 25cf          	jrult	L176
-2543  075b 20ec          	jra	L776
-2544  075d               L307:
-2545                     ; 610 	return TRUE;	
-2548  075d a601          	ld	a,#1
-2550  075f 20ef          	jra	L072
-2638                     ; 623 u8 HD_ProtolHandle(void)
-2638                     ; 624 {
-2639                     	switch	.text
-2640  0761               _HD_ProtolHandle:
-2642  0761 520e          	subw	sp,#14
-2643       0000000e      OFST:	set	14
-2646                     ; 625 	u8 nSendLen    = 0;
-2648  0763 0f0e          	clr	(OFST+0,sp)
-2649                     ; 626 	u16 wCommCtrlB = 0;
-2651  0765 5f            	clrw	x
-2652  0766 1f03          	ldw	(OFST-11,sp),x
-2653                     ; 627 	u16 wCommPid   = 0;
-2655  0768 1f05          	ldw	(OFST-9,sp),x
-2656                     ; 628 	u8  nParaLen   = 0;
-2658  076a 0f07          	clr	(OFST-7,sp)
-2659                     ; 631 	int32_t dwTimeOffset = 0; 
-2661  076c 1f0a          	ldw	(OFST-4,sp),x
-2662  076e 1f08          	ldw	(OFST-6,sp),x
-2663                     ; 632 	u8 nCmdId  = 0;
-2665                     ; 633 	u8 nctrl  = 0;
-2667                     ; 635 	nCmdId   = stDataPtrHD.Packet.Cmd;
-2669  0770 c60005        	ld	a,_stDataPtrHD+5
-2670  0773 6b0c          	ld	(OFST-2,sp),a
-2671                     ; 636 	nctrl	=  stDataPtrHD.Packet.Ctrl[0];
-2673  0775 c60000        	ld	a,_stDataPtrHD
-2674  0778 6b0d          	ld	(OFST-1,sp),a
-2675                     ; 637 	g_HD_Msg_Tag = stDataPtrHD.Packet.Ctrl[1]<<8 | stDataPtrHD.Packet.Ctrl[2]+1;
-2677  077a 4f            	clr	a
-2678  077b 97            	ld	xl,a
-2679  077c 4c            	inc	a
-2680  077d cb0002        	add	a,_stDataPtrHD+2
-2681  0780 2401          	jrnc	L472
-2682  0782 5c            	incw	x
-2683  0783               L472:
-2684  0783 02            	rlwa	x,a
-2685  0784 1f01          	ldw	(OFST-13,sp),x
-2686  0786 c60001        	ld	a,_stDataPtrHD+1
-2687  0789 97            	ld	xl,a
-2688  078a 7b02          	ld	a,(OFST-12,sp)
-2689  078c 01            	rrwa	x,a
-2690  078d 1a01          	or	a,(OFST-13,sp)
-2691  078f 01            	rrwa	x,a
-2692  0790 cf008d        	ldw	_g_HD_Msg_Tag,x
-2693                     ; 639 	if(nctrl&Flag_Data_Is_Secret) //数据是否被加密
-2695  0793 7b0d          	ld	a,(OFST-1,sp)
-2696  0795 2a04          	jrpl	L577
-2697                     ; 641 		return 0;
-2699  0797 4f            	clr	a
-2701  0798 cc084a        	jra	L633
-2702  079b               L577:
-2703                     ; 648 	switch(nCmdId)
-2705  079b 7b0c          	ld	a,(OFST-2,sp)
-2707                     ; 713 		default:break;
-2708  079d a00f          	sub	a,#15
-2709  079f 2730          	jreq	L507
-2710  07a1 a072          	sub	a,#114
-2711  07a3 2739          	jreq	L707
-2712  07a5 4a            	dec	a
-2713  07a6 273e          	jreq	L117
-2714  07a8 a002          	sub	a,#2
-2715  07aa 2742          	jreq	L317
-2716  07ac 4a            	dec	a
-2717  07ad 2751          	jreq	L517
-2718  07af 4a            	dec	a
-2719  07b0 2756          	jreq	L717
-2720  07b2 a003          	sub	a,#3
-2721  07b4 275a          	jreq	L127
-2722  07b6 a008          	sub	a,#8
-2723  07b8 275e          	jreq	L327
-2724  07ba 4a            	dec	a
-2725  07bb 2763          	jreq	L527
-2726  07bd a002          	sub	a,#2
-2727  07bf 2767          	jreq	L727
-2728  07c1 4a            	dec	a
-2729  07c2 273c          	jreq	L517
-2730  07c4 4a            	dec	a
-2731  07c5 2769          	jreq	L337
-2732  07c7 a003          	sub	a,#3
-2733  07c9 276d          	jreq	L537
-2734  07cb a007          	sub	a,#7
-2735  07cd 2771          	jreq	L737
-2736  07cf 2077          	jra	L1001
-2737  07d1               L507:
-2738                     ; 651 		case HeDa_Cmd_Reply_Upload:
-2738                     ; 652 			HeDa_Cmd_Reply_Upload_Handle(stDataPtrHD.Packet.Buf,nctrl);
-2740  07d1 7b0d          	ld	a,(OFST-1,sp)
-2741  07d3 88            	push	a
-2742  07d4 ae0006        	ldw	x,#_stDataPtrHD+6
-2743  07d7 ad74          	call	_HeDa_Cmd_Reply_Upload_Handle
-2745  07d9 84            	pop	a
-2746                     ; 653 			nSendLen=0;
-2748  07da 0f0e          	clr	(OFST+0,sp)
-2749                     ; 654 			break;
-2751  07dc 206a          	jra	L1001
-2752  07de               L707:
-2753                     ; 656 		case HeDa_Cmd_Set_Sampling_Interval://设置采样间隔（上行、下行）
-2753                     ; 657 			nSendLen=HeDa_Cmd_Set_Sampling_Interval_Handle(stDataPtrHD.Packet.Buf);
-2755  07de ae0006        	ldw	x,#_stDataPtrHD+6
-2756  07e1 cd08ae        	call	_HeDa_Cmd_Set_Sampling_Interval_Handle
-2758                     ; 658 			break;
-2760  07e4 2060          	jp	LC006
-2761  07e6               L117:
-2762                     ; 660 		case HeDa_Cmd_Set_Net_Param://设置网络参数（上行、下行）
-2762                     ; 661 			nSendLen=HeDa_Cmd_Set_Net_Param_Handle((HD_CmdSetNetParam *)&stDataPtrHD.Packet.Buf);
-2764  07e6 ae0006        	ldw	x,#_stDataPtrHD+6
-2765  07e9 cd08e9        	call	_HeDa_Cmd_Set_Net_Param_Handle
-2767                     ; 662 			break;
-2769  07ec 2058          	jp	LC006
-2770  07ee               L317:
-2771                     ; 664 		case HeDa_Cmd_Set_Report_Cycle://设置上报周期（上行、下行）
-2771                     ; 665 			nSendLen==HeDa_Cmd_Set_Report_Cycle_Handle(stDataPtrHD.Packet.Buf);
-2773  07ee ae0006        	ldw	x,#_stDataPtrHD+6
-2774  07f1 cd0a4e        	call	_HeDa_Cmd_Set_Report_Cycle_Handle
-2776  07f4 110e          	cp	a,(OFST+0,sp)
-2777  07f6 2605          	jrne	L403
-2778  07f8 ae0001        	ldw	x,#1
-2779  07fb 204b          	jra	L1001
-2780  07fd               L403:
-2781  07fd 5f            	clrw	x
-2782                     ; 666 			break;
-2784  07fe 2048          	jra	L1001
-2785  0800               L517:
-2786                     ; 668 		case HeDa_Cmd_Set_Pressure_Threshold://设置压力上下限阈值（上行、下行）
-2786                     ; 669 			nSendLen=HeDa_Cmd_Get_Pressure_Threshold_Handle(stDataPtrHD.Packet.Buf);
-2789  0800 ae0006        	ldw	x,#_stDataPtrHD+6
-2790  0803 cd0ca4        	call	_HeDa_Cmd_Get_Pressure_Threshold_Handle
-2792                     ; 670 			break;
-2794  0806 203e          	jp	LC006
-2795  0808               L717:
-2796                     ; 672 		case HeDa_Cmd_Set_Secret_Key://设置秘钥（上行、下行）——预留
-2796                     ; 673 			nSendLen=HeDa_Cmd_Set_Secret_Key_Handle(stDataPtrHD.Packet.Buf);
-2798  0808 ae0006        	ldw	x,#_stDataPtrHD+6
-2799  080b cd0cc3        	call	_HeDa_Cmd_Set_Secret_Key_Handle
-2801                     ; 674 			break;
-2803  080e 2036          	jp	LC006
-2804  0810               L127:
-2805                     ; 676 		case HeDa_Cmd_Set_Addr://-------设置表地址    	和达原协议没有，自己添加
-2805                     ; 677 			nSendLen=HeDa_Cmd_Get_Addr_Handle(stDataPtrHD.Packet.Buf);
-2807  0810 ae0006        	ldw	x,#_stDataPtrHD+6
-2808  0813 cd0d43        	call	_HeDa_Cmd_Get_Addr_Handle
-2810                     ; 678 			break;
-2812  0816 202e          	jp	LC006
-2813  0818               L327:
-2814                     ; 682 		case HeDa_Cmd_Get_Sampling_Interval://查询采样间隔（上行、下行）
-2814                     ; 683 			nSendLen=HeDa_Cmd_Get_Sampling_Interval_Handle(stDataPtrHD.Packet.Buf);
-2816  0818 ae0006        	ldw	x,#_stDataPtrHD+6
-2817  081b cd08e2        	call	_HeDa_Cmd_Get_Sampling_Interval_Handle
-2819                     ; 684 			break;
-2821  081e 2026          	jp	LC006
-2822  0820               L527:
-2823                     ; 686 		case HeDa_Cmd_Get_Net_Param://查询网络参数（上行、下行）
-2823                     ; 687 			nSendLen=HeDa_Cmd_Get_Net_Param_Handle(stDataPtrHD.Packet.Buf);
-2825  0820 ae0006        	ldw	x,#_stDataPtrHD+6
-2826  0823 cd0a0b        	call	_HeDa_Cmd_Get_Net_Param_Handle
-2828                     ; 688 			break;
-2830  0826 201e          	jp	LC006
-2831  0828               L727:
-2832                     ; 690 		case HeDa_Cmd_Get_Report_Cycle://查询上报周期（上行、下行）
-2832                     ; 691 			nSendLen=HeDa_Cmd_Get_Report_Cycle_Handle(stDataPtrHD.Packet.Buf);
-2834  0828 ae0006        	ldw	x,#_stDataPtrHD+6
-2835  082b cd0aa3        	call	_HeDa_Cmd_Get_Report_Cycle_Handle
-2837                     ; 692 			break;
-2839  082e 2016          	jp	LC006
-2840                     ; 694 		case HeDa_Cmd_Get_Pressure_Threshold://查询压力上下限阈值（上行、下行）
-2840                     ; 695 			nSendLen=HeDa_Cmd_Get_Pressure_Threshold_Handle(stDataPtrHD.Packet.Buf);
-2842                     ; 696 			break;
-2844  0830               L337:
-2845                     ; 698 		case HeDa_Cmd_Get_Secret_Key://查询秘钥（上行、下行）——预留
-2845                     ; 699 			nSendLen=HeDa_Cmd_Get_Secret_Key_Handle(stDataPtrHD.Packet.Buf);
-2847  0830 ae0006        	ldw	x,#_stDataPtrHD+6
-2848  0833 cd0ce6        	call	_HeDa_Cmd_Get_Secret_Key_Handle
-2850                     ; 700 			break;
-2852  0836 200e          	jp	LC006
-2853  0838               L537:
-2854                     ; 702 		case HeDa_Cmd_Get_Addr://-------查询表地址    	和达原协议没有，自己添加
-2854                     ; 703 			nSendLen=HeDa_Cmd_Get_Addr_Handle(stDataPtrHD.Packet.Buf);
-2856  0838 ae0006        	ldw	x,#_stDataPtrHD+6
-2857  083b cd0d43        	call	_HeDa_Cmd_Get_Addr_Handle
-2859                     ; 704 			break;
-2861  083e 2006          	jp	LC006
-2862  0840               L737:
-2863                     ; 707 		case HeDa_Cmd_Get_All_Param://获取所有参数（上行、下行）
-2863                     ; 708 			nSendLen=HeDa_Cmd_Get_All_Param_Handle(stDataPtrHD.Packet.Buf);
-2865  0840 ae0006        	ldw	x,#_stDataPtrHD+6
-2866  0843 cd0d4f        	call	_HeDa_Cmd_Get_All_Param_Handle
-2868  0846               LC006:
-2869  0846 6b0e          	ld	(OFST+0,sp),a
-2870                     ; 709 			break;
-2872                     ; 710 		case HeDa_Cmd_Get_Appoint_Data://获取指定数据（上行、下行）
-2872                     ; 711 			break;
-2874                     ; 713 		default:break;
-2876  0848               L1001:
-2877                     ; 716 	return nSendLen;
-2879  0848 7b0e          	ld	a,(OFST+0,sp)
-2881  084a               L633:
-2883  084a 5b0e          	addw	sp,#14
-2884  084c 81            	ret	
-3010                     ; 728 void HeDa_Cmd_Reply_Upload_Handle(u8 *pData,u8 ctrl)
-3010                     ; 729 {
-3011                     	switch	.text
-3012  084d               _HeDa_Cmd_Reply_Upload_Handle:
-3014  084d 89            	pushw	x
-3015  084e 520f          	subw	sp,#15
-3016       0000000f      OFST:	set	15
-3019                     ; 731 	u8 byte_manage=0;//管理字
-3021  0850 0f0f          	clr	(OFST+0,sp)
-3022                     ; 734 	if((stDataPtrHD.Packet.Data_Len-1) < 9)//数据域长度不够
-3024  0852 ce0003        	ldw	x,_stDataPtrHD+3
-3025  0855 5a            	decw	x
-3026  0856 a30009        	cpw	x,#9
-3027  0859 2537          	jrult	L453
-3028                     ; 736 		return;
-3030                     ; 739 	MemcpyFunc((u8 *)&time_Server, pData, sizeof(TIME_BIN));
-3032  085b 4b06          	push	#6
-3033  085d 1e11          	ldw	x,(OFST+2,sp)
-3034  085f 89            	pushw	x
-3035  0860 96            	ldw	x,sp
-3036  0861 1c0004        	addw	x,#OFST-11
-3037  0864 cd0000        	call	_MemcpyFunc
-3039  0867 5b03          	addw	sp,#3
-3040                     ; 740 	byte_manage = *(pData+6);
-3042  0869 1e10          	ldw	x,(OFST+1,sp)
-3043  086b e606          	ld	a,(6,x)
-3044  086d 6b0f          	ld	(OFST+0,sp),a
-3045                     ; 743 	MemcpyFunc(&stTimeNow.wYear, pData, 6);
-3047  086f 4b06          	push	#6
-3048  0871 1e11          	ldw	x,(OFST+2,sp)
-3049  0873 89            	pushw	x
-3050  0874 ae0000        	ldw	x,#_stTimeNow
-3051  0877 cd0000        	call	_MemcpyFunc
-3053  087a 5b03          	addw	sp,#3
-3054                     ; 744 	TM_TimeChangeAToB(&stTimeNow, &stEnd);
-3056  087c 96            	ldw	x,sp
-3057  087d 1c0007        	addw	x,#OFST-8
-3058  0880 89            	pushw	x
-3059  0881 ae0000        	ldw	x,#_stTimeNow
-3060  0884 cd0000        	call	_TM_TimeChangeAToB
-3062  0887 85            	popw	x
-3063                     ; 745 	if(FALSE == TM_IsValidTimePro(&stEnd))
-3065  0888 96            	ldw	x,sp
-3066  0889 1c0007        	addw	x,#OFST-8
-3067  088c cd0000        	call	_TM_IsValidTimePro
-3069  088f 4d            	tnz	a
-3070  0890 2603          	jrne	L7501
-3071                     ; 747 		return;
-3072  0892               L453:
-3075  0892 5b11          	addw	sp,#17
-3076  0894 81            	ret	
-3077  0895               L7501:
-3078                     ; 749 	STM8_RTC_Set(&stTimeNow);	
-3080  0895 ae0000        	ldw	x,#_stTimeNow
-3081  0898 cd0000        	call	_STM8_RTC_Set
-3083                     ; 752 	m_nUploadMode = UP_Free_HD;
-3085  089b 35050000      	mov	_m_nUploadMode,#5
-3086                     ; 754 	if(ctrl&Flag_Data_Is_Finish)
-3088  089f 7b14          	ld	a,(OFST+5,sp)
-3089  08a1 a540          	bcp	a,#64
-3090  08a3 26ed          	jrne	L453
-3092                     ; 760 		if(0xFF == byte_manage)//表示该字段无效
-3094  08a5 7b0f          	ld	a,(OFST+0,sp)
-3095  08a7 4c            	inc	a
-3096  08a8 27e8          	jreq	L453
-3098                     ; 763 		else if(0x00 == byte_manage)//可以结束本次通讯
-3100  08aa 0d0f          	tnz	(OFST+0,sp)
-3101                     ; 768 }
-3103  08ac 20e4          	jra	L453
-3151                     ; 779 u8 HeDa_Cmd_Set_Sampling_Interval_Handle(u8 *pData)
-3151                     ; 780 {
-3152                     	switch	.text
-3153  08ae               _HeDa_Cmd_Set_Sampling_Interval_Handle:
-3155  08ae 89            	pushw	x
-3156  08af 88            	push	a
-3157       00000001      OFST:	set	1
-3160                     ; 782 	if((stDataPtrHD.Packet.Data_Len-1) < 2)//数据域长度不够
-3162  08b0 ce0003        	ldw	x,_stDataPtrHD+3
-3163  08b3 5a            	decw	x
-3164  08b4 a30002        	cpw	x,#2
-3165  08b7 1e02          	ldw	x,(OFST+1,sp)
-3166  08b9 240a          	jruge	L3111
-3167                     ; 784 		*pData=0x10;	  //设置失败
-3169  08bb a610          	ld	a,#16
-3170  08bd f7            	ld	(x),a
-3171                     ; 785 		*(pData+1)=tyReport.wGatherCycle;//终端当前采样间隔，分钟
-3173  08be c60000        	ld	a,_tyReport
-3174  08c1 e701          	ld	(1,x),a
-3176  08c3 2018          	jra	L5111
-3177  08c5               L3111:
-3178                     ; 789 		u8 hd_samling_interval=*pData;//采样间隔
-3180  08c5 f6            	ld	a,(x)
-3181  08c6 6b01          	ld	(OFST+0,sp),a
-3182                     ; 790 		*pData=0x01;	  //设置成功
-3184  08c8 a601          	ld	a,#1
-3185  08ca f7            	ld	(x),a
-3186                     ; 791 		*(pData+1)=hd_samling_interval;//终端当前采样间隔，分钟
-3188  08cb 7b01          	ld	a,(OFST+0,sp)
-3189  08cd e701          	ld	(1,x),a
-3190                     ; 794 		tyReport.wGatherCycle = hd_samling_interval;
-3192  08cf c70000        	ld	_tyReport,a
-3193                     ; 795 		SaveParameterForType((u8 *)&tyReport, REPOERCYCLE_LEN, REPORT_PARA);
-3195  08d2 4b03          	push	#3
-3196  08d4 4b0a          	push	#10
-3197  08d6 ae0000        	ldw	x,#_tyReport
-3198  08d9 cd0000        	call	_SaveParameterForType
-3200  08dc 85            	popw	x
-3201  08dd               L5111:
-3202                     ; 798 	return 2;
-3204  08dd a602          	ld	a,#2
-3207  08df 5b03          	addw	sp,#3
-3208  08e1 81            	ret	
-3246                     ; 811 u8 HeDa_Cmd_Get_Sampling_Interval_Handle(u8 *pData)
-3246                     ; 812 {
-3247                     	switch	.text
-3248  08e2               _HeDa_Cmd_Get_Sampling_Interval_Handle:
-3252                     ; 813 	*pData=tyReport.wGatherCycle;
-3254  08e2 c60000        	ld	a,_tyReport
-3255  08e5 f7            	ld	(x),a
-3256                     ; 814 	return 1;
-3258  08e6 a601          	ld	a,#1
-3261  08e8 81            	ret	
-3378                     ; 827 u8 HeDa_Cmd_Set_Net_Param_Handle(HD_CmdSetNetParam *pData)
-3378                     ; 828 {
-3379                     	switch	.text
-3380  08e9               _HeDa_Cmd_Set_Net_Param_Handle:
-3382  08e9 89            	pushw	x
-3383  08ea 89            	pushw	x
-3384       00000002      OFST:	set	2
-3387                     ; 829 	u8 flag_change_response=0;//修改内容结果标志位
-3389  08eb 0f02          	clr	(OFST+0,sp)
-3390                     ; 831 	if((stDataPtrHD.Packet.Data_Len-1) < sizeof(HD_CmdSetNetParam))//数据域长度不够
-3392  08ed ce0003        	ldw	x,_stDataPtrHD+3
-3393  08f0 5a            	decw	x
-3394  08f1 a3003c        	cpw	x,#60
-3395  08f4 2404          	jruge	L5021
-3396                     ; 833 		return 0;
-3398  08f6 4f            	clr	a
-3400  08f7 cc0a08        	jra	L014
-3401  08fa               L5021:
-3402                     ; 837 	if(pData->flag_change & 0x01)//设置IP地址
-3404  08fa 1e03          	ldw	x,(OFST+1,sp)
-3405  08fc f6            	ld	a,(x)
-3406  08fd a501          	bcp	a,#1
-3407  08ff 271f          	jreq	L7021
-3408                     ; 839 		flag_change_response |=0x01;
-3410  0901 7b02          	ld	a,(OFST+0,sp)
-3411  0903 aa01          	or	a,#1
-3412  0905 6b02          	ld	(OFST+0,sp),a
-3413                     ; 840 		tyReportParameter.Main_IP=pData->ip_addr;
-3415  0907 e604          	ld	a,(4,x)
-3416  0909 c70003        	ld	_tyReportParameter+3,a
-3417  090c e603          	ld	a,(3,x)
-3418  090e c70002        	ld	_tyReportParameter+2,a
-3419  0911 e602          	ld	a,(2,x)
-3420  0913 c70001        	ld	_tyReportParameter+1,a
-3421  0916 e601          	ld	a,(1,x)
-3422  0918 c70000        	ld	_tyReportParameter,a
-3423                     ; 841 		tyReportParameter.flag_Login_Mode=HD_Login_IP;
-3425  091b 35010026      	mov	_tyReportParameter+38,#1
-3426  091f f6            	ld	a,(x)
-3427  0920               L7021:
-3428                     ; 843 	if(pData->flag_change & 0x04)//设置域名
-3430  0920 a504          	bcp	a,#4
-3431  0922 2726          	jreq	L1121
-3432                     ; 845 		if(pData->flag_change & 0x01)//如果设置了IP地址
-3434  0924 a501          	bcp	a,#1
-3435  0926 2708          	jreq	L3121
-3436                     ; 847 			flag_change_response |=0x40;
-3438  0928 7b02          	ld	a,(OFST+0,sp)
-3439  092a aa40          	or	a,#64
-3440  092c 6b02          	ld	(OFST+0,sp),a
-3442  092e 201a          	jra	L1121
-3443  0930               L3121:
-3444                     ; 851 			flag_change_response |=0x04;		
-3446  0930 7b02          	ld	a,(OFST+0,sp)
-3447  0932 aa04          	or	a,#4
-3448  0934 6b02          	ld	(OFST+0,sp),a
-3449                     ; 852 			MemcpyFunc((u8 *)&tyReportParameter.Main_domain_name, pData->domain_name, 32);
-3451  0936 4b20          	push	#32
-3452  0938 1e04          	ldw	x,(OFST+2,sp)
-3453  093a 1c0007        	addw	x,#7
-3454  093d 89            	pushw	x
-3455  093e ae0006        	ldw	x,#_tyReportParameter+6
-3456  0941 cd0000        	call	_MemcpyFunc
-3458  0944 5b03          	addw	sp,#3
-3459                     ; 853 			tyReportParameter.flag_Login_Mode=HD_Login_Domain_Name;
-3461  0946 35020026      	mov	_tyReportParameter+38,#2
-3462  094a               L1121:
-3463                     ; 857 	if(pData->flag_change & 0x02)//设置端口号
-3465  094a 1e03          	ldw	x,(OFST+1,sp)
-3466  094c f6            	ld	a,(x)
-3467  094d a502          	bcp	a,#2
-3468  094f 270e          	jreq	L7121
-3469                     ; 859 		flag_change_response |=0x02;
-3471  0951 7b02          	ld	a,(OFST+0,sp)
-3472  0953 aa02          	or	a,#2
-3473  0955 6b02          	ld	(OFST+0,sp),a
-3474                     ; 860 		tyReportParameter.Main_Port=pData->port;
-3476  0957 ee05          	ldw	x,(5,x)
-3477  0959 cf0004        	ldw	_tyReportParameter+4,x
-3478  095c 1e03          	ldw	x,(OFST+1,sp)
-3479  095e f6            	ld	a,(x)
-3480  095f               L7121:
-3481                     ; 862 	if(pData->flag_change & 0x08)//设置apn接入点
-3483  095f a508          	bcp	a,#8
-3484  0961 2759          	jreq	L1221
-3485                     ; 864 		u8 apn_len=0;
-3487                     ; 865 		apn_len=HeDa_Get_String_len(pData->apn_point,20);
-3489  0963 4b14          	push	#20
-3490  0965 1e04          	ldw	x,(OFST+2,sp)
-3491  0967 1c0027        	addw	x,#39
-3492  096a cd0000        	call	_HeDa_Get_String_len
-3494  096d 5b01          	addw	sp,#1
-3495  096f 6b01          	ld	(OFST-1,sp),a
-3496                     ; 866 		if(apn_len>18 || apn_len==0)//设置apn失败
-3498  0971 a113          	cp	a,#19
-3499  0973 2404          	jruge	L5221
-3501  0975 7b01          	ld	a,(OFST-1,sp)
-3502  0977 2608          	jrne	L3221
-3503  0979               L5221:
-3504                     ; 868 			flag_change_response |=0x80;
-3506  0979 7b02          	ld	a,(OFST+0,sp)
-3507  097b aa80          	or	a,#128
-3508  097d 6b02          	ld	(OFST+0,sp),a
-3510  097f 203b          	jra	L1221
-3511  0981               L3221:
-3512                     ; 872 			flag_change_response |=0x08;
-3514  0981 7b02          	ld	a,(OFST+0,sp)
-3515  0983 aa08          	or	a,#8
-3516  0985 6b02          	ld	(OFST+0,sp),a
-3517                     ; 873 			MemsetFunc((u8 *)&g_nApnBuf[1], 0,20-1);
-3519  0987 4b13          	push	#19
-3520  0989 4b00          	push	#0
-3521  098b ae0001        	ldw	x,#_g_nApnBuf+1
-3522  098e cd0000        	call	_MemsetFunc
-3524  0991 85            	popw	x
-3525                     ; 874 			MemcpyFunc((u8 *)&g_nApnBuf[1],pData->apn_point,apn_len);
-3527  0992 7b01          	ld	a,(OFST-1,sp)
-3528  0994 88            	push	a
-3529  0995 1e04          	ldw	x,(OFST+2,sp)
-3530  0997 1c0027        	addw	x,#39
-3531  099a 89            	pushw	x
-3532  099b ae0001        	ldw	x,#_g_nApnBuf+1
-3533  099e cd0000        	call	_MemcpyFunc
-3535  09a1 5b03          	addw	sp,#3
-3536                     ; 875 			JX_StringCat(g_nApnBuf, "\"", 2);
-3538  09a3 4b02          	push	#2
-3539  09a5 ae005b        	ldw	x,#L1321
-3540  09a8 89            	pushw	x
-3541  09a9 ae0000        	ldw	x,#_g_nApnBuf
-3542  09ac cd0000        	call	_JX_StringCat
-3544  09af 5b03          	addw	sp,#3
-3545                     ; 876 			SaveParameterForType((u8 *)&g_nApnType, APN_LEN, APN_PARA);
-3547  09b1 4b02          	push	#2
-3548  09b3 4b14          	push	#20
-3549  09b5 ae0000        	ldw	x,#_g_nApnType
-3550  09b8 cd0000        	call	_SaveParameterForType
-3552  09bb 85            	popw	x
-3553  09bc               L1221:
-3554                     ; 879 	SaveParameterForType((u8 *)&tyReportParameter, ADDRESS_IPPARA_LEN, IPANDPORT_PARA);
-3556  09bc 4b01          	push	#1
-3557  09be 4b27          	push	#39
-3558  09c0 ae0000        	ldw	x,#_tyReportParameter
-3559  09c3 cd0000        	call	_SaveParameterForType
-3561  09c6 85            	popw	x
-3562                     ; 881 	pData->flag_change=flag_change_response;
-3564  09c7 7b02          	ld	a,(OFST+0,sp)
-3565  09c9 1e03          	ldw	x,(OFST+1,sp)
-3566  09cb f7            	ld	(x),a
-3567                     ; 882 	pData->ip_addr=tyReportParameter.Main_IP;
-3569  09cc c60003        	ld	a,_tyReportParameter+3
-3570  09cf e704          	ld	(4,x),a
-3571  09d1 c60002        	ld	a,_tyReportParameter+2
-3572  09d4 e703          	ld	(3,x),a
-3573  09d6 c60001        	ld	a,_tyReportParameter+1
-3574  09d9 e702          	ld	(2,x),a
-3575  09db c60000        	ld	a,_tyReportParameter
-3576  09de e701          	ld	(1,x),a
-3577                     ; 883 	pData->port=tyReportParameter.Main_Port;
-3579  09e0 90ce0004      	ldw	y,_tyReportParameter+4
-3580  09e4 ef05          	ldw	(5,x),y
-3581                     ; 884 	MemcpyFunc( pData->domain_name,(u8 *)&tyReportParameter.Main_domain_name, 32);
-3583  09e6 4b20          	push	#32
-3584  09e8 ae0006        	ldw	x,#_tyReportParameter+6
-3585  09eb 89            	pushw	x
-3586  09ec 1e06          	ldw	x,(OFST+4,sp)
-3587  09ee 1c0007        	addw	x,#7
-3588  09f1 cd0000        	call	_MemcpyFunc
-3590  09f4 5b03          	addw	sp,#3
-3591                     ; 885 	MemcpyFunc( pData->apn_point, g_nApnBuf,20);
-3593  09f6 4b14          	push	#20
-3594  09f8 ae0000        	ldw	x,#_g_nApnBuf
-3595  09fb 89            	pushw	x
-3596  09fc 1e06          	ldw	x,(OFST+4,sp)
-3597  09fe 1c0027        	addw	x,#39
-3598  0a01 cd0000        	call	_MemcpyFunc
-3600  0a04 5b03          	addw	sp,#3
-3601                     ; 887 	return sizeof(HD_CmdSetNetParam);
-3603  0a06 a63c          	ld	a,#60
-3605  0a08               L014:
-3607  0a08 5b04          	addw	sp,#4
-3608  0a0a 81            	ret	
-3657                     ; 899 u8 HeDa_Cmd_Get_Net_Param_Handle(u8 *pData)
-3657                     ; 900 {
-3658                     	switch	.text
-3659  0a0b               _HeDa_Cmd_Get_Net_Param_Handle:
-3661  0a0b 89            	pushw	x
-3662  0a0c 523c          	subw	sp,#60
-3663       0000003c      OFST:	set	60
-3666                     ; 903 	temp.ip_addr=tyReportParameter.Main_IP;
-3668  0a0e ce0002        	ldw	x,_tyReportParameter+2
-3669  0a11 1f04          	ldw	(OFST-56,sp),x
-3670  0a13 ce0000        	ldw	x,_tyReportParameter
-3671  0a16 1f02          	ldw	(OFST-58,sp),x
-3672                     ; 904 	temp.port=tyReportParameter.Main_Port;
-3674  0a18 ce0004        	ldw	x,_tyReportParameter+4
-3675  0a1b 1f06          	ldw	(OFST-54,sp),x
-3676                     ; 905 	MemcpyFunc((u8 *)&temp.domain_name,(u8 *)&tyReportParameter.Main_domain_name,32);
-3678  0a1d 4b20          	push	#32
-3679  0a1f ae0006        	ldw	x,#_tyReportParameter+6
-3680  0a22 89            	pushw	x
-3681  0a23 96            	ldw	x,sp
-3682  0a24 1c000b        	addw	x,#OFST-49
-3683  0a27 cd0000        	call	_MemcpyFunc
-3685  0a2a 5b03          	addw	sp,#3
-3686                     ; 906 	MemcpyFunc((u8 *)&temp.apn_point,g_nApnBuf,20);
-3688  0a2c 4b14          	push	#20
-3689  0a2e ae0000        	ldw	x,#_g_nApnBuf
-3690  0a31 89            	pushw	x
-3691  0a32 96            	ldw	x,sp
-3692  0a33 1c002b        	addw	x,#OFST-17
-3693  0a36 cd0000        	call	_MemcpyFunc
-3695  0a39 5b03          	addw	sp,#3
-3696                     ; 908 	MemcpyFunc(pData,(u8 *)&temp.ip_addr,sizeof(HD_CmdSetNetParam)-1);
-3698  0a3b 4b3b          	push	#59
-3699  0a3d 96            	ldw	x,sp
-3700  0a3e 1c0003        	addw	x,#OFST-57
-3701  0a41 89            	pushw	x
-3702  0a42 1e40          	ldw	x,(OFST+4,sp)
-3703  0a44 cd0000        	call	_MemcpyFunc
-3705  0a47 5b03          	addw	sp,#3
-3706                     ; 909 	return sizeof(HD_CmdSetNetParam)-1;
-3708  0a49 a63b          	ld	a,#59
-3711  0a4b 5b3e          	addw	sp,#62
-3712  0a4d 81            	ret	
-3760                     ; 921 u8 HeDa_Cmd_Set_Report_Cycle_Handle(u8 *pData)
-3760                     ; 922 {
-3761                     	switch	.text
-3762  0a4e               _HeDa_Cmd_Set_Report_Cycle_Handle:
-3764  0a4e 89            	pushw	x
-3765  0a4f 88            	push	a
-3766       00000001      OFST:	set	1
-3769                     ; 923 	u8 hd_cycle=0;//上报周期缓存
-3771  0a50 0f01          	clr	(OFST+0,sp)
-3772                     ; 925 	if((stDataPtrHD.Packet.Data_Len-1) < 1)//数据域长度不够
-3774  0a52 ce0003        	ldw	x,_stDataPtrHD+3
-3775  0a55 5a            	decw	x
-3776  0a56 2603          	jrne	L5721
-3777                     ; 927 		return 0;
-3779  0a58 4f            	clr	a
-3781  0a59 2021          	jra	L234
-3782  0a5b               L5721:
-3783                     ; 930 	hd_cycle=*pData;
-3785  0a5b 1e02          	ldw	x,(OFST+1,sp)
-3786  0a5d f6            	ld	a,(x)
-3787  0a5e 6b01          	ld	(OFST+0,sp),a
-3788                     ; 931 	if( (hd_cycle<HeDa_Report_Cycle_Min) || (hd_cycle<HeDa_Report_Cycle_Max))
-3790  0a60 a137          	cp	a,#55
-3791  0a62 2504          	jrult	L1031
-3793  0a64 a147          	cp	a,#71
-3794  0a66 2417          	jruge	L7721
-3795  0a68               L1031:
-3796                     ; 933 		*pData=0x10;//设置失败
-3798  0a68 a610          	ld	a,#16
-3799  0a6a f7            	ld	(x),a
-3800                     ; 934 		*(pData+1)=HeDa_TypeAddCycle_To_ReportCycleType(tyReport.nIntervalType,tyReport.cycle);
-3802  0a6b c60002        	ld	a,_tyReport+2
-3803  0a6e 97            	ld	xl,a
-3804  0a6f c60001        	ld	a,_tyReport+1
-3805  0a72 95            	ld	xh,a
-3806  0a73 cd0b54        	call	_HeDa_TypeAddCycle_To_ReportCycleType
-3808  0a76 1e02          	ldw	x,(OFST+1,sp)
-3809  0a78 e701          	ld	(1,x),a
-3811  0a7a               L3031:
-3812                     ; 944 	return 2;
-3814  0a7a a602          	ld	a,#2
-3816  0a7c               L234:
-3818  0a7c 5b03          	addw	sp,#3
-3819  0a7e 81            	ret	
-3820  0a7f               L7721:
-3821                     ; 938 		*pData=0x01;//设置成功
-3823  0a7f a601          	ld	a,#1
-3824  0a81 f7            	ld	(x),a
-3825                     ; 939 		HeDa_ReportCycleType_To_TypeAddCycle(hd_cycle,&tyReport.nIntervalType,&tyReport.cycle);
-3827  0a82 ae0002        	ldw	x,#_tyReport+2
-3828  0a85 89            	pushw	x
-3829  0a86 ae0001        	ldw	x,#_tyReport+1
-3830  0a89 89            	pushw	x
-3831  0a8a 7b05          	ld	a,(OFST+4,sp)
-3832  0a8c ad28          	call	_HeDa_ReportCycleType_To_TypeAddCycle
-3834  0a8e 5b04          	addw	sp,#4
-3835                     ; 940 		*(pData+1)=hd_cycle;
-3837  0a90 7b01          	ld	a,(OFST+0,sp)
-3838  0a92 1e02          	ldw	x,(OFST+1,sp)
-3839  0a94 e701          	ld	(1,x),a
-3840                     ; 941 		SaveParameterForType((u8 *)&tyReport, sizeof(tyReport), REPORT_PARA);//保存到eeprom中
-3842  0a96 4b03          	push	#3
-3843  0a98 4b0a          	push	#10
-3844  0a9a ae0000        	ldw	x,#_tyReport
-3845  0a9d cd0000        	call	_SaveParameterForType
-3847  0aa0 85            	popw	x
-3848  0aa1 20d7          	jra	L3031
-3886                     ; 956 u8 HeDa_Cmd_Get_Report_Cycle_Handle(u8 *pData)
-3886                     ; 957 {
-3887                     	switch	.text
-3888  0aa3               _HeDa_Cmd_Get_Report_Cycle_Handle:
-3890  0aa3 89            	pushw	x
-3891       00000000      OFST:	set	0
-3894                     ; 958 	*pData=HeDa_TypeAddCycle_To_ReportCycleType(tyReport.nIntervalType,tyReport.cycle);;
-3896  0aa4 c60002        	ld	a,_tyReport+2
-3897  0aa7 97            	ld	xl,a
-3898  0aa8 c60001        	ld	a,_tyReport+1
-3899  0aab 95            	ld	xh,a
-3900  0aac cd0b54        	call	_HeDa_TypeAddCycle_To_ReportCycleType
-3902  0aaf 1e01          	ldw	x,(OFST+1,sp)
-3903  0ab1 f7            	ld	(x),a
-3904                     ; 959 	return 1;
-3907  0ab2 a601          	ld	a,#1
-3910  0ab4 85            	popw	x
-3911  0ab5 81            	ret	
-3964                     ; 971 void HeDa_ReportCycleType_To_TypeAddCycle(u8 Report_Cycle_Type,u8 *Report_Time_Type,u8 *cycle_num)
-3964                     ; 972 {
-3965                     	switch	.text
-3966  0ab6               _HeDa_ReportCycleType_To_TypeAddCycle:
-3968  0ab6 88            	push	a
-3969       00000000      OFST:	set	0
-3972                     ; 973 	switch(Report_Cycle_Type)
-3975                     ; 1022 			break;
-3976  0ab7 a037          	sub	a,#55
-3977  0ab9 2725          	jreq	L3231
-3978  0abb 4a            	dec	a
-3979  0abc 272d          	jreq	L5231
-3980  0abe 4a            	dec	a
-3981  0abf 2735          	jreq	L7231
-3982  0ac1 a007          	sub	a,#7
-3983  0ac3 273c          	jreq	L1331
-3984  0ac5 4a            	dec	a
-3985  0ac6 2744          	jreq	L3331
-3986  0ac8 4a            	dec	a
-3987  0ac9 274c          	jreq	L5331
-3988  0acb 4a            	dec	a
-3989  0acc 2753          	jreq	L7331
-3990  0ace 4a            	dec	a
-3991  0acf 275a          	jreq	L1431
-3992  0ad1 4a            	dec	a
-3993  0ad2 2761          	jreq	L3431
-3994  0ad4 4a            	dec	a
-3995  0ad5 2768          	jreq	L5431
-3996  0ad7 4a            	dec	a
-3997  0ad8 276f          	jreq	L7431
-3998                     ; 1019 		default:
-3998                     ; 1020 			*Report_Time_Type=HD_INTERVAL_HOUR;
-4000  0ada 1e04          	ldw	x,(OFST+4,sp)
-4001  0adc a601          	ld	a,#1
-4002                     ; 1021 			*cycle_num=24;
-4003                     ; 1022 			break;
-4005  0ade 206c          	jp	LC008
-4006  0ae0               L3231:
-4007                     ; 975 		case HeDa_Report_Cycle_Minute_1:
-4007                     ; 976 			*Report_Time_Type=HD_INTERVAL_MIN;
-4009  0ae0 1e04          	ldw	x,(OFST+4,sp)
-4010  0ae2 a602          	ld	a,#2
-4011  0ae4 f7            	ld	(x),a
-4012                     ; 977 			*cycle_num=1;
-4014  0ae5 1e06          	ldw	x,(OFST+6,sp)
-4015  0ae7 a601          	ld	a,#1
-4016                     ; 978 			break;
-4018  0ae9 2066          	jra	L1041
-4019  0aeb               L5231:
-4020                     ; 979 		case HeDa_Report_Cycle_Minute_5:
-4020                     ; 980 			*Report_Time_Type=HD_INTERVAL_MIN;
-4022  0aeb 1e04          	ldw	x,(OFST+4,sp)
-4023  0aed a602          	ld	a,#2
-4024  0aef f7            	ld	(x),a
-4025                     ; 981 			*cycle_num=5;
-4027  0af0 1e06          	ldw	x,(OFST+6,sp)
-4028  0af2 a605          	ld	a,#5
-4029                     ; 982 			break;
-4031  0af4 205b          	jra	L1041
-4032  0af6               L7231:
-4033                     ; 983 		case HeDa_Report_Cycle_Minute_10:
-4033                     ; 984 			*Report_Time_Type=HD_INTERVAL_MIN;
-4035  0af6 1e04          	ldw	x,(OFST+4,sp)
-4036  0af8 a602          	ld	a,#2
-4037  0afa f7            	ld	(x),a
-4038                     ; 985 			*cycle_num=10;
-4040  0afb 1e06          	ldw	x,(OFST+6,sp)
-4041  0afd a60a          	ld	a,#10
-4042                     ; 986 			break;
-4044  0aff 2050          	jra	L1041
-4045  0b01               L1331:
-4046                     ; 987 		case HeDa_Report_Cycle_Minute_15:
-4046                     ; 988 			*Report_Time_Type=HD_INTERVAL_MIN;
-4048  0b01 1e04          	ldw	x,(OFST+4,sp)
-4049  0b03 a602          	ld	a,#2
-4050  0b05 f7            	ld	(x),a
-4051                     ; 989 			*cycle_num=15;
-4053  0b06 1e06          	ldw	x,(OFST+6,sp)
-4054  0b08 a60f          	ld	a,#15
-4055                     ; 990 			break;
-4057  0b0a 2045          	jra	L1041
-4058  0b0c               L3331:
-4059                     ; 991 		case HeDa_Report_Cycle_Minute_30:
-4059                     ; 992 			*Report_Time_Type=HD_INTERVAL_MIN;
-4061  0b0c 1e04          	ldw	x,(OFST+4,sp)
-4062  0b0e a602          	ld	a,#2
-4063  0b10 f7            	ld	(x),a
-4064                     ; 993 			*cycle_num=30;
-4066  0b11 1e06          	ldw	x,(OFST+6,sp)
-4067  0b13 a61e          	ld	a,#30
-4068                     ; 994 			break;
-4070  0b15 203a          	jra	L1041
-4071  0b17               L5331:
-4072                     ; 995 		case HeDa_Report_Cycle_Hour_1:
-4072                     ; 996 			*Report_Time_Type=HD_INTERVAL_HOUR;
-4074  0b17 1e04          	ldw	x,(OFST+4,sp)
-4075  0b19 4c            	inc	a
-4076  0b1a f7            	ld	(x),a
-4077                     ; 997 			*cycle_num=1;
-4079  0b1b 1e06          	ldw	x,(OFST+6,sp)
-4080  0b1d a601          	ld	a,#1
-4081                     ; 998 			break;
-4083  0b1f 2030          	jra	L1041
-4084  0b21               L7331:
-4085                     ; 999 		case HeDa_Report_Cycle_Hour_2:
-4085                     ; 1000 			*Report_Time_Type=HD_INTERVAL_HOUR;
-4087  0b21 1e04          	ldw	x,(OFST+4,sp)
-4088  0b23 4c            	inc	a
-4089  0b24 f7            	ld	(x),a
-4090                     ; 1001 			*cycle_num=2;
-4092  0b25 1e06          	ldw	x,(OFST+6,sp)
-4093  0b27 a602          	ld	a,#2
-4094                     ; 1002 			break;
-4096  0b29 2026          	jra	L1041
-4097  0b2b               L1431:
-4098                     ; 1003 		case HeDa_Report_Cycle_Hour_4:
-4098                     ; 1004 			*Report_Time_Type=HD_INTERVAL_HOUR;
-4100  0b2b 1e04          	ldw	x,(OFST+4,sp)
-4101  0b2d 4c            	inc	a
-4102  0b2e f7            	ld	(x),a
-4103                     ; 1005 			*cycle_num=4;
-4105  0b2f 1e06          	ldw	x,(OFST+6,sp)
-4106  0b31 a604          	ld	a,#4
-4107                     ; 1006 			break;
-4109  0b33 201c          	jra	L1041
-4110  0b35               L3431:
-4111                     ; 1007 		case HeDa_Report_Cycle_Hour_6:
-4111                     ; 1008 			*Report_Time_Type=HD_INTERVAL_HOUR;
-4113  0b35 1e04          	ldw	x,(OFST+4,sp)
-4114  0b37 4c            	inc	a
-4115  0b38 f7            	ld	(x),a
-4116                     ; 1009 			*cycle_num=6;
-4118  0b39 1e06          	ldw	x,(OFST+6,sp)
-4119  0b3b a606          	ld	a,#6
-4120                     ; 1010 			break;
-4122  0b3d 2012          	jra	L1041
-4123  0b3f               L5431:
-4124                     ; 1011 		case HeDa_Report_Cycle_Hour_12:
-4124                     ; 1012 			*Report_Time_Type=HD_INTERVAL_HOUR;
-4126  0b3f 1e04          	ldw	x,(OFST+4,sp)
-4127  0b41 4c            	inc	a
-4128  0b42 f7            	ld	(x),a
-4129                     ; 1013 			*cycle_num=12;
-4131  0b43 1e06          	ldw	x,(OFST+6,sp)
-4132  0b45 a60c          	ld	a,#12
-4133                     ; 1014 			break;
-4135  0b47 2008          	jra	L1041
-4136  0b49               L7431:
-4137                     ; 1015 		case HeDa_Report_Cycle_Hour_24:
-4137                     ; 1016 			*Report_Time_Type=HD_INTERVAL_HOUR;
-4139  0b49 1e04          	ldw	x,(OFST+4,sp)
-4140  0b4b 4c            	inc	a
-4141                     ; 1017 			*cycle_num=24;
-4143  0b4c               LC008:
-4144  0b4c f7            	ld	(x),a
-4146  0b4d 1e06          	ldw	x,(OFST+6,sp)
-4147  0b4f a618          	ld	a,#24
-4148                     ; 1018 			break;
-4150  0b51               L1041:
-4151  0b51 f7            	ld	(x),a
-4152                     ; 1024 	return;
-4155  0b52 84            	pop	a
-4156  0b53 81            	ret	
-4196                     ; 1036 u8 HeDa_TypeAddCycle_To_ReportCycleType(u8 Report_Time_Type,u8 cycle_num)
-4196                     ; 1037 {
-4197                     	switch	.text
-4198  0b54               _HeDa_TypeAddCycle_To_ReportCycleType:
-4200  0b54 89            	pushw	x
-4201       00000000      OFST:	set	0
-4204                     ; 1038 	switch(Report_Time_Type)
-4206  0b55 9e            	ld	a,xh
-4208                     ; 1065 		default:
-4208                     ; 1066 			return HeDa_Report_Cycle_Max;
-4209  0b56 4a            	dec	a
-4210  0b57 272c          	jreq	L1241
-4211  0b59 4a            	dec	a
-4212  0b5a 2704          	jreq	L3041
-4215  0b5c a647          	ld	a,#71
-4217  0b5e 2013          	jra	L444
-4218  0b60               L3041:
-4219                     ; 1042 				switch(cycle_num)
-4221  0b60 7b02          	ld	a,(OFST+2,sp)
-4223                     ; 1049 					default:	return HeDa_Report_Cycle_Minute_30;
-4224  0b62 4a            	dec	a
-4225  0b63 2710          	jreq	L5041
-4226  0b65 a004          	sub	a,#4
-4227  0b67 2710          	jreq	L7041
-4228  0b69 a005          	sub	a,#5
-4229  0b6b 2710          	jreq	L1141
-4230  0b6d a005          	sub	a,#5
-4231  0b6f 2710          	jreq	L3141
-4235  0b71 a641          	ld	a,#65
-4237  0b73               L444:
-4239  0b73 85            	popw	x
-4240  0b74 81            	ret	
-4241  0b75               L5041:
-4242                     ; 1044 					case	1:	return HeDa_Report_Cycle_Minute_1;
-4244  0b75 a637          	ld	a,#55
-4246  0b77 20fa          	jra	L444
-4247  0b79               L7041:
-4248                     ; 1045 					case	5:	return HeDa_Report_Cycle_Minute_5;
-4250  0b79 a638          	ld	a,#56
-4252  0b7b 20f6          	jra	L444
-4253  0b7d               L1141:
-4254                     ; 1046 					case	10:	return HeDa_Report_Cycle_Minute_10;
-4256  0b7d a639          	ld	a,#57
-4258  0b7f 20f2          	jra	L444
-4259  0b81               L3141:
-4260                     ; 1047 					case	15:	return HeDa_Report_Cycle_Minute_15;
-4262  0b81 a640          	ld	a,#64
-4264  0b83 20ee          	jra	L444
-4265                     ; 1048 					case	30:	return HeDa_Report_Cycle_Minute_30;
-4267  0b85               L1241:
-4268                     ; 1054 				switch(cycle_num)
-4270  0b85 7b02          	ld	a,(OFST+2,sp)
-4272                     ; 1062 					default:	return HeDa_Report_Cycle_Hour_24;
-4273  0b87 4a            	dec	a
-4274  0b88 2717          	jreq	L3241
-4275  0b8a 4a            	dec	a
-4276  0b8b 2718          	jreq	L5241
-4277  0b8d a002          	sub	a,#2
-4278  0b8f 2718          	jreq	L7241
-4279  0b91 a002          	sub	a,#2
-4280  0b93 2718          	jreq	L1341
-4281  0b95 a006          	sub	a,#6
-4282  0b97 2718          	jreq	L3341
-4283  0b99 a00c          	sub	a,#12
-4284  0b9b 2718          	jreq	L5341
-4287  0b9d a647          	ld	a,#71
-4289  0b9f 20d2          	jra	L444
-4290  0ba1               L3241:
-4291                     ; 1056 					case	1:	return HeDa_Report_Cycle_Hour_1;
-4293  0ba1 a642          	ld	a,#66
-4295  0ba3 20ce          	jra	L444
-4296  0ba5               L5241:
-4297                     ; 1057 					case	2:	return HeDa_Report_Cycle_Hour_2;
-4299  0ba5 a643          	ld	a,#67
-4301  0ba7 20ca          	jra	L444
-4302  0ba9               L7241:
-4303                     ; 1058 					case	4:	return HeDa_Report_Cycle_Hour_4;
-4305  0ba9 a644          	ld	a,#68
-4307  0bab 20c6          	jra	L444
-4308  0bad               L1341:
-4309                     ; 1059 					case	6:	return HeDa_Report_Cycle_Hour_6;
-4311  0bad a645          	ld	a,#69
-4313  0baf 20c2          	jra	L444
-4314  0bb1               L3341:
-4315                     ; 1060 					case	12:	return HeDa_Report_Cycle_Hour_12;
-4317  0bb1 a646          	ld	a,#70
-4319  0bb3 20be          	jra	L444
-4320  0bb5               L5341:
-4321                     ; 1061 					case	24:	return HeDa_Report_Cycle_Hour_24;
-4323  0bb5 a647          	ld	a,#71
-4325  0bb7 20ba          	jra	L444
-4381                     ; 1080 u8 HeDa_Cmd_Set_Pressure_Threshold_Handle(u8 *pData)
-4381                     ; 1081 {
-4382                     	switch	.text
-4383  0bb9               _HeDa_Cmd_Set_Pressure_Threshold_Handle:
-4385  0bb9 89            	pushw	x
-4386  0bba 89            	pushw	x
-4387       00000002      OFST:	set	2
-4390                     ; 1082 	u8 flag_change=0;//修改内容标志位
-4392                     ; 1083 	u8 flag_change_response=0;//修改内容结果标志位
-4394  0bbb 0f01          	clr	(OFST-1,sp)
-4395                     ; 1085 	if((stDataPtrHD.Packet.Data_Len-1) < 25)//数据域长度不够
-4397  0bbd ce0003        	ldw	x,_stDataPtrHD+3
-4398  0bc0 5a            	decw	x
-4399  0bc1 a30019        	cpw	x,#25
-4400  0bc4 2404          	jruge	L7151
-4401                     ; 1087 		return 0;
-4403  0bc6 4f            	clr	a
-4405  0bc7 cc0c95        	jra	L654
-4406  0bca               L7151:
-4407                     ; 1089 	flag_change=*pData;
-4409  0bca 1e03          	ldw	x,(OFST+1,sp)
-4410  0bcc f6            	ld	a,(x)
-4411  0bcd 6b02          	ld	(OFST+0,sp),a
-4412                     ; 1091 	if( (flag_change & 0x01) || (flag_change & 0x02)) //压力1上下限一起改
-4414  0bcf a501          	bcp	a,#1
-4415  0bd1 2604          	jrne	L3251
-4417  0bd3 a502          	bcp	a,#2
-4418  0bd5 274f          	jreq	L1251
-4419  0bd7               L3251:
-4420                     ; 1093 		if((flag_change & 0x01) && (flag_change & 0x02))//压力1上下限要一起改
-4422  0bd7 a501          	bcp	a,#1
-4423  0bd9 2737          	jreq	L5251
-4425  0bdb a502          	bcp	a,#2
-4426  0bdd 2733          	jreq	L5251
-4427                     ; 1095 			flag_change_response |=0x01;
-4429  0bdf 7b01          	ld	a,(OFST-1,sp)
-4430                     ; 1096 			flag_change_response |=0x02;
-4432  0be1 aa03          	or	a,#3
-4433  0be3 6b01          	ld	(OFST-1,sp),a
-4434                     ; 1097 			tyParameter.Pressure1_LimitUp=*(float *)(pData+1);
-4436  0be5 e604          	ld	a,(4,x)
-4437  0be7 c70014        	ld	_tyParameter+20,a
-4438  0bea e603          	ld	a,(3,x)
-4439  0bec c70013        	ld	_tyParameter+19,a
-4440  0bef e602          	ld	a,(2,x)
-4441  0bf1 c70012        	ld	_tyParameter+18,a
-4442  0bf4 e601          	ld	a,(1,x)
-4443  0bf6 c70011        	ld	_tyParameter+17,a
-4444                     ; 1098 			tyParameter.Pressure1_LimitDown=*(float *)(pData+5);
-4446  0bf9 e608          	ld	a,(8,x)
-4447  0bfb c70018        	ld	_tyParameter+24,a
-4448  0bfe e607          	ld	a,(7,x)
-4449  0c00 c70017        	ld	_tyParameter+23,a
-4450  0c03 e606          	ld	a,(6,x)
-4451  0c05 c70016        	ld	_tyParameter+22,a
-4452  0c08 e605          	ld	a,(5,x)
-4453  0c0a c70015        	ld	_tyParameter+21,a
-4454                     ; 1099 			SaveParameterForType((u8*)&tyParameter, sizeof(tyParameter), METER_PARA);
-4456  0c0d cd0c98        	call	LC012
-4458  0c10 2014          	jra	L1251
-4459  0c12               L5251:
-4460                     ; 1101 		else if(flag_change & 0x01)
-4462  0c12 a501          	bcp	a,#1
-4463  0c14 2706          	jreq	L1351
-4464                     ; 1103 			flag_change_response |=0x10;
-4466  0c16 7b01          	ld	a,(OFST-1,sp)
-4467  0c18 aa10          	or	a,#16
-4469  0c1a 2008          	jp	LC010
-4470  0c1c               L1351:
-4471                     ; 1105 		else if(flag_change & 0x02)
-4473  0c1c a502          	bcp	a,#2
-4474  0c1e 2706          	jreq	L1251
-4475                     ; 1107 			flag_change_response |=0x20;
-4477  0c20 7b01          	ld	a,(OFST-1,sp)
-4478  0c22 aa20          	or	a,#32
-4479  0c24               LC010:
-4480  0c24 6b01          	ld	(OFST-1,sp),a
-4481  0c26               L1251:
-4482                     ; 1111 	if( (flag_change & 0x04) || (flag_change & 0x08)) //压力2上下限一起改
-4484  0c26 7b02          	ld	a,(OFST+0,sp)
-4485  0c28 a504          	bcp	a,#4
-4486  0c2a 2604          	jrne	L1451
-4488  0c2c a508          	bcp	a,#8
-4489  0c2e 2750          	jreq	L7351
-4490  0c30               L1451:
-4491                     ; 1113 		if((flag_change & 0x04) && (flag_change & 0x08))//压力2上下限要一起改
-4493  0c30 a504          	bcp	a,#4
-4494  0c32 2738          	jreq	L3451
-4496  0c34 a508          	bcp	a,#8
-4497  0c36 2734          	jreq	L3451
-4498                     ; 1115 			flag_change_response |=0x04;
-4500  0c38 7b01          	ld	a,(OFST-1,sp)
-4501                     ; 1116 			flag_change_response |=0x08;		
-4503  0c3a aa0c          	or	a,#12
-4504  0c3c 6b01          	ld	(OFST-1,sp),a
-4505                     ; 1117 			tyParameter.Pressure2_LimitUp=*(float *)(pData+9);
-4507  0c3e 1e03          	ldw	x,(OFST+1,sp)
-4508  0c40 e60c          	ld	a,(12,x)
-4509  0c42 c7001c        	ld	_tyParameter+28,a
-4510  0c45 e60b          	ld	a,(11,x)
-4511  0c47 c7001b        	ld	_tyParameter+27,a
-4512  0c4a e60a          	ld	a,(10,x)
-4513  0c4c c7001a        	ld	_tyParameter+26,a
-4514  0c4f e609          	ld	a,(9,x)
-4515  0c51 c70019        	ld	_tyParameter+25,a
-4516                     ; 1118 			tyParameter.Pressure2_LimitDown=*(float *)(pData+13);
-4518  0c54 e610          	ld	a,(16,x)
-4519  0c56 c70020        	ld	_tyParameter+32,a
-4520  0c59 e60f          	ld	a,(15,x)
-4521  0c5b c7001f        	ld	_tyParameter+31,a
-4522  0c5e e60e          	ld	a,(14,x)
-4523  0c60 c7001e        	ld	_tyParameter+30,a
-4524  0c63 e60d          	ld	a,(13,x)
-4525  0c65 c7001d        	ld	_tyParameter+29,a
-4526                     ; 1119 			SaveParameterForType((u8*)&tyParameter, sizeof(tyParameter), METER_PARA);
-4528  0c68 ad2e          	call	LC012
-4530  0c6a 2014          	jra	L7351
-4531  0c6c               L3451:
-4532                     ; 1121 		else if(flag_change & 0x04)
-4534  0c6c a504          	bcp	a,#4
-4535  0c6e 2706          	jreq	L7451
-4536                     ; 1123 			flag_change_response |=0x40;
-4538  0c70 7b01          	ld	a,(OFST-1,sp)
-4539  0c72 aa40          	or	a,#64
-4541  0c74 2008          	jp	LC011
-4542  0c76               L7451:
-4543                     ; 1125 		else if(flag_change & 0x08)
-4545  0c76 a508          	bcp	a,#8
-4546  0c78 2706          	jreq	L7351
-4547                     ; 1127 			flag_change_response |=0x80;
+1332                     ; 325 		pnBuf[nOffset++]=1;										//报文中的数据条数
+1334  034f 0c38          	inc	(OFST+0,sp)
+1335  0351 5f            	clrw	x
+1336  0352 97            	ld	xl,a
+1337  0353 72fb36        	addw	x,(OFST-2,sp)
+1338  0356 a601          	ld	a,#1
+1339  0358 f7            	ld	(x),a
+1340                     ; 327 		pnBuf[nOffset++]=0;										//报文中的数据间隔
+1342  0359 7b38          	ld	a,(OFST+0,sp)
+1343  035b 0c38          	inc	(OFST+0,sp)
+1344  035d 5f            	clrw	x
+1345  035e 97            	ld	xl,a
+1346  035f 72fb36        	addw	x,(OFST-2,sp)
+1347  0362 7f            	clr	(x)
+1348                     ; 329 		Bat_value=BAT_GetBatVol();
+1350  0363 cd0000        	call	_BAT_GetBatVol
+1352  0366 1f17          	ldw	(OFST-33,sp),x
+1353                     ; 330 		pnBuf[nOffset++]=(Bat_value>>8)&0xff;					//电池电压，除以100后为电池电压实际数值                   高位在前
+1355  0368 7b38          	ld	a,(OFST+0,sp)
+1356  036a 0c38          	inc	(OFST+0,sp)
+1357  036c 5f            	clrw	x
+1358  036d 97            	ld	xl,a
+1359  036e 72fb36        	addw	x,(OFST-2,sp)
+1360  0371 7b17          	ld	a,(OFST-33,sp)
+1361  0373 f7            	ld	(x),a
+1362                     ; 331 		pnBuf[nOffset++]=Bat_value&0xff;
+1364  0374 7b38          	ld	a,(OFST+0,sp)
+1365  0376 0c38          	inc	(OFST+0,sp)
+1366  0378 5f            	clrw	x
+1367  0379 97            	ld	xl,a
+1368  037a 72fb36        	addw	x,(OFST-2,sp)
+1369  037d 7b18          	ld	a,(OFST-32,sp)
+1370  037f f7            	ld	(x),a
+1371                     ; 333 		pnBuf[nOffset++]=(g_HD_Msg_Tag>>8)&0xff;				//帧流水号     高位在前
+1373  0380 7b38          	ld	a,(OFST+0,sp)
+1374  0382 0c38          	inc	(OFST+0,sp)
+1375  0384 5f            	clrw	x
+1376  0385 97            	ld	xl,a
+1377  0386 72fb36        	addw	x,(OFST-2,sp)
+1378  0389 c6008d        	ld	a,_g_HD_Msg_Tag
+1379  038c f7            	ld	(x),a
+1380                     ; 334 		pnBuf[nOffset++]=g_HD_Msg_Tag&0xff;
+1382  038d 7b38          	ld	a,(OFST+0,sp)
+1383  038f 0c38          	inc	(OFST+0,sp)
+1384  0391 5f            	clrw	x
+1385  0392 97            	ld	xl,a
+1386  0393 72fb36        	addw	x,(OFST-2,sp)
+1387  0396 c6008e        	ld	a,_g_HD_Msg_Tag+1
+1388  0399 f7            	ld	(x),a
+1389                     ; 336 		pnBuf[nOffset++]=g_nSignal;								//信号强度
+1391  039a 7b38          	ld	a,(OFST+0,sp)
+1392  039c 0c38          	inc	(OFST+0,sp)
+1393  039e 5f            	clrw	x
+1394  039f 97            	ld	xl,a
+1395  03a0 72fb36        	addw	x,(OFST-2,sp)
+1396  03a3 c60000        	ld	a,_g_nSignal
+1397  03a6 f7            	ld	(x),a
+1398                     ; 338 		pnBuf[nOffset++]=(g_HD_aralm_type>>8)&0xff;				//突发事件类型     高位在前
+1400  03a7 7b38          	ld	a,(OFST+0,sp)
+1401  03a9 0c38          	inc	(OFST+0,sp)
+1402  03ab 5f            	clrw	x
+1403  03ac 97            	ld	xl,a
+1404  03ad 72fb36        	addw	x,(OFST-2,sp)
+1405  03b0 c6008f        	ld	a,_g_HD_aralm_type
+1406  03b3 f7            	ld	(x),a
+1407                     ; 339 		pnBuf[nOffset++]=g_HD_aralm_type&0xff;
+1409  03b4 7b38          	ld	a,(OFST+0,sp)
+1410  03b6 0c38          	inc	(OFST+0,sp)
+1411  03b8 5f            	clrw	x
+1412  03b9 97            	ld	xl,a
+1413  03ba 72fb36        	addw	x,(OFST-2,sp)
+1414  03bd c60090        	ld	a,_g_HD_aralm_type+1
+1415  03c0 f7            	ld	(x),a
+1416                     ; 341 		for(i=0;i<6;i++)pnBuf[nOffset++]=0;						//保留字段
+1418  03c1 0f35          	clr	(OFST-3,sp)
+1419  03c3               L773:
+1422  03c3 7b38          	ld	a,(OFST+0,sp)
+1423  03c5 0c38          	inc	(OFST+0,sp)
+1424  03c7 5f            	clrw	x
+1425  03c8 97            	ld	xl,a
+1426  03c9 72fb36        	addw	x,(OFST-2,sp)
+1427  03cc 7f            	clr	(x)
+1430  03cd 0c35          	inc	(OFST-3,sp)
+1433  03cf 7b35          	ld	a,(OFST-3,sp)
+1434  03d1 a106          	cp	a,#6
+1435  03d3 25ee          	jrult	L773
+1436                     ; 343 		pnBuf[nOffset++]=0x01;									//通道类型 
+1438  03d5 7b38          	ld	a,(OFST+0,sp)
+1439  03d7 0c38          	inc	(OFST+0,sp)
+1440  03d9 5f            	clrw	x
+1441  03da 97            	ld	xl,a
+1442  03db 72fb36        	addw	x,(OFST-2,sp)
+1443  03de a601          	ld	a,#1
+1444  03e0 f7            	ld	(x),a
+1445                     ; 344 		pnBuf[nOffset++]=0x01;									//通道号 
+1447  03e1 7b38          	ld	a,(OFST+0,sp)
+1448  03e3 0c38          	inc	(OFST+0,sp)
+1449  03e5 5f            	clrw	x
+1450  03e6 97            	ld	xl,a
+1451  03e7 72fb36        	addw	x,(OFST-2,sp)
+1452  03ea a601          	ld	a,#1
+1453  03ec f7            	ld	(x),a
+1454                     ; 352 			if(TRUE == ReadDayFreezeRecord(0, (u8*)&stDayFreeze, sizeof(TypeRecordDay)))
+1456  03ed 4b07          	push	#7
+1457  03ef 96            	ldw	x,sp
+1458  03f0 1c0011        	addw	x,#OFST-39
+1459  03f3 89            	pushw	x
+1460  03f4 4f            	clr	a
+1461  03f5 cd0000        	call	_ReadDayFreezeRecord
+1463  03f8 5b03          	addw	sp,#3
+1464  03fa 4a            	dec	a
+1465  03fb 2703cc0489    	jrne	L504
+1466                     ; 354 				STM8_RTC_Get(&now_time);
+1468  0400 96            	ldw	x,sp
+1469  0401 1c0019        	addw	x,#OFST-31
+1470  0404 cd0000        	call	_STM8_RTC_Get
+1472                     ; 355 				TM_TimeChangeAToB(&now_time, &stTmpTime);
+1474  0407 96            	ldw	x,sp
+1475  0408 5c            	incw	x
+1476  0409 89            	pushw	x
+1477  040a 1c0018        	addw	x,#24
+1478  040d cd0000        	call	_TM_TimeChangeAToB
+1480  0410 85            	popw	x
+1481                     ; 356 				TM_RTimeDecnMinute(&stTmpTime, 1440);
+1483  0411 ae05a0        	ldw	x,#1440
+1484  0414 89            	pushw	x
+1485  0415 5f            	clrw	x
+1486  0416 89            	pushw	x
+1487  0417 96            	ldw	x,sp
+1488  0418 1c0005        	addw	x,#OFST-51
+1489  041b cd0000        	call	_TM_RTimeDecnMinute
+1491  041e 5b04          	addw	sp,#4
+1492                     ; 357 				TM_TimeChangeBToA(&stTmpTime, &stYesterDay);
+1494  0420 96            	ldw	x,sp
+1495  0421 1c0009        	addw	x,#OFST-47
+1496  0424 89            	pushw	x
+1497  0425 1d0008        	subw	x,#8
+1498  0428 cd0000        	call	_TM_TimeChangeBToA
+1500  042b 85            	popw	x
+1501                     ; 358 				if((stDayFreeze.nYear == stYesterDay.wYear) && 
+1501                     ; 359 					(stDayFreeze.nMon == stYesterDay.nMonth) && (stDayFreeze.nDay == stYesterDay.nDay))
+1503  042c 7b14          	ld	a,(OFST-36,sp)
+1504  042e 1109          	cp	a,(OFST-47,sp)
+1505  0430 263e          	jrne	L704
+1507  0432 7b15          	ld	a,(OFST-35,sp)
+1508  0434 110a          	cp	a,(OFST-46,sp)
+1509  0436 2638          	jrne	L704
+1511  0438 7b16          	ld	a,(OFST-34,sp)
+1512  043a 110b          	cp	a,(OFST-45,sp)
+1513  043c 2632          	jrne	L704
+1514                     ; 361 					pnBuf[nOffset++]=stDayFreeze.Value&0xff;
+1516  043e 7b38          	ld	a,(OFST+0,sp)
+1517  0440 0c38          	inc	(OFST+0,sp)
+1518  0442 5f            	clrw	x
+1519  0443 97            	ld	xl,a
+1520  0444 72fb36        	addw	x,(OFST-2,sp)
+1521  0447 7b13          	ld	a,(OFST-37,sp)
+1522  0449 f7            	ld	(x),a
+1523                     ; 362 					pnBuf[nOffset++]=(stDayFreeze.Value>>8)&0xff;
+1525  044a 7b38          	ld	a,(OFST+0,sp)
+1526  044c 0c38          	inc	(OFST+0,sp)
+1527  044e 5f            	clrw	x
+1528  044f 97            	ld	xl,a
+1529  0450 72fb36        	addw	x,(OFST-2,sp)
+1530  0453 7b12          	ld	a,(OFST-38,sp)
+1531  0455 f7            	ld	(x),a
+1532                     ; 363 					pnBuf[nOffset++]=(stDayFreeze.Value>>16)&0xff;
+1534  0456 7b38          	ld	a,(OFST+0,sp)
+1535  0458 0c38          	inc	(OFST+0,sp)
+1536  045a 5f            	clrw	x
+1537  045b 97            	ld	xl,a
+1538  045c 72fb36        	addw	x,(OFST-2,sp)
+1539  045f 7b11          	ld	a,(OFST-39,sp)
+1540  0461 f7            	ld	(x),a
+1541                     ; 364 					pnBuf[nOffset++]=(stDayFreeze.Value>>24)&0xff;
+1543  0462 7b38          	ld	a,(OFST+0,sp)
+1544  0464 0c38          	inc	(OFST+0,sp)
+1545  0466 5f            	clrw	x
+1546  0467 97            	ld	xl,a
+1547  0468 72fb36        	addw	x,(OFST-2,sp)
+1548  046b 7b10          	ld	a,(OFST-40,sp)
+1549  046d f7            	ld	(x),a
+1551  046e 2019          	jra	L504
+1552  0470               L704:
+1553                     ; 369 					MemsetFunc(&pnBuf[nOffset], 0x00, 4);
+1555  0470 4b04          	push	#4
+1556  0472 4b00          	push	#0
+1557  0474 7b38          	ld	a,(OFST+0,sp)
+1558  0476 97            	ld	xl,a
+1559  0477 7b39          	ld	a,(OFST+1,sp)
+1560  0479 1b3a          	add	a,(OFST+2,sp)
+1561  047b 2401          	jrnc	L071
+1562  047d 5c            	incw	x
+1563  047e               L071:
+1564  047e 02            	rlwa	x,a
+1565  047f cd0000        	call	_MemsetFunc
+1567  0482 85            	popw	x
+1568                     ; 370 					nOffset+=4;
+1570  0483 7b38          	ld	a,(OFST+0,sp)
+1571  0485 ab04          	add	a,#4
+1572  0487 6b38          	ld	(OFST+0,sp),a
+1573  0489               L504:
+1574                     ; 375 			if(FALSE == GM_GetGatherMeterFlg())
+1576  0489 cd0000        	call	_GM_GetGatherMeterFlg
+1578  048c 4d            	tnz	a
+1579  048d 2622          	jrne	L314
+1580                     ; 377 				if(TRUE == ReadRecord(0, (u8*)&tyRecord, sizeof(tyRecord)))
+1582  048f 4b0c          	push	#12
+1583  0491 ae0000        	ldw	x,#_tyRecord
+1584  0494 89            	pushw	x
+1585  0495 cd0000        	call	_ReadRecord
+1587  0498 5b03          	addw	sp,#3
+1588  049a 4a            	dec	a
+1589  049b 260b          	jrne	L514
+1590                     ; 379 					tyParameter.Value = tyRecord.Value;
+1592  049d ce0002        	ldw	x,_tyRecord+2
+1593  04a0 cf000a        	ldw	_tyParameter+10,x
+1594  04a3 ce0000        	ldw	x,_tyRecord
+1596  04a6 2006          	jp	LC002
+1597  04a8               L514:
+1598                     ; 381 				else tyParameter.Value = INVALID_DATA;
+1600  04a8 aeeeee        	ldw	x,#61166
+1601  04ab cf000a        	ldw	_tyParameter+10,x
+1602  04ae               LC002:
+1603  04ae cf0008        	ldw	_tyParameter+8,x
+1604  04b1               L314:
+1605                     ; 383 			pnBuf[nOffset++]=tyParameter.Value&0xff;
+1607  04b1 7b38          	ld	a,(OFST+0,sp)
+1608  04b3 0c38          	inc	(OFST+0,sp)
+1609  04b5 5f            	clrw	x
+1610  04b6 97            	ld	xl,a
+1611  04b7 72fb36        	addw	x,(OFST-2,sp)
+1612  04ba c6000b        	ld	a,_tyParameter+11
+1613  04bd f7            	ld	(x),a
+1614                     ; 384 			pnBuf[nOffset++]=(tyParameter.Value>>8)&0xff;
+1616  04be 7b38          	ld	a,(OFST+0,sp)
+1617  04c0 0c38          	inc	(OFST+0,sp)
+1618  04c2 5f            	clrw	x
+1619  04c3 97            	ld	xl,a
+1620  04c4 72fb36        	addw	x,(OFST-2,sp)
+1621  04c7 c6000a        	ld	a,_tyParameter+10
+1622  04ca f7            	ld	(x),a
+1623                     ; 385 			pnBuf[nOffset++]=(tyParameter.Value>>16)&0xff;
+1625  04cb 7b38          	ld	a,(OFST+0,sp)
+1626  04cd 0c38          	inc	(OFST+0,sp)
+1627  04cf 5f            	clrw	x
+1628  04d0 97            	ld	xl,a
+1629  04d1 72fb36        	addw	x,(OFST-2,sp)
+1630  04d4 c60009        	ld	a,_tyParameter+9
+1631  04d7 f7            	ld	(x),a
+1632                     ; 386 			pnBuf[nOffset++]=(tyParameter.Value>>24)&0xff;
+1634  04d8 7b38          	ld	a,(OFST+0,sp)
+1635  04da 0c38          	inc	(OFST+0,sp)
+1636  04dc 5f            	clrw	x
+1637  04dd 97            	ld	xl,a
+1638  04de 72fb36        	addw	x,(OFST-2,sp)
+1639  04e1 c60008        	ld	a,_tyParameter+8
+1640  04e4 f7            	ld	(x),a
+1641                     ; 388 		nSendLen =nOffset;	
+1643  04e5 7b38          	ld	a,(OFST+0,sp)
+1644  04e7 6b35          	ld	(OFST-3,sp),a
+1645                     ; 390 	HD_ProtolSend(nSendLen, COM_1,1);			//只有1组数据
+1647  04e9 4b01          	push	#1
+1648  04eb ae0001        	ldw	x,#1
+1649  04ee 7b36          	ld	a,(OFST-2,sp)
+1650  04f0 95            	ld	xh,a
+1651  04f1 ad15          	call	_HD_ProtolSend
+1653  04f3 84            	pop	a
+1654                     ; 393 	if(FALSE == WatitDataSendOk())
+1656  04f4 cd0000        	call	_WatitDataSendOk
+1658  04f7 4d            	tnz	a
+1659                     ; 395 		return FALSE;
+1662  04f8 270b          	jreq	L402
+1663                     ; 398 	g_dwRepTick = GetSysTemTick();
+1665  04fa cd0000        	call	_GetSysTemTick
+1667  04fd ae0000        	ldw	x,#_g_dwRepTick
+1668  0500 cd0000        	call	c_rtol
+1670                     ; 399 	return TRUE;
+1672  0503 a601          	ld	a,#1
+1674  0505               L402:
+1676  0505 5b38          	addw	sp,#56
+1677  0507 81            	ret	
+1823                     ; 411 s8 HD_ProtolSend(u8 Size, u8 nComChannel,u8 device_info_flag)
+1823                     ; 412 {
+1824                     	switch	.text
+1825  0508               _HD_ProtolSend:
+1827  0508 89            	pushw	x
+1828  0509 520e          	subw	sp,#14
+1829       0000000e      OFST:	set	14
+1832                     ; 414 	u16 length = 0;
+1834  050b 1e0c          	ldw	x,(OFST-2,sp)
+1835                     ; 416 	s8 nFailCnt = 0, nOptRelt = FALSE;
+1837  050d 0f03          	clr	(OFST-11,sp)
+1840                     ; 418 	if(device_info_flag)length=Size+15+HD_FRAME_OTHER_LEN;
+1842  050f 7b13          	ld	a,(OFST+5,sp)
+1843  0511 270a          	jreq	L305
+1846  0513 4f            	clr	a
+1847  0514 97            	ld	xl,a
+1848  0515 a618          	ld	a,#24
+1849  0517 1b0f          	add	a,(OFST+1,sp)
+1850  0519 240a          	jrnc	L212
+1852  051b 2007          	jp	LC003
+1853  051d               L305:
+1854                     ; 419 	else length=Size+HD_FRAME_OTHER_LEN;
+1856  051d 97            	ld	xl,a
+1857  051e a609          	ld	a,#9
+1858  0520 1b0f          	add	a,(OFST+1,sp)
+1859  0522 2401          	jrnc	L212
+1860  0524               LC003:
+1861  0524 5c            	incw	x
+1862  0525               L212:
+1863  0525 02            	rlwa	x,a
+1864  0526 1f0c          	ldw	(OFST-2,sp),x
+1865  0528 01            	rrwa	x,a
+1866                     ; 422 	if(COM_1 == nComChannel)
+1868  0529 7b10          	ld	a,(OFST+2,sp)
+1869  052b 4a            	dec	a
+1870  052c 2633          	jrne	L705
+1872  052e 2027          	jra	L315
+1873  0530               L115:
+1874                     ; 427 			nOptRelt = M590_TcpSendDatLen(length); //0x0D不算入长度
+1876  0530 7b0d          	ld	a,(OFST-1,sp)
+1877  0532 cd0000        	call	_M590_TcpSendDatLen
+1879  0535 6b0e          	ld	(OFST+0,sp),a
+1880                     ; 428 			if(-1 == nOptRelt)
+1882  0537 a1ff          	cp	a,#255
+1883  0539 260f          	jrne	L715
+1884                     ; 430 				stRepFail.wError |= (1<<DATSEND_ERROR);
+1886  053b 72100006      	bset	_stRepFail+6,#0
+1887                     ; 431 				M590_CloseConnect();
+1889  053f cd0000        	call	_M590_CloseConnect
+1891                     ; 432 				ucStatusGsm = GSM_SHAKEHAND;
+1893  0542 35020000      	mov	_ucStatusGsm,#2
+1894                     ; 433 				return -1;
+1896  0546 a6ff          	ld	a,#255
+1898  0548 200a          	jra	L032
+1899  054a               L715:
+1900                     ; 435 			if(TRUE == nOptRelt)
+1902  054a 4a            	dec	a
+1903  054b 260a          	jrne	L315
+1904                     ; 437 				break;
+1905  054d               L515:
+1906                     ; 440 		if(nFailCnt >= 3 )
+1908  054d 7b03          	ld	a,(OFST-11,sp)
+1909  054f a103          	cp	a,#3
+1910  0551 2f0e          	jrslt	L705
+1911                     ; 442 			return FALSE;
+1913  0553 4f            	clr	a
+1915  0554               L032:
+1917  0554 5b10          	addw	sp,#16
+1918  0556 81            	ret	
+1919  0557               L315:
+1920                     ; 425 		while(3 > nFailCnt++)
+1922  0557 7b03          	ld	a,(OFST-11,sp)
+1923  0559 0c03          	inc	(OFST-11,sp)
+1924  055b a103          	cp	a,#3
+1925  055d 2fd1          	jrslt	L115
+1926  055f 20ec          	jra	L515
+1927  0561               L705:
+1928                     ; 446 	length = Size;		                   
+1930  0561 7b0f          	ld	a,(OFST+1,sp)
+1931  0563 5f            	clrw	x
+1932  0564 97            	ld	xl,a
+1933  0565 1f0c          	ldw	(OFST-2,sp),x
+1934                     ; 447 	tyProtolHead.Head[0] = Packet_Head_0;				//数据包头
+1936  0567 a6a7          	ld	a,#167
+1937  0569 6b04          	ld	(OFST-10,sp),a
+1938                     ; 448 	tyProtolHead.Head[1] = Packet_Head_1;				//数据包头
+1940  056b 6b05          	ld	(OFST-9,sp),a
+1941                     ; 449 	tyProtolHead.Addr[0] = Maker_Addr;					//厂商地址
+1943  056d a601          	ld	a,#1
+1944  056f 6b06          	ld	(OFST-8,sp),a
+1945                     ; 450 	tyProtolHead.Addr[1] = (g_HD_device_addr&0xFF);		//设备地址
+1947  0571 c60092        	ld	a,_g_HD_device_addr+1
+1948  0574 6b07          	ld	(OFST-7,sp),a
+1949                     ; 451 	tyProtolHead.Addr[2] = (g_HD_device_addr>>8)&0xFF;	//设备地址
+1951  0576 c60091        	ld	a,_g_HD_device_addr
+1952  0579 6b08          	ld	(OFST-6,sp),a
+1953                     ; 452 	tyProtolHead.Version = Protocol_Version;			//协议版本号
+1955  057b a614          	ld	a,#20
+1956  057d 6b09          	ld	(OFST-5,sp),a
+1957                     ; 454 	Point = aucUartTxBuffer;		//指针指向接收发送缓冲头
+1959  057f ae0000        	ldw	x,#_aucUartTxBuffer
+1960  0582 1f0a          	ldw	(OFST-4,sp),x
+1961                     ; 456 	MemcpyFunc(Point, (u8 *)&tyProtolHead, sizeof(tyProtolHead) );	//复制数据头到缓冲中
+1963  0584 4b06          	push	#6
+1964  0586 96            	ldw	x,sp
+1965  0587 1c0005        	addw	x,#OFST-9
+1966  058a 89            	pushw	x
+1967  058b 1e0d          	ldw	x,(OFST-1,sp)
+1968  058d cd0000        	call	_MemcpyFunc
+1970  0590 5b03          	addw	sp,#3
+1971                     ; 457 	Point += sizeof(tyProtolHead);									//指针向下
+1973  0592 1e0a          	ldw	x,(OFST-4,sp)
+1974  0594 1c0006        	addw	x,#6
+1975  0597 1f0a          	ldw	(OFST-4,sp),x
+1976                     ; 458 	if(device_info_flag)
+1978  0599 7b13          	ld	a,(OFST+5,sp)
+1979  059b 2718          	jreq	L525
+1980                     ; 461 		MemsetFunc(Point,0, 15);
+1982  059d 4b0f          	push	#15
+1983  059f 4b00          	push	#0
+1984  05a1 1e0c          	ldw	x,(OFST-2,sp)
+1985  05a3 cd0000        	call	_MemsetFunc
+1987  05a6 85            	popw	x
+1988                     ; 462 		Point += sizeof(g_Device_Info);										//指针向下
+1990  05a7 1e0a          	ldw	x,(OFST-4,sp)
+1991  05a9 1c000f        	addw	x,#15
+1992  05ac 1f0a          	ldw	(OFST-4,sp),x
+1993                     ; 463 		length +=sizeof(g_Device_Info);
+1995  05ae 1e0c          	ldw	x,(OFST-2,sp)
+1996  05b0 1c000f        	addw	x,#15
+1997  05b3 1f0c          	ldw	(OFST-2,sp),x
+1998  05b5               L525:
+1999                     ; 466 	MemcpyFunc(Point, (u8 *)&stDataPtrHD, Size );
+2001  05b5 7b0f          	ld	a,(OFST+1,sp)
+2002  05b7 88            	push	a
+2003  05b8 ae0000        	ldw	x,#_stDataPtrHD
+2004  05bb 89            	pushw	x
+2005  05bc 1e0d          	ldw	x,(OFST-1,sp)
+2006  05be cd0000        	call	_MemcpyFunc
+2008  05c1 5b03          	addw	sp,#3
+2009                     ; 467 	Point += Size;	
+2011  05c3 7b0f          	ld	a,(OFST+1,sp)
+2012  05c5 5f            	clrw	x
+2013  05c6 97            	ld	xl,a
+2014  05c7 1f01          	ldw	(OFST-13,sp),x
+2015  05c9 1e0a          	ldw	x,(OFST-4,sp)
+2016  05cb 72fb01        	addw	x,(OFST-13,sp)
+2017  05ce 1f0a          	ldw	(OFST-4,sp),x
+2018                     ; 468 	length += Size;
+2020  05d0 5f            	clrw	x
+2021  05d1 97            	ld	xl,a
+2022  05d2 1f01          	ldw	(OFST-13,sp),x
+2023  05d4 1e0c          	ldw	x,(OFST-2,sp)
+2024  05d6 72fb01        	addw	x,(OFST-13,sp)
+2025  05d9 1f0c          	ldw	(OFST-2,sp),x
+2026                     ; 470 	checksum = 0;					//校验和是累加和
+2028  05db 0f03          	clr	(OFST-11,sp)
+2029                     ; 471 	for (nX = 0; nX < length; nX++)
+2031  05dd 0f0e          	clr	(OFST+0,sp)
+2033  05df 200b          	jra	L335
+2034  05e1               L725:
+2035                     ; 473 		checksum += aucUartTxBuffer[nX];    //计算累加和
+2037  05e1 5f            	clrw	x
+2038  05e2 97            	ld	xl,a
+2039  05e3 7b03          	ld	a,(OFST-11,sp)
+2040  05e5 db0000        	add	a,(_aucUartTxBuffer,x)
+2041  05e8 6b03          	ld	(OFST-11,sp),a
+2042                     ; 471 	for (nX = 0; nX < length; nX++)
+2044  05ea 0c0e          	inc	(OFST+0,sp)
+2045  05ec               L335:
+2048  05ec 7b0e          	ld	a,(OFST+0,sp)
+2049  05ee 5f            	clrw	x
+2050  05ef 97            	ld	xl,a
+2051  05f0 130c          	cpw	x,(OFST-2,sp)
+2052  05f2 25ed          	jrult	L725
+2053                     ; 475 	Point[length++] = checksum;
+2055  05f4 1e0c          	ldw	x,(OFST-2,sp)
+2056  05f6 5c            	incw	x
+2057  05f7 1f0c          	ldw	(OFST-2,sp),x
+2058  05f9 5a            	decw	x
+2059  05fa 72fb0a        	addw	x,(OFST-4,sp)
+2060                     ; 476 	Point[length++] = Packet_End_0;
+2062                     ; 477 	Point[length++] = Packet_End_1;
+2064  05fd a60a          	ld	a,#10
+2065  05ff f7            	ld	(x),a
+2066                     ; 479 	FrameSendFunc(length, nComChannel, Point);
+2068  0600 1e0a          	ldw	x,(OFST-4,sp)
+2069  0602 89            	pushw	x
+2070  0603 7b12          	ld	a,(OFST+4,sp)
+2071  0605 97            	ld	xl,a
+2072  0606 7b0f          	ld	a,(OFST+1,sp)
+2073  0608 95            	ld	xh,a
+2074  0609 cd0000        	call	_FrameSendFunc
+2076  060c a601          	ld	a,#1
+2077  060e 85            	popw	x
+2078                     ; 480 	return TRUE;
+2081  060f cc0554        	jra	L032
+2177                     ; 493 u8 HD_DecodeParameter(u8* pnRxBuf, u8 nRxLen)
+2177                     ; 494 {
+2178                     	switch	.text
+2179  0612               _HD_DecodeParameter:
+2181  0612 89            	pushw	x
+2182  0613 520e          	subw	sp,#14
+2183       0000000e      OFST:	set	14
+2186                     ; 495 	u8 *Point = NULL;
+2188                     ; 496 	u16 wDataLen = 0, wLen = 0;	
+2192  0615 5f            	clrw	x
+2193  0616 1f0b          	ldw	(OFST-3,sp),x
+2194                     ; 498 	u8 nSendLen = 0;
+2196  0618 0f08          	clr	(OFST-6,sp)
+2197                     ; 500 	if(NULL == pnRxBuf)
+2199  061a 1e0f          	ldw	x,(OFST+1,sp)
+2200  061c 2603          	jrne	L106
+2201                     ; 502 		return nSendLen;
+2203  061e 4f            	clr	a
+2205  061f 2020          	jra	L252
+2206  0621               L106:
+2207                     ; 504     Point = pnRxBuf;
+2209  0621 1f0d          	ldw	(OFST-1,sp),x
+2211  0623 201f          	jra	L706
+2212  0625               L306:
+2213                     ; 509 		Point++;
+2215  0625 5c            	incw	x
+2216  0626 1f0d          	ldw	(OFST-1,sp),x
+2217                     ; 510 		wLen++;
+2219  0628 1e0b          	ldw	x,(OFST-3,sp)
+2220  062a 5c            	incw	x
+2221  062b 1f0b          	ldw	(OFST-3,sp),x
+2222                     ; 511 		if(nRxLen <= wLen)
+2224  062d 7b13          	ld	a,(OFST+5,sp)
+2225  062f 5f            	clrw	x
+2226  0630 97            	ld	xl,a
+2227  0631 130b          	cpw	x,(OFST-3,sp)
+2228  0633 220f          	jrugt	L706
+2229                     ; 513 		    if(NUMBER_UART_RX <= CheckRevDataLen())
+2231  0635 cd0000        	call	_CheckRevDataLen
+2233  0638 a1c0          	cp	a,#192
+2234  063a 2503          	jrult	LC004
+2235                     ; 515 			    goto __UC_Pro_Exit;
+2236  063c               L735:
+2237                     ; 567 __UC_Pro_Exit:
+2237                     ; 568 
+2237                     ; 569 	/* add by maronglang clear RxBuf */
+2237                     ; 570 	ClearRxBuff();
+2239  063c cd0000        	call	_ClearRxBuff
+2241                     ; 571 	return nSendLen;
+2243  063f               LC004:
+2245  063f 7b08          	ld	a,(OFST-6,sp)
+2247  0641               L252:
+2249  0641 5b10          	addw	sp,#16
+2250  0643 81            	ret	
+2251                     ; 517 			return nSendLen;
+2253  0644               L706:
+2254                     ; 507 	while((Packet_Head_0 != *Point)||(Packet_Head_1 != *(Point+1)))
+2256  0644 1e0d          	ldw	x,(OFST-1,sp)
+2257  0646 f6            	ld	a,(x)
+2258  0647 a1a7          	cp	a,#167
+2259  0649 26da          	jrne	L306
+2261  064b e601          	ld	a,(1,x)
+2262  064d a1a7          	cp	a,#167
+2263  064f 26d4          	jrne	L306
+2264                     ; 521 	if(NUMBER_UART_RX <= CheckRevDataLen())
+2266  0651 cd0000        	call	_CheckRevDataLen
+2268  0654 a1c0          	cp	a,#192
+2269  0656 24e4          	jruge	L735
+2270                     ; 523 		goto __UC_Pro_Exit;
+2272                     ; 526 	MemcpyFunc((u8 *)&tyProtolHead, Point, sizeof(tyProtolHead));		//复制字符串到缓冲中
+2274  0658 4b06          	push	#6
+2275  065a 1e0e          	ldw	x,(OFST+0,sp)
+2276  065c 89            	pushw	x
+2277  065d 96            	ldw	x,sp
+2278  065e 1c0005        	addw	x,#OFST-9
+2279  0661 cd0000        	call	_MemcpyFunc
+2281  0664 5b03          	addw	sp,#3
+2282                     ; 527 	Point += sizeof(tyProtolHead);
+2284  0666 1e0d          	ldw	x,(OFST-1,sp)
+2285  0668 1c0006        	addw	x,#6
+2286  066b 1f0d          	ldw	(OFST-1,sp),x
+2287                     ; 529 	if( (nRxLen-wLen) > (sizeof(tyProtolHead)+ 9) )//数据包的最小长度，包头结构体+3控制字+2长度+1命令+1校验+2包尾
+2289  066d 7b13          	ld	a,(OFST+5,sp)
+2290  066f 5f            	clrw	x
+2291  0670 97            	ld	xl,a
+2292  0671 72f00b        	subw	x,(OFST-3,sp)
+2293  0674 a30010        	cpw	x,#16
+2294  0677 25c3          	jrult	L735
+2295                     ; 531 		u16 msg_len= (u16)*(Point+3)+sizeof(tyProtolHead)+ 8;//计算该消息的总长度 datalen+3控制字+2长度+1校验+2包尾
+2297  0679 1e0d          	ldw	x,(OFST-1,sp)
+2298  067b e603          	ld	a,(3,x)
+2299  067d 5f            	clrw	x
+2300  067e 97            	ld	xl,a
+2301  067f 1c000e        	addw	x,#14
+2302  0682 1f09          	ldw	(OFST-5,sp),x
+2303                     ; 532 		if( msg_len <= (nRxLen-wLen) )
+2305  0684 7b13          	ld	a,(OFST+5,sp)
+2306  0686 5f            	clrw	x
+2307  0687 97            	ld	xl,a
+2308  0688 72f00b        	subw	x,(OFST-3,sp)
+2309  068b 1309          	cpw	x,(OFST-5,sp)
+2310  068d 25ad          	jrult	L735
+2311                     ; 534 			wDataLen=stDataPtrHD.Packet.Data_Len+8;
+2313  068f ce0003        	ldw	x,_stDataPtrHD+3
+2314  0692 1c0008        	addw	x,#8
+2315  0695 1f09          	ldw	(OFST-5,sp),x
+2316                     ; 535 			MemcpyFunc((u8 *)&stDataPtrHD, Point, wDataLen);		//复制字符串到缓冲中
+2318  0697 7b0a          	ld	a,(OFST-4,sp)
+2319  0699 88            	push	a
+2320  069a 1e0e          	ldw	x,(OFST+0,sp)
+2321  069c 89            	pushw	x
+2322  069d ae0000        	ldw	x,#_stDataPtrHD
+2323  06a0 cd0000        	call	_MemcpyFunc
+2325  06a3 5b03          	addw	sp,#3
+2327                     ; 548 	if( (Packet_End_0!=stDataPtrHD.Buffer[wDataLen-2]) || (Packet_End_1!=stDataPtrHD.Buffer[wDataLen-1]))
+2329  06a5 1e09          	ldw	x,(OFST-5,sp)
+2330  06a7 1d0002        	subw	x,#2
+2331  06aa d60000        	ld	a,(_stDataPtrHD,x)
+2332  06ad a10d          	cp	a,#13
+2333  06af 268b          	jrne	L735
+2335  06b1 1e09          	ldw	x,(OFST-5,sp)
+2336  06b3 5a            	decw	x
+2337  06b4 d60000        	ld	a,(_stDataPtrHD,x)
+2338  06b7 a10a          	cp	a,#10
+2339  06b9 2681          	jrne	L735
+2340                     ; 554 	if( stDataPtrHD.Buffer[wDataLen-3] != JX_AddSum8Bit(pnRxBuf+wLen, sizeof(tyProtolHead)+wDataLen+3))
+2342  06bb 1e09          	ldw	x,(OFST-5,sp)
+2343  06bd 1c0009        	addw	x,#9
+2344  06c0 89            	pushw	x
+2345  06c1 1e11          	ldw	x,(OFST+3,sp)
+2346  06c3 72fb0d        	addw	x,(OFST-1,sp)
+2347  06c6 cd0000        	call	_JX_AddSum8Bit
+2349  06c9 85            	popw	x
+2350  06ca 6b01          	ld	(OFST-13,sp),a
+2351  06cc 1e09          	ldw	x,(OFST-5,sp)
+2352  06ce 1d0003        	subw	x,#3
+2353  06d1 d60000        	ld	a,(_stDataPtrHD,x)
+2354  06d4 1101          	cp	a,(OFST-13,sp)
+2355  06d6 2703cc063c    	jrne	L735
+2356                     ; 556 		goto __UC_Pro_Exit;
+2358                     ; 565 	nSendLen = HD_ProtolHandle();
+2360  06db ad7e          	call	_HD_ProtolHandle
+2362  06dd 6b08          	ld	(OFST-6,sp),a
+2363  06df cc063c        	jra	L735
+2366                     	switch	.const
+2367  001d               L736_nAddBuf:
+2368  001d 00            	dc.b	0
+2369  001e 000000000000  	ds.b	11
+2430                     ; 583 u8 HD_AddressComparePro(u8 *pnAddr, u8 nLen)
+2430                     ; 584 {		
+2431                     	switch	.text
+2432  06e2               _HD_AddressComparePro:
+2434  06e2 89            	pushw	x
+2435  06e3 520e          	subw	sp,#14
+2436       0000000e      OFST:	set	14
+2439                     ; 585 	u8 nAddBuf[12] = {0};
+2441  06e5 96            	ldw	x,sp
+2442  06e6 1c0002        	addw	x,#OFST-12
+2443  06e9 90ae001d      	ldw	y,#L736_nAddBuf
+2444  06ed a60c          	ld	a,#12
+2445  06ef cd0000        	call	c_xymvx
+2447                     ; 586 	u8 nLoop = 0;
+2449  06f2 0f0e          	clr	(OFST+0,sp)
+2450                     ; 588 	if(JX_IsAllFillDat(pnAddr, 0, nLen))
+2452  06f4 7b13          	ld	a,(OFST+5,sp)
+2453  06f6 b703          	ld	c_lreg+3,a
+2454  06f8 3f02          	clr	c_lreg+2
+2455  06fa 3f01          	clr	c_lreg+1
+2456  06fc 3f00          	clr	c_lreg
+2457  06fe be02          	ldw	x,c_lreg+2
+2458  0700 89            	pushw	x
+2459  0701 be00          	ldw	x,c_lreg
+2460  0703 89            	pushw	x
+2461  0704 4b00          	push	#0
+2462  0706 1e14          	ldw	x,(OFST+6,sp)
+2463  0708 cd0000        	call	_JX_IsAllFillDat
+2465  070b 5b05          	addw	sp,#5
+2466  070d 4d            	tnz	a
+2467                     ; 590 		return TRUE;
+2469  070e 2647          	jrne	L307
+2470                     ; 593 	MemcpyFunc(nAddBuf, &tyParameter.Type, nLen);
+2472  0710 7b13          	ld	a,(OFST+5,sp)
+2473  0712 88            	push	a
+2474  0713 ae0000        	ldw	x,#_tyParameter
+2475  0716 89            	pushw	x
+2476  0717 96            	ldw	x,sp
+2477  0718 1c0005        	addw	x,#OFST-9
+2478  071b cd0000        	call	_MemcpyFunc
+2480  071e 5b03          	addw	sp,#3
+2481                     ; 596 	for(nLoop = 0; nLoop < nLen; nLoop++)
+2483  0720 0f0e          	clr	(OFST+0,sp)
+2485  0722 202b          	jra	L576
+2486  0724               L176:
+2487                     ; 598 		if(nAddBuf[nLoop] != pnAddr[nLoop])
+2489  0724 7b0f          	ld	a,(OFST+1,sp)
+2490  0726 97            	ld	xl,a
+2491  0727 7b10          	ld	a,(OFST+2,sp)
+2492  0729 1b0e          	add	a,(OFST+0,sp)
+2493  072b 2401          	jrnc	L262
+2494  072d 5c            	incw	x
+2495  072e               L262:
+2496  072e 02            	rlwa	x,a
+2497  072f f6            	ld	a,(x)
+2498  0730 6b01          	ld	(OFST-13,sp),a
+2499  0732 96            	ldw	x,sp
+2500  0733 1c0002        	addw	x,#OFST-12
+2501  0736 9f            	ld	a,xl
+2502  0737 5e            	swapw	x
+2503  0738 1b0e          	add	a,(OFST+0,sp)
+2504  073a 2401          	jrnc	L462
+2505  073c 5c            	incw	x
+2506  073d               L462:
+2507  073d 02            	rlwa	x,a
+2508  073e f6            	ld	a,(x)
+2509  073f 1101          	cp	a,(OFST-13,sp)
+2510  0741 270a          	jreq	L107
+2511                     ; 600 			break;
+2512  0743               L776:
+2513                     ; 604 	if(nLen > nLoop)
+2515  0743 7b13          	ld	a,(OFST+5,sp)
+2516  0745 110e          	cp	a,(OFST+0,sp)
+2517  0747 230e          	jrule	L307
+2518                     ; 606 		return FALSE;
+2520  0749 4f            	clr	a
+2522  074a               L662:
+2524  074a 5b10          	addw	sp,#16
+2525  074c 81            	ret	
+2526  074d               L107:
+2527                     ; 596 	for(nLoop = 0; nLoop < nLen; nLoop++)
+2529  074d 0c0e          	inc	(OFST+0,sp)
+2530  074f               L576:
+2533  074f 7b0e          	ld	a,(OFST+0,sp)
+2534  0751 1113          	cp	a,(OFST+5,sp)
+2535  0753 25cf          	jrult	L176
+2536  0755 20ec          	jra	L776
+2537  0757               L307:
+2538                     ; 609 	return TRUE;	
+2541  0757 a601          	ld	a,#1
+2543  0759 20ef          	jra	L662
+2631                     ; 622 u8 HD_ProtolHandle(void)
+2631                     ; 623 {
+2632                     	switch	.text
+2633  075b               _HD_ProtolHandle:
+2635  075b 520e          	subw	sp,#14
+2636       0000000e      OFST:	set	14
+2639                     ; 624 	u8 nSendLen    = 0;
+2641  075d 0f0e          	clr	(OFST+0,sp)
+2642                     ; 625 	u16 wCommCtrlB = 0;
+2644  075f 5f            	clrw	x
+2645  0760 1f03          	ldw	(OFST-11,sp),x
+2646                     ; 626 	u16 wCommPid   = 0;
+2648  0762 1f05          	ldw	(OFST-9,sp),x
+2649                     ; 627 	u8  nParaLen   = 0;
+2651  0764 0f07          	clr	(OFST-7,sp)
+2652                     ; 630 	int32_t dwTimeOffset = 0; 
+2654  0766 1f0a          	ldw	(OFST-4,sp),x
+2655  0768 1f08          	ldw	(OFST-6,sp),x
+2656                     ; 631 	u8 nCmdId  = 0;
+2658                     ; 632 	u8 nctrl  = 0;
+2660                     ; 634 	nCmdId   = stDataPtrHD.Packet.Cmd;
+2662  076a c60005        	ld	a,_stDataPtrHD+5
+2663  076d 6b0c          	ld	(OFST-2,sp),a
+2664                     ; 635 	nctrl	=  stDataPtrHD.Packet.Ctrl[0];
+2666  076f c60000        	ld	a,_stDataPtrHD
+2667  0772 6b0d          	ld	(OFST-1,sp),a
+2668                     ; 636 	g_HD_Msg_Tag = stDataPtrHD.Packet.Ctrl[1]<<8 | stDataPtrHD.Packet.Ctrl[2]+1;
+2670  0774 4f            	clr	a
+2671  0775 97            	ld	xl,a
+2672  0776 4c            	inc	a
+2673  0777 cb0002        	add	a,_stDataPtrHD+2
+2674  077a 2401          	jrnc	L272
+2675  077c 5c            	incw	x
+2676  077d               L272:
+2677  077d 02            	rlwa	x,a
+2678  077e 1f01          	ldw	(OFST-13,sp),x
+2679  0780 c60001        	ld	a,_stDataPtrHD+1
+2680  0783 97            	ld	xl,a
+2681  0784 7b02          	ld	a,(OFST-12,sp)
+2682  0786 01            	rrwa	x,a
+2683  0787 1a01          	or	a,(OFST-13,sp)
+2684  0789 01            	rrwa	x,a
+2685  078a cf008d        	ldw	_g_HD_Msg_Tag,x
+2686                     ; 638 	if(nctrl&Flag_Data_Is_Secret) //数据是否被加密
+2688  078d 7b0d          	ld	a,(OFST-1,sp)
+2689  078f 2a04          	jrpl	L577
+2690                     ; 640 		return 0;
+2692  0791 4f            	clr	a
+2694  0792 cc0844        	jra	L433
+2695  0795               L577:
+2696                     ; 647 	switch(nCmdId)
+2698  0795 7b0c          	ld	a,(OFST-2,sp)
+2700                     ; 712 		default:break;
+2701  0797 a00f          	sub	a,#15
+2702  0799 2730          	jreq	L507
+2703  079b a072          	sub	a,#114
+2704  079d 2739          	jreq	L707
+2705  079f 4a            	dec	a
+2706  07a0 273e          	jreq	L117
+2707  07a2 a002          	sub	a,#2
+2708  07a4 2742          	jreq	L317
+2709  07a6 4a            	dec	a
+2710  07a7 2751          	jreq	L517
+2711  07a9 4a            	dec	a
+2712  07aa 2756          	jreq	L717
+2713  07ac a003          	sub	a,#3
+2714  07ae 275a          	jreq	L127
+2715  07b0 a008          	sub	a,#8
+2716  07b2 275e          	jreq	L327
+2717  07b4 4a            	dec	a
+2718  07b5 2763          	jreq	L527
+2719  07b7 a002          	sub	a,#2
+2720  07b9 2767          	jreq	L727
+2721  07bb 4a            	dec	a
+2722  07bc 273c          	jreq	L517
+2723  07be 4a            	dec	a
+2724  07bf 2769          	jreq	L337
+2725  07c1 a003          	sub	a,#3
+2726  07c3 276d          	jreq	L537
+2727  07c5 a007          	sub	a,#7
+2728  07c7 2771          	jreq	L737
+2729  07c9 2077          	jra	L1001
+2730  07cb               L507:
+2731                     ; 650 		case HeDa_Cmd_Reply_Upload:
+2731                     ; 651 			HeDa_Cmd_Reply_Upload_Handle(stDataPtrHD.Packet.Buf,nctrl);
+2733  07cb 7b0d          	ld	a,(OFST-1,sp)
+2734  07cd 88            	push	a
+2735  07ce ae0006        	ldw	x,#_stDataPtrHD+6
+2736  07d1 ad74          	call	_HeDa_Cmd_Reply_Upload_Handle
+2738  07d3 84            	pop	a
+2739                     ; 652 			nSendLen=0;
+2741  07d4 0f0e          	clr	(OFST+0,sp)
+2742                     ; 653 			break;
+2744  07d6 206a          	jra	L1001
+2745  07d8               L707:
+2746                     ; 655 		case HeDa_Cmd_Set_Sampling_Interval://设置采样间隔（上行、下行）
+2746                     ; 656 			nSendLen=HeDa_Cmd_Set_Sampling_Interval_Handle(stDataPtrHD.Packet.Buf);
+2748  07d8 ae0006        	ldw	x,#_stDataPtrHD+6
+2749  07db cd08a8        	call	_HeDa_Cmd_Set_Sampling_Interval_Handle
+2751                     ; 657 			break;
+2753  07de 2060          	jp	LC006
+2754  07e0               L117:
+2755                     ; 659 		case HeDa_Cmd_Set_Net_Param://设置网络参数（上行、下行）
+2755                     ; 660 			nSendLen=HeDa_Cmd_Set_Net_Param_Handle((HD_CmdSetNetParam *)&stDataPtrHD.Packet.Buf);
+2757  07e0 ae0006        	ldw	x,#_stDataPtrHD+6
+2758  07e3 cd08e3        	call	_HeDa_Cmd_Set_Net_Param_Handle
+2760                     ; 661 			break;
+2762  07e6 2058          	jp	LC006
+2763  07e8               L317:
+2764                     ; 663 		case HeDa_Cmd_Set_Report_Cycle://设置上报周期（上行、下行）
+2764                     ; 664 			nSendLen==HeDa_Cmd_Set_Report_Cycle_Handle(stDataPtrHD.Packet.Buf);
+2766  07e8 ae0006        	ldw	x,#_stDataPtrHD+6
+2767  07eb cd0a48        	call	_HeDa_Cmd_Set_Report_Cycle_Handle
+2769  07ee 110e          	cp	a,(OFST+0,sp)
+2770  07f0 2605          	jrne	L203
+2771  07f2 ae0001        	ldw	x,#1
+2772  07f5 204b          	jra	L1001
+2773  07f7               L203:
+2774  07f7 5f            	clrw	x
+2775                     ; 665 			break;
+2777  07f8 2048          	jra	L1001
+2778  07fa               L517:
+2779                     ; 667 		case HeDa_Cmd_Set_Pressure_Threshold://设置压力上下限阈值（上行、下行）
+2779                     ; 668 			nSendLen=HeDa_Cmd_Get_Pressure_Threshold_Handle(stDataPtrHD.Packet.Buf);
+2782  07fa ae0006        	ldw	x,#_stDataPtrHD+6
+2783  07fd cd0c9e        	call	_HeDa_Cmd_Get_Pressure_Threshold_Handle
+2785                     ; 669 			break;
+2787  0800 203e          	jp	LC006
+2788  0802               L717:
+2789                     ; 671 		case HeDa_Cmd_Set_Secret_Key://设置秘钥（上行、下行）——预留
+2789                     ; 672 			nSendLen=HeDa_Cmd_Set_Secret_Key_Handle(stDataPtrHD.Packet.Buf);
+2791  0802 ae0006        	ldw	x,#_stDataPtrHD+6
+2792  0805 cd0cbd        	call	_HeDa_Cmd_Set_Secret_Key_Handle
+2794                     ; 673 			break;
+2796  0808 2036          	jp	LC006
+2797  080a               L127:
+2798                     ; 675 		case HeDa_Cmd_Set_Addr://-------设置表地址    	和达原协议没有，自己添加
+2798                     ; 676 			nSendLen=HeDa_Cmd_Get_Addr_Handle(stDataPtrHD.Packet.Buf);
+2800  080a ae0006        	ldw	x,#_stDataPtrHD+6
+2801  080d cd0d3d        	call	_HeDa_Cmd_Get_Addr_Handle
+2803                     ; 677 			break;
+2805  0810 202e          	jp	LC006
+2806  0812               L327:
+2807                     ; 681 		case HeDa_Cmd_Get_Sampling_Interval://查询采样间隔（上行、下行）
+2807                     ; 682 			nSendLen=HeDa_Cmd_Get_Sampling_Interval_Handle(stDataPtrHD.Packet.Buf);
+2809  0812 ae0006        	ldw	x,#_stDataPtrHD+6
+2810  0815 cd08dc        	call	_HeDa_Cmd_Get_Sampling_Interval_Handle
+2812                     ; 683 			break;
+2814  0818 2026          	jp	LC006
+2815  081a               L527:
+2816                     ; 685 		case HeDa_Cmd_Get_Net_Param://查询网络参数（上行、下行）
+2816                     ; 686 			nSendLen=HeDa_Cmd_Get_Net_Param_Handle(stDataPtrHD.Packet.Buf);
+2818  081a ae0006        	ldw	x,#_stDataPtrHD+6
+2819  081d cd0a05        	call	_HeDa_Cmd_Get_Net_Param_Handle
+2821                     ; 687 			break;
+2823  0820 201e          	jp	LC006
+2824  0822               L727:
+2825                     ; 689 		case HeDa_Cmd_Get_Report_Cycle://查询上报周期（上行、下行）
+2825                     ; 690 			nSendLen=HeDa_Cmd_Get_Report_Cycle_Handle(stDataPtrHD.Packet.Buf);
+2827  0822 ae0006        	ldw	x,#_stDataPtrHD+6
+2828  0825 cd0a9d        	call	_HeDa_Cmd_Get_Report_Cycle_Handle
+2830                     ; 691 			break;
+2832  0828 2016          	jp	LC006
+2833                     ; 693 		case HeDa_Cmd_Get_Pressure_Threshold://查询压力上下限阈值（上行、下行）
+2833                     ; 694 			nSendLen=HeDa_Cmd_Get_Pressure_Threshold_Handle(stDataPtrHD.Packet.Buf);
+2835                     ; 695 			break;
+2837  082a               L337:
+2838                     ; 697 		case HeDa_Cmd_Get_Secret_Key://查询秘钥（上行、下行）——预留
+2838                     ; 698 			nSendLen=HeDa_Cmd_Get_Secret_Key_Handle(stDataPtrHD.Packet.Buf);
+2840  082a ae0006        	ldw	x,#_stDataPtrHD+6
+2841  082d cd0ce0        	call	_HeDa_Cmd_Get_Secret_Key_Handle
+2843                     ; 699 			break;
+2845  0830 200e          	jp	LC006
+2846  0832               L537:
+2847                     ; 701 		case HeDa_Cmd_Get_Addr://-------查询表地址    	和达原协议没有，自己添加
+2847                     ; 702 			nSendLen=HeDa_Cmd_Get_Addr_Handle(stDataPtrHD.Packet.Buf);
+2849  0832 ae0006        	ldw	x,#_stDataPtrHD+6
+2850  0835 cd0d3d        	call	_HeDa_Cmd_Get_Addr_Handle
+2852                     ; 703 			break;
+2854  0838 2006          	jp	LC006
+2855  083a               L737:
+2856                     ; 706 		case HeDa_Cmd_Get_All_Param://获取所有参数（上行、下行）
+2856                     ; 707 			nSendLen=HeDa_Cmd_Get_All_Param_Handle(stDataPtrHD.Packet.Buf);
+2858  083a ae0006        	ldw	x,#_stDataPtrHD+6
+2859  083d cd0d49        	call	_HeDa_Cmd_Get_All_Param_Handle
+2861  0840               LC006:
+2862  0840 6b0e          	ld	(OFST+0,sp),a
+2863                     ; 708 			break;
+2865                     ; 709 		case HeDa_Cmd_Get_Appoint_Data://获取指定数据（上行、下行）
+2865                     ; 710 			break;
+2867                     ; 712 		default:break;
+2869  0842               L1001:
+2870                     ; 715 	return nSendLen;
+2872  0842 7b0e          	ld	a,(OFST+0,sp)
+2874  0844               L433:
+2876  0844 5b0e          	addw	sp,#14
+2877  0846 81            	ret	
+3003                     ; 727 void HeDa_Cmd_Reply_Upload_Handle(u8 *pData,u8 ctrl)
+3003                     ; 728 {
+3004                     	switch	.text
+3005  0847               _HeDa_Cmd_Reply_Upload_Handle:
+3007  0847 89            	pushw	x
+3008  0848 520f          	subw	sp,#15
+3009       0000000f      OFST:	set	15
+3012                     ; 730 	u8 byte_manage=0;//管理字
+3014  084a 0f0f          	clr	(OFST+0,sp)
+3015                     ; 733 	if((stDataPtrHD.Packet.Data_Len-1) < 9)//数据域长度不够
+3017  084c ce0003        	ldw	x,_stDataPtrHD+3
+3018  084f 5a            	decw	x
+3019  0850 a30009        	cpw	x,#9
+3020  0853 2537          	jrult	L253
+3021                     ; 735 		return;
+3023                     ; 738 	MemcpyFunc((u8 *)&time_Server, pData, sizeof(TIME_BIN));
+3025  0855 4b06          	push	#6
+3026  0857 1e11          	ldw	x,(OFST+2,sp)
+3027  0859 89            	pushw	x
+3028  085a 96            	ldw	x,sp
+3029  085b 1c0004        	addw	x,#OFST-11
+3030  085e cd0000        	call	_MemcpyFunc
+3032  0861 5b03          	addw	sp,#3
+3033                     ; 739 	byte_manage = *(pData+6);
+3035  0863 1e10          	ldw	x,(OFST+1,sp)
+3036  0865 e606          	ld	a,(6,x)
+3037  0867 6b0f          	ld	(OFST+0,sp),a
+3038                     ; 742 	MemcpyFunc(&stTimeNow.wYear, pData, 6);
+3040  0869 4b06          	push	#6
+3041  086b 1e11          	ldw	x,(OFST+2,sp)
+3042  086d 89            	pushw	x
+3043  086e ae0000        	ldw	x,#_stTimeNow
+3044  0871 cd0000        	call	_MemcpyFunc
+3046  0874 5b03          	addw	sp,#3
+3047                     ; 743 	TM_TimeChangeAToB(&stTimeNow, &stEnd);
+3049  0876 96            	ldw	x,sp
+3050  0877 1c0007        	addw	x,#OFST-8
+3051  087a 89            	pushw	x
+3052  087b ae0000        	ldw	x,#_stTimeNow
+3053  087e cd0000        	call	_TM_TimeChangeAToB
+3055  0881 85            	popw	x
+3056                     ; 744 	if(FALSE == TM_IsValidTimePro(&stEnd))
+3058  0882 96            	ldw	x,sp
+3059  0883 1c0007        	addw	x,#OFST-8
+3060  0886 cd0000        	call	_TM_IsValidTimePro
+3062  0889 4d            	tnz	a
+3063  088a 2603          	jrne	L7501
+3064                     ; 746 		return;
+3065  088c               L253:
+3068  088c 5b11          	addw	sp,#17
+3069  088e 81            	ret	
+3070  088f               L7501:
+3071                     ; 748 	STM8_RTC_Set(&stTimeNow);	
+3073  088f ae0000        	ldw	x,#_stTimeNow
+3074  0892 cd0000        	call	_STM8_RTC_Set
+3076                     ; 751 	m_nUploadMode = UP_Free_HD;
+3078  0895 35050000      	mov	_m_nUploadMode,#5
+3079                     ; 753 	if(ctrl&Flag_Data_Is_Finish)
+3081  0899 7b14          	ld	a,(OFST+5,sp)
+3082  089b a540          	bcp	a,#64
+3083  089d 26ed          	jrne	L253
+3085                     ; 759 		if(0xFF == byte_manage)//表示该字段无效
+3087  089f 7b0f          	ld	a,(OFST+0,sp)
+3088  08a1 4c            	inc	a
+3089  08a2 27e8          	jreq	L253
+3091                     ; 762 		else if(0x00 == byte_manage)//可以结束本次通讯
+3093  08a4 0d0f          	tnz	(OFST+0,sp)
+3094                     ; 767 }
+3096  08a6 20e4          	jra	L253
+3144                     ; 778 u8 HeDa_Cmd_Set_Sampling_Interval_Handle(u8 *pData)
+3144                     ; 779 {
+3145                     	switch	.text
+3146  08a8               _HeDa_Cmd_Set_Sampling_Interval_Handle:
+3148  08a8 89            	pushw	x
+3149  08a9 88            	push	a
+3150       00000001      OFST:	set	1
+3153                     ; 781 	if((stDataPtrHD.Packet.Data_Len-1) < 2)//数据域长度不够
+3155  08aa ce0003        	ldw	x,_stDataPtrHD+3
+3156  08ad 5a            	decw	x
+3157  08ae a30002        	cpw	x,#2
+3158  08b1 1e02          	ldw	x,(OFST+1,sp)
+3159  08b3 240a          	jruge	L3111
+3160                     ; 783 		*pData=0x10;	  //设置失败
+3162  08b5 a610          	ld	a,#16
+3163  08b7 f7            	ld	(x),a
+3164                     ; 784 		*(pData+1)=tyReport.wGatherCycle;//终端当前采样间隔，分钟
+3166  08b8 c60000        	ld	a,_tyReport
+3167  08bb e701          	ld	(1,x),a
+3169  08bd 2018          	jra	L5111
+3170  08bf               L3111:
+3171                     ; 788 		u8 hd_samling_interval=*pData;//采样间隔
+3173  08bf f6            	ld	a,(x)
+3174  08c0 6b01          	ld	(OFST+0,sp),a
+3175                     ; 789 		*pData=0x01;	  //设置成功
+3177  08c2 a601          	ld	a,#1
+3178  08c4 f7            	ld	(x),a
+3179                     ; 790 		*(pData+1)=hd_samling_interval;//终端当前采样间隔，分钟
+3181  08c5 7b01          	ld	a,(OFST+0,sp)
+3182  08c7 e701          	ld	(1,x),a
+3183                     ; 793 		tyReport.wGatherCycle = hd_samling_interval;
+3185  08c9 c70000        	ld	_tyReport,a
+3186                     ; 794 		SaveParameterForType((u8 *)&tyReport, REPOERCYCLE_LEN, REPORT_PARA);
+3188  08cc 4b03          	push	#3
+3189  08ce 4b0a          	push	#10
+3190  08d0 ae0000        	ldw	x,#_tyReport
+3191  08d3 cd0000        	call	_SaveParameterForType
+3193  08d6 85            	popw	x
+3194  08d7               L5111:
+3195                     ; 797 	return 2;
+3197  08d7 a602          	ld	a,#2
+3200  08d9 5b03          	addw	sp,#3
+3201  08db 81            	ret	
+3239                     ; 810 u8 HeDa_Cmd_Get_Sampling_Interval_Handle(u8 *pData)
+3239                     ; 811 {
+3240                     	switch	.text
+3241  08dc               _HeDa_Cmd_Get_Sampling_Interval_Handle:
+3245                     ; 812 	*pData=tyReport.wGatherCycle;
+3247  08dc c60000        	ld	a,_tyReport
+3248  08df f7            	ld	(x),a
+3249                     ; 813 	return 1;
+3251  08e0 a601          	ld	a,#1
+3254  08e2 81            	ret	
+3371                     ; 826 u8 HeDa_Cmd_Set_Net_Param_Handle(HD_CmdSetNetParam *pData)
+3371                     ; 827 {
+3372                     	switch	.text
+3373  08e3               _HeDa_Cmd_Set_Net_Param_Handle:
+3375  08e3 89            	pushw	x
+3376  08e4 89            	pushw	x
+3377       00000002      OFST:	set	2
+3380                     ; 828 	u8 flag_change_response=0;//修改内容结果标志位
+3382  08e5 0f02          	clr	(OFST+0,sp)
+3383                     ; 830 	if((stDataPtrHD.Packet.Data_Len-1) < sizeof(HD_CmdSetNetParam))//数据域长度不够
+3385  08e7 ce0003        	ldw	x,_stDataPtrHD+3
+3386  08ea 5a            	decw	x
+3387  08eb a3003c        	cpw	x,#60
+3388  08ee 2404          	jruge	L5021
+3389                     ; 832 		return 0;
+3391  08f0 4f            	clr	a
+3393  08f1 cc0a02        	jra	L604
+3394  08f4               L5021:
+3395                     ; 836 	if(pData->flag_change & 0x01)//设置IP地址
+3397  08f4 1e03          	ldw	x,(OFST+1,sp)
+3398  08f6 f6            	ld	a,(x)
+3399  08f7 a501          	bcp	a,#1
+3400  08f9 271f          	jreq	L7021
+3401                     ; 838 		flag_change_response |=0x01;
+3403  08fb 7b02          	ld	a,(OFST+0,sp)
+3404  08fd aa01          	or	a,#1
+3405  08ff 6b02          	ld	(OFST+0,sp),a
+3406                     ; 839 		tyReportParameter.Main_IP=pData->ip_addr;
+3408  0901 e604          	ld	a,(4,x)
+3409  0903 c70003        	ld	_tyReportParameter+3,a
+3410  0906 e603          	ld	a,(3,x)
+3411  0908 c70002        	ld	_tyReportParameter+2,a
+3412  090b e602          	ld	a,(2,x)
+3413  090d c70001        	ld	_tyReportParameter+1,a
+3414  0910 e601          	ld	a,(1,x)
+3415  0912 c70000        	ld	_tyReportParameter,a
+3416                     ; 840 		tyReportParameter.flag_Login_Mode=HD_Login_IP;
+3418  0915 35010026      	mov	_tyReportParameter+38,#1
+3419  0919 f6            	ld	a,(x)
+3420  091a               L7021:
+3421                     ; 842 	if(pData->flag_change & 0x04)//设置域名
+3423  091a a504          	bcp	a,#4
+3424  091c 2726          	jreq	L1121
+3425                     ; 844 		if(pData->flag_change & 0x01)//如果设置了IP地址
+3427  091e a501          	bcp	a,#1
+3428  0920 2708          	jreq	L3121
+3429                     ; 846 			flag_change_response |=0x40;
+3431  0922 7b02          	ld	a,(OFST+0,sp)
+3432  0924 aa40          	or	a,#64
+3433  0926 6b02          	ld	(OFST+0,sp),a
+3435  0928 201a          	jra	L1121
+3436  092a               L3121:
+3437                     ; 850 			flag_change_response |=0x04;		
+3439  092a 7b02          	ld	a,(OFST+0,sp)
+3440  092c aa04          	or	a,#4
+3441  092e 6b02          	ld	(OFST+0,sp),a
+3442                     ; 851 			MemcpyFunc((u8 *)&tyReportParameter.Main_domain_name, pData->domain_name, 32);
+3444  0930 4b20          	push	#32
+3445  0932 1e04          	ldw	x,(OFST+2,sp)
+3446  0934 1c0007        	addw	x,#7
+3447  0937 89            	pushw	x
+3448  0938 ae0006        	ldw	x,#_tyReportParameter+6
+3449  093b cd0000        	call	_MemcpyFunc
+3451  093e 5b03          	addw	sp,#3
+3452                     ; 852 			tyReportParameter.flag_Login_Mode=HD_Login_Domain_Name;
+3454  0940 35020026      	mov	_tyReportParameter+38,#2
+3455  0944               L1121:
+3456                     ; 856 	if(pData->flag_change & 0x02)//设置端口号
+3458  0944 1e03          	ldw	x,(OFST+1,sp)
+3459  0946 f6            	ld	a,(x)
+3460  0947 a502          	bcp	a,#2
+3461  0949 270e          	jreq	L7121
+3462                     ; 858 		flag_change_response |=0x02;
+3464  094b 7b02          	ld	a,(OFST+0,sp)
+3465  094d aa02          	or	a,#2
+3466  094f 6b02          	ld	(OFST+0,sp),a
+3467                     ; 859 		tyReportParameter.Main_Port=pData->port;
+3469  0951 ee05          	ldw	x,(5,x)
+3470  0953 cf0004        	ldw	_tyReportParameter+4,x
+3471  0956 1e03          	ldw	x,(OFST+1,sp)
+3472  0958 f6            	ld	a,(x)
+3473  0959               L7121:
+3474                     ; 861 	if(pData->flag_change & 0x08)//设置apn接入点
+3476  0959 a508          	bcp	a,#8
+3477  095b 2759          	jreq	L1221
+3478                     ; 863 		u8 apn_len=0;
+3480                     ; 864 		apn_len=HeDa_Get_String_len(pData->apn_point,20);
+3482  095d 4b14          	push	#20
+3483  095f 1e04          	ldw	x,(OFST+2,sp)
+3484  0961 1c0027        	addw	x,#39
+3485  0964 cd0000        	call	_HeDa_Get_String_len
+3487  0967 5b01          	addw	sp,#1
+3488  0969 6b01          	ld	(OFST-1,sp),a
+3489                     ; 865 		if(apn_len>18 || apn_len==0)//设置apn失败
+3491  096b a113          	cp	a,#19
+3492  096d 2404          	jruge	L5221
+3494  096f 7b01          	ld	a,(OFST-1,sp)
+3495  0971 2608          	jrne	L3221
+3496  0973               L5221:
+3497                     ; 867 			flag_change_response |=0x80;
+3499  0973 7b02          	ld	a,(OFST+0,sp)
+3500  0975 aa80          	or	a,#128
+3501  0977 6b02          	ld	(OFST+0,sp),a
+3503  0979 203b          	jra	L1221
+3504  097b               L3221:
+3505                     ; 871 			flag_change_response |=0x08;
+3507  097b 7b02          	ld	a,(OFST+0,sp)
+3508  097d aa08          	or	a,#8
+3509  097f 6b02          	ld	(OFST+0,sp),a
+3510                     ; 872 			MemsetFunc((u8 *)&g_nApnBuf[1], 0,20-1);
+3512  0981 4b13          	push	#19
+3513  0983 4b00          	push	#0
+3514  0985 ae0001        	ldw	x,#_g_nApnBuf+1
+3515  0988 cd0000        	call	_MemsetFunc
+3517  098b 85            	popw	x
+3518                     ; 873 			MemcpyFunc((u8 *)&g_nApnBuf[1],pData->apn_point,apn_len);
+3520  098c 7b01          	ld	a,(OFST-1,sp)
+3521  098e 88            	push	a
+3522  098f 1e04          	ldw	x,(OFST+2,sp)
+3523  0991 1c0027        	addw	x,#39
+3524  0994 89            	pushw	x
+3525  0995 ae0001        	ldw	x,#_g_nApnBuf+1
+3526  0998 cd0000        	call	_MemcpyFunc
+3528  099b 5b03          	addw	sp,#3
+3529                     ; 874 			JX_StringCat(g_nApnBuf, "\"", 2);
+3531  099d 4b02          	push	#2
+3532  099f ae005b        	ldw	x,#L1321
+3533  09a2 89            	pushw	x
+3534  09a3 ae0000        	ldw	x,#_g_nApnBuf
+3535  09a6 cd0000        	call	_JX_StringCat
+3537  09a9 5b03          	addw	sp,#3
+3538                     ; 875 			SaveParameterForType((u8 *)&g_nApnType, APN_LEN, APN_PARA);
+3540  09ab 4b02          	push	#2
+3541  09ad 4b14          	push	#20
+3542  09af ae0000        	ldw	x,#_g_nApnType
+3543  09b2 cd0000        	call	_SaveParameterForType
+3545  09b5 85            	popw	x
+3546  09b6               L1221:
+3547                     ; 878 	SaveParameterForType((u8 *)&tyReportParameter, ADDRESS_IPPARA_LEN, IPANDPORT_PARA);
+3549  09b6 4b01          	push	#1
+3550  09b8 4b27          	push	#39
+3551  09ba ae0000        	ldw	x,#_tyReportParameter
+3552  09bd cd0000        	call	_SaveParameterForType
+3554  09c0 85            	popw	x
+3555                     ; 880 	pData->flag_change=flag_change_response;
+3557  09c1 7b02          	ld	a,(OFST+0,sp)
+3558  09c3 1e03          	ldw	x,(OFST+1,sp)
+3559  09c5 f7            	ld	(x),a
+3560                     ; 881 	pData->ip_addr=tyReportParameter.Main_IP;
+3562  09c6 c60003        	ld	a,_tyReportParameter+3
+3563  09c9 e704          	ld	(4,x),a
+3564  09cb c60002        	ld	a,_tyReportParameter+2
+3565  09ce e703          	ld	(3,x),a
+3566  09d0 c60001        	ld	a,_tyReportParameter+1
+3567  09d3 e702          	ld	(2,x),a
+3568  09d5 c60000        	ld	a,_tyReportParameter
+3569  09d8 e701          	ld	(1,x),a
+3570                     ; 882 	pData->port=tyReportParameter.Main_Port;
+3572  09da 90ce0004      	ldw	y,_tyReportParameter+4
+3573  09de ef05          	ldw	(5,x),y
+3574                     ; 883 	MemcpyFunc( pData->domain_name,(u8 *)&tyReportParameter.Main_domain_name, 32);
+3576  09e0 4b20          	push	#32
+3577  09e2 ae0006        	ldw	x,#_tyReportParameter+6
+3578  09e5 89            	pushw	x
+3579  09e6 1e06          	ldw	x,(OFST+4,sp)
+3580  09e8 1c0007        	addw	x,#7
+3581  09eb cd0000        	call	_MemcpyFunc
+3583  09ee 5b03          	addw	sp,#3
+3584                     ; 884 	MemcpyFunc( pData->apn_point, g_nApnBuf,20);
+3586  09f0 4b14          	push	#20
+3587  09f2 ae0000        	ldw	x,#_g_nApnBuf
+3588  09f5 89            	pushw	x
+3589  09f6 1e06          	ldw	x,(OFST+4,sp)
+3590  09f8 1c0027        	addw	x,#39
+3591  09fb cd0000        	call	_MemcpyFunc
+3593  09fe 5b03          	addw	sp,#3
+3594                     ; 886 	return sizeof(HD_CmdSetNetParam);
+3596  0a00 a63c          	ld	a,#60
+3598  0a02               L604:
+3600  0a02 5b04          	addw	sp,#4
+3601  0a04 81            	ret	
+3650                     ; 898 u8 HeDa_Cmd_Get_Net_Param_Handle(u8 *pData)
+3650                     ; 899 {
+3651                     	switch	.text
+3652  0a05               _HeDa_Cmd_Get_Net_Param_Handle:
+3654  0a05 89            	pushw	x
+3655  0a06 523c          	subw	sp,#60
+3656       0000003c      OFST:	set	60
+3659                     ; 902 	temp.ip_addr=tyReportParameter.Main_IP;
+3661  0a08 ce0002        	ldw	x,_tyReportParameter+2
+3662  0a0b 1f04          	ldw	(OFST-56,sp),x
+3663  0a0d ce0000        	ldw	x,_tyReportParameter
+3664  0a10 1f02          	ldw	(OFST-58,sp),x
+3665                     ; 903 	temp.port=tyReportParameter.Main_Port;
+3667  0a12 ce0004        	ldw	x,_tyReportParameter+4
+3668  0a15 1f06          	ldw	(OFST-54,sp),x
+3669                     ; 904 	MemcpyFunc((u8 *)&temp.domain_name,(u8 *)&tyReportParameter.Main_domain_name,32);
+3671  0a17 4b20          	push	#32
+3672  0a19 ae0006        	ldw	x,#_tyReportParameter+6
+3673  0a1c 89            	pushw	x
+3674  0a1d 96            	ldw	x,sp
+3675  0a1e 1c000b        	addw	x,#OFST-49
+3676  0a21 cd0000        	call	_MemcpyFunc
+3678  0a24 5b03          	addw	sp,#3
+3679                     ; 905 	MemcpyFunc((u8 *)&temp.apn_point,g_nApnBuf,20);
+3681  0a26 4b14          	push	#20
+3682  0a28 ae0000        	ldw	x,#_g_nApnBuf
+3683  0a2b 89            	pushw	x
+3684  0a2c 96            	ldw	x,sp
+3685  0a2d 1c002b        	addw	x,#OFST-17
+3686  0a30 cd0000        	call	_MemcpyFunc
+3688  0a33 5b03          	addw	sp,#3
+3689                     ; 907 	MemcpyFunc(pData,(u8 *)&temp.ip_addr,sizeof(HD_CmdSetNetParam)-1);
+3691  0a35 4b3b          	push	#59
+3692  0a37 96            	ldw	x,sp
+3693  0a38 1c0003        	addw	x,#OFST-57
+3694  0a3b 89            	pushw	x
+3695  0a3c 1e40          	ldw	x,(OFST+4,sp)
+3696  0a3e cd0000        	call	_MemcpyFunc
+3698  0a41 5b03          	addw	sp,#3
+3699                     ; 908 	return sizeof(HD_CmdSetNetParam)-1;
+3701  0a43 a63b          	ld	a,#59
+3704  0a45 5b3e          	addw	sp,#62
+3705  0a47 81            	ret	
+3753                     ; 920 u8 HeDa_Cmd_Set_Report_Cycle_Handle(u8 *pData)
+3753                     ; 921 {
+3754                     	switch	.text
+3755  0a48               _HeDa_Cmd_Set_Report_Cycle_Handle:
+3757  0a48 89            	pushw	x
+3758  0a49 88            	push	a
+3759       00000001      OFST:	set	1
+3762                     ; 922 	u8 hd_cycle=0;//上报周期缓存
+3764  0a4a 0f01          	clr	(OFST+0,sp)
+3765                     ; 924 	if((stDataPtrHD.Packet.Data_Len-1) < 1)//数据域长度不够
+3767  0a4c ce0003        	ldw	x,_stDataPtrHD+3
+3768  0a4f 5a            	decw	x
+3769  0a50 2603          	jrne	L5721
+3770                     ; 926 		return 0;
+3772  0a52 4f            	clr	a
+3774  0a53 2021          	jra	L034
+3775  0a55               L5721:
+3776                     ; 929 	hd_cycle=*pData;
+3778  0a55 1e02          	ldw	x,(OFST+1,sp)
+3779  0a57 f6            	ld	a,(x)
+3780  0a58 6b01          	ld	(OFST+0,sp),a
+3781                     ; 930 	if( (hd_cycle<HeDa_Report_Cycle_Min) || (hd_cycle<HeDa_Report_Cycle_Max))
+3783  0a5a a137          	cp	a,#55
+3784  0a5c 2504          	jrult	L1031
+3786  0a5e a147          	cp	a,#71
+3787  0a60 2417          	jruge	L7721
+3788  0a62               L1031:
+3789                     ; 932 		*pData=0x10;//设置失败
+3791  0a62 a610          	ld	a,#16
+3792  0a64 f7            	ld	(x),a
+3793                     ; 933 		*(pData+1)=HeDa_TypeAddCycle_To_ReportCycleType(tyReport.nIntervalType,tyReport.cycle);
+3795  0a65 c60002        	ld	a,_tyReport+2
+3796  0a68 97            	ld	xl,a
+3797  0a69 c60001        	ld	a,_tyReport+1
+3798  0a6c 95            	ld	xh,a
+3799  0a6d cd0b4e        	call	_HeDa_TypeAddCycle_To_ReportCycleType
+3801  0a70 1e02          	ldw	x,(OFST+1,sp)
+3802  0a72 e701          	ld	(1,x),a
+3804  0a74               L3031:
+3805                     ; 943 	return 2;
+3807  0a74 a602          	ld	a,#2
+3809  0a76               L034:
+3811  0a76 5b03          	addw	sp,#3
+3812  0a78 81            	ret	
+3813  0a79               L7721:
+3814                     ; 937 		*pData=0x01;//设置成功
+3816  0a79 a601          	ld	a,#1
+3817  0a7b f7            	ld	(x),a
+3818                     ; 938 		HeDa_ReportCycleType_To_TypeAddCycle(hd_cycle,&tyReport.nIntervalType,&tyReport.cycle);
+3820  0a7c ae0002        	ldw	x,#_tyReport+2
+3821  0a7f 89            	pushw	x
+3822  0a80 ae0001        	ldw	x,#_tyReport+1
+3823  0a83 89            	pushw	x
+3824  0a84 7b05          	ld	a,(OFST+4,sp)
+3825  0a86 ad28          	call	_HeDa_ReportCycleType_To_TypeAddCycle
+3827  0a88 5b04          	addw	sp,#4
+3828                     ; 939 		*(pData+1)=hd_cycle;
+3830  0a8a 7b01          	ld	a,(OFST+0,sp)
+3831  0a8c 1e02          	ldw	x,(OFST+1,sp)
+3832  0a8e e701          	ld	(1,x),a
+3833                     ; 940 		SaveParameterForType((u8 *)&tyReport, sizeof(tyReport), REPORT_PARA);//保存到eeprom中
+3835  0a90 4b03          	push	#3
+3836  0a92 4b0a          	push	#10
+3837  0a94 ae0000        	ldw	x,#_tyReport
+3838  0a97 cd0000        	call	_SaveParameterForType
+3840  0a9a 85            	popw	x
+3841  0a9b 20d7          	jra	L3031
+3879                     ; 955 u8 HeDa_Cmd_Get_Report_Cycle_Handle(u8 *pData)
+3879                     ; 956 {
+3880                     	switch	.text
+3881  0a9d               _HeDa_Cmd_Get_Report_Cycle_Handle:
+3883  0a9d 89            	pushw	x
+3884       00000000      OFST:	set	0
+3887                     ; 957 	*pData=HeDa_TypeAddCycle_To_ReportCycleType(tyReport.nIntervalType,tyReport.cycle);;
+3889  0a9e c60002        	ld	a,_tyReport+2
+3890  0aa1 97            	ld	xl,a
+3891  0aa2 c60001        	ld	a,_tyReport+1
+3892  0aa5 95            	ld	xh,a
+3893  0aa6 cd0b4e        	call	_HeDa_TypeAddCycle_To_ReportCycleType
+3895  0aa9 1e01          	ldw	x,(OFST+1,sp)
+3896  0aab f7            	ld	(x),a
+3897                     ; 958 	return 1;
+3900  0aac a601          	ld	a,#1
+3903  0aae 85            	popw	x
+3904  0aaf 81            	ret	
+3957                     ; 970 void HeDa_ReportCycleType_To_TypeAddCycle(u8 Report_Cycle_Type,u8 *Report_Time_Type,u8 *cycle_num)
+3957                     ; 971 {
+3958                     	switch	.text
+3959  0ab0               _HeDa_ReportCycleType_To_TypeAddCycle:
+3961  0ab0 88            	push	a
+3962       00000000      OFST:	set	0
+3965                     ; 972 	switch(Report_Cycle_Type)
+3968                     ; 1021 			break;
+3969  0ab1 a037          	sub	a,#55
+3970  0ab3 2725          	jreq	L3231
+3971  0ab5 4a            	dec	a
+3972  0ab6 272d          	jreq	L5231
+3973  0ab8 4a            	dec	a
+3974  0ab9 2735          	jreq	L7231
+3975  0abb a007          	sub	a,#7
+3976  0abd 273c          	jreq	L1331
+3977  0abf 4a            	dec	a
+3978  0ac0 2744          	jreq	L3331
+3979  0ac2 4a            	dec	a
+3980  0ac3 274c          	jreq	L5331
+3981  0ac5 4a            	dec	a
+3982  0ac6 2753          	jreq	L7331
+3983  0ac8 4a            	dec	a
+3984  0ac9 275a          	jreq	L1431
+3985  0acb 4a            	dec	a
+3986  0acc 2761          	jreq	L3431
+3987  0ace 4a            	dec	a
+3988  0acf 2768          	jreq	L5431
+3989  0ad1 4a            	dec	a
+3990  0ad2 276f          	jreq	L7431
+3991                     ; 1018 		default:
+3991                     ; 1019 			*Report_Time_Type=HD_INTERVAL_HOUR;
+3993  0ad4 1e04          	ldw	x,(OFST+4,sp)
+3994  0ad6 a601          	ld	a,#1
+3995                     ; 1020 			*cycle_num=24;
+3996                     ; 1021 			break;
+3998  0ad8 206c          	jp	LC008
+3999  0ada               L3231:
+4000                     ; 974 		case HeDa_Report_Cycle_Minute_1:
+4000                     ; 975 			*Report_Time_Type=HD_INTERVAL_MIN;
+4002  0ada 1e04          	ldw	x,(OFST+4,sp)
+4003  0adc a602          	ld	a,#2
+4004  0ade f7            	ld	(x),a
+4005                     ; 976 			*cycle_num=1;
+4007  0adf 1e06          	ldw	x,(OFST+6,sp)
+4008  0ae1 a601          	ld	a,#1
+4009                     ; 977 			break;
+4011  0ae3 2066          	jra	L1041
+4012  0ae5               L5231:
+4013                     ; 978 		case HeDa_Report_Cycle_Minute_5:
+4013                     ; 979 			*Report_Time_Type=HD_INTERVAL_MIN;
+4015  0ae5 1e04          	ldw	x,(OFST+4,sp)
+4016  0ae7 a602          	ld	a,#2
+4017  0ae9 f7            	ld	(x),a
+4018                     ; 980 			*cycle_num=5;
+4020  0aea 1e06          	ldw	x,(OFST+6,sp)
+4021  0aec a605          	ld	a,#5
+4022                     ; 981 			break;
+4024  0aee 205b          	jra	L1041
+4025  0af0               L7231:
+4026                     ; 982 		case HeDa_Report_Cycle_Minute_10:
+4026                     ; 983 			*Report_Time_Type=HD_INTERVAL_MIN;
+4028  0af0 1e04          	ldw	x,(OFST+4,sp)
+4029  0af2 a602          	ld	a,#2
+4030  0af4 f7            	ld	(x),a
+4031                     ; 984 			*cycle_num=10;
+4033  0af5 1e06          	ldw	x,(OFST+6,sp)
+4034  0af7 a60a          	ld	a,#10
+4035                     ; 985 			break;
+4037  0af9 2050          	jra	L1041
+4038  0afb               L1331:
+4039                     ; 986 		case HeDa_Report_Cycle_Minute_15:
+4039                     ; 987 			*Report_Time_Type=HD_INTERVAL_MIN;
+4041  0afb 1e04          	ldw	x,(OFST+4,sp)
+4042  0afd a602          	ld	a,#2
+4043  0aff f7            	ld	(x),a
+4044                     ; 988 			*cycle_num=15;
+4046  0b00 1e06          	ldw	x,(OFST+6,sp)
+4047  0b02 a60f          	ld	a,#15
+4048                     ; 989 			break;
+4050  0b04 2045          	jra	L1041
+4051  0b06               L3331:
+4052                     ; 990 		case HeDa_Report_Cycle_Minute_30:
+4052                     ; 991 			*Report_Time_Type=HD_INTERVAL_MIN;
+4054  0b06 1e04          	ldw	x,(OFST+4,sp)
+4055  0b08 a602          	ld	a,#2
+4056  0b0a f7            	ld	(x),a
+4057                     ; 992 			*cycle_num=30;
+4059  0b0b 1e06          	ldw	x,(OFST+6,sp)
+4060  0b0d a61e          	ld	a,#30
+4061                     ; 993 			break;
+4063  0b0f 203a          	jra	L1041
+4064  0b11               L5331:
+4065                     ; 994 		case HeDa_Report_Cycle_Hour_1:
+4065                     ; 995 			*Report_Time_Type=HD_INTERVAL_HOUR;
+4067  0b11 1e04          	ldw	x,(OFST+4,sp)
+4068  0b13 4c            	inc	a
+4069  0b14 f7            	ld	(x),a
+4070                     ; 996 			*cycle_num=1;
+4072  0b15 1e06          	ldw	x,(OFST+6,sp)
+4073  0b17 a601          	ld	a,#1
+4074                     ; 997 			break;
+4076  0b19 2030          	jra	L1041
+4077  0b1b               L7331:
+4078                     ; 998 		case HeDa_Report_Cycle_Hour_2:
+4078                     ; 999 			*Report_Time_Type=HD_INTERVAL_HOUR;
+4080  0b1b 1e04          	ldw	x,(OFST+4,sp)
+4081  0b1d 4c            	inc	a
+4082  0b1e f7            	ld	(x),a
+4083                     ; 1000 			*cycle_num=2;
+4085  0b1f 1e06          	ldw	x,(OFST+6,sp)
+4086  0b21 a602          	ld	a,#2
+4087                     ; 1001 			break;
+4089  0b23 2026          	jra	L1041
+4090  0b25               L1431:
+4091                     ; 1002 		case HeDa_Report_Cycle_Hour_4:
+4091                     ; 1003 			*Report_Time_Type=HD_INTERVAL_HOUR;
+4093  0b25 1e04          	ldw	x,(OFST+4,sp)
+4094  0b27 4c            	inc	a
+4095  0b28 f7            	ld	(x),a
+4096                     ; 1004 			*cycle_num=4;
+4098  0b29 1e06          	ldw	x,(OFST+6,sp)
+4099  0b2b a604          	ld	a,#4
+4100                     ; 1005 			break;
+4102  0b2d 201c          	jra	L1041
+4103  0b2f               L3431:
+4104                     ; 1006 		case HeDa_Report_Cycle_Hour_6:
+4104                     ; 1007 			*Report_Time_Type=HD_INTERVAL_HOUR;
+4106  0b2f 1e04          	ldw	x,(OFST+4,sp)
+4107  0b31 4c            	inc	a
+4108  0b32 f7            	ld	(x),a
+4109                     ; 1008 			*cycle_num=6;
+4111  0b33 1e06          	ldw	x,(OFST+6,sp)
+4112  0b35 a606          	ld	a,#6
+4113                     ; 1009 			break;
+4115  0b37 2012          	jra	L1041
+4116  0b39               L5431:
+4117                     ; 1010 		case HeDa_Report_Cycle_Hour_12:
+4117                     ; 1011 			*Report_Time_Type=HD_INTERVAL_HOUR;
+4119  0b39 1e04          	ldw	x,(OFST+4,sp)
+4120  0b3b 4c            	inc	a
+4121  0b3c f7            	ld	(x),a
+4122                     ; 1012 			*cycle_num=12;
+4124  0b3d 1e06          	ldw	x,(OFST+6,sp)
+4125  0b3f a60c          	ld	a,#12
+4126                     ; 1013 			break;
+4128  0b41 2008          	jra	L1041
+4129  0b43               L7431:
+4130                     ; 1014 		case HeDa_Report_Cycle_Hour_24:
+4130                     ; 1015 			*Report_Time_Type=HD_INTERVAL_HOUR;
+4132  0b43 1e04          	ldw	x,(OFST+4,sp)
+4133  0b45 4c            	inc	a
+4134                     ; 1016 			*cycle_num=24;
+4136  0b46               LC008:
+4137  0b46 f7            	ld	(x),a
+4139  0b47 1e06          	ldw	x,(OFST+6,sp)
+4140  0b49 a618          	ld	a,#24
+4141                     ; 1017 			break;
+4143  0b4b               L1041:
+4144  0b4b f7            	ld	(x),a
+4145                     ; 1023 	return;
+4148  0b4c 84            	pop	a
+4149  0b4d 81            	ret	
+4189                     ; 1035 u8 HeDa_TypeAddCycle_To_ReportCycleType(u8 Report_Time_Type,u8 cycle_num)
+4189                     ; 1036 {
+4190                     	switch	.text
+4191  0b4e               _HeDa_TypeAddCycle_To_ReportCycleType:
+4193  0b4e 89            	pushw	x
+4194       00000000      OFST:	set	0
+4197                     ; 1037 	switch(Report_Time_Type)
+4199  0b4f 9e            	ld	a,xh
+4201                     ; 1064 		default:
+4201                     ; 1065 			return HeDa_Report_Cycle_Max;
+4202  0b50 4a            	dec	a
+4203  0b51 272c          	jreq	L1241
+4204  0b53 4a            	dec	a
+4205  0b54 2704          	jreq	L3041
+4208  0b56 a647          	ld	a,#71
+4210  0b58 2013          	jra	L244
+4211  0b5a               L3041:
+4212                     ; 1041 				switch(cycle_num)
+4214  0b5a 7b02          	ld	a,(OFST+2,sp)
+4216                     ; 1048 					default:	return HeDa_Report_Cycle_Minute_30;
+4217  0b5c 4a            	dec	a
+4218  0b5d 2710          	jreq	L5041
+4219  0b5f a004          	sub	a,#4
+4220  0b61 2710          	jreq	L7041
+4221  0b63 a005          	sub	a,#5
+4222  0b65 2710          	jreq	L1141
+4223  0b67 a005          	sub	a,#5
+4224  0b69 2710          	jreq	L3141
+4228  0b6b a641          	ld	a,#65
+4230  0b6d               L244:
+4232  0b6d 85            	popw	x
+4233  0b6e 81            	ret	
+4234  0b6f               L5041:
+4235                     ; 1043 					case	1:	return HeDa_Report_Cycle_Minute_1;
+4237  0b6f a637          	ld	a,#55
+4239  0b71 20fa          	jra	L244
+4240  0b73               L7041:
+4241                     ; 1044 					case	5:	return HeDa_Report_Cycle_Minute_5;
+4243  0b73 a638          	ld	a,#56
+4245  0b75 20f6          	jra	L244
+4246  0b77               L1141:
+4247                     ; 1045 					case	10:	return HeDa_Report_Cycle_Minute_10;
+4249  0b77 a639          	ld	a,#57
+4251  0b79 20f2          	jra	L244
+4252  0b7b               L3141:
+4253                     ; 1046 					case	15:	return HeDa_Report_Cycle_Minute_15;
+4255  0b7b a640          	ld	a,#64
+4257  0b7d 20ee          	jra	L244
+4258                     ; 1047 					case	30:	return HeDa_Report_Cycle_Minute_30;
+4260  0b7f               L1241:
+4261                     ; 1053 				switch(cycle_num)
+4263  0b7f 7b02          	ld	a,(OFST+2,sp)
+4265                     ; 1061 					default:	return HeDa_Report_Cycle_Hour_24;
+4266  0b81 4a            	dec	a
+4267  0b82 2717          	jreq	L3241
+4268  0b84 4a            	dec	a
+4269  0b85 2718          	jreq	L5241
+4270  0b87 a002          	sub	a,#2
+4271  0b89 2718          	jreq	L7241
+4272  0b8b a002          	sub	a,#2
+4273  0b8d 2718          	jreq	L1341
+4274  0b8f a006          	sub	a,#6
+4275  0b91 2718          	jreq	L3341
+4276  0b93 a00c          	sub	a,#12
+4277  0b95 2718          	jreq	L5341
+4280  0b97 a647          	ld	a,#71
+4282  0b99 20d2          	jra	L244
+4283  0b9b               L3241:
+4284                     ; 1055 					case	1:	return HeDa_Report_Cycle_Hour_1;
+4286  0b9b a642          	ld	a,#66
+4288  0b9d 20ce          	jra	L244
+4289  0b9f               L5241:
+4290                     ; 1056 					case	2:	return HeDa_Report_Cycle_Hour_2;
+4292  0b9f a643          	ld	a,#67
+4294  0ba1 20ca          	jra	L244
+4295  0ba3               L7241:
+4296                     ; 1057 					case	4:	return HeDa_Report_Cycle_Hour_4;
+4298  0ba3 a644          	ld	a,#68
+4300  0ba5 20c6          	jra	L244
+4301  0ba7               L1341:
+4302                     ; 1058 					case	6:	return HeDa_Report_Cycle_Hour_6;
+4304  0ba7 a645          	ld	a,#69
+4306  0ba9 20c2          	jra	L244
+4307  0bab               L3341:
+4308                     ; 1059 					case	12:	return HeDa_Report_Cycle_Hour_12;
+4310  0bab a646          	ld	a,#70
+4312  0bad 20be          	jra	L244
+4313  0baf               L5341:
+4314                     ; 1060 					case	24:	return HeDa_Report_Cycle_Hour_24;
+4316  0baf a647          	ld	a,#71
+4318  0bb1 20ba          	jra	L244
+4374                     ; 1079 u8 HeDa_Cmd_Set_Pressure_Threshold_Handle(u8 *pData)
+4374                     ; 1080 {
+4375                     	switch	.text
+4376  0bb3               _HeDa_Cmd_Set_Pressure_Threshold_Handle:
+4378  0bb3 89            	pushw	x
+4379  0bb4 89            	pushw	x
+4380       00000002      OFST:	set	2
+4383                     ; 1081 	u8 flag_change=0;//修改内容标志位
+4385                     ; 1082 	u8 flag_change_response=0;//修改内容结果标志位
+4387  0bb5 0f01          	clr	(OFST-1,sp)
+4388                     ; 1084 	if((stDataPtrHD.Packet.Data_Len-1) < 25)//数据域长度不够
+4390  0bb7 ce0003        	ldw	x,_stDataPtrHD+3
+4391  0bba 5a            	decw	x
+4392  0bbb a30019        	cpw	x,#25
+4393  0bbe 2404          	jruge	L7151
+4394                     ; 1086 		return 0;
+4396  0bc0 4f            	clr	a
+4398  0bc1 cc0c8f        	jra	L454
+4399  0bc4               L7151:
+4400                     ; 1088 	flag_change=*pData;
+4402  0bc4 1e03          	ldw	x,(OFST+1,sp)
+4403  0bc6 f6            	ld	a,(x)
+4404  0bc7 6b02          	ld	(OFST+0,sp),a
+4405                     ; 1090 	if( (flag_change & 0x01) || (flag_change & 0x02)) //压力1上下限一起改
+4407  0bc9 a501          	bcp	a,#1
+4408  0bcb 2604          	jrne	L3251
+4410  0bcd a502          	bcp	a,#2
+4411  0bcf 274f          	jreq	L1251
+4412  0bd1               L3251:
+4413                     ; 1092 		if((flag_change & 0x01) && (flag_change & 0x02))//压力1上下限要一起改
+4415  0bd1 a501          	bcp	a,#1
+4416  0bd3 2737          	jreq	L5251
+4418  0bd5 a502          	bcp	a,#2
+4419  0bd7 2733          	jreq	L5251
+4420                     ; 1094 			flag_change_response |=0x01;
+4422  0bd9 7b01          	ld	a,(OFST-1,sp)
+4423                     ; 1095 			flag_change_response |=0x02;
+4425  0bdb aa03          	or	a,#3
+4426  0bdd 6b01          	ld	(OFST-1,sp),a
+4427                     ; 1096 			tyParameter.Pressure1_LimitUp=*(float *)(pData+1);
+4429  0bdf e604          	ld	a,(4,x)
+4430  0be1 c70014        	ld	_tyParameter+20,a
+4431  0be4 e603          	ld	a,(3,x)
+4432  0be6 c70013        	ld	_tyParameter+19,a
+4433  0be9 e602          	ld	a,(2,x)
+4434  0beb c70012        	ld	_tyParameter+18,a
+4435  0bee e601          	ld	a,(1,x)
+4436  0bf0 c70011        	ld	_tyParameter+17,a
+4437                     ; 1097 			tyParameter.Pressure1_LimitDown=*(float *)(pData+5);
+4439  0bf3 e608          	ld	a,(8,x)
+4440  0bf5 c70018        	ld	_tyParameter+24,a
+4441  0bf8 e607          	ld	a,(7,x)
+4442  0bfa c70017        	ld	_tyParameter+23,a
+4443  0bfd e606          	ld	a,(6,x)
+4444  0bff c70016        	ld	_tyParameter+22,a
+4445  0c02 e605          	ld	a,(5,x)
+4446  0c04 c70015        	ld	_tyParameter+21,a
+4447                     ; 1098 			SaveParameterForType((u8*)&tyParameter, sizeof(tyParameter), METER_PARA);
+4449  0c07 cd0c92        	call	LC012
+4451  0c0a 2014          	jra	L1251
+4452  0c0c               L5251:
+4453                     ; 1100 		else if(flag_change & 0x01)
+4455  0c0c a501          	bcp	a,#1
+4456  0c0e 2706          	jreq	L1351
+4457                     ; 1102 			flag_change_response |=0x10;
+4459  0c10 7b01          	ld	a,(OFST-1,sp)
+4460  0c12 aa10          	or	a,#16
+4462  0c14 2008          	jp	LC010
+4463  0c16               L1351:
+4464                     ; 1104 		else if(flag_change & 0x02)
+4466  0c16 a502          	bcp	a,#2
+4467  0c18 2706          	jreq	L1251
+4468                     ; 1106 			flag_change_response |=0x20;
+4470  0c1a 7b01          	ld	a,(OFST-1,sp)
+4471  0c1c aa20          	or	a,#32
+4472  0c1e               LC010:
+4473  0c1e 6b01          	ld	(OFST-1,sp),a
+4474  0c20               L1251:
+4475                     ; 1110 	if( (flag_change & 0x04) || (flag_change & 0x08)) //压力2上下限一起改
+4477  0c20 7b02          	ld	a,(OFST+0,sp)
+4478  0c22 a504          	bcp	a,#4
+4479  0c24 2604          	jrne	L1451
+4481  0c26 a508          	bcp	a,#8
+4482  0c28 2750          	jreq	L7351
+4483  0c2a               L1451:
+4484                     ; 1112 		if((flag_change & 0x04) && (flag_change & 0x08))//压力2上下限要一起改
+4486  0c2a a504          	bcp	a,#4
+4487  0c2c 2738          	jreq	L3451
+4489  0c2e a508          	bcp	a,#8
+4490  0c30 2734          	jreq	L3451
+4491                     ; 1114 			flag_change_response |=0x04;
+4493  0c32 7b01          	ld	a,(OFST-1,sp)
+4494                     ; 1115 			flag_change_response |=0x08;		
+4496  0c34 aa0c          	or	a,#12
+4497  0c36 6b01          	ld	(OFST-1,sp),a
+4498                     ; 1116 			tyParameter.Pressure2_LimitUp=*(float *)(pData+9);
+4500  0c38 1e03          	ldw	x,(OFST+1,sp)
+4501  0c3a e60c          	ld	a,(12,x)
+4502  0c3c c7001c        	ld	_tyParameter+28,a
+4503  0c3f e60b          	ld	a,(11,x)
+4504  0c41 c7001b        	ld	_tyParameter+27,a
+4505  0c44 e60a          	ld	a,(10,x)
+4506  0c46 c7001a        	ld	_tyParameter+26,a
+4507  0c49 e609          	ld	a,(9,x)
+4508  0c4b c70019        	ld	_tyParameter+25,a
+4509                     ; 1117 			tyParameter.Pressure2_LimitDown=*(float *)(pData+13);
+4511  0c4e e610          	ld	a,(16,x)
+4512  0c50 c70020        	ld	_tyParameter+32,a
+4513  0c53 e60f          	ld	a,(15,x)
+4514  0c55 c7001f        	ld	_tyParameter+31,a
+4515  0c58 e60e          	ld	a,(14,x)
+4516  0c5a c7001e        	ld	_tyParameter+30,a
+4517  0c5d e60d          	ld	a,(13,x)
+4518  0c5f c7001d        	ld	_tyParameter+29,a
+4519                     ; 1118 			SaveParameterForType((u8*)&tyParameter, sizeof(tyParameter), METER_PARA);
+4521  0c62 ad2e          	call	LC012
+4523  0c64 2014          	jra	L7351
+4524  0c66               L3451:
+4525                     ; 1120 		else if(flag_change & 0x04)
+4527  0c66 a504          	bcp	a,#4
+4528  0c68 2706          	jreq	L7451
+4529                     ; 1122 			flag_change_response |=0x40;
+4531  0c6a 7b01          	ld	a,(OFST-1,sp)
+4532  0c6c aa40          	or	a,#64
+4534  0c6e 2008          	jp	LC011
+4535  0c70               L7451:
+4536                     ; 1124 		else if(flag_change & 0x08)
+4538  0c70 a508          	bcp	a,#8
+4539  0c72 2706          	jreq	L7351
+4540                     ; 1126 			flag_change_response |=0x80;
+4542  0c74 7b01          	ld	a,(OFST-1,sp)
+4543  0c76 aa80          	or	a,#128
+4544  0c78               LC011:
+4545  0c78 6b01          	ld	(OFST-1,sp),a
+4546  0c7a               L7351:
+4547                     ; 1131 	*pData=flag_change_response;
 4549  0c7a 7b01          	ld	a,(OFST-1,sp)
-4550  0c7c aa80          	or	a,#128
-4551  0c7e               LC011:
-4552  0c7e 6b01          	ld	(OFST-1,sp),a
-4553  0c80               L7351:
-4554                     ; 1132 	*pData=flag_change_response;
-4556  0c80 7b01          	ld	a,(OFST-1,sp)
-4557  0c82 1e03          	ldw	x,(OFST+1,sp)
-4558  0c84 f7            	ld	(x),a
-4559                     ; 1133 	MemcpyFunc(pData+1, (u8 *)&tyParameter.Pressure1_LimitUp, 16);
-4561  0c85 4b10          	push	#16
-4562  0c87 ae0011        	ldw	x,#_tyParameter+17
-4563  0c8a 89            	pushw	x
-4564  0c8b 1e06          	ldw	x,(OFST+4,sp)
-4565  0c8d 5c            	incw	x
-4566  0c8e cd0000        	call	_MemcpyFunc
-4568  0c91 5b03          	addw	sp,#3
-4569                     ; 1135 	return 25;
-4571  0c93 a619          	ld	a,#25
-4573  0c95               L654:
-4575  0c95 5b04          	addw	sp,#4
-4576  0c97 81            	ret	
-4578  0c98               LC012:
-4579  0c98 4b04          	push	#4
-4580  0c9a 4b21          	push	#33
-4581  0c9c ae0000        	ldw	x,#_tyParameter
-4582  0c9f cd0000        	call	_SaveParameterForType
-4584  0ca2 85            	popw	x
-4585  0ca3 81            	ret	
-4624                     ; 1147 u8 HeDa_Cmd_Get_Pressure_Threshold_Handle(u8 *pData)
-4624                     ; 1148 {
-4625                     	switch	.text
-4626  0ca4               _HeDa_Cmd_Get_Pressure_Threshold_Handle:
-4628  0ca4 89            	pushw	x
-4629       00000000      OFST:	set	0
-4632                     ; 1149 	MemcpyFunc(pData, (u8 *)&tyParameter.Pressure1_LimitUp, 16);
-4634  0ca5 4b10          	push	#16
-4635  0ca7 ae0011        	ldw	x,#_tyParameter+17
-4636  0caa 89            	pushw	x
-4637  0cab 1e04          	ldw	x,(OFST+4,sp)
-4638  0cad cd0000        	call	_MemcpyFunc
-4640  0cb0 5b03          	addw	sp,#3
-4641                     ; 1150 	MemsetFunc(pData+16, 0, 8);
-4643  0cb2 4b08          	push	#8
-4644  0cb4 4b00          	push	#0
-4645  0cb6 1e03          	ldw	x,(OFST+3,sp)
-4646  0cb8 1c0010        	addw	x,#16
-4647  0cbb cd0000        	call	_MemsetFunc
-4649  0cbe a618          	ld	a,#24
-4650  0cc0 85            	popw	x
-4651                     ; 1151 	return 24;
-4655  0cc1 85            	popw	x
-4656  0cc2 81            	ret	
-4694                     ; 1163 u8 HeDa_Cmd_Set_Secret_Key_Handle(u8 *pData)
-4694                     ; 1164 {
-4695                     	switch	.text
-4696  0cc3               _HeDa_Cmd_Set_Secret_Key_Handle:
-4698  0cc3 89            	pushw	x
-4699       00000000      OFST:	set	0
-4702                     ; 1165 	if((stDataPtrHD.Packet.Data_Len-1) < 16)//数据域长度不够
-4704  0cc4 ce0003        	ldw	x,_stDataPtrHD+3
-4705  0cc7 5a            	decw	x
-4706  0cc8 a30010        	cpw	x,#16
-4707  0ccb 2403          	jruge	L1161
-4708                     ; 1167 		return 0;
-4710  0ccd 4f            	clr	a
-4712  0cce 2014          	jra	L274
-4713  0cd0               L1161:
-4714                     ; 1170 	*pData=0x01;
-4716  0cd0 1e01          	ldw	x,(OFST+1,sp)
-4717  0cd2 a601          	ld	a,#1
-4718  0cd4 f7            	ld	(x),a
-4719                     ; 1171 	MemcpyFunc(pData+1, pData, 16);
-4721  0cd5 4b10          	push	#16
-4722  0cd7 1e02          	ldw	x,(OFST+2,sp)
-4723  0cd9 89            	pushw	x
-4724  0cda 1e04          	ldw	x,(OFST+4,sp)
-4725  0cdc 5c            	incw	x
-4726  0cdd cd0000        	call	_MemcpyFunc
-4728  0ce0 5b03          	addw	sp,#3
-4729                     ; 1172 	return 17;
-4731  0ce2 a611          	ld	a,#17
-4733  0ce4               L274:
-4735  0ce4 85            	popw	x
-4736  0ce5 81            	ret	
-4773                     ; 1184 u8 HeDa_Cmd_Get_Secret_Key_Handle(u8 *pData)
-4773                     ; 1185 {
-4774                     	switch	.text
-4775  0ce6               _HeDa_Cmd_Get_Secret_Key_Handle:
-4779                     ; 1186 	MemsetFunc(pData, 0, 16);
-4781  0ce6 4b10          	push	#16
-4782  0ce8 4b00          	push	#0
-4783  0cea cd0000        	call	_MemsetFunc
-4785  0ced a610          	ld	a,#16
-4786  0cef 85            	popw	x
-4787                     ; 1187 	return 16;
-4791  0cf0 81            	ret	
-4794                     	switch	.const
-4795  0029               L1361_meter_addr:
-4796  0029 00            	dc.b	0
-4797  002a 00            	ds.b	1
-4843                     ; 1199 u8 HeDa_Cmd_Set_Addr_Handle(u8 *pData)
-4843                     ; 1200 {
-4844                     	switch	.text
-4845  0cf1               _HeDa_Cmd_Set_Addr_Handle:
-4847  0cf1 89            	pushw	x
-4848  0cf2 89            	pushw	x
-4849       00000002      OFST:	set	2
-4852                     ; 1201 	u8 meter_addr[2]={0};//表地址缓存
-4854  0cf3 c60029        	ld	a,L1361_meter_addr
-4855  0cf6 6b01          	ld	(OFST-1,sp),a
-4856  0cf8 c6002a        	ld	a,L1361_meter_addr+1
-4857  0cfb 6b02          	ld	(OFST+0,sp),a
-4858                     ; 1203 	if((stDataPtrHD.Packet.Data_Len-1) < 2)//数据域长度不够
-4860  0cfd ce0003        	ldw	x,_stDataPtrHD+3
-4861  0d00 5a            	decw	x
-4862  0d01 a30002        	cpw	x,#2
-4863  0d04 2403          	jruge	L5561
-4864                     ; 1205 		return 0;
-4866  0d06 4f            	clr	a
-4868  0d07 2037          	jra	L205
-4869  0d09               L5561:
-4870                     ; 1207 	meter_addr[0]=*pData;
-4872  0d09 1e03          	ldw	x,(OFST+1,sp)
-4873  0d0b f6            	ld	a,(x)
-4874  0d0c 6b01          	ld	(OFST-1,sp),a
-4875                     ; 1208 	meter_addr[1]=*(pData+1);
-4877  0d0e e601          	ld	a,(1,x)
-4878  0d10 6b02          	ld	(OFST+0,sp),a
-4879                     ; 1211 	if((meter_addr[0]==0 && meter_addr[1]==0) || (meter_addr[0]==0xff && meter_addr[1]==0xff))
-4881  0d12 7b01          	ld	a,(OFST-1,sp)
-4882  0d14 2604          	jrne	L3661
-4884  0d16 0d02          	tnz	(OFST+0,sp)
-4885  0d18 2708          	jreq	L1661
-4886  0d1a               L3661:
-4888  0d1a 4c            	inc	a
-4889  0d1b 2614          	jrne	L7561
-4891  0d1d 7b02          	ld	a,(OFST+0,sp)
-4892  0d1f 4c            	inc	a
-4893  0d20 260f          	jrne	L7561
-4894  0d22               L1661:
-4895                     ; 1213 		*pData=0x10;//设置失败
-4897  0d22 a610          	ld	a,#16
-4898  0d24 f7            	ld	(x),a
-4899                     ; 1214 		*(pData+1)=tyParameter.Address[0];
-4901  0d25 c60001        	ld	a,_tyParameter+1
-4902  0d28 e701          	ld	(1,x),a
-4903                     ; 1215 		*(pData+2)=tyParameter.Address[1];
-4905  0d2a c60002        	ld	a,_tyParameter+2
-4906  0d2d e702          	ld	(2,x),a
-4908  0d2f 200d          	jra	L5661
-4909  0d31               L7561:
-4910                     ; 1219 		*pData=0x01;//设置成功
-4912  0d31 a601          	ld	a,#1
-4913  0d33 f7            	ld	(x),a
-4914                     ; 1220 		tyParameter.Address[0]=meter_addr[0];
-4916  0d34 7b01          	ld	a,(OFST-1,sp)
-4917  0d36 c70001        	ld	_tyParameter+1,a
-4918                     ; 1221 		tyParameter.Address[1]=meter_addr[1];
-4920  0d39 7b02          	ld	a,(OFST+0,sp)
-4921  0d3b c70002        	ld	_tyParameter+2,a
-4922  0d3e               L5661:
-4923                     ; 1223 	return 3;
-4925  0d3e a603          	ld	a,#3
-4927  0d40               L205:
-4929  0d40 5b04          	addw	sp,#4
-4930  0d42 81            	ret	
-4967                     ; 1235 u8 HeDa_Cmd_Get_Addr_Handle(u8 *pData)
-4967                     ; 1236 {
-4968                     	switch	.text
-4969  0d43               _HeDa_Cmd_Get_Addr_Handle:
-4973                     ; 1237 	*pData=tyParameter.Address[0];
-4975  0d43 c60001        	ld	a,_tyParameter+1
-4976  0d46 f7            	ld	(x),a
-4977                     ; 1238 	*(pData+1)=tyParameter.Address[1];
-4979  0d47 c60002        	ld	a,_tyParameter+2
-4980  0d4a e701          	ld	(1,x),a
-4981                     ; 1239 	return 2;
-4983  0d4c a602          	ld	a,#2
-4986  0d4e 81            	ret	
-5022                     ; 1251 u8 HeDa_Cmd_Get_All_Param_Handle(u8 *pData)
-5022                     ; 1252 {
-5023                     	switch	.text
-5024  0d4f               _HeDa_Cmd_Get_All_Param_Handle:
-5028                     ; 1253 	return 0;
-5030  0d4f 4f            	clr	a
-5033  0d50 81            	ret	
-5069                     ; 1265 u8 HeDa_Cmd_Get_Appoint_Data_Handle(u8 *pData)
-5069                     ; 1266 {
-5070                     	switch	.text
-5071  0d51               _HeDa_Cmd_Get_Appoint_Data_Handle:
-5075                     ; 1267 	return 0;
-5077  0d51 4f            	clr	a
-5080  0d52 81            	ret	
-5083                     	switch	.const
-5084  002b               L1471_nIPstr:
-5085  002b 00            	dc.b	0
-5086  002c 000000000000  	ds.b	31
-5087  004b               L3471_nPort:
-5088  004b 00            	dc.b	0
-5089  004c 0000000000    	ds.b	5
-5090  0051               L5471_nBuf:
-5091  0051 00            	dc.b	0
-5092  0052 000000000000  	ds.b	9
-5181                     ; 1279 void HD_InitializeGsm(void)
-5181                     ; 1280 {
-5182                     	switch	.text
-5183  0d53               _HD_InitializeGsm:
-5185  0d53 5239          	subw	sp,#57
-5186       00000039      OFST:	set	57
-5189                     ; 1281 	char nIPstr[32] = {0};
-5191  0d55 96            	ldw	x,sp
-5192  0d56 1c0010        	addw	x,#OFST-41
-5193  0d59 90ae002b      	ldw	y,#L1471_nIPstr
-5194  0d5d a620          	ld	a,#32
-5195  0d5f cd0000        	call	c_xymvx
-5197                     ; 1282 	u8 nPort[6]     = {0};
-5199  0d62 96            	ldw	x,sp
-5200  0d63 1c0003        	addw	x,#OFST-54
-5201  0d66 90ae004b      	ldw	y,#L3471_nPort
-5202  0d6a a606          	ld	a,#6
-5203  0d6c cd0000        	call	c_xymvx
-5205                     ; 1283 	u16 dwPortNum = 0;
-5207  0d6f 5f            	clrw	x
-5208  0d70 1f01          	ldw	(OFST-56,sp),x
-5209                     ; 1285 	u8 nBuf[10]     = {0};
-5211  0d72 96            	ldw	x,sp
-5212  0d73 1c0030        	addw	x,#OFST-9
-5213  0d76 90ae0051      	ldw	y,#L5471_nBuf
-5214  0d7a a60a          	ld	a,#10
-5215  0d7c cd0000        	call	c_xymvx
-5217                     ; 1287 	MemsetFunc(nPort, 0, sizeof(nPort));
-5219  0d7f 4b06          	push	#6
-5220  0d81 4b00          	push	#0
-5221  0d83 96            	ldw	x,sp
-5222  0d84 1c0005        	addw	x,#OFST-52
-5223  0d87 cd0000        	call	_MemsetFunc
-5225  0d8a 85            	popw	x
-5226                     ; 1288 	MemsetFunc(nIPstr, 0, sizeof(nIPstr));	
-5228  0d8b 4b20          	push	#32
-5229  0d8d 4b00          	push	#0
-5230  0d8f 96            	ldw	x,sp
-5231  0d90 1c0012        	addw	x,#OFST-39
-5232  0d93 cd0000        	call	_MemsetFunc
-5234  0d96 a604          	ld	a,#4
-5235  0d98 85            	popw	x
-5236                     ; 1289 	SetLogonMode(UP_Upload_HD);
-5238  0d99 cd0000        	call	_SetLogonMode
-5240                     ; 1292 	if(TRUE == ReadParameterForType((u8 *)&tyReportParameter, sizeof(tyReportParameter), IPANDPORT_PARA))
-5242  0d9c 4b01          	push	#1
-5243  0d9e 4b27          	push	#39
-5244  0da0 ae0000        	ldw	x,#_tyReportParameter
-5245  0da3 cd0000        	call	_ReadParameterForType
-5247  0da6 4a            	dec	a
-5248  0da7 85            	popw	x
-5249  0da8 2703cc0e61    	jrne	L3002
-5250                     ; 1294 		if(tyReportParameter.flag_Login_Mode==HD_Login_IP)//ip地址上报
-5252  0dad c60026        	ld	a,_tyReportParameter+38
-5253  0db0 4a            	dec	a
-5254  0db1 260e          	jrne	L5002
-5255                     ; 1296 			JX_IpAddrToStr(nIPstr, (u8*)&tyReportParameter.Main_IP);
-5257  0db3 ae0000        	ldw	x,#_tyReportParameter
-5258  0db6 89            	pushw	x
-5259  0db7 96            	ldw	x,sp
-5260  0db8 1c0012        	addw	x,#OFST-39
-5261  0dbb cd0000        	call	_JX_IpAddrToStr
-5263  0dbe 85            	popw	x
-5265  0dbf 2016          	jra	L7002
-5266  0dc1               L5002:
-5267                     ; 1298 		else if(tyReportParameter.flag_Login_Mode==HD_Login_Domain_Name)//域名上报
-5269  0dc1 c60026        	ld	a,_tyReportParameter+38
-5270  0dc4 a102          	cp	a,#2
-5271  0dc6 260f          	jrne	L7002
-5272                     ; 1300 			MemcpyFunc(nIPstr, (u8*)&tyReportParameter.Main_domain_name, 32);
-5274  0dc8 4b20          	push	#32
-5275  0dca ae0006        	ldw	x,#_tyReportParameter+6
-5276  0dcd 89            	pushw	x
-5277  0dce 96            	ldw	x,sp
-5278  0dcf 1c0013        	addw	x,#OFST-38
-5279  0dd2 cd0000        	call	_MemcpyFunc
-5281  0dd5 5b03          	addw	sp,#3
-5282  0dd7               L7002:
-5283                     ; 1303 		MemcpyFunc((u8*)&dwPortNum, (u8*)&tyReportParameter.Main_Port, 2);
-5285  0dd7 4b02          	push	#2
-5286  0dd9 ae0004        	ldw	x,#_tyReportParameter+4
-5287  0ddc 89            	pushw	x
-5288  0ddd 96            	ldw	x,sp
-5289  0dde 1c0004        	addw	x,#OFST-53
-5290  0de1 cd0000        	call	_MemcpyFunc
-5292  0de4 5b03          	addw	sp,#3
-5293                     ; 1304 		JX_BL_Change(2, (u8*)&dwPortNum);
-5295  0de6 96            	ldw	x,sp
-5296  0de7 5c            	incw	x
-5297  0de8 89            	pushw	x
-5298  0de9 ae0002        	ldw	x,#2
-5299  0dec cd0000        	call	_JX_BL_Change
-5301  0def 85            	popw	x
-5302                     ; 1305 		JX_U32ToStr(dwPortNum, nPort);
-5304  0df0 96            	ldw	x,sp
-5305  0df1 1c0003        	addw	x,#OFST-54
-5306  0df4 89            	pushw	x
-5307  0df5 1e03          	ldw	x,(OFST-54,sp)
-5308  0df7 cd0000        	call	c_uitolx
-5310  0dfa be02          	ldw	x,c_lreg+2
-5311  0dfc 89            	pushw	x
-5312  0dfd be00          	ldw	x,c_lreg
-5313  0dff 89            	pushw	x
-5314  0e00 cd0000        	call	_JX_U32ToStr
-5316  0e03 5b06          	addw	sp,#6
-5317                     ; 1306 		MemsetFunc(&aucAtPServer1[1], 0, sizeof(aucAtPServer1)-1);
-5319  0e05 4b13          	push	#19
-5320  0e07 4b00          	push	#0
-5321  0e09 ae0001        	ldw	x,#_aucAtPServer1+1
-5322  0e0c cd0000        	call	_MemsetFunc
-5324  0e0f 85            	popw	x
-5325                     ; 1307 		MemsetFunc(&aucAtPPort1[1], 0, sizeof(aucAtPPort1)-1);
-5327  0e10 4b07          	push	#7
-5328  0e12 4b00          	push	#0
-5329  0e14 ae0001        	ldw	x,#_aucAtPPort1+1
-5330  0e17 cd0000        	call	_MemsetFunc
-5332  0e1a 85            	popw	x
-5333                     ; 1309 		MemcpyFunc((u8*)&aucAtPServer1[1], nIPstr, JX_Strlen(nIPstr));
-5335  0e1b 96            	ldw	x,sp
-5336  0e1c 1c0010        	addw	x,#OFST-41
-5337  0e1f cd0000        	call	_JX_Strlen
-5339  0e22 88            	push	a
-5340  0e23 96            	ldw	x,sp
-5341  0e24 1c0011        	addw	x,#OFST-40
-5342  0e27 89            	pushw	x
-5343  0e28 ae0001        	ldw	x,#_aucAtPServer1+1
-5344  0e2b cd0000        	call	_MemcpyFunc
-5346  0e2e 5b03          	addw	sp,#3
-5347                     ; 1310 		JX_StringCat(aucAtPServer1,"\"", 2);
-5349  0e30 4b02          	push	#2
-5350  0e32 ae005b        	ldw	x,#L1321
-5351  0e35 89            	pushw	x
-5352  0e36 ae0000        	ldw	x,#_aucAtPServer1
-5353  0e39 cd0000        	call	_JX_StringCat
-5355  0e3c 5b03          	addw	sp,#3
-5356                     ; 1311 		MemcpyFunc((u8*)&aucAtPPort1[1], nPort, JX_Strlen(nPort));
-5358  0e3e 96            	ldw	x,sp
-5359  0e3f 1c0003        	addw	x,#OFST-54
-5360  0e42 cd0000        	call	_JX_Strlen
-5362  0e45 88            	push	a
-5363  0e46 96            	ldw	x,sp
-5364  0e47 1c0004        	addw	x,#OFST-53
-5365  0e4a 89            	pushw	x
-5366  0e4b ae0001        	ldw	x,#_aucAtPPort1+1
-5367  0e4e cd0000        	call	_MemcpyFunc
-5369  0e51 5b03          	addw	sp,#3
-5370                     ; 1312 		JX_StringCat(aucAtPPort1,"\"", 2);
-5372  0e53 4b02          	push	#2
-5373  0e55 ae005b        	ldw	x,#L1321
-5374  0e58 89            	pushw	x
-5375  0e59 ae0000        	ldw	x,#_aucAtPPort1
-5376  0e5c cd0000        	call	_JX_StringCat
-5378  0e5f 5b03          	addw	sp,#3
-5379  0e61               L3002:
-5380                     ; 1316 	if(TRUE == ReadParameterForType(&g_nApnBuf[1], APN_LEN-1, APN_PARA))
-5382  0e61 4b02          	push	#2
-5383  0e63 4b13          	push	#19
-5384  0e65 ae0001        	ldw	x,#_g_nApnBuf+1
-5385  0e68 cd0000        	call	_ReadParameterForType
-5387  0e6b 4a            	dec	a
-5388  0e6c 85            	popw	x
-5389  0e6d 260e          	jrne	L3102
-5390                     ; 1318 		JX_StringCat(g_nApnBuf, "\"", 2);
-5392  0e6f 4b02          	push	#2
-5393  0e71 ae005b        	ldw	x,#L1321
-5394  0e74 89            	pushw	x
-5395  0e75 ae0000        	ldw	x,#_g_nApnBuf
-5396  0e78 cd0000        	call	_JX_StringCat
-5398  0e7b 5b03          	addw	sp,#3
-5399  0e7d               L3102:
-5400                     ; 1322 	if(FALSE == ReadParameterForType((u8 *)&tyReport, sizeof(tyReport), REPORT_PARA))
-5402  0e7d 4b03          	push	#3
-5403  0e7f 4b0a          	push	#10
-5404  0e81 ae0000        	ldw	x,#_tyReport
-5405  0e84 cd0000        	call	_ReadParameterForType
-5407  0e87 4d            	tnz	a
-5408  0e88 85            	popw	x
-5409  0e89 262e          	jrne	L5102
-5410                     ; 1324 		tyReport.nIntervalType=HD_INTERVAL_HOUR;//默认上报类型按小时计算
-5412  0e8b 35010001      	mov	_tyReport+1,#1
-5413                     ; 1325 		tyReport.cycle 	= 24;	 				//默认24小时上报一次	
-5415  0e8f 35180002      	mov	_tyReport+2,#24
-5416                     ; 1326 		tyReport.wGatherCycle = 60; 			//默认采样间隔60分钟,即抄表间隔
-5418  0e93 353c0000      	mov	_tyReport,#60
-5419                     ; 1328 		tyReport.Time.Byte.Year = 0x15;//默认上报时间
-5421  0e97 35150009      	mov	_tyReport+9,#21
-5422                     ; 1329 		tyReport.Time.Byte.Month = 0x12;
-5424  0e9b 35120008      	mov	_tyReport+8,#18
-5425                     ; 1330 		tyReport.Time.Byte.Day = 0x28;
-5427  0e9f 35280007      	mov	_tyReport+7,#40
-5428                     ; 1331 		tyReport.Time.Byte.Hour = 0x00;
-5430  0ea3 725f0006      	clr	_tyReport+6
-5431                     ; 1332 		tyReport.Time.Byte.Minute= 0x00;
-5433  0ea7 725f0005      	clr	_tyReport+5
-5434                     ; 1333 		SaveParameterForType((u8 *)&tyReport, sizeof(tyReport), REPORT_PARA);		
-5436  0eab 4b03          	push	#3
-5437  0ead 4b0a          	push	#10
-5438  0eaf ae0000        	ldw	x,#_tyReport
-5439  0eb2 cd0000        	call	_SaveParameterForType
-5441  0eb5 85            	popw	x
-5442                     ; 1334 		UC_SleepFunc(1);
-5444  0eb6 cd0f48        	call	LC013
-5445  0eb9               L5102:
-5446                     ; 1342 	if(FALSE == ReadParameterForType(nBuf, 10, LT_REP_TIME))
-5448  0eb9 4b05          	push	#5
-5449  0ebb 4b0a          	push	#10
-5450  0ebd 96            	ldw	x,sp
-5451  0ebe 1c0032        	addw	x,#OFST-7
-5452  0ec1 cd0000        	call	_ReadParameterForType
-5454  0ec4 4d            	tnz	a
-5455  0ec5 85            	popw	x
-5456  0ec6 265f          	jrne	L7102
-5457                     ; 1344 		g_wTmReportCnt = 0;
-5459  0ec8 5f            	clrw	x
-5460  0ec9 cf0000        	ldw	_g_wTmReportCnt,x
-5461                     ; 1345 		MemcpyFunc((u8*)&stReportTime, (u8*)&tyReport.Time, sizeof(tyReport.Time));
-5463  0ecc 4b06          	push	#6
-5464  0ece ae0004        	ldw	x,#_tyReport+4
-5465  0ed1 89            	pushw	x
-5466  0ed2 96            	ldw	x,sp
-5467  0ed3 1c000c        	addw	x,#OFST-45
-5468  0ed6 cd0000        	call	_MemcpyFunc
-5470  0ed9 5b03          	addw	sp,#3
-5471                     ; 1346 		JX_BL_Change(6, (u8*)&stReportTime);
-5473  0edb 96            	ldw	x,sp
-5474  0edc 1c0009        	addw	x,#OFST-48
-5475  0edf 89            	pushw	x
-5476  0ee0 ae0006        	ldw	x,#6
-5477  0ee3 cd0000        	call	_JX_BL_Change
-5479  0ee6 85            	popw	x
-5480                     ; 1347 		stReportTime.nMonth = stReportTime.nMonth&0x1F;
-5482  0ee7 7b0a          	ld	a,(OFST-47,sp)
-5483  0ee9 a41f          	and	a,#31
-5484  0eeb 6b0a          	ld	(OFST-47,sp),a
-5485                     ; 1348 		TM_TimeChangeAToB(&stReportTime,&stLastReportT);
-5487  0eed ae0000        	ldw	x,#_stLastReportT
-5488  0ef0 89            	pushw	x
-5489  0ef1 96            	ldw	x,sp
-5490  0ef2 1c000b        	addw	x,#OFST-46
-5491  0ef5 cd0000        	call	_TM_TimeChangeAToB
-5493  0ef8 85            	popw	x
-5494                     ; 1349 		MemcpyFunc(nBuf, (u8*)&stLastReportT, 8);
-5496  0ef9 4b08          	push	#8
-5497  0efb ae0000        	ldw	x,#_stLastReportT
-5498  0efe 89            	pushw	x
-5499  0eff 96            	ldw	x,sp
-5500  0f00 1c0033        	addw	x,#OFST-6
-5501  0f03 cd0000        	call	_MemcpyFunc
-5503  0f06 5b03          	addw	sp,#3
-5504                     ; 1350 		MemcpyFunc(&nBuf[8], (u8*)&g_wTmReportCnt, 2);
-5506  0f08 4b02          	push	#2
-5507  0f0a ae0000        	ldw	x,#_g_wTmReportCnt
-5508  0f0d 89            	pushw	x
-5509  0f0e 96            	ldw	x,sp
-5510  0f0f 1c003b        	addw	x,#OFST+2
-5511  0f12 cd0000        	call	_MemcpyFunc
-5513  0f15 5b03          	addw	sp,#3
-5514                     ; 1351 		SaveParameterForType(nBuf, 10, LT_REP_TIME);
-5516  0f17 4b05          	push	#5
-5517  0f19 4b0a          	push	#10
-5518  0f1b 96            	ldw	x,sp
-5519  0f1c 1c0032        	addw	x,#OFST-7
-5520  0f1f cd0000        	call	_SaveParameterForType
-5522  0f22 85            	popw	x
-5523                     ; 1352 		UC_SleepFunc(1);
-5525  0f23 ad23          	call	LC013
-5527  0f25 201e          	jra	L1202
-5528  0f27               L7102:
-5529                     ; 1356 		MemcpyFunc((u8 *)&stLastReportT, nBuf, 8);
-5531  0f27 4b08          	push	#8
-5532  0f29 96            	ldw	x,sp
-5533  0f2a 1c0031        	addw	x,#OFST-8
-5534  0f2d 89            	pushw	x
-5535  0f2e ae0000        	ldw	x,#_stLastReportT
-5536  0f31 cd0000        	call	_MemcpyFunc
-5538  0f34 5b03          	addw	sp,#3
-5539                     ; 1357 		MemcpyFunc((u8 *)&g_wTmReportCnt, &nBuf[8], 2);
-5541  0f36 4b02          	push	#2
-5542  0f38 96            	ldw	x,sp
-5543  0f39 1c0039        	addw	x,#OFST+0
-5544  0f3c 89            	pushw	x
-5545  0f3d ae0000        	ldw	x,#_g_wTmReportCnt
-5546  0f40 cd0000        	call	_MemcpyFunc
-5548  0f43 5b03          	addw	sp,#3
-5549  0f45               L1202:
-5550                     ; 1360 	return ;
-5553  0f45 5b39          	addw	sp,#57
-5554  0f47 81            	ret	
-5556  0f48               LC013:
-5557  0f48 ae0001        	ldw	x,#1
-5558  0f4b 89            	pushw	x
-5559  0f4c 5f            	clrw	x
-5560  0f4d 89            	pushw	x
-5561  0f4e cd0000        	call	_UC_SleepFunc
-5563  0f51 5b04          	addw	sp,#4
-5564  0f53 81            	ret	
-5684                     	xdef	_g_HD_device_addr
-5685                     	xdef	_g_HD_aralm_type
-5686                     	xdef	_g_HD_Msg_Tag
-5687                     	xdef	_g_HD_Ctrl
-5688                     	xdef	_stDataPtrHD
-5689                     	xdef	_HeDa_Cmd_Get_Appoint_Data_Handle
-5690                     	xdef	_HeDa_Cmd_Get_All_Param_Handle
-5691                     	xdef	_HeDa_Cmd_Get_Secret_Key_Handle
-5692                     	xdef	_HeDa_Cmd_Set_Secret_Key_Handle
-5693                     	xdef	_HeDa_Cmd_Get_Addr_Handle
-5694                     	xdef	_HeDa_Cmd_Set_Addr_Handle
-5695                     	xdef	_HeDa_Cmd_Get_Pressure_Threshold_Handle
-5696                     	xdef	_HeDa_Cmd_Set_Pressure_Threshold_Handle
-5697                     	xdef	_HeDa_Cmd_Get_Report_Cycle_Handle
-5698                     	xdef	_HeDa_Cmd_Set_Report_Cycle_Handle
-5699                     	xdef	_HeDa_ReportCycleType_To_TypeAddCycle
-5700                     	xdef	_HeDa_TypeAddCycle_To_ReportCycleType
-5701                     	xdef	_HeDa_Cmd_Get_Net_Param_Handle
-5702                     	xdef	_HeDa_Cmd_Set_Net_Param_Handle
-5703                     	xdef	_HeDa_Cmd_Get_Sampling_Interval_Handle
-5704                     	xdef	_HeDa_Cmd_Set_Sampling_Interval_Handle
-5705                     	xdef	_HeDa_Cmd_Reply_Upload_Handle
-5706                     	xdef	_HD_ProtolHandle
-5707                     	xdef	_HD_AddressComparePro
-5708                     	xdef	_HD_DecodeParameter
-5709                     	xdef	_HD_ProtolSend
-5710                     	xdef	_HD_Online
-5711                     	xdef	_HD_OnlineCtl
-5712                     	xdef	_HD_ProtolProc
-5713                     	xdef	_HD_TimeOutReUpLoad
-5714                     	xdef	_LP_HD_CalReportConut
-5715                     	xdef	_HD_ClaReportTimeToSec
-5716                     	xdef	_HD_InitializeGsm
-5717                     	xref	_g_Device_Info
-5718                     	xref	_BAT_GetBatVol
-5719                     	xref	_STM8_RTC_Set
-5720                     	xref	_STM8_RTC_Get
-5721                     	xref	_g_stNextGmTime
-5722                     	xref	_g_stNextRepTime
-5723                     	xref	_stRepFail
-5724                     	xref	_tyParameter
-5725                     	xref	_tyRecord
-5726                     	xref	_ReadDayFreezeRecord
-5727                     	xref	_SaveParameterForType
-5728                     	xref	_ReadParameterForType
-5729                     	xref	_ReadRecord
-5730                     	xref	_JX_StringCat
-5731                     	xref	_JX_Strlen
-5732                     	xref	_FrameSendFunc
-5733                     	xref	_M590_CloseConnect
-5734                     	xref	_M590_TcpSendDatLen
-5735                     	xref	_SetLogonMode
-5736                     	xref	_WatitDataSendOk
-5737                     	xref	_GetReportFailFlag
-5738                     	xref	_UC_SleepFunc
-5739                     	xref	_m_nUploadMode
-5740                     	xref	_g_nSignal
-5741                     	xref	_g_wTmReportCnt
-5742                     	xref	_aucAtPPort1
-5743                     	xref	_aucAtPServer1
-5744                     	xref	_ucStatusGsm
-5745                     	xref	_tyReportParameter
-5746                     	xref	_g_nApnType
-5747                     	xref	_m_nRepFailFlg
-5748                     	xref	_tyGSMFlag
-5749                     	xref	_ucLogonMode
-5750                     	xref	_g_nDatRepCnt
-5751                     	xref	_m_nRepEnableFlg
-5752                     	xref	_g_dwRepTick
-5753                     	xref	_stLastReportT
-5754                     	xref	_stTimeNow
-5755                     	xref	_g_nApnBuf
-5756                     	xref	_tyReport
-5757                     	xref	_GetUartRxBuf
-5758                     	xref	_ClearRxBuff
-5759                     	xref	_CheckRevDataLen
-5760                     	xref	_aucUartTxBuffer
-5761                     	xref	_GM_GetGatherMeterFlg
-5762                     	xref	_tyTime
-5763                     	xref	_HeDa_Get_String_len
-5764                     	xref	_JX_U32ToStr
-5765                     	xref	_JX_IpAddrToStr
-5766                     	xref	_TM_RTimeDecnMinute
-5767                     	xref	_TM_RTimeAddnMinute
-5768                     	xref	_TM_DiffSecond
-5769                     	xref	_TM_TimeChangeBToA
-5770                     	xref	_TM_TimeChangeAToB
-5771                     	xref	_TM_IsValidTimePro
-5772                     	xref	_JX_IsAllFillDat
-5773                     	xref	_JX_AddSum8Bit
-5774                     	xref	_JX_BL_Change
-5775                     	xref	_MemcpyFunc
-5776                     	xref	_MemsetFunc
-5777                     	xref	_GetSysTemTick
-5778                     	switch	.const
-5779  005b               L1321:
-5780  005b 2200          	dc.b	34,0
-5781                     	xref.b	c_lreg
-5801                     	xref	c_xymvx
-5802                     	xref	c_lcmp
-5803                     	xref	c_smul
-5804                     	xref	c_ludv
-5805                     	xref	c_lsub
-5806                     	xref	c_lumd
-5807                     	xref	c_uitolx
-5808                     	xref	c_lmod
-5809                     	xref	c_ldiv
-5810                     	xref	c_lzmp
-5811                     	xref	c_rtol
-5812                     	xref	c_ltor
-5813                     	xref	c_lmul
-5814                     	xref	c_umul
-5815                     	xref	c_cmulx
-5816                     	end
+4550  0c7c 1e03          	ldw	x,(OFST+1,sp)
+4551  0c7e f7            	ld	(x),a
+4552                     ; 1132 	MemcpyFunc(pData+1, (u8 *)&tyParameter.Pressure1_LimitUp, 16);
+4554  0c7f 4b10          	push	#16
+4555  0c81 ae0011        	ldw	x,#_tyParameter+17
+4556  0c84 89            	pushw	x
+4557  0c85 1e06          	ldw	x,(OFST+4,sp)
+4558  0c87 5c            	incw	x
+4559  0c88 cd0000        	call	_MemcpyFunc
+4561  0c8b 5b03          	addw	sp,#3
+4562                     ; 1134 	return 25;
+4564  0c8d a619          	ld	a,#25
+4566  0c8f               L454:
+4568  0c8f 5b04          	addw	sp,#4
+4569  0c91 81            	ret	
+4571  0c92               LC012:
+4572  0c92 4b04          	push	#4
+4573  0c94 4b21          	push	#33
+4574  0c96 ae0000        	ldw	x,#_tyParameter
+4575  0c99 cd0000        	call	_SaveParameterForType
+4577  0c9c 85            	popw	x
+4578  0c9d 81            	ret	
+4617                     ; 1146 u8 HeDa_Cmd_Get_Pressure_Threshold_Handle(u8 *pData)
+4617                     ; 1147 {
+4618                     	switch	.text
+4619  0c9e               _HeDa_Cmd_Get_Pressure_Threshold_Handle:
+4621  0c9e 89            	pushw	x
+4622       00000000      OFST:	set	0
+4625                     ; 1148 	MemcpyFunc(pData, (u8 *)&tyParameter.Pressure1_LimitUp, 16);
+4627  0c9f 4b10          	push	#16
+4628  0ca1 ae0011        	ldw	x,#_tyParameter+17
+4629  0ca4 89            	pushw	x
+4630  0ca5 1e04          	ldw	x,(OFST+4,sp)
+4631  0ca7 cd0000        	call	_MemcpyFunc
+4633  0caa 5b03          	addw	sp,#3
+4634                     ; 1149 	MemsetFunc(pData+16, 0, 8);
+4636  0cac 4b08          	push	#8
+4637  0cae 4b00          	push	#0
+4638  0cb0 1e03          	ldw	x,(OFST+3,sp)
+4639  0cb2 1c0010        	addw	x,#16
+4640  0cb5 cd0000        	call	_MemsetFunc
+4642  0cb8 a618          	ld	a,#24
+4643  0cba 85            	popw	x
+4644                     ; 1150 	return 24;
+4648  0cbb 85            	popw	x
+4649  0cbc 81            	ret	
+4687                     ; 1162 u8 HeDa_Cmd_Set_Secret_Key_Handle(u8 *pData)
+4687                     ; 1163 {
+4688                     	switch	.text
+4689  0cbd               _HeDa_Cmd_Set_Secret_Key_Handle:
+4691  0cbd 89            	pushw	x
+4692       00000000      OFST:	set	0
+4695                     ; 1164 	if((stDataPtrHD.Packet.Data_Len-1) < 16)//数据域长度不够
+4697  0cbe ce0003        	ldw	x,_stDataPtrHD+3
+4698  0cc1 5a            	decw	x
+4699  0cc2 a30010        	cpw	x,#16
+4700  0cc5 2403          	jruge	L1161
+4701                     ; 1166 		return 0;
+4703  0cc7 4f            	clr	a
+4705  0cc8 2014          	jra	L074
+4706  0cca               L1161:
+4707                     ; 1169 	*pData=0x01;
+4709  0cca 1e01          	ldw	x,(OFST+1,sp)
+4710  0ccc a601          	ld	a,#1
+4711  0cce f7            	ld	(x),a
+4712                     ; 1170 	MemcpyFunc(pData+1, pData, 16);
+4714  0ccf 4b10          	push	#16
+4715  0cd1 1e02          	ldw	x,(OFST+2,sp)
+4716  0cd3 89            	pushw	x
+4717  0cd4 1e04          	ldw	x,(OFST+4,sp)
+4718  0cd6 5c            	incw	x
+4719  0cd7 cd0000        	call	_MemcpyFunc
+4721  0cda 5b03          	addw	sp,#3
+4722                     ; 1171 	return 17;
+4724  0cdc a611          	ld	a,#17
+4726  0cde               L074:
+4728  0cde 85            	popw	x
+4729  0cdf 81            	ret	
+4766                     ; 1183 u8 HeDa_Cmd_Get_Secret_Key_Handle(u8 *pData)
+4766                     ; 1184 {
+4767                     	switch	.text
+4768  0ce0               _HeDa_Cmd_Get_Secret_Key_Handle:
+4772                     ; 1185 	MemsetFunc(pData, 0, 16);
+4774  0ce0 4b10          	push	#16
+4775  0ce2 4b00          	push	#0
+4776  0ce4 cd0000        	call	_MemsetFunc
+4778  0ce7 a610          	ld	a,#16
+4779  0ce9 85            	popw	x
+4780                     ; 1186 	return 16;
+4784  0cea 81            	ret	
+4787                     	switch	.const
+4788  0029               L1361_meter_addr:
+4789  0029 00            	dc.b	0
+4790  002a 00            	ds.b	1
+4836                     ; 1198 u8 HeDa_Cmd_Set_Addr_Handle(u8 *pData)
+4836                     ; 1199 {
+4837                     	switch	.text
+4838  0ceb               _HeDa_Cmd_Set_Addr_Handle:
+4840  0ceb 89            	pushw	x
+4841  0cec 89            	pushw	x
+4842       00000002      OFST:	set	2
+4845                     ; 1200 	u8 meter_addr[2]={0};//表地址缓存
+4847  0ced c60029        	ld	a,L1361_meter_addr
+4848  0cf0 6b01          	ld	(OFST-1,sp),a
+4849  0cf2 c6002a        	ld	a,L1361_meter_addr+1
+4850  0cf5 6b02          	ld	(OFST+0,sp),a
+4851                     ; 1202 	if((stDataPtrHD.Packet.Data_Len-1) < 2)//数据域长度不够
+4853  0cf7 ce0003        	ldw	x,_stDataPtrHD+3
+4854  0cfa 5a            	decw	x
+4855  0cfb a30002        	cpw	x,#2
+4856  0cfe 2403          	jruge	L5561
+4857                     ; 1204 		return 0;
+4859  0d00 4f            	clr	a
+4861  0d01 2037          	jra	L005
+4862  0d03               L5561:
+4863                     ; 1206 	meter_addr[0]=*pData;
+4865  0d03 1e03          	ldw	x,(OFST+1,sp)
+4866  0d05 f6            	ld	a,(x)
+4867  0d06 6b01          	ld	(OFST-1,sp),a
+4868                     ; 1207 	meter_addr[1]=*(pData+1);
+4870  0d08 e601          	ld	a,(1,x)
+4871  0d0a 6b02          	ld	(OFST+0,sp),a
+4872                     ; 1210 	if((meter_addr[0]==0 && meter_addr[1]==0) || (meter_addr[0]==0xff && meter_addr[1]==0xff))
+4874  0d0c 7b01          	ld	a,(OFST-1,sp)
+4875  0d0e 2604          	jrne	L3661
+4877  0d10 0d02          	tnz	(OFST+0,sp)
+4878  0d12 2708          	jreq	L1661
+4879  0d14               L3661:
+4881  0d14 4c            	inc	a
+4882  0d15 2614          	jrne	L7561
+4884  0d17 7b02          	ld	a,(OFST+0,sp)
+4885  0d19 4c            	inc	a
+4886  0d1a 260f          	jrne	L7561
+4887  0d1c               L1661:
+4888                     ; 1212 		*pData=0x10;//设置失败
+4890  0d1c a610          	ld	a,#16
+4891  0d1e f7            	ld	(x),a
+4892                     ; 1213 		*(pData+1)=tyParameter.Address[0];
+4894  0d1f c60001        	ld	a,_tyParameter+1
+4895  0d22 e701          	ld	(1,x),a
+4896                     ; 1214 		*(pData+2)=tyParameter.Address[1];
+4898  0d24 c60002        	ld	a,_tyParameter+2
+4899  0d27 e702          	ld	(2,x),a
+4901  0d29 200d          	jra	L5661
+4902  0d2b               L7561:
+4903                     ; 1218 		*pData=0x01;//设置成功
+4905  0d2b a601          	ld	a,#1
+4906  0d2d f7            	ld	(x),a
+4907                     ; 1219 		tyParameter.Address[0]=meter_addr[0];
+4909  0d2e 7b01          	ld	a,(OFST-1,sp)
+4910  0d30 c70001        	ld	_tyParameter+1,a
+4911                     ; 1220 		tyParameter.Address[1]=meter_addr[1];
+4913  0d33 7b02          	ld	a,(OFST+0,sp)
+4914  0d35 c70002        	ld	_tyParameter+2,a
+4915  0d38               L5661:
+4916                     ; 1222 	return 3;
+4918  0d38 a603          	ld	a,#3
+4920  0d3a               L005:
+4922  0d3a 5b04          	addw	sp,#4
+4923  0d3c 81            	ret	
+4960                     ; 1234 u8 HeDa_Cmd_Get_Addr_Handle(u8 *pData)
+4960                     ; 1235 {
+4961                     	switch	.text
+4962  0d3d               _HeDa_Cmd_Get_Addr_Handle:
+4966                     ; 1236 	*pData=tyParameter.Address[0];
+4968  0d3d c60001        	ld	a,_tyParameter+1
+4969  0d40 f7            	ld	(x),a
+4970                     ; 1237 	*(pData+1)=tyParameter.Address[1];
+4972  0d41 c60002        	ld	a,_tyParameter+2
+4973  0d44 e701          	ld	(1,x),a
+4974                     ; 1238 	return 2;
+4976  0d46 a602          	ld	a,#2
+4979  0d48 81            	ret	
+5015                     ; 1250 u8 HeDa_Cmd_Get_All_Param_Handle(u8 *pData)
+5015                     ; 1251 {
+5016                     	switch	.text
+5017  0d49               _HeDa_Cmd_Get_All_Param_Handle:
+5021                     ; 1252 	return 0;
+5023  0d49 4f            	clr	a
+5026  0d4a 81            	ret	
+5062                     ; 1264 u8 HeDa_Cmd_Get_Appoint_Data_Handle(u8 *pData)
+5062                     ; 1265 {
+5063                     	switch	.text
+5064  0d4b               _HeDa_Cmd_Get_Appoint_Data_Handle:
+5068                     ; 1266 	return 0;
+5070  0d4b 4f            	clr	a
+5073  0d4c 81            	ret	
+5076                     	switch	.const
+5077  002b               L1471_nIPstr:
+5078  002b 00            	dc.b	0
+5079  002c 000000000000  	ds.b	31
+5080  004b               L3471_nPort:
+5081  004b 00            	dc.b	0
+5082  004c 0000000000    	ds.b	5
+5083  0051               L5471_nBuf:
+5084  0051 00            	dc.b	0
+5085  0052 000000000000  	ds.b	9
+5174                     ; 1278 void HD_InitializeGsm(void)
+5174                     ; 1279 {
+5175                     	switch	.text
+5176  0d4d               _HD_InitializeGsm:
+5178  0d4d 5239          	subw	sp,#57
+5179       00000039      OFST:	set	57
+5182                     ; 1280 	char nIPstr[32] = {0};
+5184  0d4f 96            	ldw	x,sp
+5185  0d50 1c0010        	addw	x,#OFST-41
+5186  0d53 90ae002b      	ldw	y,#L1471_nIPstr
+5187  0d57 a620          	ld	a,#32
+5188  0d59 cd0000        	call	c_xymvx
+5190                     ; 1281 	u8 nPort[6]     = {0};
+5192  0d5c 96            	ldw	x,sp
+5193  0d5d 1c0003        	addw	x,#OFST-54
+5194  0d60 90ae004b      	ldw	y,#L3471_nPort
+5195  0d64 a606          	ld	a,#6
+5196  0d66 cd0000        	call	c_xymvx
+5198                     ; 1282 	u16 dwPortNum = 0;
+5200  0d69 5f            	clrw	x
+5201  0d6a 1f01          	ldw	(OFST-56,sp),x
+5202                     ; 1284 	u8 nBuf[10]     = {0};
+5204  0d6c 96            	ldw	x,sp
+5205  0d6d 1c0030        	addw	x,#OFST-9
+5206  0d70 90ae0051      	ldw	y,#L5471_nBuf
+5207  0d74 a60a          	ld	a,#10
+5208  0d76 cd0000        	call	c_xymvx
+5210                     ; 1286 	MemsetFunc(nPort, 0, sizeof(nPort));
+5212  0d79 4b06          	push	#6
+5213  0d7b 4b00          	push	#0
+5214  0d7d 96            	ldw	x,sp
+5215  0d7e 1c0005        	addw	x,#OFST-52
+5216  0d81 cd0000        	call	_MemsetFunc
+5218  0d84 85            	popw	x
+5219                     ; 1287 	MemsetFunc(nIPstr, 0, sizeof(nIPstr));	
+5221  0d85 4b20          	push	#32
+5222  0d87 4b00          	push	#0
+5223  0d89 96            	ldw	x,sp
+5224  0d8a 1c0012        	addw	x,#OFST-39
+5225  0d8d cd0000        	call	_MemsetFunc
+5227  0d90 a604          	ld	a,#4
+5228  0d92 85            	popw	x
+5229                     ; 1288 	SetLogonMode(UP_Upload_HD);
+5231  0d93 cd0000        	call	_SetLogonMode
+5233                     ; 1291 	if(TRUE == ReadParameterForType((u8 *)&tyReportParameter, sizeof(tyReportParameter), IPANDPORT_PARA))
+5235  0d96 4b01          	push	#1
+5236  0d98 4b27          	push	#39
+5237  0d9a ae0000        	ldw	x,#_tyReportParameter
+5238  0d9d cd0000        	call	_ReadParameterForType
+5240  0da0 4a            	dec	a
+5241  0da1 85            	popw	x
+5242  0da2 2703cc0e5b    	jrne	L3002
+5243                     ; 1293 		if(tyReportParameter.flag_Login_Mode==HD_Login_IP)//ip地址上报
+5245  0da7 c60026        	ld	a,_tyReportParameter+38
+5246  0daa 4a            	dec	a
+5247  0dab 260e          	jrne	L5002
+5248                     ; 1295 			JX_IpAddrToStr(nIPstr, (u8*)&tyReportParameter.Main_IP);
+5250  0dad ae0000        	ldw	x,#_tyReportParameter
+5251  0db0 89            	pushw	x
+5252  0db1 96            	ldw	x,sp
+5253  0db2 1c0012        	addw	x,#OFST-39
+5254  0db5 cd0000        	call	_JX_IpAddrToStr
+5256  0db8 85            	popw	x
+5258  0db9 2016          	jra	L7002
+5259  0dbb               L5002:
+5260                     ; 1297 		else if(tyReportParameter.flag_Login_Mode==HD_Login_Domain_Name)//域名上报
+5262  0dbb c60026        	ld	a,_tyReportParameter+38
+5263  0dbe a102          	cp	a,#2
+5264  0dc0 260f          	jrne	L7002
+5265                     ; 1299 			MemcpyFunc(nIPstr, (u8*)&tyReportParameter.Main_domain_name, 32);
+5267  0dc2 4b20          	push	#32
+5268  0dc4 ae0006        	ldw	x,#_tyReportParameter+6
+5269  0dc7 89            	pushw	x
+5270  0dc8 96            	ldw	x,sp
+5271  0dc9 1c0013        	addw	x,#OFST-38
+5272  0dcc cd0000        	call	_MemcpyFunc
+5274  0dcf 5b03          	addw	sp,#3
+5275  0dd1               L7002:
+5276                     ; 1302 		MemcpyFunc((u8*)&dwPortNum, (u8*)&tyReportParameter.Main_Port, 2);
+5278  0dd1 4b02          	push	#2
+5279  0dd3 ae0004        	ldw	x,#_tyReportParameter+4
+5280  0dd6 89            	pushw	x
+5281  0dd7 96            	ldw	x,sp
+5282  0dd8 1c0004        	addw	x,#OFST-53
+5283  0ddb cd0000        	call	_MemcpyFunc
+5285  0dde 5b03          	addw	sp,#3
+5286                     ; 1303 		JX_BL_Change(2, (u8*)&dwPortNum);
+5288  0de0 96            	ldw	x,sp
+5289  0de1 5c            	incw	x
+5290  0de2 89            	pushw	x
+5291  0de3 ae0002        	ldw	x,#2
+5292  0de6 cd0000        	call	_JX_BL_Change
+5294  0de9 85            	popw	x
+5295                     ; 1304 		JX_U32ToStr(dwPortNum, nPort);
+5297  0dea 96            	ldw	x,sp
+5298  0deb 1c0003        	addw	x,#OFST-54
+5299  0dee 89            	pushw	x
+5300  0def 1e03          	ldw	x,(OFST-54,sp)
+5301  0df1 cd0000        	call	c_uitolx
+5303  0df4 be02          	ldw	x,c_lreg+2
+5304  0df6 89            	pushw	x
+5305  0df7 be00          	ldw	x,c_lreg
+5306  0df9 89            	pushw	x
+5307  0dfa cd0000        	call	_JX_U32ToStr
+5309  0dfd 5b06          	addw	sp,#6
+5310                     ; 1305 		MemsetFunc(&aucAtPServer1[1], 0, sizeof(aucAtPServer1)-1);
+5312  0dff 4b13          	push	#19
+5313  0e01 4b00          	push	#0
+5314  0e03 ae0001        	ldw	x,#_aucAtPServer1+1
+5315  0e06 cd0000        	call	_MemsetFunc
+5317  0e09 85            	popw	x
+5318                     ; 1306 		MemsetFunc(&aucAtPPort1[1], 0, sizeof(aucAtPPort1)-1);
+5320  0e0a 4b07          	push	#7
+5321  0e0c 4b00          	push	#0
+5322  0e0e ae0001        	ldw	x,#_aucAtPPort1+1
+5323  0e11 cd0000        	call	_MemsetFunc
+5325  0e14 85            	popw	x
+5326                     ; 1308 		MemcpyFunc((u8*)&aucAtPServer1[1], nIPstr, JX_Strlen(nIPstr));
+5328  0e15 96            	ldw	x,sp
+5329  0e16 1c0010        	addw	x,#OFST-41
+5330  0e19 cd0000        	call	_JX_Strlen
+5332  0e1c 88            	push	a
+5333  0e1d 96            	ldw	x,sp
+5334  0e1e 1c0011        	addw	x,#OFST-40
+5335  0e21 89            	pushw	x
+5336  0e22 ae0001        	ldw	x,#_aucAtPServer1+1
+5337  0e25 cd0000        	call	_MemcpyFunc
+5339  0e28 5b03          	addw	sp,#3
+5340                     ; 1309 		JX_StringCat(aucAtPServer1,"\"", 2);
+5342  0e2a 4b02          	push	#2
+5343  0e2c ae005b        	ldw	x,#L1321
+5344  0e2f 89            	pushw	x
+5345  0e30 ae0000        	ldw	x,#_aucAtPServer1
+5346  0e33 cd0000        	call	_JX_StringCat
+5348  0e36 5b03          	addw	sp,#3
+5349                     ; 1310 		MemcpyFunc((u8*)&aucAtPPort1[1], nPort, JX_Strlen(nPort));
+5351  0e38 96            	ldw	x,sp
+5352  0e39 1c0003        	addw	x,#OFST-54
+5353  0e3c cd0000        	call	_JX_Strlen
+5355  0e3f 88            	push	a
+5356  0e40 96            	ldw	x,sp
+5357  0e41 1c0004        	addw	x,#OFST-53
+5358  0e44 89            	pushw	x
+5359  0e45 ae0001        	ldw	x,#_aucAtPPort1+1
+5360  0e48 cd0000        	call	_MemcpyFunc
+5362  0e4b 5b03          	addw	sp,#3
+5363                     ; 1311 		JX_StringCat(aucAtPPort1,"\"", 2);
+5365  0e4d 4b02          	push	#2
+5366  0e4f ae005b        	ldw	x,#L1321
+5367  0e52 89            	pushw	x
+5368  0e53 ae0000        	ldw	x,#_aucAtPPort1
+5369  0e56 cd0000        	call	_JX_StringCat
+5371  0e59 5b03          	addw	sp,#3
+5372  0e5b               L3002:
+5373                     ; 1315 	if(TRUE == ReadParameterForType(&g_nApnBuf[1], APN_LEN-1, APN_PARA))
+5375  0e5b 4b02          	push	#2
+5376  0e5d 4b13          	push	#19
+5377  0e5f ae0001        	ldw	x,#_g_nApnBuf+1
+5378  0e62 cd0000        	call	_ReadParameterForType
+5380  0e65 4a            	dec	a
+5381  0e66 85            	popw	x
+5382  0e67 260e          	jrne	L3102
+5383                     ; 1317 		JX_StringCat(g_nApnBuf, "\"", 2);
+5385  0e69 4b02          	push	#2
+5386  0e6b ae005b        	ldw	x,#L1321
+5387  0e6e 89            	pushw	x
+5388  0e6f ae0000        	ldw	x,#_g_nApnBuf
+5389  0e72 cd0000        	call	_JX_StringCat
+5391  0e75 5b03          	addw	sp,#3
+5392  0e77               L3102:
+5393                     ; 1321 	if(FALSE == ReadParameterForType((u8 *)&tyReport, sizeof(tyReport), REPORT_PARA))
+5395  0e77 4b03          	push	#3
+5396  0e79 4b0a          	push	#10
+5397  0e7b ae0000        	ldw	x,#_tyReport
+5398  0e7e cd0000        	call	_ReadParameterForType
+5400  0e81 4d            	tnz	a
+5401  0e82 85            	popw	x
+5402  0e83 262e          	jrne	L5102
+5403                     ; 1323 		tyReport.nIntervalType=HD_INTERVAL_HOUR;//默认上报类型按小时计算
+5405  0e85 35010001      	mov	_tyReport+1,#1
+5406                     ; 1324 		tyReport.cycle 	= 24;	 				//默认24小时上报一次	
+5408  0e89 35180002      	mov	_tyReport+2,#24
+5409                     ; 1325 		tyReport.wGatherCycle = 60; 			//默认采样间隔60分钟,即抄表间隔
+5411  0e8d 353c0000      	mov	_tyReport,#60
+5412                     ; 1327 		tyReport.Time.Byte.Year = 0x15;//默认上报时间
+5414  0e91 35150009      	mov	_tyReport+9,#21
+5415                     ; 1328 		tyReport.Time.Byte.Month = 0x12;
+5417  0e95 35120008      	mov	_tyReport+8,#18
+5418                     ; 1329 		tyReport.Time.Byte.Day = 0x28;
+5420  0e99 35280007      	mov	_tyReport+7,#40
+5421                     ; 1330 		tyReport.Time.Byte.Hour = 0x00;
+5423  0e9d 725f0006      	clr	_tyReport+6
+5424                     ; 1331 		tyReport.Time.Byte.Minute= 0x00;
+5426  0ea1 725f0005      	clr	_tyReport+5
+5427                     ; 1332 		SaveParameterForType((u8 *)&tyReport, sizeof(tyReport), REPORT_PARA);		
+5429  0ea5 4b03          	push	#3
+5430  0ea7 4b0a          	push	#10
+5431  0ea9 ae0000        	ldw	x,#_tyReport
+5432  0eac cd0000        	call	_SaveParameterForType
+5434  0eaf 85            	popw	x
+5435                     ; 1333 		UC_SleepFunc(1);
+5437  0eb0 cd0f42        	call	LC013
+5438  0eb3               L5102:
+5439                     ; 1341 	if(FALSE == ReadParameterForType(nBuf, 10, LT_REP_TIME))
+5441  0eb3 4b05          	push	#5
+5442  0eb5 4b0a          	push	#10
+5443  0eb7 96            	ldw	x,sp
+5444  0eb8 1c0032        	addw	x,#OFST-7
+5445  0ebb cd0000        	call	_ReadParameterForType
+5447  0ebe 4d            	tnz	a
+5448  0ebf 85            	popw	x
+5449  0ec0 265f          	jrne	L7102
+5450                     ; 1343 		g_wTmReportCnt = 0;
+5452  0ec2 5f            	clrw	x
+5453  0ec3 cf0000        	ldw	_g_wTmReportCnt,x
+5454                     ; 1344 		MemcpyFunc((u8*)&stReportTime, (u8*)&tyReport.Time, sizeof(tyReport.Time));
+5456  0ec6 4b06          	push	#6
+5457  0ec8 ae0004        	ldw	x,#_tyReport+4
+5458  0ecb 89            	pushw	x
+5459  0ecc 96            	ldw	x,sp
+5460  0ecd 1c000c        	addw	x,#OFST-45
+5461  0ed0 cd0000        	call	_MemcpyFunc
+5463  0ed3 5b03          	addw	sp,#3
+5464                     ; 1345 		JX_BL_Change(6, (u8*)&stReportTime);
+5466  0ed5 96            	ldw	x,sp
+5467  0ed6 1c0009        	addw	x,#OFST-48
+5468  0ed9 89            	pushw	x
+5469  0eda ae0006        	ldw	x,#6
+5470  0edd cd0000        	call	_JX_BL_Change
+5472  0ee0 85            	popw	x
+5473                     ; 1346 		stReportTime.nMonth = stReportTime.nMonth&0x1F;
+5475  0ee1 7b0a          	ld	a,(OFST-47,sp)
+5476  0ee3 a41f          	and	a,#31
+5477  0ee5 6b0a          	ld	(OFST-47,sp),a
+5478                     ; 1347 		TM_TimeChangeAToB(&stReportTime,&stLastReportT);
+5480  0ee7 ae0000        	ldw	x,#_stLastReportT
+5481  0eea 89            	pushw	x
+5482  0eeb 96            	ldw	x,sp
+5483  0eec 1c000b        	addw	x,#OFST-46
+5484  0eef cd0000        	call	_TM_TimeChangeAToB
+5486  0ef2 85            	popw	x
+5487                     ; 1348 		MemcpyFunc(nBuf, (u8*)&stLastReportT, 8);
+5489  0ef3 4b08          	push	#8
+5490  0ef5 ae0000        	ldw	x,#_stLastReportT
+5491  0ef8 89            	pushw	x
+5492  0ef9 96            	ldw	x,sp
+5493  0efa 1c0033        	addw	x,#OFST-6
+5494  0efd cd0000        	call	_MemcpyFunc
+5496  0f00 5b03          	addw	sp,#3
+5497                     ; 1349 		MemcpyFunc(&nBuf[8], (u8*)&g_wTmReportCnt, 2);
+5499  0f02 4b02          	push	#2
+5500  0f04 ae0000        	ldw	x,#_g_wTmReportCnt
+5501  0f07 89            	pushw	x
+5502  0f08 96            	ldw	x,sp
+5503  0f09 1c003b        	addw	x,#OFST+2
+5504  0f0c cd0000        	call	_MemcpyFunc
+5506  0f0f 5b03          	addw	sp,#3
+5507                     ; 1350 		SaveParameterForType(nBuf, 10, LT_REP_TIME);
+5509  0f11 4b05          	push	#5
+5510  0f13 4b0a          	push	#10
+5511  0f15 96            	ldw	x,sp
+5512  0f16 1c0032        	addw	x,#OFST-7
+5513  0f19 cd0000        	call	_SaveParameterForType
+5515  0f1c 85            	popw	x
+5516                     ; 1351 		UC_SleepFunc(1);
+5518  0f1d ad23          	call	LC013
+5520  0f1f 201e          	jra	L1202
+5521  0f21               L7102:
+5522                     ; 1355 		MemcpyFunc((u8 *)&stLastReportT, nBuf, 8);
+5524  0f21 4b08          	push	#8
+5525  0f23 96            	ldw	x,sp
+5526  0f24 1c0031        	addw	x,#OFST-8
+5527  0f27 89            	pushw	x
+5528  0f28 ae0000        	ldw	x,#_stLastReportT
+5529  0f2b cd0000        	call	_MemcpyFunc
+5531  0f2e 5b03          	addw	sp,#3
+5532                     ; 1356 		MemcpyFunc((u8 *)&g_wTmReportCnt, &nBuf[8], 2);
+5534  0f30 4b02          	push	#2
+5535  0f32 96            	ldw	x,sp
+5536  0f33 1c0039        	addw	x,#OFST+0
+5537  0f36 89            	pushw	x
+5538  0f37 ae0000        	ldw	x,#_g_wTmReportCnt
+5539  0f3a cd0000        	call	_MemcpyFunc
+5541  0f3d 5b03          	addw	sp,#3
+5542  0f3f               L1202:
+5543                     ; 1359 	return ;
+5546  0f3f 5b39          	addw	sp,#57
+5547  0f41 81            	ret	
+5549  0f42               LC013:
+5550  0f42 ae0001        	ldw	x,#1
+5551  0f45 89            	pushw	x
+5552  0f46 5f            	clrw	x
+5553  0f47 89            	pushw	x
+5554  0f48 cd0000        	call	_UC_SleepFunc
+5556  0f4b 5b04          	addw	sp,#4
+5557  0f4d 81            	ret	
+5677                     	xdef	_g_HD_device_addr
+5678                     	xdef	_g_HD_aralm_type
+5679                     	xdef	_g_HD_Msg_Tag
+5680                     	xdef	_g_HD_Ctrl
+5681                     	xdef	_stDataPtrHD
+5682                     	xdef	_HeDa_Cmd_Get_Appoint_Data_Handle
+5683                     	xdef	_HeDa_Cmd_Get_All_Param_Handle
+5684                     	xdef	_HeDa_Cmd_Get_Secret_Key_Handle
+5685                     	xdef	_HeDa_Cmd_Set_Secret_Key_Handle
+5686                     	xdef	_HeDa_Cmd_Get_Addr_Handle
+5687                     	xdef	_HeDa_Cmd_Set_Addr_Handle
+5688                     	xdef	_HeDa_Cmd_Get_Pressure_Threshold_Handle
+5689                     	xdef	_HeDa_Cmd_Set_Pressure_Threshold_Handle
+5690                     	xdef	_HeDa_Cmd_Get_Report_Cycle_Handle
+5691                     	xdef	_HeDa_Cmd_Set_Report_Cycle_Handle
+5692                     	xdef	_HeDa_ReportCycleType_To_TypeAddCycle
+5693                     	xdef	_HeDa_TypeAddCycle_To_ReportCycleType
+5694                     	xdef	_HeDa_Cmd_Get_Net_Param_Handle
+5695                     	xdef	_HeDa_Cmd_Set_Net_Param_Handle
+5696                     	xdef	_HeDa_Cmd_Get_Sampling_Interval_Handle
+5697                     	xdef	_HeDa_Cmd_Set_Sampling_Interval_Handle
+5698                     	xdef	_HeDa_Cmd_Reply_Upload_Handle
+5699                     	xdef	_HD_ProtolHandle
+5700                     	xdef	_HD_AddressComparePro
+5701                     	xdef	_HD_DecodeParameter
+5702                     	xdef	_HD_ProtolSend
+5703                     	xdef	_HD_Online
+5704                     	xdef	_HD_OnlineCtl
+5705                     	xdef	_HD_ProtolProc
+5706                     	xdef	_HD_TimeOutReUpLoad
+5707                     	xdef	_LP_HD_CalReportConut
+5708                     	xdef	_HD_ClaReportTimeToSec
+5709                     	xdef	_HD_InitializeGsm
+5710                     	xref	_g_Device_Info
+5711                     	xref	_BAT_GetBatVol
+5712                     	xref	_STM8_RTC_Set
+5713                     	xref	_STM8_RTC_Get
+5714                     	xref	_g_stNextGmTime
+5715                     	xref	_g_stNextRepTime
+5716                     	xref	_stRepFail
+5717                     	xref	_tyParameter
+5718                     	xref	_tyRecord
+5719                     	xref	_ReadDayFreezeRecord
+5720                     	xref	_SaveParameterForType
+5721                     	xref	_ReadParameterForType
+5722                     	xref	_ReadRecord
+5723                     	xref	_JX_StringCat
+5724                     	xref	_JX_Strlen
+5725                     	xref	_FrameSendFunc
+5726                     	xref	_M590_CloseConnect
+5727                     	xref	_M590_TcpSendDatLen
+5728                     	xref	_SetLogonMode
+5729                     	xref	_WatitDataSendOk
+5730                     	xref	_GetReportFailFlag
+5731                     	xref	_UC_SleepFunc
+5732                     	xref	_m_nUploadMode
+5733                     	xref	_g_nSignal
+5734                     	xref	_g_wTmReportCnt
+5735                     	xref	_aucAtPPort1
+5736                     	xref	_aucAtPServer1
+5737                     	xref	_ucStatusGsm
+5738                     	xref	_tyReportParameter
+5739                     	xref	_g_nApnType
+5740                     	xref	_m_nRepFailFlg
+5741                     	xref	_tyGSMFlag
+5742                     	xref	_ucLogonMode
+5743                     	xref	_g_nDatRepCnt
+5744                     	xref	_m_nRepEnableFlg
+5745                     	xref	_g_dwRepTick
+5746                     	xref	_stLastReportT
+5747                     	xref	_stTimeNow
+5748                     	xref	_g_nApnBuf
+5749                     	xref	_tyReport
+5750                     	xref	_GetUartRxBuf
+5751                     	xref	_ClearRxBuff
+5752                     	xref	_CheckRevDataLen
+5753                     	xref	_aucUartTxBuffer
+5754                     	xref	_GM_GetGatherMeterFlg
+5755                     	xref	_tyTime
+5756                     	xref	_HeDa_Get_String_len
+5757                     	xref	_JX_U32ToStr
+5758                     	xref	_JX_IpAddrToStr
+5759                     	xref	_TM_RTimeDecnMinute
+5760                     	xref	_TM_RTimeAddnMinute
+5761                     	xref	_TM_DiffSecond
+5762                     	xref	_TM_TimeChangeBToA
+5763                     	xref	_TM_TimeChangeAToB
+5764                     	xref	_TM_IsValidTimePro
+5765                     	xref	_JX_IsAllFillDat
+5766                     	xref	_JX_AddSum8Bit
+5767                     	xref	_JX_BL_Change
+5768                     	xref	_MemcpyFunc
+5769                     	xref	_MemsetFunc
+5770                     	xref	_GetSysTemTick
+5771                     	switch	.const
+5772  005b               L1321:
+5773  005b 2200          	dc.b	34,0
+5774                     	xref.b	c_lreg
+5794                     	xref	c_xymvx
+5795                     	xref	c_lcmp
+5796                     	xref	c_smul
+5797                     	xref	c_ludv
+5798                     	xref	c_lsub
+5799                     	xref	c_lumd
+5800                     	xref	c_uitolx
+5801                     	xref	c_lmod
+5802                     	xref	c_ldiv
+5803                     	xref	c_lzmp
+5804                     	xref	c_rtol
+5805                     	xref	c_ltor
+5806                     	xref	c_lmul
+5807                     	xref	c_umul
+5808                     	xref	c_cmulx
+5809                     	end

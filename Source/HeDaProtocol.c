@@ -206,7 +206,7 @@ void HD_TimeOutReUpLoad(void)
 	
 	if(REPORT_CNT_TO <= g_nDatRepCnt)
 	{
-		SetLogonMode(UP_Upload_HD);
+		SetLogonMode(UP_Free_HD);
 		stRepFail.wError |= (1<<REP_RESPOND_FAIL);
 		m_nRepFailFlg = TRUE;
 		tyGSMFlag = FALSE;		
@@ -322,8 +322,7 @@ u8 HD_Online(u8 nLogonMode)
 		MemcpyFunc(pnBuf,(u8 *)&now_time, 5);							//终端时间：年-月-日-时-分 
 		nOffset += 5;
 
-		pnBuf[nOffset]=1;										//报文中的数据条数
-		nOffset++;
+		pnBuf[nOffset++]=1;										//报文中的数据条数
 
 		pnBuf[nOffset++]=0;										//报文中的数据间隔
 		
@@ -336,8 +335,25 @@ u8 HD_Online(u8 nLogonMode)
 
 		pnBuf[nOffset++]=g_nSignal;								//信号强度
 
-		pnBuf[nOffset++]=(g_HD_aralm_type>>8)&0xff;				//突发事件类型     高位在前
-		pnBuf[nOffset++]=g_HD_aralm_type&0xff;
+		if(m_nUploadMode==TIME_DAT_REP)
+		{
+			pnBuf[nOffset++]=0;									//突发事件类型     高位在前
+			pnBuf[nOffset++]=0;
+		}
+		else 
+		{
+			if(ALARM_MASK&ALM_GetBatStatus())//电池报警
+			{
+				pnBuf[nOffset++]=0;								//突发事件类型     高位在前
+				pnBuf[nOffset++]=1;
+			}
+			else
+			{
+				pnBuf[nOffset++]=0; 								//突发事件类型	 高位在前
+				pnBuf[nOffset++]=0;
+
+			}
+		}
 
 		for(i=0;i<6;i++)pnBuf[nOffset++]=0;						//保留字段
 

@@ -4133,8 +4133,7 @@ void fixTaskGsm(void)
 		if(FALSE == g_nReportFlg)
 		{
 			dwReport = HD_ClaReportTimeToSec();
-			dwOffset = TM_DiffSecond(&stLastReportT, &stTimeNowTm);
-			
+			dwOffset = TM_DiffSecond(&stLastReportT, &stTimeNowTm);			
 			if((60 < (dwOffset%dwReport)) ||
 				((TRUE == ReadRecord(0, (u8*)&tyRecord, sizeof(tyRecord)))&&(FALSE == tyRecord.nRepFlg)))
 			{
@@ -4152,11 +4151,6 @@ void fixTaskGsm(void)
 		}
 		if(TRUE == g_nReportFlg)
 		{
-			u8 nBuf[12]={0};
-			g_wTmReportCnt++;
-			MemcpyFunc(nBuf, (u8 *)&stTimeNowTm,sizeof(stTimeNowTm));			
-			MemcpyFunc(&nBuf[8], (u8 *)&g_wTmReportCnt, 2);
-			SaveParameterForType(nBuf, 10, LT_REP_TIME); 
 			fixTaskGsmProc();
 		}
 #endif
